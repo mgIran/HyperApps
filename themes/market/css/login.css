@@ -1,0 +1,167 @@
+body{
+    background: url("../images/login-back.png") no-repeat fixed;
+    background-size: cover;
+    text-align: right;
+    direction: rtl;
+}
+a{
+    text-decoration: none !important;
+    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+}
+.transition{
+    transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+}
+.mask{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+
+}
+.mask:after{
+    background: url("../svg/pattern.svg") repeat scroll center center rgba(0, 0, 0, 0);
+    bottom: 0;
+    content: "";
+    height: 100%;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+}
+.logo-box{
+    width: 415px;
+    margin: 80px auto 0;
+}
+img.logo{
+    height: 80px;
+}
+.login-form{
+    text-align: center;
+    display: block;
+    overflow: hidden;
+    width: 415px;
+    margin: 20px auto;
+    background-color: #f5f5f5;
+    box-shadow: 0 0 4px rgba(0,0,0,0.15);
+    border: 1px solid #efefef;
+    padding: 30px 60px;
+    font-size: 12px;
+    height: 365px;
+}
+.login-form > h1{
+    font-size: 16px;
+    text-align: right;
+    margin-bottom: 20px;
+    color: #666;
+}
+.login-form form{
+    margin-bottom: 20px;
+}
+.login-form form .row{
+    display: inline-block;
+    width: 100%;
+    margin: 5px auto;
+    position: relative;
+}
+.login-form form .row > span{
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    transform: translate(-50%);
+    color: #777;
+    margin-top: 15px;
+}
+.login-form form input[type="text"],
+.login-form form input[type="password"],
+.login-form form input[type="email"]{
+    line-height: 40px;
+    border: 1px solid #dadada;
+    background-color: #fff;
+    border-radius: 0;
+    width: 100%;
+    padding: 0 40px 0 20px;
+    text-align: right;
+}
+.login-form form input[type="text"]:hover,
+.login-form form input[type="password"]:hover,
+.login-form form input[type="email"]:hover,
+.login-form form input[type="text"]:focus,
+.login-form form input[type="password"]:focus,
+.login-form form input[type="email"]:focus{
+    border: 1px solid #21b9b0;
+    box-shadow: 0 0 2px rgba(33, 185, 176, 0.62);
+}
+.login-form form input[type="submit"],
+.login-form form input[type="button"]{
+    margin-top: 15px;
+    line-height: 40px;
+    width: 100%;
+    border: 1px solid #1b9790;
+    background-color: #21b9b0;
+    color: #fff;
+    font-size: 16px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.1);
+    border-radius: 0;
+}
+.login-form form input[type="submit"]:hover,
+.login-form form input[type="button"]:hover,
+.login-form form input[type="submit"]:focus,
+.login-form form input[type="button"]:focus{
+    background-color: #1ca098;
+}
+
+.login-form.signup form input[type="text"]:hover,
+.login-form.signup form input[type="password"]:hover,
+.login-form.signup form input[type="email"]:hover,
+.login-form.signup form input[type="text"]:focus,
+.login-form.signup form input[type="password"]:focus,
+.login-form.signup form input[type="email"]:focus{
+    border: 1px solid #f99406;
+    box-shadow: 0 0 2px rgba(249, 148, 6, 0.69);
+}
+.login-form.signup form input[type="submit"],
+.login-form.signup form input[type="button"]{
+    border: 1px solid #d67e06;
+    background-color: #f99406;
+}
+.login-form.signup form input[type="submit"]:hover,
+.login-form.signup form input[type="button"]:hover,
+.login-form.signup form input[type="submit"]:focus,
+.login-form.signup form input[type="button"]:focus{
+    background-color: #ffb200;
+    border-color: #eea600;
+}
+.login-form p{
+    display: inline-block;
+    width: 100%;
+    font-size: 12px;
+    text-align: right;
+}
+.forget-link,
+.error,
+.error > *{
+    color: #f1000e;
+}
+.forget-link:hover,
+.forget-link:focus{
+    color: #bb000b;
+}
+.register-link{
+    color: #21b9b0;
+}
+
+.register-link:hover,
+.register-link:focus{
+    color: #1da199;
+}
+.focus-left:focus{
+    text-align: left !important;
+}

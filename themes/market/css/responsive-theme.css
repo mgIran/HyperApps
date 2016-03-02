@@ -1,0 +1,47 @@
+@media all and (max-width: 850px) {
+    .sidebar ul.sidebar-dropdown > li{
+        padding-right: 15px;
+    }
+    .sidebar > div > div{
+        padding-right: 40px;
+    }
+    .sidebar > div [class*="icon-"]{
+        right: 10px;
+    }
+}
+@media all and (max-width: 768px) {
+    .app-carousel .owl-item{
+        text-align: center;
+    }
+    .app-carousel .app-item{
+        float: none !important;
+    }
+    .sidebar ul.sidebar-dropdown > li{
+        padding: 0;
+        text-align: center;
+    }
+    .sidebar > div > div{
+        padding: 0;
+        text-align: center;
+    }
+    .sidebar > div [class*="icon-"]{
+        right: 50%;
+        margin: 0;
+        margin-right: -80px;
+    }
+}
+
+@media all and (min-width: 768px) {
+    .sidebar {
+        width: 20%;
+    }
+
+    .navbar ,
+    .main{
+        width: 80%;
+    }
+
+    .logo-box {
+        width: 20%;
+    }
+}
