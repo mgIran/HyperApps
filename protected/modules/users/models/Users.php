@@ -50,6 +50,7 @@ class Users extends CActiveRecord
             array('email' , 'filter' , 'filter' => 'trim' ,'on' => 'create'),
             array('email' , 'unique' ,'on' => 'create'),
             array('username, password', 'length', 'max'=>100 ,'on' => 'create'),
+            array('oldPassword', 'oldPass' , 'on'=>'update'),
             array('repeatPassword', 'compare', 'compareAttribute'=>'newPassword' ,'operator'=>'==', 'message' => 'رمز های عبور همخوانی ندارند' , 'on'=>'update'),
             array('repeatPassword', 'compare', 'compareAttribute'=>'password' ,'operator'=>'==', 'message' => 'رمز های عبور همخوانی ندارند' , 'on'=>'create'),
             array('email', 'length', 'max'=>255),
@@ -58,6 +59,17 @@ class Users extends CActiveRecord
             // @todo Please remove those attributes that should not be searched.
             array('id, username, password, roleId', 'safe', 'on'=>'search'),
         );
+    }
+
+    /**
+     * Check this username is exist in database or not
+     */
+    public function oldPass($attribute,$params)
+    {
+        $bCrypt = new bCrypt();
+        $record = Users::model()->findByAttributes( array( 'email' => $this->email ) );
+        if ( !$bCrypt->verify( $this->$attribute, $record->password ) )
+            $this->addError( $attribute, 'رمز عبور فعلی اشتباه است' );
     }
 
     /**
@@ -152,16 +164,5 @@ class Users extends CActiveRecord
             $model->save();
         }
         return true;
-    }
-
-    /**
-     * Check this username is exist in database or not
-     */
-    public function oldPass($attribute,$params)
-    {
-        $bCrypt = new bCrypt();
-        $record = Users::model()->findByAttributes( array( 'username' => $this->username ) );
-        if ( !$bCrypt->verify( $this->$attribute, $record->password ) )
-            $this->addError( $attribute, 'رمز عبور فعلی اشتباه است' );
     }
 }
