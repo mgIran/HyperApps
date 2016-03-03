@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2016-03-01 15:47:06
+Date: 2016-03-03 13:57:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -164,8 +164,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '8');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457449');
+INSERT INTO `ym_counter_save` VALUES ('counter', '10');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457451');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -183,7 +183,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1456833046');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1456996298');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -773,7 +773,7 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('8', 'masoud', '$2a$12$H9pEmjmlXTABPuGxlaQ.E.29akZUA5X3UxbsHeENB2YqcnHIiqgT.', 'e@s.s', '2');
+INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$H9pEmjmlXTABPuGxlaQ.E.29akZUA5X3UxbsHeENB2YqcnHIiqgT.', 'e@s.s', '2');
 INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Bsqz6xUsd3HykzEekwnP7O2tbAe42XytV4dTpV0iEN0gj3TIB/Se.', 'wsd@sd.s', null);
 INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null);
 INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null);
@@ -802,6 +802,7 @@ CREATE TABLE `ym_user_details` (
   `zip_code` varchar(10) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'کد پستی',
   `address` longtext COLLATE utf8_persian_ci COMMENT 'نشانی دقیق پستی',
   `credit` double DEFAULT NULL COMMENT 'اعتبار',
+  `developer_id` varchar(20) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شناسه توسعه دهنده',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -810,7 +811,24 @@ CREATE TABLE `ym_user_details` (
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('1', '8', null, null, null, null, null, null, null, null, null, '5000');
+INSERT INTO `ym_user_details` VALUES ('1', '8', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', null, null, null, null, null, '5000', '');
+
+-- ----------------------------
+-- Table structure for ym_user_dev_id_requests
+-- ----------------------------
+DROP TABLE IF EXISTS `ym_user_dev_id_requests`;
+CREATE TABLE `ym_user_dev_id_requests` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه',
+  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
+  `requested_id` varchar(20) DEFAULT NULL COMMENT 'شناسه درخواستی',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `ym_user_dev_id_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of ym_user_dev_id_requests
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for ym_user_roles

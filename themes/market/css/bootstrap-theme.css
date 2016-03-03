@@ -870,3 +870,7 @@ ul.nav li{
 .text-item i{
     margin-left: 10px;
 }
+.close
+{
+    float: left;
+}

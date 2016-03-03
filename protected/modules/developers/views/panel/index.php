@@ -4,11 +4,11 @@
 ?>
 <div class="container">
     <ul class="nav nav-tabs">
-        <li class=" active">
-            <a href="<?php echo $this->createUrl('/developers/panel')?>">برنامه ها</a>
+        <li class="active">
+            <a href="<?php echo $this->createUrl('/developers/panel');?>">برنامه ها</a>
         </li>
         <li>
-            <a href="/developers/panel/account/?l=fa">حساب توسعه دهنده</a>
+            <a href="<?php echo $this->createUrl('/developers/panel/account');?>">حساب توسعه دهنده</a>
         </li>
         <li>
             <a href="/developers/panel/financial/?l=fa">امور مالی و فروش</a>
@@ -21,7 +21,7 @@
         </li>
     </ul>
 
-    <div class="tab-content card-container padded">
+    <div class="tab-content card-container">
         <div class="tab-pane active">
             <a class="btn btn-success" href="<?php echo $this->createUrl('/developers/apps/create');?>"><i class="icon icon-plus"></i> افزودن برنامه جدید</a>
         </div>

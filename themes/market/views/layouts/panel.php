@@ -29,18 +29,6 @@
 <?= $this->renderPartial('//layouts/_header'); ?>
 <div class="col-xs-12">
     <section class="content">
-        <?php
-        if(Yii::app()->user->hasFlash('success'))
-            echo '<div class=\'alert alert-success rtl fade in\'>
-                    <button class=\'close close-sm\' type=\'button\' data-dismiss=\'alert\'><i class=\'icon-remove\'></i></button>
-                    '.Yii::app()->user->getFlash('success').'
-                </div>';
-        else if(Yii::app()->user->hasFlash('failed'))
-            echo '<div class=\'alert alert-danger rtl fade in\'>
-                    <button class=\'close close-sm\' type=\'button\' data-dismiss=\'alert\'><i class=\'icon-remove\'></i></button>
-                    '.Yii::app()->user->getFlash('failed').'
-                </div>';
-        ?>
         <?php echo $content; ?>
         <?= $this->renderPartial('//layouts/_footer'); ?>
     </section>
