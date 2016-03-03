@@ -16,6 +16,7 @@
  * The followings are the available model relations:
  * @property Apps[] $apps
  * @property UserDetails[] $userDetails
+ * @property UserDevIdRequests[] $userDevIdRequests
  * @property UserRoles $role
  */
 class Users extends CActiveRecord
@@ -69,6 +70,7 @@ class Users extends CActiveRecord
         return array(
             'apps' => array(self::HAS_MANY, 'Apps', 'developer_id'),
             'userDetails' => array(self::HAS_ONE, 'UserDetails', 'user_id'),
+            'userDevIdRequests' => array(self::HAS_ONE, 'UserDevIdRequests', 'user_id'),
             'role' => array(self::BELONGS_TO, 'UserRoles', 'role_id'),
         );
     }

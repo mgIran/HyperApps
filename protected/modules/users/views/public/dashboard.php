@@ -14,9 +14,6 @@
             <a data-toggle="tab" onclick="loadPurchasesTab()" href="#tabs-purchases">خریدها</a>
         </li>
         <li>
-            <a data-toggle="tab" href="#tabs-subscriptions">اشتراک&zwnj;ها</a>
-        </li>
-        <li>
             <a data-toggle="tab" onclick="loadBookmarksTab()" href="#tabs-bookmarks">نشان&zwnj;ها</a>
         </li>
         <li>
