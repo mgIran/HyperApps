@@ -162,15 +162,19 @@ class dropZoneUploader extends CWidget
         {
             $data = CJSON::encode($this->serverFiles);
             $addedFiles = '
+                var extArr = ["jpg","jpeg","png","bmp","gif"];
                 var thisDropzone = this;
                 var data = '.$data.';
                 $.each(data, function(key,value){
                     var mockFile = { name: value.name, size: value.size ,serverName : value.name ,accepted : true};
                     if ((thisDropzone.options.maxFiles != null) && thisDropzone.getAcceptedFiles().length < thisDropzone.options.maxFiles) {
                         thisDropzone.options.addedfile.call(thisDropzone, mockFile);
-                        thisDropzone.createThumbnailFromUrl(mockFile , value.src);
+                        if($.inArray(value.name.split(\'.\').pop(), extArr) > -1)
+                        {
+                            thisDropzone.createThumbnailFromUrl(mockFile , value.src);
+                            thisDropzone.options.thumbnail.call(thisDropzone, mockFile, value.src);
+                        }
                         thisDropzone.options.complete.call(thisDropzone, mockFile);
-                        thisDropzone.options.thumbnail.call(thisDropzone, mockFile, value.src);
                         thisDropzone.files.push(mockFile);
                         createHiddenInput(mockFile ,"'.$hiddenFieldName.'", value.name);
                     }

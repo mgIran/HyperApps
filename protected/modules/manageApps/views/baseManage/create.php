@@ -20,6 +20,6 @@ $this->menu=array(
 
     <div class="tab-content">
 <div id="general" class="tab-pane fade in active">
-<?php $this->renderPartial('manageApps.views.baseManage._form', array('model'=>$model,'image'=>$image,'file'=>$file)); ?>
+<?php $this->renderPartial('manageApps.views.baseManage._form', array('model'=>$model,'icon'=>$icon,'app' => $app )); ?>
     </div>
         </div>

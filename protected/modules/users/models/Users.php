@@ -141,12 +141,15 @@ class Users extends CActiveRecord
         return $enc->hash($value);
     }
 
-    public function beforeSave(){
-        if(parent::beforeSave())
+    public function afterSave(){
+        if(parent::afterSave())
         {
-            $this->username = $this->email;
-            return true;
+            $model = new UserDetails;
+            $model->user_id = $this->id;
+            $model->credit = 0;
+            $model->save();
         }
+        return true;
     }
 
     /**

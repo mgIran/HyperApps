@@ -64,7 +64,7 @@ class Controller extends CController
                     'url' => array('/admins/dashboard')
                 ) ,
                 array(
-                    'label' => 'نرم افزار ها<span class="caret"></span>' ,
+                    'label' => 'برنامه ها<span class="caret"></span>' ,
                     'url' => '#' ,
                     'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
                     'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,

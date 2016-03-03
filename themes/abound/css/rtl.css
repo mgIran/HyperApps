@@ -55,7 +55,12 @@ h1{
     font-size: 12px;
 }
 
-
+.navbar{
+    height: auto;
+}
+.navbar >li >a{
+    height: auto;
+}
 input[type='text'],
 input[type='password'],
 input[type='email'],
@@ -123,4 +128,8 @@ label{
 }
 .optBox .trash-opt{
     margin-right: 10px;
+}
+
+.btn-input{
+    width: 30%;
 }

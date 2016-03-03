@@ -1,19 +1,17 @@
-<div class="form-group-lg col-lg-12 col-md-12 col-sm-12 col-xs-12 form-full">
-    <?= CHtml::label('تصاویر' ,'uploaderImages' ,array('class' => 'control-label col-lg-2-5 col-md-2-5 col-sm-2 col-xs-12')); ?>
-    <div class="col-lg-9-5 col-md-9-5 col-sm-10 col-xs-12">
+<div class="form">
+    <div class="row">
+        <?= CHtml::label('تصاویر' ,'uploaderImages' ,array('class' => 'control-label')); ?>
         <?php
-        $images=array();
         $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
             'id' => 'uploaderImages',
-            'model' => $model,
-            'name' => 'images',
-            'maxFiles' => 5,
+            'name' => 'image',
+            'maxFiles' => 15,
             'maxFileSize' => 2, //MB
-            'url' => $this->createUrl('imagesManage/upload'),
-            'deleteUrl' => $this->createUrl('imagesManage/deleteUpload'),
+            'url' => $this->createUrl('/manageApps/imagesManage/upload'),
+            'deleteUrl' => $this->createUrl('/manageApps/imagesManage/deleteUploaded'),
             'acceptedFiles' => 'image/jpeg , image/png',
             'serverFiles' => $images,
-            'data' => array('id'=>$model->id),
+            'data' => array('app_id'=>$model->id),
             'onSuccess' => '
                 var responseObj = JSON.parse(res);
                 if(responseObj.state == "ok")

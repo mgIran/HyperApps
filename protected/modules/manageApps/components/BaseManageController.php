@@ -84,26 +84,26 @@ class BaseManageController extends Controller
         if(!is_dir($tmpDIR))
             mkdir($tmpDIR);
         $tmpUrl = Yii::app()->createAbsoluteUrl('/uploads/temp/');
-        $appFilesDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/files';
-        $appIconsDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/icons';
+        $appFilesDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/files/';
+        $appIconsDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/icons/';
         if(!is_dir($appIconsDIR)){
             mkdir($appIconsDIR);
-            if(!is_dir($appIconsDIR . 'thumbs/')){
-                mkdir($appIconsDIR . 'thumbs/');
-                if(!is_dir($appIconsDIR . 'thumbs/90x90/')){
-                    mkdir($appIconsDIR . 'thumbs/90x90/');
+            if(!is_dir($appIconsDIR . '/thumbs/')){
+                mkdir($appIconsDIR . '/thumbs/');
+                if(!is_dir($appIconsDIR . '/thumbs/90x90/')){
+                    mkdir($appIconsDIR . '/thumbs/90x90/');
                 }
             }
         }
-        $image = array();
-        $file = array();
+        $icon = array();
+        $app = array();
 
         $this->performAjaxValidation($model);
 
         if(isset($_POST['Apps'])){
             if(isset($_POST['Apps']['file_name'])){
                 $file = $_POST['Apps']['file_name'];
-                $image = array(
+                $app = array(
                     array(
                         'name' => $file ,
                         'src' => $tmpUrl . '/' . $file ,
@@ -115,7 +115,7 @@ class BaseManageController extends Controller
 
             if(isset($_POST['Apps']['icon'])){
                 $file = $_POST['Apps']['icon'];
-                $image = array(
+                $icon = array(
                     array(
                         'name' => $file ,
                         'src' => $tmpUrl . '/' . $file ,
@@ -134,19 +134,20 @@ class BaseManageController extends Controller
                 }
                 if($model->icon){
                     $thumbnail = new ThumbnailCreator();
-                    $thumbnail->createThumbnail($tmpDIR . $model->file_name ,150 ,150 ,false ,$appIconsDIR . 'thumbs/90x90/' . $model->file_name);
-                    unlink($tmpDIR . $model->file_name);
+                    $thumbnail->createThumbnail($tmpDIR . $model->icon ,150 ,150 ,false ,$appIconsDIR . $model->icon);
+                    @unlink($tmpDIR . $model->icon);
                 }
-                Yii::app()->user->setFlash('success' ,'دسته بندی با موفقیت افزوده شد.');
+                Yii::app()->user->setFlash('success' ,'اطلاعات با موفقیت ثبت شد.');
+                $this->redirect('update/'.$model->id);
                 $step = 2;
             }else
-                Yii::app()->user->setFlash('failed' ,'درخواست با خطا مواجه است.');
+                Yii::app()->user->setFlash('failed' ,'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
 
         $this->render('manageApps.views.baseManage.create' ,array(
             'model' => $model ,
-            'image' => $image ,
-            'file' => $file ,
+            'icon' => $icon ,
+            'app' => $app ,
             'step' => $step
         ));
     }
@@ -158,35 +159,103 @@ class BaseManageController extends Controller
      */
     public function actionUpdate($id)
     {
-        $tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/icon/';
-        if(!is_dir($tmpDIR))
+        $tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+        if (!is_dir($tmpDIR))
             mkdir($tmpDIR);
-        $tmpUrl = Yii::app()->createAbsoluteUrl('/uploads/apps/icon/');
+        $tmpUrl = Yii::app()->createAbsoluteUrl('/uploads/temp/');
+        $appFilesDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/files/';
+        $appIconsDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/icons/';
+        $appImagesDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/images/';
+        $appFilesUrl = Yii::app()->createAbsoluteUrl('/uploads/apps/files');
+        $appIconsUrl = Yii::app()->createAbsoluteUrl('/uploads/apps/icons');
+        $appImagesUrl = Yii::app()->createAbsoluteUrl('/uploads/apps/images');
 
         $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
-        $image = array();
-        if(file_exists($tmpDIR . $model->icon))
-            $image = array(
+        $icon = array();
+        if (file_exists($appIconsDIR . $model->icon))
+            $icon = array(
                 array(
-                    'name' => $model->icon ,
-                    'src' => $tmpUrl . '/' . $model->icon ,
-                    'size' => filesize($tmpDIR . $model->icon) ,
-                    'serverName' => $model->icon ,
+                    'name' => $model->icon,
+                    'src' => $appIconsUrl . '/' . $model->icon,
+                    'size' => filesize($appIconsDIR . $model->icon),
+                    'serverName' => $model->icon,
                 )
             );
 
-        if(isset($_POST['Apps'])){
+        $app = array();
+        if (file_exists($appFilesDIR . $model->file_name))
+            $app = array(
+                array(
+                    'name' => $model->file_name,
+                    'src' => $appFilesUrl . '/' . $model->file_name,
+                    'size' => filesize($appFilesDIR . $model->file_name),
+                    'serverName' => $model->file_name,
+                )
+            );
+
+        $images = array();
+        if ($model->images)
+            foreach ($model->images as $image)
+                //if (file_exists($appImagesDIR . $image->image))
+                    $images[] = array(
+                        'name' => $image->image,
+                        'src' => $appImagesUrl . '/' . $image->image,
+                        'size' => filesize($appImagesDIR . $image->image),
+                        'serverName' => $image->image,
+                    );
+        if (isset($_POST['Apps'])) {
+            $fileFlag=false;
+            $iconFlag=false;
+            if (isset($_POST['Apps']['file_name']) && $_POST['Apps']['file_name'] != $model->file_name) {
+                $file = $_POST['Apps']['file_name'];
+                $app = array(
+                    array(
+                        'name' => $file,
+                        'src' => $tmpUrl . '/' . $file,
+                        'size' => filesize($tmpDIR . $file),
+                        'serverName' => $file,
+                    )
+                );
+                $fileFlag =true;
+            }
+            if (isset($_POST['Apps']['icon']) && $_POST['Apps']['icon'] != $model->icon) {
+                $file = $_POST['Apps']['icon'];
+                $icon = array(
+                    array(
+                        'name' => $file,
+                        'src' => $tmpUrl . '/' . $file,
+                        'size' => filesize($tmpDIR . $file),
+                        'serverName' => $file,
+                    )
+                );
+                $iconFlag=true;
+            }
             $model->attributes = $_POST['Apps'];
-            if($model->save())
-                $this->redirect(array('view' ,'id' => $model->id));
+            if ($model->save()) {
+                if ($fileFlag) {
+                    rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);
+                }
+                if ($iconFlag) {
+                    $thumbnail = new ThumbnailCreator();
+                    $thumbnail->createThumbnail($tmpDIR . $model->icon, 150, 150, false, $appIconsDIR. $model->icon);
+                    unlink($tmpDIR . $model->icon);
+                }
+                Yii::app()->user->setFlash('success' ,'اطلاعات با موفقیت وایریش شد.');
+                $this->refresh();
+            }else
+            {
+                Yii::app()->user->setFlash('failed' ,'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+            }
         }
 
-        $this->render('manageApps.views.baseManage.update' ,array(
-            'model' => $model ,
-            'image' => $image ,
+        $this->render('manageApps.views.baseManage.update', array(
+            'model' => $model,
+            'icon' => $icon,
+            'app' => $app,
+            'images' => $images,
             'step' => 1
         ));
     }
@@ -274,7 +343,7 @@ class BaseManageController extends Controller
             mkdir($tempDir);
         if(isset($_FILES)){
             $file = $_FILES['icon'];
-            $ext = end(explode('.' ,$file['name']));
+            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
             $file['name'] = Controller::generateRandomString(5) . time();
             while(file_exists($tempDir . DIRECTORY_SEPARATOR . $file['name']))
                 $file['name'] = Controller::generateRandomString(5) . time();
@@ -323,7 +392,7 @@ class BaseManageController extends Controller
                 mkdir($tempDir);
             if(isset($_FILES)){
                 $file = $_FILES['file_name'];
-                $ext = end(explode('.' ,$file['name']));
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
                 $file['name'] = Controller::generateRandomString(5) . time();
                 while(file_exists($tempDir . DIRECTORY_SEPARATOR . $file['name']))
                     $file['name'] = Controller::generateRandomString(5) . time();
@@ -351,7 +420,7 @@ class BaseManageController extends Controller
 
             $model = Apps::model()->findByAttributes(array('file_name' => $fileName));
             if($model){
-                if(@unlink($Dir . $fileName)){
+                if(unlink($Dir . $$model->fileName)){
                     $model->updateByPk($model->id ,array('file_name' => null));
                     $response = ['state' => 'ok' ,'msg' => $this->implodeErrors($model)];
                 }else

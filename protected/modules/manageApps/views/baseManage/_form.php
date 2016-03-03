@@ -19,8 +19,6 @@
     )
 )); ?>
 
-	<p class="note">فیلد های دارای <span class="required">*</span> الزامی هستند.</p>
-
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
@@ -31,41 +29,23 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'developer_team'); ?>
-		<?php echo $form->textField($model,'developer_team',array('size'=>10,'maxlength'=>500)); ?>
+		<?php echo $form->textField($model,'developer_team',array('size'=>50,'maxlength'=>500)); ?>
 		<?php echo $form->error($model,'developer_team'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'category_id'); ?>
-		<?php
-        $this->widget('ext.dropdown.dropDown' ,array(
-            'id' => 'category',
-            'model' => $model,
-            'attribute' => 'category_id',
-            'data' => CHtml::listData(AppCategories::model()->findAll(),'id' ,'fullName'),
-            'label' => 'دسته بندی',
-            'selected' => $model->category_id?$model->category_id:false,
-            'caret' => '<i class="icon icon-chevron-down"></i>',
-        ));
+		<?php echo $form->dropDownList($model,'category_id' , CHtml::listData(AppCategories::model()->findAll(),'id' ,'fullName'));
         ?>
 		<?php echo $form->error($model,'category_id'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'status'); ?>
-		<?php
-        $this->widget('ext.dropdown.dropDown' ,array(
-            'id' => 'status',
-            'model' => $model,
-            'attribute' => 'status',
-            'data' => array(
-                1 => 'فعال',
-                0 => 'غیر فعال'
-            ),
-            'label' => 'وضعیت',
-            'selected' => $model->status?$model->status:false,
-            'caret' => '<i class="icon icon-chevron-down"></i>',
-        ));
+		<?php echo $form->dropDownList($model,'status',array(
+				'enable' => 'فعال',
+				'disable' => 'غیر فعال'
+		));
         ?>
 		<?php echo $form->error($model,'status'); ?>
 	</div>
@@ -88,7 +68,7 @@
             'url' => Yii::app()->createUrl('/manageApps/'.$this->controller.'/uploadFile'),
             'deleteUrl' => Yii::app()->createUrl('/manageApps/'.$this->controller.'/deleteUploadFile'),
             'acceptedFiles' => $this->formats,
-            'serverFiles' => $file,
+            'serverFiles' => $app,
             'onSuccess' => '
                 var responseObj = JSON.parse(res);
                 if(responseObj.state == "ok")
@@ -115,7 +95,7 @@
             'url' => Yii::app()->createUrl('/manageApps/'.$this->controller.'/upload'),
             'deleteUrl' => Yii::app()->createUrl('/manageApps/'.$this->controller.'/deleteUpload'),
             'acceptedFiles' => 'image/jpeg , image/png',
-            'serverFiles' => $image,
+            'serverFiles' => $icon,
             'onSuccess' => '
                 var responseObj = JSON.parse(res);
                 if(responseObj.state == "ok")
@@ -132,13 +112,23 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
+		<?php
+		$this->widget('ext.ckeditor.CKEditor',array(
+			'model' => $model,
+			'attribute' => 'description'
+		));
+		?>
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'change_log'); ?>
-		<?php echo $form->textArea($model,'change_log',array('rows'=>6, 'cols'=>50)); ?>
+		<?php
+		$this->widget('ext.ckeditor.CKEditor',array(
+				'model' => $model,
+				'attribute' => 'change_log'
+		));
+		?>
 		<?php echo $form->error($model,'change_log'); ?>
 	</div>
 

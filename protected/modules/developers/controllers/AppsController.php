@@ -54,16 +54,10 @@ class AppsController extends Controller
 		{
 			$model->attributes=$_POST['Apps'];
             $model->permissions=CJSON::encode($_POST['Apps']['permissions']);
-            $iconInstance=CUploadedFile::getInstance($model,'icon');
-            $iconName=Yii::app()->user->username.'.'.$model->id.'.'.$iconInstance->extensionName;
-            $model->file_name=CUploadedFile::getInstance($model,'file_name');
-            $model->icon=$iconName;
             $model->developer_id=Yii::app()->user->getId();
             $model->size=$model->file_name->size;
 			if($model->save())
             {
-                $iconInstance->saveAs('uploads/apps/icons/'.$iconName);
-                $model->file_name->saveAs('uploads/apps/files/'.$model->file_name->name);
                 Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
 				$this->redirect(array('update/'.$model->id));
             }
@@ -88,6 +82,7 @@ class AppsController extends Controller
 		$model=$this->loadModel($id);
         $images=array();
         $uploadDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/images/';
+        if($model->images)
         foreach($model->images as $image)
         {
             if(file_exists($uploadDIR . $image->image))
@@ -106,36 +101,12 @@ class AppsController extends Controller
 
 		if(isset($_POST['Apps']))
 		{
-            unset($_POST['Apps']['icon']);
-            unset($_POST['Apps']['file_name']);
 			$model->attributes=$_POST['Apps'];
             $model->permissions=CJSON::encode($_POST['Apps']['permissions']);
-            $prevIcon=$model->icon;
-            $prevFile=$model->file_name;
-            $iconInstance=CUploadedFile::getInstance($model,'icon');
-            $fileInstance=CUploadedFile::getInstance($model,'file_name');
-            if(!is_null($iconInstance))
-            {
-                $iconName=Yii::app()->user->username.'.'.$model->id.'.'.$iconInstance->extensionName;
-                $model->icon=$iconName;
-            }
-            if(!is_null($fileInstance))
-            {
-                $model->file_name=$fileInstance;
-                $model->size=$fileInstance->size;
-            }
+
 			if($model->save())
             {
-                if(!is_null($iconInstance))
-                {
-                    @unlink(Yii::getPathOfAlias("webroot") . '/uploads/apps/files/'.$prevIcon);
-                    $iconInstance->saveAs('uploads/apps/icons/'.$iconName);
-                }
-                if(!is_null($fileInstance))
-                {
-                    @unlink(Yii::getPathOfAlias("webroot") . '/uploads/apps/files/'.$prevFile);
-                    $model->file_name->saveAs('uploads/apps/files/'.$model->file_name->name);
-                }
+
                 Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
 				$this->refresh();
             }
@@ -174,9 +145,9 @@ class AppsController extends Controller
         if(isset($_FILES)) {
             $file = $_FILES[ 'image' ];
             $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $file['name'] = Controller::generateRandomString();
+            $file['name'] = Controller::generateRandomString(5).time();
             while(file_exists($uploadDir.DIRECTORY_SEPARATOR.$file['name']))
-                $file['name'] = Controller::generateRandomString();
+                $file['name'] = Controller::generateRandomString(5).time();
             $file['name'] .= $file['name'].'.'.$ext;
             if ( move_uploaded_file( $file[ 'tmp_name' ], $uploadDir . DIRECTORY_SEPARATOR . CHtml::encode($file[ 'name' ] )) )
             {
