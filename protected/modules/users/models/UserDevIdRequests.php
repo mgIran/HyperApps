@@ -4,7 +4,6 @@
  * This is the model class for table "ym_user_dev_id_requests".
  *
  * The followings are the available columns in table 'ym_user_dev_id_requests':
- * @property string $id
  * @property string $user_id
  * @property string $requested_id
  *
@@ -30,11 +29,13 @@ class UserDevIdRequests extends CActiveRecord
 		// will receive user inputs.
 		return array(
             array('requested_id', 'required'),
+            array('requested_id', 'unique'),
+            //array('requested_id', 'uniqueInUserDetails'),
 			array('user_id', 'length', 'max'=>10),
 			array('requested_id', 'length', 'max'=>20, 'min'=>5),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, requested_id', 'safe', 'on'=>'search'),
+			array('user_id, requested_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -46,7 +47,7 @@ class UserDevIdRequests extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::HAS_ONE, 'Users', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
 	}
 
@@ -56,7 +57,6 @@ class UserDevIdRequests extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'شناسه',
 			'user_id' => 'کاربر',
 			'requested_id' => 'شناسه درخواستی',
 		);
@@ -80,7 +80,6 @@ class UserDevIdRequests extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('requested_id',$this->requested_id,true);
 
@@ -99,4 +98,17 @@ class UserDevIdRequests extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    /**
+     * Check the developerID is unique in userDetails
+     */
+    public function uniqueInUserDetails($attribute,$params)
+    {
+        if(!$this->hasErrors())
+        {
+            $record = UserDetails::model()->findByAttributes( array( 'developer_id' => $this->requested_id ) );
+            if($record)
+                $this->addError($attribute, "شناسه درخواستی \"{$this->requested_id}\" در حال حاضر گرفته شده است.");
+        }
+    }
 }

@@ -26,8 +26,8 @@ class PanelController extends Controller
     public function accessRules()
     {
         return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('account','index'),
+            array('allow',
+                'actions'=>array('account','index','uploadNationalCardImage','deleteNationalCardImage'),
                 'roles'=>array('developer'),
             ),
             array('deny',  // deny all users
@@ -56,8 +56,7 @@ class PanelController extends Controller
     public function actionAccount()
     {
         Yii::app()->theme='market';
-        Yii::import('application.modules.users.models.UserDetails');
-        Yii::import('application.modules.users.models.UserDevIdRequests');
+        Yii::import('application.modules.users.models.*');
 
         $detailsModel=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
         $devIdRequestModel=UserDevIdRequests::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
@@ -66,13 +65,39 @@ class PanelController extends Controller
 
         $detailsModel->scenario='update_profile';
 
-        $this->performAjaxValidation($detailsModel);
+        if(isset($_POST['ajax']) && $_POST['ajax']==='change-developer-id-form')
+            $this->performAjaxValidation($devIdRequestModel);
+        else
+            $this->performAjaxValidation($detailsModel);
 
+        // Save developer profile
         if(isset($_POST['UserDetails']))
         {
             unset($_POST['UserDetails']['credit']);
+            unset($_POST['UserDetails']['developer_id']);
             $detailsModel->attributes=$_POST['UserDetails'];
             if($detailsModel->save())
+            {
+                // RESIZE NATIONAL CARD IMAGE
+                
+                /*$tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
+                $uploadDir = Yii::getPathOfAlias("webroot").'/uploads/users/national_cards/';
+                $thumbnail = new ThumbnailCreator();
+                $thumbnail->createThumbnail($tmpDir . $detailsModel->national_card_image, 150, 150, false, $uploadDir .  $file['name']);
+                @unlink($tmpDir . $file['name']);*/
+                Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            }
+            else
+                Yii::app()->user->setFlash('fail' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        }
+
+        // Save the change request developerID
+        if(isset($_POST['UserDevIdRequests']))
+        {
+            $devIdRequestModel->user_id=Yii::app()->user->getId();
+            $devIdRequestModel->requested_id=$_POST['UserDevIdRequests']['requested_id'];
+            if($devIdRequestModel->save())
             {
                 Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
                 $this->refresh();
@@ -81,10 +106,90 @@ class PanelController extends Controller
                 Yii::app()->user->setFlash('fail' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
 
+        $nationalCardImageUrl=$this->createUrl('/uploads/users/national_cards');
+        $nationalCardImagePath=Yii::getPathOfAlias('webroot').'/uploads/users/national_cards';
+        $nationalCardImage=array();
+        if($detailsModel->national_card_image!='')
+            $nationalCardImage=array(
+                'name' => $detailsModel->national_card_image,
+                'src' => $nationalCardImageUrl.'/'.$detailsModel->national_card_image,
+                'size' => filesize($nationalCardImagePath.'/'.$detailsModel->national_card_image),
+                'serverName' => $detailsModel->national_card_image,
+            );
+
         $this->render('account', array(
             'detailsModel'=>$detailsModel,
             'devIdRequestModel'=>$devIdRequestModel,
+            'nationalCardImage'=>$nationalCardImage,
         ));
+    }
+
+    /**
+     * Upload national card image
+     */
+    public function actionUploadNationalCardImage()
+    {
+        $tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
+        $uploadDir = Yii::getPathOfAlias("webroot").'/uploads/users/national_cards/';
+        if (!is_dir($tmpDir))
+            mkdir($tmpDir);
+        if (!is_dir($uploadDir))
+            mkdir($uploadDir);
+        if (isset($_FILES)) {
+            $file = $_FILES['national_card_image'];
+            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $file['name'] = Controller::generateRandomString(5) . time();
+            while (file_exists($tmpDir . $file['name']))
+                $file['name'] = Controller::generateRandomString(5) . time();
+            $file['name'] = $file['name'] . '.' . $ext;
+            if (move_uploaded_file($file['tmp_name'], $tmpDir . CHtml::encode($file['name'])))
+                $response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
+            else
+                $response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
+        } else
+            $response = ['state' => 'error', 'msg' => 'فایلی ارسال نشده است.'];
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+    /**
+     * Delete national card image
+     */
+    public function actionDeleteNationalCardImage()
+    {
+        if (isset($_POST['fileName']))
+        {
+            $fileName = $_POST['fileName'];
+            $uploadDir = Yii::getPathOfAlias("webroot") . '/uploads/users/national_cards/';
+            $tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
+
+            Yii::import('application.modules.users.models.*');
+
+            $model = UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+            $response = null;
+            if (!empty($model->national_card_image))
+            {
+                if (@unlink($uploadDir . $model->national_card_image))
+                {
+                    $response = ['state' => 'ok', 'msg' => 'حذف شد.'];
+                    $model->national_card_image='';
+                    $model->save();
+                }
+                else
+                    $response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
+            }
+            elseif(empty($model->national_card_image) && file_exists($tmpDir . $fileName))
+            {
+                if (@unlink($tmpDir . $fileName))
+                    $response = ['state' => 'ok', 'msg' => 'حذف شد.'];
+                else
+                    $response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
+            }
+            else
+                $response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
     }
 
     /**

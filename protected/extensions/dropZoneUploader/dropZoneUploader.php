@@ -56,7 +56,7 @@ class dropZoneUploader extends CWidget
     /**
      * @var string DropZone Box text
      */
-    public $dictDefaultMessage = '<i class="icon icon-cloud-upload icon-4x"></i><span style="display: block;">بکشید و رها کنید</span>';
+    public $dictDefaultMessage = 'بکشید و رها کنید';
     /**
      * @var string invalid file type message
      */
@@ -124,7 +124,7 @@ class dropZoneUploader extends CWidget
         {
             $this->id = $this->camelCase($this->id);
         }
-
+        $this->dictDefaultMessage = '<i class="icon icon-cloud-upload icon-4x"></i><span style="display: block;">'.$this->dictDefaultMessage.'</span>';
         Yii::app()->clientScript->registerCoreScript( 'jquery' );
         $this->_scripts = array(
             'js' . DIRECTORY_SEPARATOR . 'dropzone.js', // core DropZone Js File

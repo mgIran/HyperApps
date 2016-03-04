@@ -2,10 +2,13 @@
 /* @var $this PanelController */
 /* @var $model UserDetails */
 /* @var $form CActiveForm */
+/* @var $nationalCardImage Array */
 ?>
 
-<div class="container-fluid">
-    <div class="form col-md-5">
+<div class="col-md-6">
+    <h1>مشخصات</h1>
+
+    <div class="form">
 
     <?php $form=$this->beginWidget('CActiveForm', array(
         'id'=>'update-profile-form',
@@ -22,6 +25,11 @@
 
         <?php echo $form->errorSummary($model); ?>
 
+        <div class="alert alert-<?php echo ($model->user->status=='accepted')?'success':'danger';?>"><?php echo ($model->user->status=='accepted')?'قرارداد مورد تایید می باشد.':'اطلاعات قرارداد در حال بررسی می باشد.';?></div>
+        <div class="alert alert-warning">در صورت تغییر در اطلاعات این فرم حسابتان در صف در انتظار بررسی قرار خواهد گرفت و ممکن است باعث تأخیرهایی در انجام تصفیه‌حسابتان شود.</div>
+
+        <div class="alert alert-info"><?php echo CHtml::label('پست الکترونیکی:&nbsp;&nbsp;', '');?><?php echo $model->user->email;?></div>
+
         <div class="form-group">
             <?php echo $form->textField($model,'fa_name',array('placeholder'=>$model->getAttributeLabel('fa_name').' *','maxlength'=>50,'class'=>'form-control')); ?>
             <p class="desc">نام باید عبارتی با حداکثر 50 حرف باشد که از حروف و اعداد فارسی و انگلیسی، فاصله و نیم‌فاصله تشکیل شده باشد.</p>
@@ -29,7 +37,7 @@
         </div>
 
         <div class="form-group">
-            <?php echo $form->textField($model,'fa_web_url',array('placeholder'=>$model->getAttributeLabel('fa_web_url'),'maxlength'=>50,'class'=>'form-control')); ?>
+            <?php echo $form->textField($model,'fa_web_url',array('placeholder'=>$model->getAttributeLabel('fa_web_url'),'maxlength'=>255,'class'=>'form-control')); ?>
             <?php echo $form->error($model,'fa_web_url'); ?>
         </div>
 
@@ -40,8 +48,53 @@
         </div>
 
         <div class="form-group">
-            <?php echo $form->textField($model,'en_web_url',array('placeholder'=>$model->getAttributeLabel('en_web_url'),'maxlength'=>50,'class'=>'form-control')); ?>
+            <?php echo $form->textField($model,'en_web_url',array('placeholder'=>$model->getAttributeLabel('en_web_url'),'maxlength'=>255,'class'=>'form-control')); ?>
             <?php echo $form->error($model,'en_web_url'); ?>
+        </div>
+
+        <div class="form-group">
+            <?php echo $form->textField($model,'national_code',array('placeholder'=>$model->getAttributeLabel('national_code').' *','maxlength'=>10,'class'=>'form-control')); ?>
+            <?php echo $form->error($model,'national_code'); ?>
+        </div>
+
+        <div class="form-group">
+            <?php echo $form->textField($model,'phone',array('placeholder'=>$model->getAttributeLabel('phone').' *','maxlength'=>11,'class'=>'form-control')); ?>
+            <?php echo $form->error($model,'phone'); ?>
+        </div>
+
+        <div class="form-group">
+            <?php echo $form->textField($model,'zip_code',array('placeholder'=>$model->getAttributeLabel('zip_code').' *','maxlength'=>10,'class'=>'form-control')); ?>
+            <?php echo $form->error($model,'zip_code'); ?>
+        </div>
+
+        <div class="form-group">
+            <?php echo $form->textArea($model,'address',array('placeholder'=>$model->getAttributeLabel('address').' *','maxlength'=>1000,'class'=>'form-control')); ?>
+            <?php echo $form->error($model,'address'); ?>
+        </div>
+
+        <div class="form-group">
+            <?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
+                'id' => 'national-card-uploader',
+                'model' => $model,
+                'name' => 'national_card_image',
+                'dictDefaultMessage'=>$model->getAttributeLabel('national_card_image').' را به اینجا بکشید',
+                'maxFiles' => 1,
+                'maxFileSize' => 0.2, //MB
+                'data'=>array('user_id'=>$model->user_id),
+                'url' => $this->createUrl('/developers/panel/uploadNationalCardImage'),
+                'deleteUrl' => $this->createUrl('/developers/panel/deleteNationalCardImage'),
+                'acceptedFiles' => 'image/jpeg , image/png',
+                'serverFiles' => $nationalCardImage,
+                'onSuccess' => '
+                    var responseObj = JSON.parse(res);
+                    if(responseObj.state == "ok")
+                    {
+                        {serverName} = responseObj.fileName;
+                    }else if(responseObj.state == "error"){
+                        console.log(responseObj.msg);
+                    }
+                ',
+            ));?>
         </div>
 
         <div class="input-group buttons">
