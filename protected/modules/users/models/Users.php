@@ -9,14 +9,15 @@
  * @property string $password
  * @property string $email
  * @property string $role_id
+ * @property string $status
  * @property string $repeatPassword
  * @property string $oldPassword
  * @property string $newPassword
  *
  * The followings are the available model relations:
  * @property Apps[] $apps
- * @property UserDetails[] $userDetails
- * @property UserDevIdRequests[] $userDevIdRequests
+ * @property UserDetails $userDetails
+ * @property UserDevIdRequests $userDevIdRequests
  * @property UserRoles $role
  */
 class Users extends CActiveRecord
@@ -55,9 +56,10 @@ class Users extends CActiveRecord
             array('repeatPassword', 'compare', 'compareAttribute'=>'password' ,'operator'=>'==', 'message' => 'رمز های عبور همخوانی ندارند' , 'on'=>'create'),
             array('email', 'length', 'max'=>255),
             array('role_id', 'length', 'max'=>10),
+            array('status', 'length', 'max'=>8),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, username, password, roleId', 'safe', 'on'=>'search'),
+            array('id, username, password, roleId, status', 'safe', 'on'=>'search'),
         );
     }
 
@@ -101,6 +103,7 @@ class Users extends CActiveRecord
             'repeatPassword' => 'تکرار کلمه عبور',
             'oldPassword' => 'کلمه عبور فعلی',
             'newPassword' => 'کلمه عبور جدید',
+            'status' => 'وضعیت کاربر',
         );
     }
 
@@ -125,6 +128,7 @@ class Users extends CActiveRecord
         $criteria->compare('id',$this->id,true);
         $criteria->compare('username',$this->username,true);
         $criteria->compare('password',$this->password,true);
+        $criteria->compare('status',$this->status,true);
         $criteria->addSearchCondition('role.id' , $this->roleId );
         $criteria->with = array('role');
         return new CActiveDataProvider($this, array(

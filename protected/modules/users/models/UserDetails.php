@@ -4,7 +4,6 @@
  * This is the model class for table "ym_user_details".
  *
  * The followings are the available columns in table 'ym_user_details':
- * @property string $id
  * @property string $user_id
  * @property string $fa_name
  * @property string $en_name
@@ -39,17 +38,17 @@ class UserDetails extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('fa_name, en_name', 'required'),
-			array('credit', 'numerical'),
+            array('fa_name, en_name, national_code, phone, zip_code, address', 'required'),
+			array('credit, national_code, phone, zip_code', 'numerical'),
 			array('user_id, national_code, zip_code', 'length', 'max'=>10),
 			array('fa_name, en_name, national_card_image', 'length', 'max'=>50),
 			array('fa_web_url, en_web_url', 'length', 'max'=>255),
 			array('phone', 'length', 'max'=>11),
             array('developer_id', 'length', 'max'=>20, 'min'=>5),
-			array('address', 'safe'),
+			array('address', 'length', 'max'=>1000),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id', 'safe', 'on'=>'search'),
+			array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,7 +60,7 @@ class UserDetails extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::HAS_ONE, 'Users', 'user_id'),
+			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
 	}
 
@@ -71,7 +70,6 @@ class UserDetails extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'شناسه',
 			'user_id' => 'کاربر',
 			'fa_name' => 'نام فارسی',
 			'en_name' => 'نام انگلیسی',
@@ -84,6 +82,7 @@ class UserDetails extends CActiveRecord
 			'address' => 'نشانی دقیق پستی',
 			'credit' => 'اعتبار',
             'developer_id' => 'شناسه توسعه دهنده',
+            'status' => 'وضعیت کاربر',
 		);
 	}
 
@@ -105,7 +104,6 @@ class UserDetails extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('fa_name',$this->fa_name,true);
 		$criteria->compare('en_name',$this->en_name,true);

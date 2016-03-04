@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2016-03-03 13:57:41
+Date: 2016-03-04 20:49:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -164,8 +164,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '10');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457451');
+INSERT INTO `ym_counter_save` VALUES ('counter', '11');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457452');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -183,7 +183,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1456996298');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1457111981');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -765,6 +765,7 @@ CREATE TABLE `ym_users` (
   `password` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL COMMENT 'پست الکترونیک',
   `role_id` int(10) unsigned DEFAULT NULL,
+  `status` enum('deleted','blocked','pending','accepted') DEFAULT 'pending',
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -773,25 +774,24 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$H9pEmjmlXTABPuGxlaQ.E.29akZUA5X3UxbsHeENB2YqcnHIiqgT.', 'e@s.s', '2');
-INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Bsqz6xUsd3HykzEekwnP7O2tbAe42XytV4dTpV0iEN0gj3TIB/Se.', 'wsd@sd.s', null);
-INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null);
-INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null);
-INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null);
-INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null);
-INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null);
-INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null);
-INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null);
-INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null);
-INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null);
+INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$H9pEmjmlXTABPuGxlaQ.E.29akZUA5X3UxbsHeENB2YqcnHIiqgT.', 'e@s.s', '2', 'pending');
+INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Bsqz6xUsd3HykzEekwnP7O2tbAe42XytV4dTpV0iEN0gj3TIB/Se.', 'wsd@sd.s', null, null);
+INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null, null);
+INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null, null);
+INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null, null);
+INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null, null);
+INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null, null);
+INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null, null);
+INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null, null);
+INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null, null);
+INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null, null);
 
 -- ----------------------------
 -- Table structure for ym_user_details
 -- ----------------------------
 DROP TABLE IF EXISTS `ym_user_details`;
 CREATE TABLE `ym_user_details` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه',
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
+  `user_id` int(10) unsigned NOT NULL COMMENT 'کاربر',
   `fa_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام فارسی',
   `en_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام انگلیسی',
   `fa_web_url` varchar(255) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'آدرس سایت فارسی',
@@ -800,29 +800,27 @@ CREATE TABLE `ym_user_details` (
   `national_card_image` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'تصویر کارت ملی',
   `phone` varchar(11) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'تلفن',
   `zip_code` varchar(10) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'کد پستی',
-  `address` longtext COLLATE utf8_persian_ci COMMENT 'نشانی دقیق پستی',
+  `address` varchar(1000) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نشانی دقیق پستی',
   `credit` double DEFAULT NULL COMMENT 'اعتبار',
   `developer_id` varchar(20) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شناسه توسعه دهنده',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`user_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('1', '8', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', null, null, null, null, null, '5000', '');
+INSERT INTO `ym_user_details` VALUES ('8', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', null, null, null, null, null, '5000', 'Masoud');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
 -- ----------------------------
 DROP TABLE IF EXISTS `ym_user_dev_id_requests`;
 CREATE TABLE `ym_user_dev_id_requests` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه',
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
+  `user_id` int(10) unsigned NOT NULL COMMENT 'کاربر',
   `requested_id` varchar(20) DEFAULT NULL COMMENT 'شناسه درخواستی',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
+  PRIMARY KEY (`user_id`),
   CONSTRAINT `ym_user_dev_id_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

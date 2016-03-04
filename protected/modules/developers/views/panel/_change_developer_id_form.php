@@ -4,8 +4,10 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="container-fluid">
-    <div class="form col-md-5">
+<div class="col-md-6">
+    <h1>شناسه توسعه دهنده</h1>
+
+    <div class="form">
 
     <?php $form=$this->beginWidget('CActiveForm', array(
         'id'=>'change-developer-id-form',
@@ -20,19 +22,18 @@
         )
     )); ?>
 
-        <?php echo $form->errorSummary($model); ?>
-
         <div class="form-group">
             <?php echo $form->textField($model,'requested_id',array('placeholder'=>'شناسه درخواستی *','maxlength'=>20,'class'=>'form-control')); ?>
-            <p class="desc">شناسهٔ توسعه‌دهنده باید عبارتی با حدّاقل طول ۵ حرف باشد که از حروف a-z و اعداد 0-9، «-» و «ـ» تشکیل شده باشد.<br>بعد از به تأیید رسیدن شناسهٔ انتخابی دیگر نمی‌توانید آن‌را تغییر دهید.</p>
             <?php echo $form->error($model,'requested_id'); ?>
+            <p class="desc">شناسهٔ توسعه‌دهنده باید عبارتی با حدّاقل طول ۵ حرف باشد که از حروف a-z و اعداد 0-9، «-» و «ـ» تشکیل شده باشد.<br>بعد از به تأیید رسیدن شناسهٔ انتخابی دیگر نمی‌توانید آن‌را تغییر دهید.</p>
         </div>
 
         <div class="input-group buttons">
-            <?php echo CHtml::submitButton('ارسال',array('class'=>'btn btn-success')); ?>
+            <?php echo CHtml::submitButton(($model->isNewRecord)?'ارسال':'تغییر شناسه درخواستی' ,array('class'=>'btn btn-success')); ?>
         </div>
 
     <?php $this->endWidget(); ?>
 
     </div><!-- form -->
+
 </div>

@@ -2,6 +2,7 @@
 /* @var $this PanelController */
 /* @var $detailsModel UserDetails */
 /* @var $devIdRequestModel UserDevIdRequests */
+/* @var $nationalCardImage Array */
 ?>
 
 <div class="container">
@@ -37,15 +38,23 @@
                 </div>
             <?php endif;?>
 
-            <h1>مشخصات</h1>
             <?php $this->renderPartial('_update_profile_form', array(
                 'model'=>$detailsModel,
+                'nationalCardImage'=>$nationalCardImage
             ));?>
 
-            <h1>شناسه توسعه دهنده</h1>
-            <?php $this->renderPartial('_change_developer_id_form', array(
-                'model'=>$devIdRequestModel,
-            ));?>
+            <?php if(empty($detailsModel->developer_id)):?>
+                <?php $this->renderPartial('_change_developer_id_form', array(
+                    'model'=>$devIdRequestModel,
+                ));?>
+            <?php else:?>
+                <div class="col-md-6">
+                    <h1>شناسه توسعه دهنده</h1>
+                    <?php echo CHtml::label('شناسه شما: ', '');?>
+                    <?php echo $detailsModel->developer_id;?>
+                    <p class="desc">این شناسه دیگر قابل تغییر نیست.</p>
+                </div>
+            <?php endif;?>
         </div>
     </div>
 </div>
