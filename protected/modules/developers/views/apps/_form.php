@@ -14,10 +14,13 @@
         // There is a call to performAjaxValidation() commented in generated controller code.
         // See class documentation of CActiveForm for details on this.
         'enableAjaxValidation'=>true,
-        'htmlOptions' => array('enctype' => 'multipart/form-data'),
-    )); ?>
-
-        <p class="note">فیلد های  <span class="required">*</span>دار اجباری هستند.</p>
+        'enableClientValidation'=>true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true
+        )
+    ));
+    echo $form->hiddenField($model,'platform_id');
+    ?>
 
         <?php echo $form->errorSummary($model); ?>
 
@@ -47,12 +50,24 @@
         </div>
 
         <div class="form-group">
-            <?php echo $form->textArea($model,'description',array('placeholder'=>$model->getAttributeLabel('description'),'rows'=>5,'class'=>'form-control')); ?>
+            <?php
+            $this->widget('ext.ckeditor.CKEditor',array(
+                'model' => $model,
+                'attribute' => 'description',
+                'config' =>'basic'
+            ));
+            ?>
             <?php echo $form->error($model,'description'); ?>
         </div>
 
         <div class="form-group">
-            <?php echo $form->textArea($model,'change_log',array('placeholder'=>$model->getAttributeLabel('change_log'),'rows'=>6,'class'=>'form-control','aria-describedby'=>'change-label')); ?>
+            <?php
+            $this->widget('ext.ckeditor.CKEditor',array(
+                'model' => $model,
+                'attribute' => 'change_log',
+                'config' =>'basic'
+            ));
+            ?>
             <?php echo $form->error($model,'change_log'); ?>
         </div>
 
@@ -60,9 +75,12 @@
             <?php if($model->isNewRecord):?>
                 <?php echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input')); ?>
             <?php else:?>
-                <?php foreach(CJSON::decode($model->permissions) as $key=>$permission):?>
+                <?php
+                if($model->permissions):
+                foreach(CJSON::decode($model->permissions) as $key=>$permission):?>
                     <?php echo CHtml::textField('Apps[permissions]['.$key.']',$permission,array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input')); ?>
-                <?php endforeach;?>
+                <?php endforeach;
+                    endif;?>
             <?php endif;?>
             <a href="#add-permission" class="add-multipliable-input"><i class="icon icon-plus"></i></a>
             <a href="#remove-permission" class="remove-multipliable-input"><i class="icon icon-trash"></i></a>
@@ -70,20 +88,62 @@
         </div>
 
         <div class="form-group">
-            <?php echo $form->labelEx($model,'file_name'); ?>
-            <?php echo $form->fileField($model,'file_name'); ?>
-            <?php if(!$model->isNewRecord):?>
-                <a href="<?php echo $this->createUrl('/apps/download/'.$model->file_name);?>" target="_blank"><?php echo $model->file_name;?></a>
-            <?php endif;?>
+            <?php echo $form->labelEx($model,'file_name',array('class'=> 'block')); ?>
+            <?php
+            $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
+                'id' => 'uploaderFile',
+                'model' => $model,
+                'name' => 'file_name',
+                'maxFileSize' => 100,
+                'maxFiles' => 1,
+                'url' => Yii::app()->createUrl('/developers/apps/uploadFile'),
+                'deleteUrl' => Yii::app()->createUrl('/developers/apps/deleteUploadFile'),
+                'acceptedFiles' => $this->formats,
+                'data' => array(
+                    'filesFolder' => $model->platform->name
+                ),
+                'serverFiles' => $app,
+                'onSuccess' => '
+                var responseObj = JSON.parse(res);
+                if(responseObj.state == "ok")
+                {
+                    {serverName} = responseObj.fileName;
+                }else if(responseObj.state == "error"){
+                    console.log(responseObj.msg);
+                }
+            ',
+            ));
+            ?>
             <?php echo $form->error($model,'file_name'); ?>
         </div>
 
         <div class="form-group">
-            <?php echo $form->labelEx($model,'icon'); ?>
-            <?php if(!$model->isNewRecord):?>
-                <img src="<?php echo Yii::app()->baseUrl.'/uploads/apps/icons/'.$model->icon;?>">
-            <?php endif;?>
-            <?php echo $form->fileField($model,'icon'); ?>
+            <?php echo $form->labelEx($model,'icon',array('class'=> 'block')); ?>
+            <?php
+            $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
+                'id' => 'uploaderIcon',
+                'model' => $model,
+                'name' => 'icon',
+                'maxFiles' => 1,
+                'maxFileSize' => 2, //MB
+                'url' => Yii::app()->createUrl('/developers/apps/upload'),
+                'deleteUrl' => Yii::app()->createUrl('/developers/apps/deleteUpload'),
+                'acceptedFiles' => 'image/jpeg , image/png',
+                'serverFiles' => $icon,
+                'data' => array(
+                    'filesFolder' => $model->platform->name
+                ),
+                'onSuccess' => '
+                var responseObj = JSON.parse(res);
+                if(responseObj.state == "ok")
+                {
+                    {serverName} = responseObj.fileName;
+                }else if(responseObj.state == "error"){
+                    console.log(responseObj.msg);
+                }
+            ',
+            ));
+            ?>
             <?php echo $form->error($model,'icon'); ?>
         </div>
 

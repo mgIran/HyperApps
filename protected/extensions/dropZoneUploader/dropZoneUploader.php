@@ -267,8 +267,9 @@ class dropZoneUploader extends CWidget
      */
     public function run()
     {
+        $class = $this->maxFiles == 1 ? 'single':'';
         $this->registerClientScript();
-        echo CHtml::openTag('div', CMap::mergeArray(array('class' => 'dropzone', 'id' => $this->id ),$this->htmlOptions));
+        echo CHtml::openTag('div', CMap::mergeArray(array('class' => 'dropzone '.$class, 'id' => $this->id ),$this->htmlOptions));
         echo CHtml::closeTag('div');
     }
 }

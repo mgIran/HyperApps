@@ -269,14 +269,22 @@ header .right-header .user-section .type{
     -o-transition: all 0.6s ease-in-out;
     transition: all 0.6s ease-in-out;
 }
+#user-menu.open{
+    display: inline;
+}
 .open > .user-menu{
     left: 0;
+    opacity: 1;
 }
 .open > .overly{
     opacity: 1;
     display: block;
 }
+#user-menu{
+    display: none;
+}
 .user-menu{
+    opacity: 0;
     list-style: none;
     background-color: #fff;
     position: absolute;
@@ -287,11 +295,11 @@ header .right-header .user-section .type{
     border-right: 1px solid #eee;
     padding: 20px 0;
     height: 100vh;
-    -webkit-transition: left 0.4s linear;
-    -moz-transition: left 0.4s linear;
-    -ms-transition: left 0.4s linear;
-    -o-transition: left 0.4s linear;
-    transition: left 0.4s linear;
+    -webkit-transition: left 0.4s linear ,opacity 0.2s ease-in-out;
+    -moz-transition: left 0.4s linear ,opacity 0.2s ease-in-out;
+    -ms-transition: left 0.4s linear ,opacity 0.2s ease-in-out;
+    -o-transition: left 0.4s linear ,opacity 0.2s ease-in-out;
+    transition: left 0.4s linear ,opacity 0.2s ease-in-out;
 }
 .user-menu > li{
     width: 100%;
@@ -873,4 +881,11 @@ ul.nav li{
 .close
 {
     float: left;
+}
+.error,
+.error input,
+.error textarea,
+.errorMessage{
+    color: #d80000;
+    border-color: #d80000;
 }

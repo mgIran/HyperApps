@@ -48,3 +48,12 @@ header
     color: #777;
     font-size: 12px;
 }
+
+.tab-content{
+    padding: 30px;
+    min-height: 700px;
+}
+
+.block{
+    display: block;
+}

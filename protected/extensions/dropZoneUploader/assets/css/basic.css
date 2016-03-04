@@ -9,6 +9,10 @@
     border: 2px dashed #bbb;
     border-radius: 15px;
   position: relative; }
+.dropzone.single{
+    display: inline-block;
+    width: 175px;
+}
   .dropzone .dz-preview {
     position: relative;
     display: inline-block;

@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : localhost_3306
 Source Server Version : 50612
 Source Host           : localhost:3306
 Source Database       : market
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2016-03-03 13:57:41
+Date: 2016-03-04 20:52:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,16 +78,18 @@ CREATE TABLE `ym_apps` (
   KEY `developer_id` (`developer_id`),
   KEY `category_id` (`category_id`),
   KEY `platform_id` (`platform_id`),
+  CONSTRAINT `ym_apps_ibfk_3` FOREIGN KEY (`platform_id`) REFERENCES `ym_app_platforms` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_1` FOREIGN KEY (`developer_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `ym_apps_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  CONSTRAINT `ym_apps_ibfk_3` FOREIGN KEY (`platform_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  CONSTRAINT `ym_apps_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_apps
 -- ----------------------------
-INSERT INTO `ym_apps` VALUES ('6', 'هواشناسی هوشمند و پیشرفته', '8', '4', 'enable', '3000', 'ym_app_categories2.apk', 'masoud.6.png', 'هواشناسی پیشرفته و جدید کافه بازار\r\nجدیدترین اپلیکیشین هواشناسی با طراحی فوق العاده و متریال پیش روی شماست !\r\nبا این برنامه میتونید آب و هوای تمام شهرهای ایران و دنیارو در کمترین زمان با طراحی فوق العاده زیبا مشاهده کنید و برای روزهای بعدی برنامه ریزی داشته باشید !', 'بهبود عملکرد', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\",\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u06a9\\u0627\\u0631\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u06a9\\u0627\\u0645\\u0644 \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\"]', '2498', '1.0.3', 'accepted', null, null);
-INSERT INTO `ym_apps` VALUES ('7', 'همسا | اشتراک ایده ها', '8', '1', 'enable', '0', 'ym_app_categories.apk', 'com.hamsa.png', 'اگر از زمانی که در برنامه‌های اجتماعی حضور دارید احساس بطالت می‌کنید، هم‌سا انتخاب مناسبی برای شماست!\r\n\r\nهم‌سا یک شبکه‌ی اجتماعی متفاوت است برای روشن کردن موتور فکر شما ...\r\n \r\nبا چرخیدن در محیط هم‌سا فکرها و ایده‌های زیادی به ذهن شما خواهد رسید. این ایده‌های خام باید پخته و بارور شوند. اینجا هم‌سایه‌های شما کنارتان هستند. هم ایده‌‌ی شما را ارزیابی می‌کنند هم کمک می‌کنند تا چکش بخورد و شکل بگیرد!\r\n \r\nمسئله‌هایی که بیرون از هم‌سا شما را کلافه می‌کند و ناخودآگاه فراموش‌شان می‌کنید، در هم‌سا حالتان را خوب می‌کند و منشاء تحول می‌شود! در هم‌سا می‌توانید کسانی که مسئله‌های مشترک با شما دارند را بشناسید و از تجربه‌های آن‌ها استفاده کنید. اگر هم جایی نمی‌خواهید شناخته شوید، می‌توانید به صورت ناشناس مسئله‌تان را مطرح کنید!', '- رفع خطای ثبت‌نام در حالات خاص\r\n- تکمیل گزارش تخلف', '[\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u0645\\u062e\\u0627\\u0637\\u0628\\u06cc\\u0646 \\u0634\\u0645\\u0627\",\"\\u06a9\\u0646\\u062a\\u0631\\u0644 \\u0644\\u0631\\u0632\\u0634\"]', '2498', '3.0.61 b', 'pending', null, null);
+INSERT INTO `ym_apps` VALUES ('13', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی');
+INSERT INTO `ym_apps` VALUES ('14', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی');
+INSERT INTO `ym_apps` VALUES ('15', 'بازی ماشین', '8', '1', 'enable', '0', 'K7V3Y1457111635.apk', 'VYwm61457111636.jpg', '<p>سلام  متن اینجاست</p>\r\n', '<p>خفه شو سبحانی</p>\r\n', '[\"\\u06af\\u0648\\u062a\\u0648\\u0634\"]', '406084', '1', 'pending', '1', null);
+INSERT INTO `ym_apps` VALUES ('16', 'بازی ماشین', '8', '1', 'enable', '0', 'h79az1457111994.xap', 'WXiz31457111996.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', null, '406084', '1', 'pending', '3', null);
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -122,15 +124,12 @@ CREATE TABLE `ym_app_images` (
   PRIMARY KEY (`id`),
   KEY `app_id` (`app_id`),
   CONSTRAINT `ym_app_images_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_app_images
 -- ----------------------------
-INSERT INTO `ym_app_images` VALUES ('1', '6', '0n4XpPvL6pUXkYf7MTZm0n4XpPvL6pUXkYf7MTZm.jpg');
-INSERT INTO `ym_app_images` VALUES ('2', '6', 'FY6fKz3UcyOULeRmEs9QFY6fKz3UcyOULeRmEs9Q.jpg');
-INSERT INTO `ym_app_images` VALUES ('3', '6', 'ABasNtRNYqIWmiGwFsfAABasNtRNYqIWmiGwFsfA.jpg');
-INSERT INTO `ym_app_images` VALUES ('4', '6', '6JnLpsw8MuGhXaik8kmP6JnLpsw8MuGhXaik8kmP.jpg');
+INSERT INTO `ym_app_images` VALUES ('10', '14', 'VVZWy1457094442VVZWy1457094442.jpg');
 
 -- ----------------------------
 -- Table structure for ym_app_platforms
@@ -164,8 +163,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '10');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457451');
+INSERT INTO `ym_counter_save` VALUES ('counter', '11');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457452');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -183,7 +182,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1456996298');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1457112054');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -773,7 +772,7 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$H9pEmjmlXTABPuGxlaQ.E.29akZUA5X3UxbsHeENB2YqcnHIiqgT.', 'e@s.s', '2');
+INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '2');
 INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Bsqz6xUsd3HykzEekwnP7O2tbAe42XytV4dTpV0iEN0gj3TIB/Se.', 'wsd@sd.s', null);
 INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null);
 INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null);

@@ -22,11 +22,6 @@
         <span class="transition icon-key"></span>
     </div>
     <div class="row">
-        <?php echo $form->passwordField($model,'repeatPassword',array('class'=>'transition','placeholder'=>'تکرار رمز عبور')); ?>
-        <?php echo $form->error($model,'repeatPassword'); ?>
-        <span class="transition icon-key"></span>
-    </div>
-    <div class="row">
         <input class="transition" type="submit" value="ثبت نام">
     </div>
     <?php $this->endWidget(); ?>

@@ -47,14 +47,16 @@ class CKEditor extends CWidget
     protected function makeConfig()
     {
         if($this->config=='default')
-            return 'default';
-        elseif(is_array($this->config))
+            return 'custom_config.js';
+        elseif($this->config == 'basic')
+            return 'basic_config.js';
+        /*elseif(is_array($this->config))
         {
             $config='';
             foreach($this->config as $key=>$value)
                 $config.=$key.": '".$value."',\n";
             return $config;
-        }
+        }*/
         else
             throw new Exception('CKEditor config is not set correctly.');
     }

@@ -29,7 +29,6 @@ return array(
         'admins',
         'users',
         'setting',
-        'places',
         'pages',
         'developers',
         'manageApps',

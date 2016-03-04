@@ -28,7 +28,7 @@ class ImagesManageController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions' => array('upload','deleteUploaded'),
-				'roles' => array('admin'),
+				'roles' => array('admin','developer'),
 			),
 			array('deny',  // deny all users
 				'users' => array('*'),
@@ -50,7 +50,7 @@ class ImagesManageController extends Controller
 			$file['name'] = Controller::generateRandomString(5) . time();
 			while (file_exists($uploadDir . DIRECTORY_SEPARATOR . $file['name']))
 				$file['name'] = Controller::generateRandomString(5) . time();
-			$file['name'] .= $file['name'] . '.' . $ext;
+			$file['name'] = $file['name'] . '.' . $ext;
 			if (move_uploaded_file($file['tmp_name'], $uploadDir . DIRECTORY_SEPARATOR . CHtml::encode($file['name']))) {
 				$response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
 				// Save image into db

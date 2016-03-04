@@ -102,19 +102,6 @@ class Controller extends CController
                     'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
                     'items' => array(
                         array('label' => 'مدیریت' ,'url' => Yii::app()->createUrl('/users/manage')) ,
-                        //array( 'label' => 'افزودن', 'url' => Yii::app()->createUrl( '/users/manage/create' ) ),
-                    )
-                ) ,
-                array(
-                    'label' => 'مکان ها <span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
-                    'items' => array(
-                        array('label' => 'مدیریت استان ها' ,'url' => Yii::app()->createUrl('/places/towns/admin')) ,
-                        array('label' => 'مدیریت شهر ها' ,'url' => Yii::app()->createUrl('/places/places/admin')) ,
-                        array('label' => 'افزودن استان' ,'url' => Yii::app()->createUrl('/places/towns/create')) ,
-                        array('label' => 'افزودن شهر' ,'url' => Yii::app()->createUrl('/places/places/create')) ,
                     )
                 ) ,
                 array(
@@ -135,14 +122,6 @@ class Controller extends CController
                     'label' => 'خروج' ,
                     'url' => array('/admins/login/logout') ,
                     'visible' => !Yii::app()->user->isGuest) ,
-                /*array( 'label' => 'My Account <span class="caret"></span>', 'url' => '#', 'itemOptions' => array( 'class' => 'dropdown', 'tabindex' => "-1" ), 'linkOptions' => array( 'class' => 'dropdown-toggle', 'data-toggle' => "dropdown" ),
-                    'items' => array(
-                        array( 'label' => 'My Messages <span class="badge badge-warning pull-right">26</span>', 'url' => '#' ),
-                        array( 'label' => 'My Tasks <span class="badge badge-important pull-right">112</span>', 'url' => '#' ),
-                        array( 'label' => 'My Invoices <span class="badge badge-info pull-right">12</span>', 'url' => '#' ),
-                        array( 'label' => 'Separated link', 'url' => '#' ),
-                        array( 'label' => 'One more separated link', 'url' => '#' ),
-                    ) ),*/
             );
         elseif(Yii::app()->user->type === 'validator')
             return array(
@@ -180,19 +159,6 @@ class Controller extends CController
                     'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
                     'items' => array(
                         array('label' => 'مدیریت' ,'url' => Yii::app()->createUrl('/users/manage')) ,
-                        //array( 'label' => 'افزودن', 'url' => Yii::app()->createUrl( '/users/manage/create' ) ),
-                    )
-                ) ,
-                array(
-                    'label' => 'مکان ها <span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
-                    'items' => array(
-                        array('label' => 'مدیریت استان ها' ,'url' => Yii::app()->createUrl('/places/towns/admin')) ,
-                        array('label' => 'مدیریت شهر ها' ,'url' => Yii::app()->createUrl('/places/places/admin')) ,
-                        array('label' => 'افزودن استان' ,'url' => Yii::app()->createUrl('/places/towns/create')) ,
-                        array('label' => 'افزودن شهر' ,'url' => Yii::app()->createUrl('/places/places/create')) ,
                     )
                 ) ,
                 array(
@@ -204,14 +170,6 @@ class Controller extends CController
                     'label' => 'خروج' ,
                     'url' => array('/admins/login/logout') ,
                     'visible' => !Yii::app()->user->isGuest) ,
-                /*array( 'label' => 'My Account <span class="caret"></span>', 'url' => '#', 'itemOptions' => array( 'class' => 'dropdown', 'tabindex' => "-1" ), 'linkOptions' => array( 'class' => 'dropdown-toggle', 'data-toggle' => "dropdown" ),
-                    'items' => array(
-                        array( 'label' => 'My Messages <span class="badge badge-warning pull-right">26</span>', 'url' => '#' ),
-                        array( 'label' => 'My Tasks <span class="badge badge-important pull-right">112</span>', 'url' => '#' ),
-                        array( 'label' => 'My Invoices <span class="badge badge-info pull-right">12</span>', 'url' => '#' ),
-                        array( 'label' => 'Separated link', 'url' => '#' ),
-                        array( 'label' => 'One more separated link', 'url' => '#' ),
-                    ) ),*/
             );
         else
             return array();

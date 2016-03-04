@@ -43,7 +43,7 @@ class Users extends CActiveRecord
         return array(
             array('email, password', 'required' ,'on' => 'create'),
             array('role_id', 'default' ,'value' => 1,'on' => 'create'),
-            array('password, repeatPassword, email', 'required' , 'on' => 'create'),
+            array('password, email', 'required' , 'on' => 'create'),
             array('email' , 'required' ,'on' => 'email'),
             array('email' , 'email'),
             array('oldPassword ,newPassword ,repeatPassword', 'required' , 'on'=>'update'),
@@ -52,7 +52,6 @@ class Users extends CActiveRecord
             array('username, password', 'length', 'max'=>100 ,'on' => 'create'),
             array('oldPassword', 'oldPass' , 'on'=>'update'),
             array('repeatPassword', 'compare', 'compareAttribute'=>'newPassword' ,'operator'=>'==', 'message' => 'رمز های عبور همخوانی ندارند' , 'on'=>'update'),
-            array('repeatPassword', 'compare', 'compareAttribute'=>'password' ,'operator'=>'==', 'message' => 'رمز های عبور همخوانی ندارند' , 'on'=>'create'),
             array('email', 'length', 'max'=>255),
             array('role_id', 'length', 'max'=>10),
             // The following rule is used by search().

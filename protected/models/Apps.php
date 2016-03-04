@@ -37,23 +37,28 @@ class Apps extends CActiveRecord
 		return 'ym_apps';
 	}
 
+	private $_purifier;
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
 	public function rules()
 	{
+
+		$this->_purifier = new CHtmlPurifier();
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('title, category_id, price, version', 'required'),
-            array('price, size', 'numerical'),
+            array('title, category_id, price, version ,platform_id', 'required'),
+            array('price, size, platform_id', 'numerical'),
+			array('description, change_log','filter','filter'=>array($this->_purifier,'purify')),
 			array('title, icon', 'length', 'max'=>50),
 			array('developer_id, category_id, platform_id', 'length', 'max'=>10),
 			array('status', 'length', 'max'=>7),
 			array('file_name', 'length', 'max'=>100),
 			array('version', 'length', 'max'=>20),
 			array('confirm', 'length', 'max'=>8),
-			array('description, change_log, permissions ,developer_team', 'safe'),
+			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, developer_id, category_id, status, price, file_name, icon, description, change_log, permissions, size, version, confirm, platform_id', 'safe', 'on'=>'search'),
@@ -88,9 +93,9 @@ class Apps extends CActiveRecord
             'status' => 'وضعیت',
             'price' => 'قیمت',
             'file_name' => 'فایل',
-            'icon' => 'تصویر',
+            'icon' => 'تصویر کوچک',
             'description' => 'توضیحات',
-            'change_log' => 'آخرین تغییرات',
+            'change_log' => 'لیست تغییرات',
             'permissions' => 'دسترسی ها',
             'size' => 'حجم',
             'version' => 'نسخه',

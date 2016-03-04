@@ -12,6 +12,8 @@ $this->menu=array(
 	array('label'=>'افزودن', 'url'=>Yii::app()->createUrl('/manageApps/'.$this->controller.'/create')),
     array('label'=>'مدیریت', 'url'=>Yii::app()->createUrl('/manageApps/'.$this->controller.'/admin')),
 );
+if(isset($_GET['step']))
+    $step = (int)$_GET['step'];
 ?>
 
 <h1>ویرایش برنامه <?php echo $model->id; ?></h1>

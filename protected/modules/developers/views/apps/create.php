@@ -19,17 +19,34 @@
     <?php endif;?>
 
     <ul class="nav nav-tabs">
-        <li class="active">
-            <a data-toggle="tab" href="#info">اطلاعات برنامه</a>
+        <li <?= $step == 1 ?'class="active"':''; ?> >
+            <a data-toggle="tab" href="#platform">پلتفرم</a>
         </li>
-        <li>
-            <a data-toggle="" href="#">تصاویر برنامه</a>
+        <li <?= $step == 2 ?'class="active"':'class="disabled"'; ?> >
+            <a <?= $step == 2?'data-toggle="tab" href="#info"':''; ?> >اطلاعات برنامه</a>
+        </li>
+        <li class="disabled">
+            <a href="#">تصاویر برنامه</a>
         </li>
     </ul>
 
     <div class="tab-content">
-        <div id="info" class="tab-pane fade in active">
-            <?php $this->renderPartial('_form', array('model'=>$model)); ?>
+
+        <div id="platform" class="tab-pane fade <?= $step == 1?'in active':''; ?>">
+            <?php $this->renderPartial('_platform', array('model'=>$model)); ?>
         </div>
+        <?
+        if($model->platform_id):
+            ?>
+        <div id="info" class="tab-pane fade <?= $step == 2?'in active':''; ?>">
+            <?php $this->renderPartial('_form', array(
+                'model'=>$model,
+                'icon' => $icon,
+                'app' => $app
+            )); ?>
+        </div>
+        <?
+        endif;
+        ?>
     </div>
 </div>

@@ -28,6 +28,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'version'); ?>
+		<?php echo $form->textField($model,'version',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'version'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'developer_team'); ?>
 		<?php echo $form->textField($model,'developer_team',array('size'=>50,'maxlength'=>500)); ?>
 		<?php echo $form->error($model,'developer_team'); ?>
@@ -132,32 +138,33 @@
 		<?php echo $form->error($model,'change_log'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'permissions'); ?>
-		<?php echo $form->textArea($model,'permissions',array('rows'=>6, 'cols'=>50)); ?>
+	<div class="form-group multipliable-input-container">
+		<?php echo CHtml::label('لیست دسترسی های برنامه',''); ?>
+		<?php if($model->isNewRecord):?>
+			<?php echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input')); ?>
+		<?php else:
+			if($model->permissions) {
+				?>
+				<?php
+				foreach (CJSON::decode($model->permissions) as $key => $permission):
+					?>
+					<?php echo CHtml::textField('Apps[permissions][' . $key . ']', $permission, array('placeholder' => 'دسترسی', 'class' => 'form-control multipliable-input')); ?>
+				<?php
+				endforeach;
+				?>
+				<?php
+			}else
+			{
+				echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input'));
+			}
+		endif;?>
+		<a href="#add-permission" class="add-multipliable-input"><i class="icon icon-plus"></i></a>
+		<a href="#remove-permission" class="remove-multipliable-input"><i class="icon icon-trash"></i></a>
 		<?php echo $form->error($model,'permissions'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'size'); ?>
-		<?php echo $form->textField($model,'size'); ?>
-		<?php echo $form->error($model,'size'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'version'); ?>
-		<?php echo $form->textField($model,'version',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'version'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'confirm'); ?>
-		<?php echo $form->textField($model,'confirm'); ?>
-		<?php echo $form->error($model,'confirm'); ?>
-	</div>
-
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'افزودن' : 'ویرایش'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'افزودن' : 'ویرایش' ,array('class' => 'btn btn-success')); ?>
 	</div>
 
 <?php  $this->endWidget(); ?>
