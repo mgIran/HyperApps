@@ -25,7 +25,7 @@
 
         <?php echo $form->errorSummary($model); ?>
 
-        <div class="alert alert-<?php echo ($model->user->status=='accepted')?'success':'danger';?>"><?php echo ($model->user->status=='accepted')?'قرارداد مورد تایید می باشد.':'اطلاعات قرارداد در حال بررسی می باشد.';?></div>
+        <div class="alert alert-<?php if($model->details_status=='accepted')echo 'success';elseif($model->details_status=='pending')echo 'warning';else echo 'danger';?>"><?php if($model->details_status=='accepted')echo 'اطلاعات قرارداد مورد تایید می باشد.';elseif($model->details_status=='pending')echo 'اطلاعات قرارداد در حال بررسی است.';else echo 'اطلاعات قرارداد مورد تایید قرار نگرفته است. لطفا اطلاعات صحیح را در فرم زیر وارد کنید.';?></div>
         <div class="alert alert-warning">در صورت تغییر در اطلاعات این فرم حسابتان در صف در انتظار بررسی قرار خواهد گرفت و ممکن است باعث تأخیرهایی در انجام تصفیه‌حسابتان شود.</div>
 
         <div class="alert alert-info"><?php echo CHtml::label('پست الکترونیکی:&nbsp;&nbsp;', '');?><?php echo $model->user->email;?></div>
@@ -79,7 +79,7 @@
                 'name' => 'national_card_image',
                 'dictDefaultMessage'=>$model->getAttributeLabel('national_card_image').' را به اینجا بکشید',
                 'maxFiles' => 1,
-                'maxFileSize' => 0.2, //MB
+                'maxFileSize' => 0.4, //MB
                 'data'=>array('user_id'=>$model->user_id),
                 'url' => $this->createUrl('/developers/panel/uploadNationalCardImage'),
                 'deleteUrl' => $this->createUrl('/developers/panel/deleteNationalCardImage'),

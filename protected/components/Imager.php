@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Masoud
- * Date: 10/20/14
- * Time: 5:15 PM
- */
 
-class ThumbnailCreator
+class Imager
 {
     public function createThumbnail($imagePath, $width, $height, $faceDetection = true, $outputDirection = null)
     {
@@ -55,7 +49,7 @@ class ThumbnailCreator
         }
     }
 
-    protected function resize($imagePath, $outputDirection, $width, $height)
+    public function resize($imagePath, $outputDirection, $width, $height)
     {
         $simpleImage = new SimpleImage();
         $simpleImage->load($imagePath);
@@ -143,5 +137,15 @@ class ThumbnailCreator
             sleep(1);
             imagejpeg($dst_r, $imagePath, $quality);
         }
+    }
+
+    public function getImageInfo($imagePath)
+    {
+        $simpleImage = new SimpleImage();
+        $simpleImage->load($imagePath);
+        $info=array();
+        $info['width'] = $simpleImage->getWidth();
+        $info['height'] = $simpleImage->getHeight();
+        return $info;
     }
 }

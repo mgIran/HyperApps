@@ -76,15 +76,20 @@ class PanelController extends Controller
             unset($_POST['UserDetails']['credit']);
             unset($_POST['UserDetails']['developer_id']);
             $detailsModel->attributes=$_POST['UserDetails'];
+            $detailsModel->details_status='pending';
             if($detailsModel->save())
             {
-                // RESIZE NATIONAL CARD IMAGE
-                
-                /*$tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
+                // Manage national card image
+                $tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
                 $uploadDir = Yii::getPathOfAlias("webroot").'/uploads/users/national_cards/';
-                $thumbnail = new ThumbnailCreator();
-                $thumbnail->createThumbnail($tmpDir . $detailsModel->national_card_image, 150, 150, false, $uploadDir .  $file['name']);
-                @unlink($tmpDir . $file['name']);*/
+                $imager = new Imager();
+                $imageInfo=$imager->getImageInfo($tmpDir.$detailsModel->national_card_image);
+                if($imageInfo['width']>500 || $imageInfo['height']>500)
+                    $imager->resize($tmpDir.$detailsModel->national_card_image, $uploadDir.$detailsModel->national_card_image, 500, 500);
+                else
+                    @copy($tmpDir.$detailsModel->national_card_image, $uploadDir.$detailsModel->national_card_image);
+                @unlink($tmpDir.$detailsModel->national_card_image);
+
                 Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
                 $this->refresh();
             }
@@ -111,10 +116,12 @@ class PanelController extends Controller
         $nationalCardImage=array();
         if($detailsModel->national_card_image!='')
             $nationalCardImage=array(
-                'name' => $detailsModel->national_card_image,
-                'src' => $nationalCardImageUrl.'/'.$detailsModel->national_card_image,
-                'size' => filesize($nationalCardImagePath.'/'.$detailsModel->national_card_image),
-                'serverName' => $detailsModel->national_card_image,
+                array(
+                    'name' => $detailsModel->national_card_image,
+                    'src' => $nationalCardImageUrl.'/'.$detailsModel->national_card_image,
+                    'size' => filesize($nationalCardImagePath.'/'.$detailsModel->national_card_image),
+                    'serverName' => $detailsModel->national_card_image,
+                ),
             );
 
         $this->render('account', array(
@@ -157,9 +164,10 @@ class PanelController extends Controller
      */
     public function actionDeleteNationalCardImage()
     {
-        if (isset($_POST['fileName']))
+        if (isset($_POST['fileName']) || isset($_POST['data']))
         {
-            $fileName = $_POST['fileName'];
+            if(isset($_POST['fileName']))
+                $fileName = $_POST['fileName'];
             $uploadDir = Yii::getPathOfAlias("webroot") . '/uploads/users/national_cards/';
             $tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
 
@@ -169,9 +177,13 @@ class PanelController extends Controller
             $response = null;
             if (!empty($model->national_card_image))
             {
+                //var_dump($uploadDir . $model->national_card_image);
                 if (@unlink($uploadDir . $model->national_card_image))
                 {
                     $response = ['state' => 'ok', 'msg' => 'حذف شد.'];
+
+                    // DELETE IMAGE AND NULL FIELD
+
                     $model->national_card_image='';
                     $model->save();
                 }
