@@ -31,7 +31,7 @@ class AdminIdentity extends CUserIdentity
         {
             $this->_id=$record->id;
             $this->setState('roles',$record->role->role);
-            $this->setState('type',$record->role->role);
+            $this->setState('type','admin');
             $this->errorCode=self::ERROR_NONE;
         }
         return !$this->errorCode;

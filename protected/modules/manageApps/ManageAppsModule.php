@@ -11,6 +11,7 @@ class ManageAppsModule extends CWebModule
 		$this->setImport(array(
 			'manageApps.models.*',
 			'manageApps.components.*',
+			'users.models.*'
 		));
 	}
 

@@ -5,7 +5,7 @@
 ?>
 
 <div class="container-fluid">
-    <div class="form col-md-5">
+    <div class="form col-md-6">
 
     <?php $form=$this->beginWidget('CActiveForm', array(
         'id'=>'apps-form',
@@ -76,11 +76,16 @@
                 <?php echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input')); ?>
             <?php else:?>
                 <?php
-                if($model->permissions):
-                foreach(CJSON::decode($model->permissions) as $key=>$permission):?>
-                    <?php echo CHtml::textField('Apps[permissions]['.$key.']',$permission,array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input')); ?>
-                <?php endforeach;
-                    endif;?>
+                if($model->permissions) {
+                    foreach(CJSON::decode($model->permissions) as $key => $permission):?>
+                        <?php echo CHtml::textField('Apps[permissions]['.$key.']', $permission, array('placeholder' => 'دسترسی', 'class' => 'form-control multipliable-input')); ?>
+                        <?php
+                    endforeach;
+                }
+                else {
+                    echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input'));
+                }
+                ?>
             <?php endif;?>
             <a href="#add-permission" class="add-multipliable-input"><i class="icon icon-plus"></i></a>
             <a href="#remove-permission" class="remove-multipliable-input"><i class="icon icon-trash"></i></a>

@@ -49,7 +49,7 @@ class Apps extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('title, category_id, price, version ,platform_id', 'required'),
+            array('title, category_id, price, version ,platform_id ,file_name ,icon', 'required'),
             array('price, size, platform_id', 'numerical'),
 			array('description, change_log','filter','filter'=>array($this->_purifier,'purify')),
 			array('title, icon', 'length', 'max'=>50),
