@@ -44,9 +44,19 @@ class SiteSettingManageController extends Controller
         if(isset($_POST['SiteSetting'])){
             foreach($_POST['SiteSetting'] as $name => $value)
             {
-                $field = SiteSetting::model()->findByAttributes(array('name'=>$name));
-                SiteSetting::model()->updateByPk($field->id,array('value'=>$value));
+                if($name=='buy_credit_options')
+                {
+                    $value=explode(',', $value);
+                    $field = SiteSetting::model()->findByAttributes(array('name'=>$name));
+                    SiteSetting::model()->updateByPk($field->id,array('value'=>CJSON::encode($value)));
+                }
+                else
+                {
+                    $field = SiteSetting::model()->findByAttributes(array('name'=>$name));
+                    SiteSetting::model()->updateByPk($field->id,array('value'=>$value));
+                }
             }
+            Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
             $this->refresh();
         }
         $model = SiteSetting::model()->findAll();
