@@ -27,7 +27,7 @@ class PanelController extends Controller
     {
         return array(
             array('allow',
-                'actions'=>array('account','index','uploadNationalCardImage','deleteNationalCardImage'),
+                'actions'=>array('account','index','uploadNationalCardImage'),
                 'roles'=>array('developer'),
             ),
             array('deny',  // deny all users
@@ -75,21 +75,11 @@ class PanelController extends Controller
         {
             unset($_POST['UserDetails']['credit']);
             unset($_POST['UserDetails']['developer_id']);
+            unset($_POST['UserDetails']['details_status']);
             $detailsModel->attributes=$_POST['UserDetails'];
             $detailsModel->details_status='pending';
             if($detailsModel->save())
             {
-                // Manage national card image
-                $tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
-                $uploadDir = Yii::getPathOfAlias("webroot").'/uploads/users/national_cards/';
-                $imager = new Imager();
-                $imageInfo=$imager->getImageInfo($tmpDir.$detailsModel->national_card_image);
-                if($imageInfo['width']>500 || $imageInfo['height']>500)
-                    $imager->resize($tmpDir.$detailsModel->national_card_image, $uploadDir.$detailsModel->national_card_image, 500, 500);
-                else
-                    @copy($tmpDir.$detailsModel->national_card_image, $uploadDir.$detailsModel->national_card_image);
-                @unlink($tmpDir.$detailsModel->national_card_image);
-
                 Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
                 $this->refresh();
             }
@@ -119,7 +109,7 @@ class PanelController extends Controller
                 array(
                     'name' => $detailsModel->national_card_image,
                     'src' => $nationalCardImageUrl.'/'.$detailsModel->national_card_image,
-                    'size' => filesize($nationalCardImagePath.'/'.$detailsModel->national_card_image),
+                    'size' => (file_exists($nationalCardImagePath.'/'.$detailsModel->national_card_image))?filesize($nationalCardImagePath.'/'.$detailsModel->national_card_image):0,
                     'serverName' => $detailsModel->national_card_image,
                 ),
             );
@@ -136,72 +126,40 @@ class PanelController extends Controller
      */
     public function actionUploadNationalCardImage()
     {
-        $tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
         $uploadDir = Yii::getPathOfAlias("webroot").'/uploads/users/national_cards/';
-        if (!is_dir($tmpDir))
-            mkdir($tmpDir);
         if (!is_dir($uploadDir))
             mkdir($uploadDir);
         if (isset($_FILES)) {
+            Yii::import('application.modules.users.models.*');
+            $model = UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+
             $file = $_FILES['national_card_image'];
             $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
             $file['name'] = Controller::generateRandomString(5) . time();
-            while (file_exists($tmpDir . $file['name']))
-                $file['name'] = Controller::generateRandomString(5) . time();
-            $file['name'] = $file['name'] . '.' . $ext;
-            if (move_uploaded_file($file['tmp_name'], $tmpDir . CHtml::encode($file['name'])))
+            $file['name'] = $file['name'].'.'.$ext;
+            if(move_uploaded_file($file['tmp_name'], $uploadDir.CHtml::encode($file['name'])))
+            {
                 $response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
+
+                // Delete old image
+                if(!empty($model->national_card_image))
+                    @unlink($uploadDir.$model->national_card_image);
+
+                $model->national_card_image=$file['name'];
+                $model->save();
+
+                // Resize image
+                $imager = new Imager();
+                $imageInfo=$imager->getImageInfo($uploadDir.$model->national_card_image);
+                if($imageInfo['width']>500 || $imageInfo['height']>500)
+                    $imager->resize($uploadDir.$model->national_card_image, $uploadDir.$model->national_card_image, 500, 500);
+            }
             else
                 $response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
         } else
             $response = ['state' => 'error', 'msg' => 'فایلی ارسال نشده است.'];
         echo CJSON::encode($response);
         Yii::app()->end();
-    }
-
-    /**
-     * Delete national card image
-     */
-    public function actionDeleteNationalCardImage()
-    {
-        if (isset($_POST['fileName']) || isset($_POST['data']))
-        {
-            if(isset($_POST['fileName']))
-                $fileName = $_POST['fileName'];
-            $uploadDir = Yii::getPathOfAlias("webroot") . '/uploads/users/national_cards/';
-            $tmpDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
-
-            Yii::import('application.modules.users.models.*');
-
-            $model = UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
-            $response = null;
-            if (!empty($model->national_card_image))
-            {
-                //var_dump($uploadDir . $model->national_card_image);
-                if (@unlink($uploadDir . $model->national_card_image))
-                {
-                    $response = ['state' => 'ok', 'msg' => 'حذف شد.'];
-
-                    // DELETE IMAGE AND NULL FIELD
-
-                    $model->national_card_image='';
-                    $model->save();
-                }
-                else
-                    $response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
-            }
-            elseif(empty($model->national_card_image) && file_exists($tmpDir . $fileName))
-            {
-                if (@unlink($tmpDir . $fileName))
-                    $response = ['state' => 'ok', 'msg' => 'حذف شد.'];
-                else
-                    $response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
-            }
-            else
-                $response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
-            echo CJSON::encode($response);
-            Yii::app()->end();
-        }
     }
 
     /**

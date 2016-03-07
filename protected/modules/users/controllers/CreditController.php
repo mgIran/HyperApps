@@ -38,6 +38,9 @@ class CreditController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/panel';
         $model=Users::model()->findByPk(Yii::app()->user->getId());
+        Yii::import('application.modules.setting.models.*');
+        $buyCreditOptions=SiteSetting::model()->findByAttributes(array('name'=>'buy_credit_options'));
+        var_dump($buyCreditOptions);
 
         $this->render('buy', array(
             'model'=>$model,

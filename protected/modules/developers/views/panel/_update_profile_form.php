@@ -82,7 +82,6 @@
                 'maxFileSize' => 0.4, //MB
                 'data'=>array('user_id'=>$model->user_id),
                 'url' => $this->createUrl('/developers/panel/uploadNationalCardImage'),
-                'deleteUrl' => $this->createUrl('/developers/panel/deleteNationalCardImage'),
                 'acceptedFiles' => 'image/jpeg , image/png',
                 'serverFiles' => $nationalCardImage,
                 'onSuccess' => '
