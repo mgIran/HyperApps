@@ -22,9 +22,6 @@ if(isset($_GET['step']) && !empty($_GET['step']))
     <?php endif;?>
 
     <ul class="nav nav-tabs">
-        <li class="disabled" >
-            <a>پلتفرم</a>
-        </li>
         <li <?= $step == 2 ?'class="active"':''; ?> >
             <a data-toggle="tab" href="#info">اطلاعات برنامه</a>
         </li>

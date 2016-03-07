@@ -1,15 +1,8 @@
 $(function() {
     $("body").on('click','.dropdown-toggle', function () {
-        var $this = $(this);
-        var $ul = $this.next('.sidebar-dropdown');
-        if($ul.css("display") == 'block')
-        {
-            $ul.stop().slideUp();
-        }else if($ul.css("display") == 'none')
-        {
-            $('.sidebar-dropdown').not($ul).slideUp();
-            $ul.slideDown();
-        }
+        var  $this = $(this);
+        $(".dropdown-toggle").not($this).removeClass('active');
+        $this.addClass('active');
     });
 
     $('body').on('click', '.add-multipliable-input', function(){

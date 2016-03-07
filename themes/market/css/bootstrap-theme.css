@@ -112,6 +112,10 @@ html{
 header{
     display: block;
     height: 80px;
+    padding: 0 !important;
+}
+header [class*="col-"]{
+    padding: 0;
 }
 header .logo-box{
     float: right;
@@ -325,15 +329,12 @@ header .right-header .user-section .type{
     margin: 0 15px;
     color: #a8a8a8;
 }
-.header-links a:first-child:hover,
-.header-links a:first-child:focus{
-    color: #0090ee;
-}
-.header-links a:last-child:hover,
-.header-links a:last-child:focus{
-    color: #eea600;
+.header-links a:hover,
+.header-links a:focus{
+    color: #333;
 }
 .sidebar{
+    padding: 0;
     float: right;
     border-radius: 0;
     box-shadow: 0 0 4px rgba(0,0,0,0.2);
@@ -364,8 +365,8 @@ header .right-header .user-section .type{
     background-color: #77c159;
 }
 .sidebar div.apple{
-    background-color: rgba(0,0,0,0.8);
-    color: #fff;
+        background-color: rgba(242, 242, 242, 0.6);
+    color: #555;
 }
 .sidebar div.win{
     background-color: #04a5f0;
@@ -380,7 +381,7 @@ header .right-header .user-section .type{
 .sidebar div.apple:active,
 .sidebar div.apple:focus,
 .sidebar div.apple.active{
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(224, 224, 224, 0.6);
 }
 .sidebar div.win:hover,
 .sidebar div.win:active,
@@ -438,6 +439,10 @@ header .right-header .user-section .type{
 .navbar-brand{
     font-size: 14px;
 }
+.navbar-brand > span{
+    font-size: 16px;
+    margin-left: 5px;
+}
 .dropdown-menu{
     box-shadow: 0 0 2px rgba(0,0,0,.06);
     border-radius: 0;
@@ -467,7 +472,7 @@ ul.nav li{
     line-height: 30px;
 }
 .navbar-brand{
-    color: #666 !important;
+    color: #a6a6a6 !important;
     line-height: 48px;
     padding-top: 0;
     padding-bottom: 0;
@@ -476,7 +481,7 @@ ul.nav li{
 .navbar-brand:hover,
 .navbar-brand:focus,
 .navbar-brand:active{
-    color: #00e11e !important;
+    color: #787878 !important;
 }
 .content{
     margin-top:35px;
@@ -496,7 +501,7 @@ ul.nav li{
 }
 .content .app-box .top-box .title > h2{
     font-size: 18px;
-    color: #444;
+    color: #787878;
     margin: 5px 0 8px;
 }
 .content .app-box .top-box .title > h3{
@@ -514,6 +519,7 @@ ul.nav li{
     padding-right:35px;
     padding-left: 35px;
     border-radius: 2px;
+    border: none;
 }
 .content .app-box .top-box button.btn.more-app:hover,
 .content .app-box .top-box button.btn.more-app:active,
@@ -548,7 +554,7 @@ ul.nav li{
     width: 20%;
     min-width: 165px;
     max-width: 165px;
-    padding: 0 5px;
+    padding: 0;
 }
 .content .app-box .owl-carousel .app-item {
     width: 100%;
@@ -656,7 +662,7 @@ ul.nav li{
     direction: ltr;
     color: #666;
     cursor: pointer;
-    font-size: 4px;
+    font-size: 11px;
 }
 .content .app-box .app-item .detail .app-any .app-price{
     color: #82d361;
@@ -685,23 +691,33 @@ ul.nav li{
     display: block;
     width: 100%;
     height: 250px;
+    background-color: #433a35;
+}
+.content .banner-box .banner-carousel .banner-item .fade-overly{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 50%;
+    width: 30%;
+    z-index: 1;
+    background: -moz-linear-gradient(left,#433a35 0%, rgba(0,0,0,0) 100%);
+    background: -webkit-linear-gradient(left, #433a35 0%, rgba(0,0,0,0) 100%);
+    background: -o-linear-gradient(left, #433a35 0%, rgba(0,0,0,0) 100%);
+    background: -ms-linear-gradient(left, #433a35 0%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to right, #433a35 0%, rgba(0,0,0,0) 100%);
 }
 
-.content .banner-box .banner-carousel .banner-item img{
-    display: block;
-    width: auto;
-    min-width: 100%;
-    min-height: 100%;
+.content .banner-box .banner-carousel .banner-item >  img{
     border-radius: 2px;
+    display: block;
+    float: right;
+    max-width: 50%;
+    min-height: 100%;
     overflow: hidden;
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    -moz-transform: translate(-50%,-50%);
-    -webkit-transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-    -o-transform: translate(-50%,-50%);
+    -webkit-transform: translateY(-50%); -moz-transform: translateY(-50%); -ms-transform: translateY(-50%); -o-transform: translateY(-50%); transform: translateY(-50%);
+    width: auto;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -715,7 +731,7 @@ ul.nav li{
     left: 15px;
     display: block;
     overflow: hidden;
-    z-index: 1;
+    z-index: 2;
     min-width: 400px;
     background-color: #fff;
     -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);

@@ -305,6 +305,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
     <div class="banner-box">
         <div class="banner-carousel">
             <div class="banner-item">
+                <div class="fade-overly"></div>
                 <div class="app-details">
                     <div class="pic">
                         <img src="<?= Yii::app()->theme->baseUrl; ?>/images/login-back.png">

@@ -104,4 +104,8 @@ class AppPlatforms extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	public function getUpperName()
+	{
+		return ucfirst($this->name);
+	}
 }

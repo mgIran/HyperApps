@@ -5,7 +5,7 @@
 ?>
 
 <div class="container-fluid">
-    <div class="form col-md-5">
+    <div class="form col-md-6">
 
         <?php $form=$this->beginWidget('CActiveForm', array(
             'id'=>'apps-form',
@@ -19,16 +19,21 @@
                 'validateOnSubmit' => true
             )
         )); ?>
+
+        <p>
+            در انتخاب پلتفرم دقت لازم را داشته باشید زیرا پس از ثبت برنامه قابل ویرایش نیست.
+        </p>
+        <br>
         <p class="errorMessage">
             <?php if(Yii::app()->user->hasFlash('failed')) echo Yii::app()->user->getFlash('failed'); ?>
         </p>
         <div class="form-group">
-            <?php echo CHtml::dropDownList('platform_id',$model->platform_id,CHtml::listData(AppPlatforms::model()->findAll(), 'id', 'title'),array('prompt'=>'لطفا پلتفرم مورد نظر را انتخاب کنید *','class'=>'form-control')); ?>
+            <?php echo CHtml::dropDownList('platform_id',$model->platform_id,CHtml::listData(AppPlatforms::model()->findAll(), 'id', 'upperName'),array('prompt'=>'لطفا پلتفرم مورد نظر را انتخاب کنید *','class'=>'form-control')); ?>
             <?php echo $form->error($model,'platform_id'); ?>
         </div>
-
+        <br>
         <div class="input-group buttons">
-            <?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره تغییرات',array('class'=>'btn btn-success')); ?>
+            <?php echo CHtml::submitButton('ادامه' ,array('class'=>'btn btn-success')); ?>
         </div>
 
         <?php $this->endWidget(); ?>

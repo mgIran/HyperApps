@@ -92,14 +92,14 @@
             <?php echo $form->error($model,'permissions'); ?>
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-6">
             <?php echo $form->labelEx($model,'file_name',array('class'=> 'block')); ?>
             <?php
             $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
                 'id' => 'uploaderFile',
                 'model' => $model,
                 'name' => 'file_name',
-                'maxFileSize' => 100,
+                'maxFileSize' => 1024,
                 'maxFiles' => 1,
                 'url' => Yii::app()->createUrl('/developers/apps/uploadFile'),
                 'deleteUrl' => Yii::app()->createUrl('/developers/apps/deleteUploadFile'),
@@ -122,7 +122,7 @@
             <?php echo $form->error($model,'file_name'); ?>
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-6">
             <?php echo $form->labelEx($model,'icon',array('class'=> 'block')); ?>
             <?php
             $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
@@ -130,7 +130,7 @@
                 'model' => $model,
                 'name' => 'icon',
                 'maxFiles' => 1,
-                'maxFileSize' => 2, //MB
+                'maxFileSize' => 0.2, //MB
                 'url' => Yii::app()->createUrl('/developers/apps/upload'),
                 'deleteUrl' => Yii::app()->createUrl('/developers/apps/deleteUpload'),
                 'acceptedFiles' => 'image/jpeg , image/png',
@@ -151,7 +151,7 @@
             ?>
             <?php echo $form->error($model,'icon'); ?>
         </div>
-
+        <br>
         <div class="input-group buttons">
             <?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره تغییرات',array('class'=>'btn btn-success')); ?>
         </div>

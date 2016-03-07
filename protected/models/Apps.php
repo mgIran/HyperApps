@@ -93,7 +93,7 @@ class Apps extends CActiveRecord
             'status' => 'وضعیت',
             'price' => 'قیمت',
             'file_name' => 'فایل',
-            'icon' => 'تصویر کوچک',
+            'icon' => 'آیکون',
             'description' => 'توضیحات',
             'change_log' => 'لیست تغییرات',
             'permissions' => 'دسترسی ها',

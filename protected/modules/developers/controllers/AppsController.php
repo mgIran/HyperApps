@@ -32,7 +32,7 @@ class AppsController extends Controller
 		return array(
 				array(
 						'allow', // allow authenticated user to perform 'create' and 'update' actions
-						'actions' => array('create', 'update', 'delete', 'uploadFile', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile'),
+						'actions' => array('create', 'update', 'delete', 'uploadImage', 'deleteImage', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile'),
 						'roles' => array('developer'),
 				),
 				array(
@@ -63,8 +63,6 @@ class AppsController extends Controller
 			$app = array();
 			$icon = array();
 			// Step 1
-			if(isset($_POST['platform_id']))
-				$model->platform_id = $_POST['platform_id'];
 			if(isset($_POST['platform_id']) && !empty($_POST['platform_id'])) {
 				$model->platform_id = (int)$_POST['platform_id'];
 				$platform = AppPlatforms::model()->findByPk($model->platform_id);
@@ -93,7 +91,23 @@ class AppsController extends Controller
 			if(isset($_POST['Apps'])) {
 				$model->attributes = $_POST['Apps'];
                 if($model->platform_id)
+                {
+                    $platform = AppPlatforms::model()->findByPk($model->platform_id);
+                    $formats = explode(',', $platform->file_types);
+                    if(count($formats) > 1) {
+                        foreach($formats as $key => $format) {
+                            $format = '.'.trim($format);
+                            $formats[$key] = $format;
+                        }
+                        $this->formats = implode(',', $formats);
+                    } else
+                        $this->formats = '.'.trim($formats[0]);
+
+                    $this->filesFolder = $platform->name;
+                    if(!is_dir(Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/"))
+                        mkdir(Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/");
                     $appFilesDIR = Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/";
+                }
 				if(isset($_POST['Apps']['file_name'])) {
 					$file = $_POST['Apps']['file_name'];
 					$app = array(
@@ -428,7 +442,7 @@ class AppsController extends Controller
 			$file = $_FILES['image'];
 			$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
 			$file['name'] = Controller::generateRandomString(5).time();
-			while(file_exists($uploadDir.DIRECTORY_SEPARATOR.$file['name']))
+			while(file_exists($uploadDir.DIRECTORY_SEPARATOR.$file['name'].'.'.$ext))
 				$file['name'] = Controller::generateRandomString(5).time();
 			$file['name'] .= $file['name'].'.'.$ext;
 			if(move_uploaded_file($file['tmp_name'], $uploadDir.DIRECTORY_SEPARATOR.CHtml::encode($file['name']))) {

@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">دسته ها&nbsp;&nbsp;&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
                 <ul class="dropdown-menu" >
                     <li><a href="#">دخترانه</a></li>
                     <li><a href="#">پسرانه</a></li>
