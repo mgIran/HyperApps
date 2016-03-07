@@ -16,7 +16,7 @@ class dropZoneUploader extends CWidget
     /**
      * @var string The URL that handles the file upload
      */
-    public $url = false;
+    public $url = null;
     /**
      * @var string The URL that handles the file delete form server
      */
@@ -24,11 +24,11 @@ class dropZoneUploader extends CWidget
     /**
      * @var string DropZone id
      */
-    public $id = false;
+    public $id = null;
     /**
      * @var string The name of the file field
      */
-    public $name = false;
+    public $name = null;
     /**
      * @var CModel The model for the file field
      */
@@ -112,9 +112,7 @@ class dropZoneUploader extends CWidget
         if ( $this->url === null ) {
             throw new CHttpException( 500, 'Url تنظیم نشده است.' );
         }
-        if ( $this->addRemoveLinks && $this->deleteUrl === null ) {
-            throw new CHttpException( 500, 'Delete Url تنظیم نشده است.' );
-        }
+
         if ( $this->name === null ) {
             throw new CHttpException( 500, 'Field Name تنظیم نشده است.' );
         }
@@ -140,30 +138,29 @@ class dropZoneUploader extends CWidget
     protected function registerClientScript()
     {
         $cs = Yii::app()->clientScript;
-        foreach ( $this->_scripts as $script ) {
-            $file = Yii::getPathOfAlias( 'ext.dropZoneUploader.assets' ) . DIRECTORY_SEPARATOR . $script;
-            $type = explode( DIRECTORY_SEPARATOR, $script );
-            if ( $type[ 0 ] === 'css' )
-                $cs->registerCssFile( Yii::app()->getAssetManager()->publish( $file ) );
-            else if ( $type[ 0 ] === 'js' )
-                $cs->registerScriptFile( Yii::app()->getAssetManager()->publish( $file ) );
+        foreach($this->_scripts as $script) {
+            $file = Yii::getPathOfAlias('ext.dropZoneUploader.assets').DIRECTORY_SEPARATOR.$script;
+            $type = explode(DIRECTORY_SEPARATOR, $script);
+            if($type[0] === 'css')
+                $cs->registerCssFile(Yii::app()->getAssetManager()->publish($file));
+            else if($type[0] === 'js')
+                $cs->registerScriptFile(Yii::app()->getAssetManager()->publish($file));
         }
         // assign hidden field name
         if($this->model && $this->attribute) {
             $this->name = $this->attribute;
-            $hiddenFieldName = CHtml::activeName( $this->model, $this->attribute );
-        }
-        else if($this->model && !$this->attribute && $this->name)
-            $hiddenFieldName = CHtml::activeName($this->model , $this->name);
+            $hiddenFieldName = CHtml::activeName($this->model, $this->attribute);
+        } else if($this->model && !$this->attribute && $this->name)
+            $hiddenFieldName = CHtml::activeName($this->model, $this->name);
         else if(!$this->model && !$this->attribute && $this->name)
             $hiddenFieldName = "{$this->name}";
         // get files from server and added to drop zone
-        if($this->serverFiles)
-        {
+        if($this->serverFiles) {
             $data = CJSON::encode($this->serverFiles);
-            $addedFiles = '
-                var extArr = ["jpg","jpeg","png","bmp","gif"];
-                var thisDropzone = this;
+
+            if($this->maxFiles > 1)
+            {
+                $filesAddScript = '
                 var data = '.$data.';
                 $.each(data, function(key,value){
                     var mockFile = { name: value.name, size: value.size ,serverName : value.name ,accepted : true};
@@ -176,35 +173,68 @@ class dropZoneUploader extends CWidget
                         }
                         thisDropzone.options.complete.call(thisDropzone, mockFile);
                         thisDropzone.files.push(mockFile);
-                        createHiddenInput(mockFile ,"'.$hiddenFieldName.'", value.name);
+                        createHiddenInput'.self::camelCase($this->id).'(mockFile ,"'.$hiddenFieldName.'", value.name);
                     }
-                });';
-        }else $addedFiles = '';
+                });
+                ';
+            }else
+            {
+                //var_dump($data);exit;
+                $filesAddScript = '
+                var value = '.$data.';
+                var mockFile = { name: value.name, size: value.size ,serverName : value.name ,accepted : true};
+                if ((thisDropzone.options.maxFiles != null) && thisDropzone.getAcceptedFiles().length < thisDropzone.options.maxFiles) {
+                    thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+                    if($.inArray(value.name.split(\'.\').pop(), extArr) > -1)
+                    {
+                        thisDropzone.createThumbnailFromUrl(mockFile , value.src);
+                        thisDropzone.options.thumbnail.call(thisDropzone, mockFile, value.src);
+                    }
+                    thisDropzone.options.complete.call(thisDropzone, mockFile);
+                    thisDropzone.files.push(mockFile);
+                    createHiddenInput'.self::camelCase($this->id).'(mockFile ,"'.$hiddenFieldName.'", value.name);
+                }
+                ';
+            }
+
+            $addedFiles = '
+                var extArr = ["jpg","jpeg","png","bmp","gif"];
+                var thisDropzone = this;
+                '.$filesAddScript.'
+                ';
+        } else $addedFiles = '';
 
         if($this->maxFiles === 1) {
             $error = 'this.on("error", function(file, message) {
                 alert(message);
                 this.removeFile(file);
             });';
-        }else $error='';
+        } else $error = '';
 
-        $this->onSuccess = str_ireplace('{serverName}' , 'file.serverName' , $this->onSuccess);
+        $this->onSuccess = str_ireplace('{serverName}', 'file.serverName', $this->onSuccess);
 
-        if(is_string($this->data) and strpos("js:",$this->data) == 0)
-        {
-//            $this->data = str_ireplace("js:","",$this->data);
-//            $this->data = eval();
-//            $data = "'".$this->data."'";
-        }
-        elseif(is_array($this->data))
+        if(is_string($this->data) and strpos("js:", $this->data) == 0) {
+            //            $this->data = str_ireplace("js:","",$this->data);
+            //            $this->data = eval();
+            //            $data = "'".$this->data."'";
+        } elseif(is_array($this->data))
             $data = "'".CJSON::encode($this->data)."'";
+        $deleteFunc = '';
+        if($this->deleteUrl)
+            $deleteFunc = '
+                jQuery.ajax({
+                    url:"'.$this->deleteUrl.'",
+                    data:{fileName : file.serverName ,data:'.$data.'},
+                    type : "POST",
+                    dataType : "json"
+                });';
         $options = array(
             'url' => $this->url,
             'paramName' => $this->name,
             'maxFilesize' => $this->maxFileSize, // MB
             'parallelUploads' => 1,
             'uploadMultiple' => 0,
-            'maxFiles' => ( $this->maxFiles ? $this->maxFiles : 'null' ),
+            'maxFiles' => ($this->maxFiles ? $this->maxFiles : 'null'),
             'addRemoveLinks' => $this->addRemoveLinks,
             'dictDefaultMessage' => $this->dictDefaultMessage,
             'dictInvalidFileType' => $this->dictInvalidFileType,
@@ -216,12 +246,7 @@ class dropZoneUploader extends CWidget
             'accept' => 'js: function(file, done){done();}',
             'init' => 'js: function() {
                     this.on("removedfile", function(file) {
-                        jQuery.ajax({
-                            url:"'.$this->deleteUrl.'",
-                            data:{fileName : file.serverName ,data:'.$data.'},
-                            type : "POST",
-                            dataType : "json"
-                        });
+                        '.$deleteFunc.'
                     });
                     this.on("sending", function(file, xhr, formData) {
                         formData.append("data", '.$data.');
@@ -229,16 +254,16 @@ class dropZoneUploader extends CWidget
                     this.on("success", function(file,res) {
                         '.$this->onSuccess.'
                         if(file.serverName)
-                            createHiddenInput(file ,"'.$hiddenFieldName.'",file.serverName);
+                            createHiddenInput'.self::camelCase($this->id).'(file ,"'.$hiddenFieldName.'",file.serverName);
                     });
                     '.$addedFiles.'
                     '.$error.'
                 }',
         );
-        $options = CJavaScript::encode( $options );
-        $cs->registerScript( 'DropZone'.$this->id, "Dropzone.options.{$this->id} = {$options};var fileList = [];
-            function createHiddenInput(file ,name , value){
-                file._hiddenField = Dropzone.createElement(\"<input type='hidden' name='\"+name+\"".($this->maxFiles>1?'[]':'')."' value='\"+value+\"'>\");
+        $options = CJavaScript::encode($options);
+        $cs->registerScript('DropZone'.$this->id, "Dropzone.options.{$this->id} = {$options};var fileList = [];
+            function createHiddenInput".self::camelCase($this->id)."(file ,name , value){
+                file._hiddenField = Dropzone.createElement(\"<input type='hidden' name='\"+name+\"".($this->maxFiles > 1 ? '[]' : '')."' value='\"+value+\"'>\");
                 file.previewElement.appendChild(file._hiddenField);
             }
         ");

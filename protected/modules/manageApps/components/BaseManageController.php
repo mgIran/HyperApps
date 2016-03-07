@@ -101,12 +101,10 @@ class BaseManageController extends Controller
             if (isset($_POST['Apps']['file_name'])) {
                 $file = $_POST['Apps']['file_name'];
                 $app = array(
-                    array(
-                        'name' => $file,
-                        'src' => $tmpUrl . '/' . $file,
-                        'size' => filesize($tmpDIR . $file),
-                        'serverName' => $file,
-                    )
+                    'name' => $file,
+                    'src' => $tmpUrl . '/' . $file,
+                    'size' => filesize($tmpDIR . $file),
+                    'serverName' => $file,
                 );
                 $model->size = filesize($tmpDIR . $model->file_name);
             }
@@ -114,12 +112,10 @@ class BaseManageController extends Controller
             if (isset($_POST['Apps']['icon'])) {
                 $file = $_POST['Apps']['icon'];
                 $icon = array(
-                    array(
-                        'name' => $file,
-                        'src' => $tmpUrl . '/' . $file,
-                        'size' => filesize($tmpDIR . $file),
-                        'serverName' => $file,
-                    )
+                    'name' => $file,
+                    'src' => $tmpUrl . '/' . $file,
+                    'size' => filesize($tmpDIR . $file),
+                    'serverName' => $file,
                 );
             }
             if (count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
@@ -137,7 +133,7 @@ class BaseManageController extends Controller
                     rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);
                 }
                 if ($model->icon) {
-                    $thumbnail = new ThumbnailCreator();
+                    $thumbnail = new Imager();
                     $thumbnail->createThumbnail($tmpDIR . $model->icon, 150, 150, false, $appIconsDIR . $model->icon);
                     @unlink($tmpDIR . $model->icon);
                 }
@@ -164,8 +160,7 @@ class BaseManageController extends Controller
     public function actionUpdate($id)
     {
         $tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
-        if (!is_dir($tmpDIR))
-            mkdir($tmpDIR);
+        if(!is_dir($tmpDIR)) mkdir($tmpDIR);
         $tmpUrl = Yii::app()->createAbsoluteUrl('/uploads/temp/');
         $appFilesDIR = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$this->filesFolder}/";
         $appIconsDIR = Yii::getPathOfAlias("webroot") . '/uploads/apps/icons/';
@@ -179,80 +174,68 @@ class BaseManageController extends Controller
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
         $icon = array();
-        if (file_exists($appIconsDIR . $model->icon))
+        if(file_exists($appIconsDIR . $model->icon))
             $icon = array(
-                array(
-                    'name' => $model->icon,
-                    'src' => $appIconsUrl . '/' . $model->icon,
-                    'size' => filesize($appIconsDIR . $model->icon),
-                    'serverName' => $model->icon,
-                )
+                'name' => $model->icon,
+                'src' => $appIconsUrl . '/' . $model->icon,
+                'size' => filesize($appIconsDIR . $model->icon),
+                'serverName' => $model->icon,
             );
 
         $app = array();
-        if (file_exists($appFilesDIR . $model->file_name))
+        if(file_exists($appFilesDIR . $model->file_name))
             $app = array(
-                array(
-                    'name' => $model->file_name,
-                    'src' => $appFilesUrl . '/' . $model->file_name,
-                    'size' => filesize($appFilesDIR . $model->file_name),
-                    'serverName' => $model->file_name,
-                )
-            );
+                'name' => $model->file_name,
+                'src' => $appFilesUrl . '/' . $model->file_name,
+                'size' => filesize($appFilesDIR . $model->file_name),
+                'serverName' => $model->file_name,
+                );
 
         $images = array();
-        if ($model->images)
-            foreach ($model->images as $image)
-                //if (file_exists($appImagesDIR . $image->image))
-                $images[] = array(
-                    'name' => $image->image,
-                    'src' => $appImagesUrl . '/' . $image->image,
-                    'size' => filesize($appImagesDIR . $image->image),
-                    'serverName' => $image->image,
-                );
-        if (isset($_POST['Apps'])) {
-            $model->attributes = $_POST['Apps'];
+        if($model->images)
+            foreach($model->images as $image)
+                if(file_exists($appImagesDIR . $image->image))
+                    $images[] = array(
+                        'name' => $image->image,
+                        'src' => $appImagesUrl . '/' . $image->image,
+                        'size' => filesize($appImagesDIR . $image->image),
+                        'serverName' => $image->image,
+                    );
+        if(isset($_POST['Apps'])) {
             $fileFlag = false;
             $iconFlag = false;
-            if (isset($_POST['Apps']['file_name']) && $_POST['Apps']['file_name'] != $model->file_name) {
+            $newFileSize = $model->size;
+            if(isset($_POST['Apps']['file_name']) && !empty($_POST['Apps']['file_name']) && $_POST['Apps']['file_name'] != $model->file_name) {
                 $file = $_POST['Apps']['file_name'];
                 $app = array(
-                    array(
-                        'name' => $file,
-                        'src' => $tmpUrl . '/' . $file,
-                        'size' => filesize($tmpDIR . $file),
-                        'serverName' => $file,
-                    )
+                    'name' => $file,
+                    'src' => $tmpUrl . '/' . $file,
+                    'size' => filesize($tmpDIR . $file),
+                    'serverName' => $file,
                 );
                 $fileFlag = true;
-                $model->size = filesize($tmpDIR . $model->file_name);
+                $newFileSize = filesize($tmpDIR . $file);
             }
-            if (isset($_POST['Apps']['icon']) && $_POST['Apps']['icon'] != $model->icon) {
+            if(isset($_POST['Apps']['icon']) && !empty($_POST['Apps']['icon']) && $_POST['Apps']['icon'] != $model->icon) {
                 $file = $_POST['Apps']['icon'];
-                $icon = array(
-                    array(
-                        'name' => $file,
-                        'src' => $tmpUrl . '/' . $file,
-                        'size' => filesize($tmpDIR . $file),
-                        'serverName' => $file,
-                    )
-                );
+                $icon = array('name' => $file, 'src' => $tmpUrl . '/' . $file, 'size' => filesize($tmpDIR . $file), 'serverName' => $file,);
                 $iconFlag = true;
             }
-            if (count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
-                foreach ($_POST['Apps']['permissions'] as $key => $permission) {
-                    if (empty($permission))
-                        unset($_POST['Apps']['permissions'][$key]);
+            $model->attributes = $_POST['Apps'];
+            $model->size = $newFileSize;
+            if(count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
+                foreach($_POST['Apps']['permissions'] as $key => $permission) {
+                    if(empty($permission)) unset($_POST['Apps']['permissions'][$key]);
                 }
                 $model->permissions = CJSON::encode($_POST['Apps']['permissions']);
             } else
                 $model->permissions = null;
-            if ($model->save()) {
-                if ($fileFlag) {
+            if($model->save()) {
+                if($fileFlag) {
                     rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);
                 }
-                if ($iconFlag) {
-                    $thumbnail = new ThumbnailCreator();
+                if($iconFlag) {
+                    $thumbnail = new Imager();
                     $thumbnail->createThumbnail($tmpDIR . $model->icon, 150, 150, false, $appIconsDIR . $model->icon);
                     unlink($tmpDIR . $model->icon);
                 }
@@ -263,13 +246,7 @@ class BaseManageController extends Controller
             }
         }
 
-        $this->render('manageApps.views.baseManage.update', array(
-            'model' => $model,
-            'icon' => $icon,
-            'app' => $app,
-            'images' => $images,
-            'step' => 1
-        ));
+        $this->render('manageApps.views.baseManage.update', array('model' => $model, 'icon' => $icon, 'app' => $app, 'images' => $images, 'step' => 1));
     }
 
     /**
@@ -386,7 +363,7 @@ class BaseManageController extends Controller
 
             $model = Apps::model()->findByAttributes(array('icon' => $fileName));
             if ($model) {
-                if (@unlink($Dir . $fileName)) {
+                if (@unlink($Dir . $model->icon)) {
                     $model->updateByPk($model->id, array('icon' => null));
                     $response = ['state' => 'ok', 'msg' => $this->implodeErrors($model)];
                 } else
@@ -436,7 +413,7 @@ class BaseManageController extends Controller
 
             $model = Apps::model()->findByAttributes(array('file_name' => $fileName));
             if ($model) {
-                if (unlink($Dir . $$model->fileName)) {
+                if (unlink($Dir . $model->file_name)) {
                     $model->updateByPk($model->id, array('file_name' => null));
                     $response = ['state' => 'ok', 'msg' => $this->implodeErrors($model)];
                 } else
