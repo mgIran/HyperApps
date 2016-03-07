@@ -2,6 +2,8 @@
 
 class CreditController extends Controller
 {
+    public $layout='//layouts/panel';
+
     /**
      * @return array action filters
      */
@@ -21,7 +23,7 @@ class CreditController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'views' actions
-                'actions'=>array('buy'),
+                'actions'=>array('buy','bill'),
                 'users' => array('@'),
             ),
             array('deny',  // deny all users
@@ -40,10 +42,32 @@ class CreditController extends Controller
         $model=Users::model()->findByPk(Yii::app()->user->getId());
         Yii::import('application.modules.setting.models.*');
         $buyCreditOptions=SiteSetting::model()->findByAttributes(array('name'=>'buy_credit_options'));
-        var_dump($buyCreditOptions);
+        $amounts=array();
+        foreach(CJSON::decode($buyCreditOptions->value) as $amount)
+            $amounts[$amount]=number_format($amount, 0).' تومان';
 
         $this->render('buy', array(
             'model'=>$model,
+            'amounts'=>$amounts,
         ));
+    }
+
+    /**
+     * Show bill
+     */
+    public function actionBill()
+    {
+        if(isset($_POST['amount']))
+        {
+            Yii::app()->theme='market';
+            $amount=CHtml::encode($_POST['amount']);
+            $model=Users::model()->findByPk(Yii::app()->user->getId());
+            $this->render('bill', array(
+                'model'=>$model,
+                'amount'=>$amount,
+            ));
+        }
+        else
+            $this->redirect($this->createUrl('/users/credit/buy'));
     }
 }
