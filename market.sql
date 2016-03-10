@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-03-05 13:06:08
+Date: 2016-03-10 12:39:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -86,10 +86,10 @@ CREATE TABLE `ym_apps` (
 -- ----------------------------
 -- Records of ym_apps
 -- ----------------------------
-INSERT INTO `ym_apps` VALUES ('13', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی');
-INSERT INTO `ym_apps` VALUES ('14', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی');
-INSERT INTO `ym_apps` VALUES ('15', 'بازی ماشین', '8', '1', 'enable', '0', 'K7V3Y1457111635.apk', 'VYwm61457111636.jpg', '<p>سلام  متن اینجاست</p>\r\n', '<p>خفه شو سبحانی</p>\r\n', '[\"\\u06af\\u0648\\u062a\\u0648\\u0634\"]', '406084', '1', 'pending', '1', null);
-INSERT INTO `ym_apps` VALUES ('16', 'بازی ماشین', '8', '1', 'enable', '0', 'h79az1457111994.xap', 'WXiz31457111996.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', null, '406084', '1', 'pending', '3', null);
+INSERT INTO `ym_apps` VALUES ('13', 'بازی ماشین', null, '4', 'enable', '0', 'zB5iA1457094285.xap', 'VYwm61457111636.png', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '1', 'سشی');
+INSERT INTO `ym_apps` VALUES ('14', 'بازی ماشین', null, '4', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.png', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '1', 'سشی');
+INSERT INTO `ym_apps` VALUES ('15', 'بازی ماشین', '8', '4', 'enable', '0', 'K7V3Y1457111635.apk', 'VYwm61457111636.png', '<p>سلام  متن اینجاست</p>\r\n', '<p>خفه شو سبحانی</p>\r\n', '[\"\\u06af\\u0648\\u062a\\u0648\\u0634\"]', '406084', '1', 'pending', '1', null);
+INSERT INTO `ym_apps` VALUES ('16', 'بازی ماشین', '8', '5', 'enable', '0', 'h79az1457111994.xap', 'WXiz31457111996.png', '<p>asd</p>\r\n', '<p>asd</p>\r\n', null, '406084', '1', 'pending', '3', null);
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -103,15 +103,16 @@ CREATE TABLE `ym_app_categories` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `ym_app_categories_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_app_categories
 -- ----------------------------
-INSERT INTO `ym_app_categories` VALUES ('1', 'ارتباطات', null, null);
-INSERT INTO `ym_app_categories` VALUES ('2', 'آموزش', null, null);
-INSERT INTO `ym_app_categories` VALUES ('3', 'سرگرمی', null, null);
-INSERT INTO `ym_app_categories` VALUES ('4', 'آب و هوا', null, null);
+INSERT INTO `ym_app_categories` VALUES ('1', 'برنامه', null, null);
+INSERT INTO `ym_app_categories` VALUES ('2', 'بازی', null, null);
+INSERT INTO `ym_app_categories` VALUES ('3', 'آموزشی', null, null);
+INSERT INTO `ym_app_categories` VALUES ('4', 'آب و هوا', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('5', 'ماجراجویی', '2', '2-');
 
 -- ----------------------------
 -- Table structure for ym_app_images
@@ -163,8 +164,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '12');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457453');
+INSERT INTO `ym_counter_save` VALUES ('counter', '14');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457458');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -182,7 +183,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1457170474');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1457599755');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -240,7 +241,7 @@ CREATE TABLE `ym_site_setting` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   `value` text CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_site_setting
@@ -249,6 +250,7 @@ INSERT INTO `ym_site_setting` VALUES ('1', 'site_title', 'عنوان سایت', 
 INSERT INTO `ym_site_setting` VALUES ('2', 'default_title', 'عنوان پیش فرض صفحات', 'تابلو ');
 INSERT INTO `ym_site_setting` VALUES ('3', 'keywords', 'کلمات کلیدی سایت', 'خرید، فروش، دست دوم، خودرو، املاک، موبایل، وسایل خانگی، تبلت، پوشاک ، نوزاد و سیسمونی، صوتی و تصویری، دوربین عکاسی فیلمبرداری، کنسول بازی، آرایشی، بهداشتی، زیبایی، جواهر، بدلیجات، ساعت، آنتیک، خدمات، آگهی، نیازمندی، استخدام،');
 INSERT INTO `ym_site_setting` VALUES ('4', 'site_description', 'شرح وبسایت', 'تابلو فضای داد و ستد آنلاین و نیازمندی های خرید و فروش اینترنتی رایگان در بخش های املاک، خودرو، وسایل خانگی، موبایل، پوشاک، آنتیک، آرایشی زیبایی بهداشتی، عکاسی و ...');
+INSERT INTO `ym_site_setting` VALUES ('5', 'buy_credit_options', 'گزینه های خرید اعتبار', '[\"5000\",\"10000\"]');
 
 -- ----------------------------
 -- Table structure for ym_users
