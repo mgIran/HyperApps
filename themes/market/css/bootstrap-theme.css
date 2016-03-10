@@ -79,7 +79,12 @@ html{
 }
 
 .green{
-    color: #82d361;
+    color: #77c159 !important;
+}
+.btn.btn-success{
+    background-color: #77c159 !important;
+    border-radius: 2px;
+    border: none;
 }
 .ltr{
     direction: ltr;
@@ -468,8 +473,13 @@ ul.nav li{
     padding-top: 0;
     padding-bottom: 0;
 }
-.navbar ul > li > a{
-    line-height: 30px;
+.navbar ul.nav > li > a{
+    line-height: 48px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.navbar ul > li > a > span{
+    font-size: 11px;
 }
 .navbar-brand{
     color: #a6a6a6 !important;
@@ -486,6 +496,8 @@ ul.nav li{
 .content{
     margin-top:35px;
     padding-top: 15px;
+    display: block;
+    overflow: hidden;
 }
 .content .app-box{
     padding: 0 40px;
@@ -902,4 +914,302 @@ ul.nav li{
 .errorMessage{
     color: #d80000;
     border-color: #d80000;
+}
+.main-inner{
+    padding: 0;
+}
+.app{
+    padding:0 25px;
+    width: 65%;
+}
+.app-inner{
+    padding: 25px;
+    background-color: #fff;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    border-radius: 0;
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+.app-inner .pic{
+    display: block;
+    width: 150px;
+    height: 150px;
+    border-radius: 0;
+    margin-left: 25px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    float: right;
+    border-radius: 2px;
+}
+.app-inner .pic img{
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border-radius: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.app-inner .app-heading{
+    display: block;
+    overflow: hidden;
+    position: absolute;
+    right: 200px;
+    left: 0;
+    top: 0;
+    color: #787878;
+}
+.app-inner .app-heading > h2{
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 25px;
+    line-height: 35px;
+    font-size: 24px;
+    color: #787878;
+}
+.app-inner .app-heading > .row-fluid{
+
+}
+.app-inner .app-heading > .row-fluid > span{
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 15px;
+    line-height: 30px;
+    font-size: 13px;
+    color: #787878;
+    max-width: 30%;
+    margin: 0;
+}
+.app-inner .app-body{
+    display: block;
+    overflow: hidden;
+    margin-top: 190px;
+}
+.app-inner .app-body .images-carousel{
+    display: block;
+    overflow: hidden;
+    margin: 50px 0;
+}
+.app-inner .app-body .images-carousel .image-item{
+    position: relative;
+    height: 318px;
+    display: block;
+    overflow: hidden;
+}
+.app-inner .app-body .images-carousel .image-item img {
+    position: absolute;
+    height: 318px;
+    width: auto;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.app-inner .app-body > section{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid #dfdfdf;
+    height: 150px;
+    -webkit-transition: all 0.5s linear;
+    -moz-transition: all 0.5s linear;
+    -ms-transition: all 0.5s linear;
+    -o-transition: all 0.5s linear;
+    transition: all 0.5s linear;
+    margin-top: 50px;
+}
+.app-inner .app-body > .change-log{
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 20px 0;
+}
+.app-inner .app-body > .change-log >h4{
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: #787878;
+}
+.app-inner .app-body > .app-details{
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 20px 0;
+}
+.app-inner .app-body > .app-details >h4{
+    margin: 30px 0;
+    font-size: 16px;
+    float: none;
+    clear: both;
+    color: #787878;
+}
+.app-inner .app-body > .app-details > .detail{
+    padding-left: 100px;
+}
+.app-inner .app-body > .app-details > .detail > h5{
+    font-size: 14px;
+    display: inline-block;
+    color: #787878;
+    float: right;
+    margin: 0;
+}
+.app-inner .app-body > .app-details > .detail > span{
+    font-size: 12px;
+    float: left;
+    display: inline-block;
+    color: #a6a6a6;
+}
+.app-inner .app-body > .app-details > ul > li{
+    color: #a6a6a6;
+}
+.app-inner .app-body .app-description{
+    display: block;
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 14px;
+    color: #a6a6a6;
+    margin-bottom: 20px;
+}
+.app-inner .app-body > section .more-text{
+    display: none;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 30px 0;
+    font-size: 13px;
+    color: #82d361;
+    text-align: center;
+    background: rgba(255,255,255,0);
+    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
+}
+.app-like{
+    padding: 0;
+    width: 35%;
+    padding-left: 20px;
+}
+.app-like .app-box{
+    padding: 0;
+    display: inline-block;
+    overflow: visible;
+}
+.app-like .app-box .top-box{
+    margin-bottom: 30px;
+}
+.app-vertical{
+    position: relative;
+}
+.app-vertical .app-details{
+    display: inline-block;
+    width: 100%;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    padding-bottom: 40px;
+    position: relative;
+}
+.app-vertical .app-details .pic {
+    margin-top: 5px;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    float: left;
+}
+.app-vertical .app-details .pic img{
+    display: block;
+    width: 100%;
+    min-height: 100px;
+    border-radius: 2px;
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+.app-vertical .app-details .app-content{
+    display: block;
+    float: right;
+    width: 200px;
+}
+.app-vertical .app-details .app-content .title{
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #555;
+    font-size: 14px;
+    padding-left: 10px;
+    margin-bottom: 8px;
+}
+.app-vertical .app-details .app-content .title  >a{
+    color: inherit;
+}
+.app-vertical .app-details .app-content span{
+    font-size: 12px;
+}
+.app-vertical .app-details .app-content .app-desc .paragraph-end{
+    height: 16px;
+    width: 80px;
+}
+.app-vertical .app-details .app-content .app-desc{
+    font-size: 12px;
+    margin-top: 10px;
+    height: 65px;
+    position: relative;
+    color: #888;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    padding-left: 15px;
+    text-align: justify;
+}
+.app-vertical .app-details .app-footer{
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    line-height: 45px;
+    color: #888;
+    font-size: 12px;
+    right: 0;
+}
+.app-vertical .app-details .app-footer > span{
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

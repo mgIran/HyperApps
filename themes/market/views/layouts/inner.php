@@ -28,7 +28,7 @@
 <?= $this->renderPartial('//layouts/_header'); ?>
 <?= $this->renderPartial('//layouts/_sidebar'); ?>
 <?= $this->renderPartial('//layouts/_navbar'); ?>
-<div class="main col-xs-12">
+<div class="main main-inner col-xs-12">
     <section class="content">
         <?php
         if(Yii::app()->user->hasFlash('success'))

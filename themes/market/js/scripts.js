@@ -21,4 +21,24 @@ $(function() {
             $('.multipliable-input-container .multipliable-input:last').remove();
         return false;
     });
+
+    if($(".app-description").height()>150)
+        $(".app-description").next().show();
+    $('body').on('click', '.more-text', function(){
+        var $h = $(".app-description").height();
+        if($(this).parent().hasClass('open'))
+        {
+            $(this).parent().animate({height:150},0).removeClass('open');
+            $(this).find('span:first-child').removeClass('icon-rotate-180');
+            $(this).find('span:last-child').html('توضیحات بیشتر');
+        }
+        else if($h>150)
+        {
+            $(this).parent().animate({height:$h+80},0).addClass('open');
+            $(this).find('span:first-child').addClass('icon-rotate-180');
+            $(this).find('span:last-child').html('بستن');
+        }
+        return false;
+    });
+
 });

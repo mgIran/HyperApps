@@ -20,6 +20,10 @@
  * @property string $confirm
  * @property string $platform_id
  * @property string $developer_team
+ * @property integer $seen
+ * @property integer $download
+ * @property integer $install
+ * @property integer $deleted
  *
  * The followings are the available model relations:
  * @property AppImages[] $images
@@ -51,6 +55,7 @@ class Apps extends CActiveRecord
 		return array(
             array('title, category_id, price, version ,platform_id ,file_name ,icon', 'required'),
             array('price, size, platform_id', 'numerical'),
+            array('seen, download, install, deleted', 'numerical', 'integerOnly'=>true),
 			array('description, change_log','filter','filter'=>array($this->_purifier,'purify')),
 			array('title, icon', 'length', 'max'=>50),
 			array('developer_id, category_id, platform_id', 'length', 'max'=>10),
@@ -101,7 +106,11 @@ class Apps extends CActiveRecord
             'version' => 'نسخه',
 			'confirm' => 'وضعیت انتشار',
 			'platform_id' => 'پلتفرم',
-            'developer_team' => 'تیم توسعه دهنده'
+            'developer_team' => 'تیم توسعه دهنده',
+            'seen' => 'دیده شده',
+            'download' => 'تعداد دریافت',
+            'install' => 'تعداد نصب فعال',
+            'deleted' => 'حذف شده',
 		);
 	}
 
@@ -138,6 +147,13 @@ class Apps extends CActiveRecord
 		$criteria->compare('version',$this->version,true);
 		$criteria->compare('confirm',$this->confirm,true);
 		$criteria->compare('platform_id',$this->platform_id,true);
+
+        $criteria->compare('developer_team',$this->developer_team,true);
+        $criteria->compare('seen',$this->seen);
+        $criteria->compare('download',$this->download);
+        $criteria->compare('install',$this->install);
+        $criteria->compare('deleted',$this->deleted);
+
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

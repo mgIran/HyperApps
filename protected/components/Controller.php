@@ -216,4 +216,19 @@ class Controller extends CController
         return AdvertiseCategories::model()->findAll('parent IS NULL order by name ASC');
     }
 
+    public static function fileSize($file){
+        $size = filesize($file);
+        if($size < 1024)
+            return $size.' Byte';
+        elseif($size < 1024*1024){
+            $size = (float)$size/1024;
+            return number_format($size,1). ' KB';
+        }
+        elseif($size < 1024*1024*1024){
+            $size = (float)$size/1024;
+            return number_format($size,1). ' KB';
+        }
+
+
+    }
 }
