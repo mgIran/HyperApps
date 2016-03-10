@@ -526,16 +526,16 @@ ul.nav li{
     overflow: hidden;
     padding-left: 10px;
 }
-.content .app-box .top-box button.btn.more-app{
+.content .app-box .top-box .btn.more-app{
     background-color: #77c159 !important;
     padding-right:35px;
     padding-left: 35px;
     border-radius: 2px;
     border: none;
 }
-.content .app-box .top-box button.btn.more-app:hover,
-.content .app-box .top-box button.btn.more-app:active,
-.content .app-box .top-box button.btn.more-app:focus{
+.content .app-box .top-box .btn.more-app:hover,
+.content .app-box .top-box .btn.more-app:active,
+.content .app-box .top-box .btn.more-app:focus{
     background-color: #82d361 !important;
     border-color: #82d361 !important;
 }

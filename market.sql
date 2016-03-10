@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50616
+Source Server         : localhost
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : market
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-03-10 13:24:53
+Date: 2016-03-05 13:06:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -90,10 +90,10 @@ CREATE TABLE `ym_apps` (
 -- ----------------------------
 -- Records of ym_apps
 -- ----------------------------
-INSERT INTO `ym_apps` VALUES ('13', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی', '0', '0', '0', '0');
-INSERT INTO `ym_apps` VALUES ('14', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی', '0', '0', '0', '0');
-INSERT INTO `ym_apps` VALUES ('15', 'بازی ماشین', '8', '1', 'enable', '0', 'S2uoK1457385787.apk', 'JpnAv1457385813.jpg', '<p>سلام  متن اینجاست</p>\r\n', '<p>خفه شو سبحانی</p>\r\n', '[\"\\u06af\\u0648\\u062a\\u0648\\u0634\"]', '10714', '1', 'pending', '1', '', '0', '0', '0', '0');
-INSERT INTO `ym_apps` VALUES ('16', 'بازی ماشین', '8', '1', 'enable', '0', 'h79az1457111994.xap', 'WXiz31457111996.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', null, '406084', '1', 'pending', '3', null, '0', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('13', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی');
+INSERT INTO `ym_apps` VALUES ('14', 'بازی ماشین', null, '1', 'enable', '0', 'zB5iA1457094285.xap', 'yaago1457094287.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', '[\"asda\"]', '406084', '1', 'pending', '3', 'سشی');
+INSERT INTO `ym_apps` VALUES ('15', 'بازی ماشین', '8', '1', 'enable', '0', 'K7V3Y1457111635.apk', 'VYwm61457111636.jpg', '<p>سلام  متن اینجاست</p>\r\n', '<p>خفه شو سبحانی</p>\r\n', '[\"\\u06af\\u0648\\u062a\\u0648\\u0634\"]', '406084', '1', 'pending', '1', null);
+INSERT INTO `ym_apps` VALUES ('16', 'بازی ماشین', '8', '1', 'enable', '0', 'h79az1457111994.xap', 'WXiz31457111996.jpg', '<p>asd</p>\r\n', '<p>asd</p>\r\n', null, '406084', '1', 'pending', '3', null);
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -107,7 +107,7 @@ CREATE TABLE `ym_app_categories` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `ym_app_categories_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_app_categories
@@ -134,8 +134,6 @@ CREATE TABLE `ym_app_images` (
 -- Records of ym_app_images
 -- ----------------------------
 INSERT INTO `ym_app_images` VALUES ('10', '14', 'VVZWy1457094442VVZWy1457094442.jpg');
-INSERT INTO `ym_app_images` VALUES ('11', '15', 'smQyg1457386460.jpg');
-INSERT INTO `ym_app_images` VALUES ('12', '15', 'J3UTB1457386462.jpeg');
 
 -- ----------------------------
 -- Table structure for ym_app_platforms
@@ -169,8 +167,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '16');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457458');
+INSERT INTO `ym_counter_save` VALUES ('counter', '12');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457453');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -188,7 +186,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1457603570');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1457170474');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -246,7 +244,7 @@ CREATE TABLE `ym_site_setting` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   `value` text CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_site_setting

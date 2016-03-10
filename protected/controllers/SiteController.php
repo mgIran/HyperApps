@@ -29,7 +29,20 @@ class SiteController extends Controller
 	{
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
-		$this->render('index');
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('category_id=1');
+        $criteria->addCondition('platform_id=1');
+        $criteria->limit=20;
+        $newestProgramDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('category_id=2');
+        $criteria->addCondition('platform_id=1');
+        $criteria->limit=20;
+        $newestGameDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
+		$this->render('index', array(
+            'newestProgramDataProvider'=>$newestProgramDataProvider,
+            'newestGameDataProvider'=>$newestGameDataProvider,
+        ));
 	}
 
 	/**
