@@ -5,7 +5,7 @@ if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user'):
     <div class="overly"></div>
     <ul class="user-menu">
         <li>
-            <a href="<?= Yii::app()->createUrl('users/account') ?>">
+            <a href="<?= Yii::app()->createUrl('/dashboard') ?>">
                 <span class="icon-dashboard"></span>
                 داشبورد
             </a>

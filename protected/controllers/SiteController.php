@@ -29,6 +29,7 @@ class SiteController extends Controller
 	{
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
+
         $criteria=new CDbCriteria();
         $criteria->addCondition('path LIKE :regex1','OR');
         $criteria->addCondition('path LIKE :regex2','OR');
@@ -40,9 +41,17 @@ class SiteController extends Controller
         $catIds = CHtml::listData($catIds,'id','id');
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
-        $criteria->addCondition('platform_id=1');
+        if(isset($_GET['ajax']) and $_GET['platform']=='android')
+            $criteria->addCondition('platform_id=1');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='ios')
+            $criteria->addCondition('platform_id=2');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='windowsphone')
+            $criteria->addCondition('platform_id=3');
+        else
+            $criteria->addCondition('platform_id=1');
         $criteria->limit=20;
         $newestProgramDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
+
         $criteria=new CDbCriteria();
         $criteria->addCondition('path LIKE :regex1','OR');
         $criteria->addCondition('path LIKE :regex2','OR');
@@ -54,10 +63,18 @@ class SiteController extends Controller
         $catIds = CHtml::listData($catIds,'id','id');
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
-        $criteria->addCondition('platform_id=1');
+        if(isset($_GET['ajax']) and $_GET['platform']=='android')
+            $criteria->addCondition('platform_id=1');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='ios')
+            $criteria->addCondition('platform_id=2');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='windowsphone')
+            $criteria->addCondition('platform_id=3');
+        else
+            $criteria->addCondition('platform_id=1');
         $criteria->limit=20;
         $newestGameDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
-	    $this->render('index', array(
+
+        $this->render('index', array(
             'newestProgramDataProvider'=>$newestProgramDataProvider,
             'newestGameDataProvider'=>$newestGameDataProvider,
         ));
@@ -238,7 +255,7 @@ class SiteController extends Controller
             $login = new UserLoginForm;
             if($model->save())
             {
-                $msg = '<h2 style="box-sizing:border-box;display: block;width: 100%;font-family:tahoma;background-color: #00ac1a;line-height:60px;color:#f7f7f7;font-size: 24px;text-align: right;padding-right: 50px">هایپر اپس<span style="font-size: 14px;color:#dfdfdf">- مرجع انواع نرم افزار تلفن های هوشمند</span></span> </h2>';
+                $msg = '<h2 style="box-sizing:border-box;display: block;width: 100%;font-family:tahoma;background-color: #a1cf01;line-height:60px;color:#f7f7f7;font-size: 24px;text-align: right;padding-right: 50px">هایپر اپس<span style="font-size: 14px;color:#dfdfdf">- مرجع انواع نرم افزار تلفن های هوشمند</span></span> </h2>';
                 $msg .= '<div style="display: inline-block;width: 100%;font-family:tahoma;">';
                 $msg .= '<div style="direction:rtl;display:block;overflow:hidden;border:1px solid #efefef;text-align: center;margin:10px 20px;padding:15px;">';
                 $msg .= '<div style="color: #2d2d2d;font-size: 20px;text-align: right;">ثبت نام با موفقیت انجام شد.</div>';
