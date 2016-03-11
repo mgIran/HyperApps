@@ -29,8 +29,8 @@ class SiteController extends Controller
 	{
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
+
         $criteria=new CDbCriteria();
-    
         $criteria->addCondition('path LIKE :regex1','OR');
         $criteria->addCondition('path LIKE :regex2','OR');
         $criteria->addCondition('id  = :id','OR');
@@ -41,9 +41,17 @@ class SiteController extends Controller
         $catIds = CHtml::listData($catIds,'id','id');
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
-        $criteria->addCondition('platform_id=1');
+        if(isset($_GET['ajax']) and $_GET['platform']=='android')
+            $criteria->addCondition('platform_id=1');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='ios')
+            $criteria->addCondition('platform_id=2');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='windowsphone')
+            $criteria->addCondition('platform_id=3');
+        else
+            $criteria->addCondition('platform_id=1');
         $criteria->limit=20;
         $newestProgramDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
+
         $criteria=new CDbCriteria();
         $criteria->addCondition('path LIKE :regex1','OR');
         $criteria->addCondition('path LIKE :regex2','OR');
@@ -55,10 +63,18 @@ class SiteController extends Controller
         $catIds = CHtml::listData($catIds,'id','id');
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
-        $criteria->addCondition('platform_id=1');
+        if(isset($_GET['ajax']) and $_GET['platform']=='android')
+            $criteria->addCondition('platform_id=1');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='ios')
+            $criteria->addCondition('platform_id=2');
+        elseif(isset($_GET['ajax']) and $_GET['platform']=='windowsphone')
+            $criteria->addCondition('platform_id=3');
+        else
+            $criteria->addCondition('platform_id=1');
         $criteria->limit=20;
         $newestGameDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
-	$this->render('index', array(
+
+        $this->render('index', array(
             'newestProgramDataProvider'=>$newestProgramDataProvider,
             'newestGameDataProvider'=>$newestGameDataProvider,
         ));

@@ -1,20 +1,20 @@
 <div class="sidebar col-xs-12">
     <div>
-        <div class="dropdown-toggle android" data-toggle="dropdown">
+        <a href="<?php echo Yii::app()->createUrl('/android');?>" class="android" data-platform="android">
             <span class="icon-android icon-2x"></span>
             اندروید
-        </div>
+        </a>
     </div>
     <div>
-        <div class="dropdown-toggle apple" data-toggle="dropdown">
+        <a href="<?php echo Yii::app()->createUrl('/ios');?>" class="apple" data-platform="ios">
             <span class="icon-apple icon-2x"></span>
             iOS
-        </div>
+        </a>
     </div>
     <div>
-        <div class="dropdown-toggle win" data-toggle="dropdown">
+        <a href="<?php echo Yii::app()->createUrl('/widowsphone');?>" class="win" data-platform="windowsphone">
             <span class="icon-windows icon-2x"></span>
             ویندوز فون
-        </div>
+        </a>
     </div>
 </div>

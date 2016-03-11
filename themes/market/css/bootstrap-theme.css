@@ -353,45 +353,47 @@ header .right-header .user-section .type{
 .sidebar > div [class*="icon-"]{
     position: absolute;
     top: 50%;
-    right: 45px;
+    right: 15px;
     transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
 }
-.sidebar > div > div{
+.sidebar > div > a{
     line-height: 50px;
     display: block;
     height: 50px;
     position: relative;
-    padding-right:80px;
+    padding-right:50px;
     padding-left:40px;
+    color: #fff;
 }
-.sidebar div.android{
+.sidebar .android{
     background-color: #77c159;
+    display: block;
 }
-.sidebar div.apple{
+.sidebar .apple{
         background-color: rgba(242, 242, 242, 0.6);
     color: #555;
 }
-.sidebar div.win{
+.sidebar .win{
     background-color: #04a5f0;
 }
-.sidebar div.android:hover,
-.sidebar div.android:active,
-.sidebar div.android:focus,
-.sidebar div.android.active{
+.sidebar .android:hover,
+.sidebar .android:active,
+.sidebar .android:focus,
+.sidebar .android.active{
     background-color: rgba(129, 209, 96,1);
 }
-.sidebar div.apple:hover,
-.sidebar div.apple:active,
-.sidebar div.apple:focus,
-.sidebar div.apple.active{
+.sidebar .apple:hover,
+.sidebar .apple:active,
+.sidebar .apple:focus,
+.sidebar .apple.active{
     background-color: rgba(224, 224, 224, 0.6);
 }
-.sidebar div.win:hover,
-.sidebar div.win:active,
-.sidebar div.win:focus,
-.sidebar div.win.active{
+.sidebar .win:hover,
+.sidebar .win:active,
+.sidebar .win:focus,
+.sidebar .win.active{
     background-color: #04affe;
 }
 .sidebar ul.sidebar-dropdown{

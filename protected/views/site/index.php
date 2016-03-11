@@ -6,6 +6,46 @@
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl.carousel.min.js');
+
+Yii::app()->clientScript->registerScript('updateListView',"
+    $('.sidebar a').click(function(){
+        var p=$(this).data('platform');
+        $.fn.yiiListView.update('newest-programs',{
+            data:{platform:p},
+            success:function(){
+                var owl = document.getElementsByClassName('app-carousel');
+                owl.owlCarousel({
+                    responsive:{
+                        0:{
+                            items : 1,
+                        },
+                        410:{
+                            items : 2,
+                        },
+                        580:{
+                            items : 3
+                        },
+                        800:{
+                            items : 4
+                        },
+                        992:{
+                            items : 5
+                        },
+                        1370:{
+                            items : 6
+                        }
+                    },
+                    lazyLoad :true,
+                    margin :0,
+                    rtl:true,
+                    nav:true,
+                    navText : ['','<span class=\"icon-chevron-left\"></span>']
+                });
+            }
+        });
+        return false;
+    });
+");
 ?>
 
     <div class="app-box">
@@ -17,6 +57,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
         </div>
         <?php $this->widget('zii.widgets.CListView', array(
             'dataProvider'=>$newestProgramDataProvider,
+            'id'=>'newest-programs',
             'itemView'=>'_app_item',
             'template'=>'{items}',
             'itemsCssClass'=>'app-carousel'
@@ -552,7 +593,7 @@ Yii::app()->clientScript->registerScript('carousels','
             992:{
                 items : 5
             },
-            13700:{
+            1370:{
                 items : 6
             }
         },
