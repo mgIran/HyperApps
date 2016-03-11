@@ -19,7 +19,8 @@
 	?>
     <!-- Fav and Touch and touch icons -->
     <link rel="shortcut icon" href="<?php echo $baseUrl;?>/img/icons/favicon.ico">
-	<?php  
+	<?php
+
 	  $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
       $cs->registerCssFile($baseUrl.'/css/bootstrap-reset.css');
 	  $cs->registerCssFile($baseUrl.'/css/bootstrap-responsive.min.css');
@@ -30,6 +31,7 @@
       $cs->registerCssFile($baseUrl.'/css/jquery.tagit.css');
       $cs->registerCssFile($baseUrl.'/css/tagit.ui-zendesk.css');
 
+      $cs->registerCoreScript('jquery.ui');
 	  $cs->registerScriptFile($baseUrl.'/js/bootstrap.min.js');
       $cs->registerScriptFile($baseUrl.'/js/plugins/tag-it.min.js');
       $cs->registerScriptFile($baseUrl.'/js/scripts.js');

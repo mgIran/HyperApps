@@ -106,12 +106,10 @@ class PanelController extends Controller
         $nationalCardImage=array();
         if($detailsModel->national_card_image!='')
             $nationalCardImage=array(
-                array(
-                    'name' => $detailsModel->national_card_image,
-                    'src' => $nationalCardImageUrl.'/'.$detailsModel->national_card_image,
-                    'size' => (file_exists($nationalCardImagePath.'/'.$detailsModel->national_card_image))?filesize($nationalCardImagePath.'/'.$detailsModel->national_card_image):0,
-                    'serverName' => $detailsModel->national_card_image,
-                ),
+                'name' => $detailsModel->national_card_image,
+                'src' => $nationalCardImageUrl.'/'.$detailsModel->national_card_image,
+                'size' => (file_exists($nationalCardImagePath.'/'.$detailsModel->national_card_image))?filesize($nationalCardImagePath.'/'.$detailsModel->national_card_image):0,
+                'serverName' => $detailsModel->national_card_image,
             );
 
         $this->render('account', array(

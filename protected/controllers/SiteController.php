@@ -30,16 +30,35 @@ class SiteController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
         $criteria=new CDbCriteria();
-        $criteria->addCondition('category_id=1');
+    
+        $criteria->addCondition('path LIKE :regex1','OR');
+        $criteria->addCondition('path LIKE :regex2','OR');
+        $criteria->addCondition('id  = :id','OR');
+        $criteria->params[':regex1'] = '1-%';
+        $criteria->params[':regex2'] = '%-1-%';
+        $criteria->params[':id'] = 1;
+        $catIds=AppCategories::model()->findAll($criteria);
+        $catIds = CHtml::listData($catIds,'id','id');
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('category_id',$catIds);
         $criteria->addCondition('platform_id=1');
         $criteria->limit=20;
         $newestProgramDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
         $criteria=new CDbCriteria();
-        $criteria->addCondition('category_id=2');
+        $criteria->addCondition('path LIKE :regex1','OR');
+        $criteria->addCondition('path LIKE :regex2','OR');
+        $criteria->addCondition('id  = :id','OR');
+        $criteria->params[':regex1'] = '2-%';
+        $criteria->params[':regex2'] = '%-2-%';
+        $criteria->params[':id'] = 2;
+        $catIds=AppCategories::model()->findAll($criteria);
+        $catIds = CHtml::listData($catIds,'id','id');
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('category_id',$catIds);
         $criteria->addCondition('platform_id=1');
         $criteria->limit=20;
         $newestGameDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
-		$this->render('index', array(
+	$this->render('index', array(
             'newestProgramDataProvider'=>$newestProgramDataProvider,
             'newestGameDataProvider'=>$newestGameDataProvider,
         ));
