@@ -22,21 +22,19 @@ $(function() {
         return false;
     });
 
-    if($(".app-description").height()>150)
+    if($(".app-description").height()>230)
         $(".app-description").next().show();
     $('body').on('click', '.more-text', function(){
         var $h = $(".app-description").height();
         if($(this).parent().hasClass('open'))
         {
-            $(this).parent().animate({height:150},0).removeClass('open');
-            $(this).find('span:first-child').removeClass('icon-rotate-180');
-            $(this).find('span:last-child').html('توضیحات بیشتر');
+            $(this).parent().animate({height:230},0).removeClass('open');
+            $(this).find('span').html('توضیحات بیشتر');
         }
-        else if($h>150)
+        else if($h>230)
         {
             $(this).parent().animate({height:$h+80},0).addClass('open');
-            $(this).find('span:first-child').addClass('icon-rotate-180');
-            $(this).find('span:last-child').html('بستن');
+            $(this).find('span').html('بستن');
         }
         return false;
     });

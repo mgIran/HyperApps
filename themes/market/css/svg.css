@@ -1,0 +1,32 @@
+.svg{
+    display: inline-block;
+    background-size: cover !important;
+    margin-left: 5px !important;
+}
+.svg-bag{
+    background: url("../svg/bag.svg") no-repeat scroll 0 0 transparent;
+    width: 17px;
+    height: 16px;
+    margin-right: 5px !important;
+}
+.svg-coin{
+    background: url("../svg/coin.svg") no-repeat scroll 0 0 transparent;
+    width: 22px;
+    height: 11px;
+}
+.svg-star{
+    background: url("../svg/star.svg") no-repeat scroll 0 0 transparent;
+    width: 16px;
+    height: 14px;
+}
+.svg-star-empty{
+    background: url("../svg/star-empty.svg") no-repeat scroll 0 0 transparent;
+    width: 16px;
+    height: 14px;
+}
+.svg-bookmark{
+    background: url("../svg/bookmark.svg") no-repeat scroll 0 0 transparent;
+    width: 20px;
+    height: 30px;
+    float: right;
+}

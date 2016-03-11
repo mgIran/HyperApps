@@ -29,20 +29,30 @@ if($model->platform)
                 </span>
             </div>
             <div class="row-fluid">
-                <span class="icon-check green" ></span>
-                <span ><?= $model->install ?></span>
+                <span class="svg svg-bag green" ></span>
+                <span ><?= $model->install ?>&nbsp;نصب فعال</span>
             </div>
             <div class="row-fluid">
-                <span class="icon-cog green" ></span>
+                <span class="svg svg-coin green" ></span>
                 <span ><?= $model->price?$model->price:'رایگان'; ?></span>
             </div>
             <div class="row-fluid">
                 <span class="pull-left">
                     <button class="btn btn-success" type="button" >نصب</button>
                 </span>
-                <span class="pull-left">
-                    <span class="icon-cog green" ></span>
-                    <span ><?= $model->price?$model->price:'رایگان'; ?></span>
+                <span class="pull-left relative">
+                    <?= CHtml::ajaxLink('',array('/apps/bookmark'),array(
+                        'data' => "js:{appId:$model->id}",
+                        'type' => 'POST',
+                        'dataType' => 'json',
+                        'success' => 'js:function(data){
+                            console.log(data);
+                        }'
+                    ),array(
+                        'id' =>"bookmark-app"
+                    )); ?>
+                    <span class="svg svg-bookmark green" ></span>
+                    <span class="green" >نشان کردن</span>
                 </span>
             </div>
         </div>
@@ -65,7 +75,6 @@ if($model->platform)
                     <?= $model->description ?>
                 </div>
                 <a class="more-text" href="#">
-                    <span class="icon-circle-arrow-down"></span>
                     <span>توضیحات بیشتر</span>
                 </a>
             </section>
@@ -86,7 +95,7 @@ if($model->platform)
                     <span class="ltr" ><?= $model->version ?></span>
                 </div>
             </div>
-            <div class="app-details">
+            <div class="app-details border-none">
                 <?
                 if($model->permissions):
                     echo '<h4>دسترسی ها</h4>';
@@ -271,6 +280,8 @@ if($model->platform)
             dots:true,
             nav:false,
             items:3,
+            rtl:false,
+            //autoWidth:true,
             margin:10,
         });
     ");

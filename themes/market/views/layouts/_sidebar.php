@@ -1,18 +1,18 @@
 <div class="sidebar col-xs-12">
     <div>
-        <div class="dropdown-toggle android" data-toggle="dropdown">
+        <div class="android">
             <span class="icon-android icon-2x"></span>
             اندروید
         </div>
     </div>
     <div>
-        <div class="dropdown-toggle apple" data-toggle="dropdown">
+        <div class="apple">
             <span class="icon-apple icon-2x"></span>
             iOS
         </div>
     </div>
     <div>
-        <div class="dropdown-toggle win" data-toggle="dropdown">
+        <div class="win">
             <span class="icon-windows icon-2x"></span>
             ویندوز فون
         </div>

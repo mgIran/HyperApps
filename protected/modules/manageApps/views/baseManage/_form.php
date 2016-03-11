@@ -41,7 +41,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'category_id'); ?>
-		<?php echo $form->dropDownList($model,'category_id' , CHtml::listData(AppCategories::model()->findAll(),'id' ,'fullName'));
+		<?php echo $form->dropDownList($model,'category_id',AppCategories::model()->sortList());
         ?>
 		<?php echo $form->error($model,'category_id'); ?>
 	</div>

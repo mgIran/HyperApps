@@ -61,6 +61,9 @@ html{
     overflow-x: hidden;
     position: relative;
 }
+.owl-carousel *{
+    direction: ltr;
+}
 .container-fluid{
     padding-right: 20px;
     padding-left: 20px;
@@ -80,6 +83,7 @@ html{
 
 .green{
     color: #77c159 !important;
+    fill: #77c159 !important;
 }
 .btn.btn-success{
     background-color: #77c159 !important;
@@ -976,6 +980,7 @@ ul.nav li{
     line-height: 35px;
     font-size: 24px;
     color: #787878;
+    margin-top: 25px;
 }
 .app-inner .app-heading > .row-fluid{
 
@@ -987,7 +992,7 @@ ul.nav li{
     padding-left: 15px;
     line-height: 30px;
     font-size: 13px;
-    color: #787878;
+    color: #a6a6a6;
     max-width: 30%;
     margin: 0;
 }
@@ -1024,7 +1029,7 @@ ul.nav li{
     display: block;
     overflow: hidden;
     border-bottom: 1px solid #dfdfdf;
-    height: 150px;
+    height: 230px;
     -webkit-transition: all 0.5s linear;
     -moz-transition: all 0.5s linear;
     -ms-transition: all 0.5s linear;
@@ -1079,7 +1084,7 @@ ul.nav li{
     display: block;
     overflow: hidden;
     font-size: 13px;
-    line-height: 14px;
+    line-height: 26px;
     color: #a6a6a6;
     margin-bottom: 20px;
 }
@@ -1089,16 +1094,16 @@ ul.nav li{
     bottom: 0;
     right: 0;
     left: 0;
-    padding: 30px 0;
+    padding: 50px 0 40px;
     font-size: 13px;
     color: #82d361;
     text-align: center;
     background: rgba(255,255,255,0);
-    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-    background: -o-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-    background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
+    background: -o-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
 }
 .app-like{
@@ -1212,4 +1217,16 @@ ul.nav li{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.relative{
+    position: relative;
+}
+.border-none{
+    border: none !important;
+}
+#bookmark-app{
+    position: absolute;
+    top:0;right: 0;left: 0;bottom: 0;
+    z-index: 1;
+    display: inline-block;
 }
