@@ -25,6 +25,7 @@
     ?>
 </head>
 <body>
+
 <?= $this->renderPartial('//layouts/_header'); ?>
 <?= $this->renderPartial('//layouts/_sidebar'); ?>
 <?= $this->renderPartial('//layouts/_navbar'); ?>

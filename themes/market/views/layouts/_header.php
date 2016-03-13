@@ -1,26 +1,16 @@
-<?
-if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user'):
-?>
-<div id="user-menu">
-    <div class="overly"></div>
-    <ul class="user-menu">
-        <li>
-            <a href="<?= Yii::app()->createUrl('/dashboard') ?>">
-                <span class="icon-dashboard"></span>
-                داشبورد
-            </a>
-        </li>
-        <li>
-            <a href="<?= Yii::app()->createUrl('logout') ?>">
-                <span class="icon-exit"></span>
-                خروج
-            </a>
-        </li>
-    </ul>
-</div>
-<?
-endif;
-?>
+<? if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user'):?>
+    <div id="user-menu">
+        <div class="overly"></div>
+        <ul class="user-menu">
+            <li>
+                <a href="<?= Yii::app()->createUrl('/dashboard') ?>"><span class="icon-dashboard"></span>داشبورد</a>
+            </li>
+            <li>
+                <a href="<?= Yii::app()->createUrl('logout') ?>"><span class="icon-exit"></span>خروج</a>
+            </li>
+        </ul>
+    </div>
+<? endif;?>
 <header class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="logo-box col-xs-12">
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>"></a>

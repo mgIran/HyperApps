@@ -12,8 +12,8 @@ Yii::app()->clientScript->registerScript('updateListView',"
         var p=$(this).data('platform');
         $.fn.yiiListView.update('newest-programs',{
             data:{platform:p},
-            success:function(){
-                var owl = document.getElementsByClassName('app-carousel');
+            complete:function(){
+                var owl = $('.app-carousel');
                 owl.owlCarousel({
                     responsive:{
                         0:{
