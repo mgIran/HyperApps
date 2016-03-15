@@ -26,7 +26,8 @@
 }
 .svg-bookmark{
     background: url("../svg/bookmark.svg") no-repeat scroll 0 0 transparent;
-    width: 20px;
-    height: 30px;
+    width: 12px;
+    height: 18px;
     float: right;
+    margin: 7px 0;
 }

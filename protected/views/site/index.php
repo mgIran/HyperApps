@@ -43,6 +43,40 @@ Yii::app()->clientScript->registerScript('updateListView',"
                 });
             }
         });
+
+        $.fn.yiiListView.update('newest-games',{
+            data:{platform:p},
+            complete:function(){
+                var owl = $('.app-carousel');
+                owl.owlCarousel({
+                    responsive:{
+                        0:{
+                            items : 1,
+                        },
+                        410:{
+                            items : 2,
+                        },
+                        580:{
+                            items : 3
+                        },
+                        800:{
+                            items : 4
+                        },
+                        992:{
+                            items : 5
+                        },
+                        1370:{
+                            items : 6
+                        }
+                    },
+                    lazyLoad :true,
+                    margin :0,
+                    rtl:true,
+                    nav:true,
+                    navText : ['','<span class=\"icon-chevron-left\"></span>']
+                });
+            }
+        });
         return false;
     });
 ");
@@ -71,6 +105,7 @@ Yii::app()->clientScript->registerScript('updateListView',"
             <a class="pull-left btn btn-success more-app" href="<?php echo $this->createUrl('/apps/games');?>">بیشتر</a>
         </div>
         <?php $this->widget('zii.widgets.CListView', array(
+            'id'=>'newest-games',
             'dataProvider'=>$newestGameDataProvider,
             'itemView'=>'_app_item',
             'template'=>'{items}',

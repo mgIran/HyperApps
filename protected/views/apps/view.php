@@ -3,7 +3,8 @@
 /* @var $model Apps */
 
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
-Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
+Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.theme.default.min.css');
+//Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl.carousel.min.js');
 
 if($model->platform)
@@ -59,10 +60,13 @@ if($model->platform)
         <div class="app-body">
             <div class="images-carousel">
                 <?
+                $imager=new Imager();
                 foreach($model->images as $image):
                     if(file_exists(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image)):
+                        $imageInfo=$imager->getImageInfo(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image);
+                        $ratio=$imageInfo['width']/$imageInfo['height'];
                 ?>
-                        <div class="image-item">
+                        <div class="image-item" style="width: <?php echo 318*$ratio;?>px;">
                             <img src="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>" alt="<?= $model->title ?>" >
                         </div>
                 <?
@@ -277,11 +281,9 @@ if($model->platform)
 //if(count($model->images)>3){
     Yii::app()->clientScript->registerScript('app-images-carousel',"
         $('.images-carousel').owlCarousel({
-            dots:true,
-            nav:false,
-            items:3,
-            rtl:false,
-            //autoWidth:true,
+            items:4,
+            autoWidth:true,
             margin:10,
+            rtl:false
         });
     ");

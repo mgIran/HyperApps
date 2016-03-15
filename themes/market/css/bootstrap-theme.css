@@ -61,9 +61,6 @@ html{
     overflow-x: hidden;
     position: relative;
 }
-.owl-carousel *{
-    direction: ltr;
-}
 .container-fluid{
     padding-right: 20px;
     padding-left: 20px;
@@ -1004,15 +1001,12 @@ ul.nav li{
     margin-top: 190px;
 }
 .app-inner .app-body .images-carousel{
-    display: block;
-    overflow: hidden;
+    position: relative;
+    width: 100%;
     margin: 50px 0;
 }
 .app-inner .app-body .images-carousel .image-item{
-    position: relative;
     height: 318px;
-    display: block;
-    overflow: hidden;
 }
 .app-inner .app-body .images-carousel .image-item img {
     position: absolute;
