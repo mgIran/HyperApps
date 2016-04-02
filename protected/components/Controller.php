@@ -25,11 +25,10 @@ class Controller extends CController
     public $place = null;
     public $description;
     public $keywords;
-
     public $siteName;
     public $pageTitle;
-
     public $sideRender = null;
+    public $categories;
 
     public function beforeRender($view){
         $this->description = Yii::app()->db->createCommand()
@@ -52,6 +51,10 @@ class Controller extends CController
             ->from('ym_site_setting')
             ->where('name = "default_title"')
             ->queryScalar();
+        $this->categories=array(
+            'programs'=>AppCategories::model()->findAll('parent_id=1'),
+            'games'=>AppCategories::model()->findAll('parent_id=2'),
+        );
         return true;
     }
 

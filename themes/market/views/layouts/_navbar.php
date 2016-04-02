@@ -1,3 +1,6 @@
+<?php
+/* @var $category AppCategories */
+?>
 <nav class="navbar navbar-default col-xs-12">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
@@ -16,15 +19,31 @@
         <ul class="nav navbar-nav">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
-                <ul class="dropdown-menu" >
-                    <li><a href="#">دخترانه</a></li>
-                    <li><a href="#">پسرانه</a></li>
-                </ul>
+                <div class="panel panel-body dropdown-menu cat-menu-container">
+                    <div class="pull-right col-md-6">
+                        <div class="row">
+                            <a href="<?php echo Yii::app()->createUrl('/apps/programs');?>" class="cat-menu-head">برنامه ها</a>
+                            <ul class="cat-menu">
+                                <?php foreach($this->categories['programs'] as $category):?>
+                                    <li><a href="#"><?php echo $category->title;?></a></li>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pull-left col-md-6">
+                        <div class="row">
+                            <a href="<?php echo Yii::app()->createUrl('/apps/games');?>" class="cat-menu-head">بازی ها</a>
+                            <ul class="cat-menu">
+                                <?php foreach($this->categories['games'] as $category):?>
+                                    <li><a href="#"><?php echo $category->title;?></a></li>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </li>
             <li class="divider">
-                <a>
-                    |
-                </a>
+                <a>|</a>
             </li>
             <li class=""><a href="<?= Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
             <li><a href="#"></a></li>
