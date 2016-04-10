@@ -8,7 +8,7 @@
     </div>
     <div class="panel-body step-content">
         <div class="container-fluid">
-            test
+            تست سیستم
         </div>
     </div>
 </div>
