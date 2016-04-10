@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_3306
-Source Server Version : 50612
+Source Server         : localhost
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : market
 
 Target Server Type    : MYSQL
-Target Server Version : 50612
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-03-11 12:15:18
+Date: 2016-04-10 13:58:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -83,11 +83,13 @@ CREATE TABLE `ym_apps` (
   CONSTRAINT `ym_apps_ibfk_1` FOREIGN KEY (`developer_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_3` FOREIGN KEY (`platform_id`) REFERENCES `ym_app_platforms` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_apps
 -- ----------------------------
+INSERT INTO `ym_apps` VALUES ('17', 'هواشناسی هوشمند و پیشرفته', null, '4', 'enable', '4000', 'ZHs0h1457613911.apk', '1FUfb1457613932.png', '<p><strong>هواشناسی پیشرفته و جدید کافه بازار</strong><br />\nجدیدترین اپلیکیشین هواشناسی با طراحی فوق العاده و متریال پیش روی شماست !<br />\nبا این برنامه میتونید آب و هوای تمام شهرهای ایران و دنیارو در کمترین زمان با طراحی فوق العاده زیبا مشاهده کنید و برای روزهای بعدی برنامه ریزی داشته باشید !</p>\n\n<p> </p>\n\n<p><strong>امکانات جدید و بی نظیر این نرم افزار شامل :</strong></p>\n\n<p> </p>\n\n<p>- نمایش آب و هوای تمام نقاط و شهرهای دنیا، بویژه ایران<br />\n- پیش بینی آب و هوای شش روز آینده<br />\n- پشتیبانی از چند شهر برای نمایش آب و هوا<br />\n- پشتیبانی از مکان کاربر برای نمایش آب و هوا<br />\n- دارای ویجت صفحه قفل و نوار اعلان برای دسترسی بهتر<br />\n- نمایش آب و هوای نزدیک ترین محل به نقطه ی مورد نظر درصورت پیدا نکردن نام محل (منحصر به فردترین امکان برنامه بدون مشابه داخلی و خارجی)<br />\n- رابط کاربری فوق العاده زیبا و متریال، تغییر ظاهر برنامه با توجه به شرایط و ساعت شبانه روز<br />\n- دریافت اطلاعات از سرور معتبر و دقیق برای هواشناسی برای پیش بینی دقیق<br />\n-پیش بینی دوره ای و ساعتی وضعیت هوا<br />\n- امکان به اشتراک گذاشتن آب و هوا برای اطلاع رسانی به دوستان<br />\n- و ...</p>\n', '<p>بهبود رابط کاربری در اندروید 4.2</p>\n', '[\" \\u0627\\u062c\\u0631\\u0627 \\u0634\\u062f\\u0646 \\u062f\\u0631 \\u0647\\u0646\\u06af\\u0627\\u0645 \\u0631\\u0627\\u0647\\u200c\\u0627\\u0646\\u062f\\u0627\\u0632\\u06cc \",\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u06a9\\u0627\\u0631\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647\"]', '2127', ' 1.0.5', 'pending', '1', 'سیبچه', '0', '0');
+INSERT INTO `ym_apps` VALUES ('18', 'برنامه آیفون', null, '4', 'enable', '0', null, null, null, null, null, null, null, 'pending', '2', 'سیبچه', '0', '0');
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -101,15 +103,19 @@ CREATE TABLE `ym_app_categories` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `ym_app_categories_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_app_categories
 -- ----------------------------
-INSERT INTO `ym_app_categories` VALUES ('1', 'ارتباطات', null, null);
-INSERT INTO `ym_app_categories` VALUES ('2', 'آموزش', null, null);
-INSERT INTO `ym_app_categories` VALUES ('3', 'سرگرمی', null, null);
-INSERT INTO `ym_app_categories` VALUES ('4', 'آب و هوا', null, null);
+INSERT INTO `ym_app_categories` VALUES ('1', 'برنامه ها', null, null);
+INSERT INTO `ym_app_categories` VALUES ('2', 'بازی ها', null, null);
+INSERT INTO `ym_app_categories` VALUES ('3', 'آموزش ها', null, null);
+INSERT INTO `ym_app_categories` VALUES ('4', 'کاربردی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('5', 'آب و هوا', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('6', 'موسیقی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('7', 'اکشن', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('8', 'فکری', '2', '2-');
 
 -- ----------------------------
 -- Table structure for ym_app_images
@@ -163,11 +169,11 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '15');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457459');
+INSERT INTO `ym_counter_save` VALUES ('counter', '22');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457482');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
-INSERT INTO `ym_counter_save` VALUES ('yesterday', '0');
+INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
 
 -- ----------------------------
 -- Table structure for ym_counter_users
@@ -182,7 +188,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1457683991');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1459664913');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -764,6 +770,7 @@ CREATE TABLE `ym_users` (
   `password` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL COMMENT 'پست الکترونیک',
   `role_id` int(10) unsigned DEFAULT NULL,
+  `create_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -772,17 +779,17 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '2');
-INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Bsqz6xUsd3HykzEekwnP7O2tbAe42XytV4dTpV0iEN0gj3TIB/Se.', 'wsd@sd.s', null);
-INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null);
-INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null);
-INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null);
-INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null);
-INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null);
-INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null);
-INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null);
-INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null);
-INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null);
+INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '2', null);
+INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Bsqz6xUsd3HykzEekwnP7O2tbAe42XytV4dTpV0iEN0gj3TIB/Se.', 'wsd@sd.s', null, null);
+INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null, null);
+INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null, null);
+INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null, null);
+INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null, null);
+INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null, null);
+INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null, null);
+INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null, null);
+INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null, null);
+INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null, null);
 
 -- ----------------------------
 -- Table structure for ym_user_details
