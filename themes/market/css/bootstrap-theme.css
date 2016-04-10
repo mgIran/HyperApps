@@ -77,6 +77,9 @@ html{
 [class*="col-"]{
     float: right;
 }
+.col-md-offset-2{
+    margin-right: 16.6667%;
+}
 
 .green{
     color: #77c159 !important;

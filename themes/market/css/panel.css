@@ -57,3 +57,95 @@ header
 .block{
     display: block;
 }
+.dashboard-container{
+    position: relative;
+}
+.developer-signup-link{
+    position: absolute;
+    left: 20px;
+    top: 0;
+}
+.developer-signup-container .steps{
+    display: block;
+    overflow: hidden;
+    clear: both;
+    padding: 0;
+    width: 100%;
+    margin: 50px auto;
+}
+.developer-signup-container .steps li{
+    position: relative;
+    list-style: none;
+    float: right;
+    width: 25%;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    color: #999;
+}
+.developer-signup-container .steps li:first-child{
+    border-right: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+}
+.developer-signup-container .steps li:last-child{
+    border-left: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+.developer-signup-container .steps li .num{
+    background: #999;
+    border-radius: 2px;
+    padding: 5px 8px;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 10px;
+}
+.developer-signup-container .steps li .arrow{
+    position: absolute;
+    width: 0;
+    height: 100%;
+    left: 22px;
+    top: 0;
+}
+.developer-signup-container .steps li .arrow>div {
+    width: 2px;
+    height: 100%;
+}
+
+.developer-signup-container .steps li .arrow>div:before {
+    content: " ";
+    display: block;
+    width: 1px;
+    height: 65%;
+    background: #aaa;
+    -webkit-transform: rotate(30deg);
+    -moz-transform: rotate(30deg);
+    -ms-transform: rotate(30deg);
+    transform: rotate(30deg);
+    position: absolute;
+    top: -6px;
+    right: 12px;
+}
+.developer-signup-container .steps li .arrow>div:after {
+    content: " ";
+    display: block;
+    width: 1px;
+    height: 65%;
+    background: #aaa;
+    -webkit-transform: rotate(-30deg);
+    -moz-transform: rotate(-30deg);
+    -ms-transform: rotate(-30deg);
+    transform: rotate(-30deg);
+    position: absolute;
+    bottom: -6px;
+    right: 12px;
+}
+.developer-signup-container .steps li.active{
+    color: #77c159;
+}
+.developer-signup-container .steps li.active .num{
+    background: #77c159;
+}
+.developer-signup-container .step-content .text{
+    margin-bottom: 30px;
+}

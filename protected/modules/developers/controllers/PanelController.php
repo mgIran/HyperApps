@@ -27,6 +27,10 @@ class PanelController extends Controller
     {
         return array(
             array('allow',
+                'actions'=>array('signup'),
+                'roles'=>array('user'),
+            ),
+            array('allow',
                 'actions'=>array('account','index','uploadNationalCardImage'),
                 'roles'=>array('developer'),
             ),
@@ -158,6 +162,20 @@ class PanelController extends Controller
             $response = ['state' => 'error', 'msg' => 'فایلی ارسال نشده است.'];
         echo CJSON::encode($response);
         Yii::app()->end();
+    }
+
+    /**
+     * Convert user account to developer
+     */
+    public function actionSignup()
+    {
+        Yii::app()->theme='market';
+        Yii::app()->getModule('pages');
+        $agreementText=Pages::model()->find('title=:title', array(':title'=>'قرارداد توسعه دهندگان'));
+        $this->render('signup', array(
+            'step'=>Yii::app()->request->getQuery('step'),
+            'agreementText'=>$agreementText['summary'],
+        ));
     }
 
     /**
