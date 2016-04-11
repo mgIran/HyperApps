@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2016-04-10 14:45:23
+Date: 2016-04-11 11:44:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -169,11 +169,11 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '23');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457489');
+INSERT INTO `ym_counter_save` VALUES ('counter', '24');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457490');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
-INSERT INTO `ym_counter_save` VALUES ('yesterday', '0');
+INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
 
 -- ----------------------------
 -- Table structure for ym_counter_users
@@ -188,7 +188,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1460282985');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1460358761');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -202,7 +202,7 @@ CREATE TABLE `ym_pages` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `ym_pages_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `ym_page_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_pages
@@ -215,6 +215,7 @@ INSERT INTO `ym_pages` VALUES ('13', 'سلام', '<p>سشیکمئبمسشئبئ�
 INSERT INTO `ym_pages` VALUES ('14', 'راهنما', '<p>ستیدبمشسکدئیب</p>\r\n', '2');
 INSERT INTO `ym_pages` VALUES ('15', 'ljdvn', '<p>ksdmnkafm</p>\r\n', '2');
 INSERT INTO `ym_pages` VALUES ('16', 'sdfjnsfl;km', '<p>&nbsp;</p>\r\n\r\n<p>dfasfsf</p>\r\n\r\n<p>&nbsp;</p>\r\n', '2');
+INSERT INTO `ym_pages` VALUES ('17', 'قرارداد توسعه دهندگان', 'متن قرارداد', '4');
 
 -- ----------------------------
 -- Table structure for ym_page_categories
@@ -705,7 +706,7 @@ CREATE TABLE `ym_site_setting` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   `value` text CHARACTER SET utf8 COLLATE utf8_persian_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_site_setting
@@ -714,6 +715,8 @@ INSERT INTO `ym_site_setting` VALUES ('1', 'site_title', 'عنوان سایت', 
 INSERT INTO `ym_site_setting` VALUES ('2', 'default_title', 'عنوان پیش فرض صفحات', 'تابلو ');
 INSERT INTO `ym_site_setting` VALUES ('3', 'keywords', 'کلمات کلیدی سایت', 'خرید، فروش، دست دوم، خودرو، املاک، موبایل، وسایل خانگی، تبلت، پوشاک ، نوزاد و سیسمونی، صوتی و تصویری، دوربین عکاسی فیلمبرداری، کنسول بازی، آرایشی، بهداشتی، زیبایی، جواهر، بدلیجات، ساعت، آنتیک، خدمات، آگهی، نیازمندی، استخدام،');
 INSERT INTO `ym_site_setting` VALUES ('4', 'site_description', 'شرح وبسایت', 'تابلو فضای داد و ستد آنلاین و نیازمندی های خرید و فروش اینترنتی رایگان در بخش های املاک، خودرو، وسایل خانگی، موبایل، پوشاک، آنتیک، آرایشی زیبایی بهداشتی، عکاسی و ...');
+INSERT INTO `ym_site_setting` VALUES ('5', 'buy_credit_options', 'گزینه های خرید اعتبار', '[\"5000\",\"10000\",\"20000\"]');
+INSERT INTO `ym_site_setting` VALUES ('6', 'min_credit', 'حداقل اعتبار جهت تبدیل عضویت', '1000');
 
 -- ----------------------------
 -- Table structure for ym_towns
@@ -771,6 +774,7 @@ CREATE TABLE `ym_users` (
   `email` varchar(255) NOT NULL COMMENT 'پست الکترونیک',
   `role_id` int(10) unsigned DEFAULT NULL,
   `create_date` timestamp NULL DEFAULT NULL,
+  `status` enum('pending','active','blocked','deleted') DEFAULT 'pending',
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -779,17 +783,17 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '1', null);
-INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Bsqz6xUsd3HykzEekwnP7O2tbAe42XytV4dTpV0iEN0gj3TIB/Se.', 'wsd@sd.s', '2', null);
-INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null, null);
-INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null, null);
-INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null, null);
-INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null, null);
-INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null, null);
-INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null, null);
-INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null, null);
-INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null, null);
-INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null, null);
+INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '2', null, 'pending');
+INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'masoud@gmail.com', '2', null, 'pending');
+INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null, null, 'pending');
 
 -- ----------------------------
 -- Table structure for ym_user_details
@@ -809,7 +813,7 @@ CREATE TABLE `ym_user_details` (
   `address` longtext COLLATE utf8_persian_ci COMMENT 'نشانی دقیق پستی',
   `credit` double DEFAULT NULL COMMENT 'اعتبار',
   `developer_id` varchar(20) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شناسه توسعه دهنده',
-  `details_status` enum('accepted','pending') COLLATE utf8_persian_ci DEFAULT 'accepted' COMMENT 'وضعیت اطلاعات کاربر',
+  `details_status` enum('accepted','pending','failed') COLLATE utf8_persian_ci DEFAULT 'accepted' COMMENT 'وضعیت اطلاعات کاربر',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -819,7 +823,7 @@ CREATE TABLE `ym_user_details` (
 -- Records of ym_user_details
 -- ----------------------------
 INSERT INTO `ym_user_details` VALUES ('1', '8', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', null, null, null, null, null, '5000', '', null);
-INSERT INTO `ym_user_details` VALUES ('2', '9', null, null, null, null, null, null, null, null, null, null, null, 'accepted');
+INSERT INTO `ym_user_details` VALUES ('2', '9', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', '0370518926', '6Own01460349732.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد خ شوندی ک12 پ5', '1500', null, 'pending');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
