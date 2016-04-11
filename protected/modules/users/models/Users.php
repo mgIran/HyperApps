@@ -9,7 +9,9 @@
  * @property string $password
  * @property string $email
  * @property string $role_id
+ * @property string $create_date
  * @property string $status
+ * @property string $verification_token
  * @property string $repeatPassword
  * @property string $oldPassword
  * @property string $newPassword
@@ -49,15 +51,16 @@ class Users extends CActiveRecord
             array('oldPassword ,newPassword ,repeatPassword', 'required' , 'on'=>'update'),
             array('email' , 'filter' , 'filter' => 'trim' ,'on' => 'create'),
             array('email' , 'unique' ,'on' => 'create'),
-            array('username, password', 'length', 'max'=>100 ,'on' => 'create'),
+            array('username, password, verification_token', 'length', 'max'=>100 ,'on' => 'create'),
             array('oldPassword', 'oldPass' , 'on'=>'update'),
             array('repeatPassword', 'compare', 'compareAttribute'=>'newPassword' ,'operator'=>'==', 'message' => 'رمز های عبور همخوانی ندارند' , 'on'=>'update'),
             array('email', 'length', 'max'=>255),
             array('role_id', 'length', 'max'=>10),
             array('status', 'length', 'max'=>8),
+            array('create_date', 'length', 'max'=>20),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, username, password, roleId, status', 'safe', 'on'=>'search'),
+            array('id, username, password, roleId, create_date, status, verification_token', 'safe', 'on'=>'search'),
         );
     }
 
@@ -101,7 +104,9 @@ class Users extends CActiveRecord
             'repeatPassword' => 'تکرار کلمه عبور',
             'oldPassword' => 'کلمه عبور فعلی',
             'newPassword' => 'کلمه عبور جدید',
+            'create_date' => 'تاریخ ثبت نام',
             'status' => 'وضعیت کاربر',
+            'verification_token' => 'Verification Token',
         );
     }
 
@@ -126,7 +131,9 @@ class Users extends CActiveRecord
         $criteria->compare('id',$this->id,true);
         $criteria->compare('username',$this->username,true);
         $criteria->compare('password',$this->password,true);
+        $criteria->compare('create_date',$this->create_date,true);
         $criteria->compare('status',$this->status,true);
+        $criteria->compare('verification_token',$this->verification_token,true);
         $criteria->addSearchCondition('role.id' , $this->roleId );
         $criteria->with = array('role');
         return new CActiveDataProvider($this, array(

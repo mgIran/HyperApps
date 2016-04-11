@@ -54,8 +54,15 @@ class UserLoginForm extends CFormModel
 		if(!$this->hasErrors())
 		{
 			$this->_identity = new UserIdentity($this->email,$this->password);
-			if(!$this->_identity->authenticate())
-				$this->addError($attribute,'پست الکترونیک یا رمز عبور اشتباه است .');
+            $this->_identity->authenticate();
+			if($this->_identity->errorCode===3)
+				$this->addError($attribute,'این حساب کاربری فعال نشده است.');
+            elseif($this->_identity->errorCode===4)
+                $this->addError($attribute,'این حساب کاربری مسدود شده است.');
+            elseif($this->_identity->errorCode===5)
+                $this->addError($attribute,'این حساب کاربری حذف شده است.');
+            else
+                $this->addError($attribute,'پست الکترونیک یا رمز عبور اشتباه است .');
 		}
 	}
 

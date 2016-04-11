@@ -25,6 +25,13 @@ class UserIdentity extends CUserIdentity
     public $email;
 
     /**
+     * User status errors
+     */
+    const ERROR_STATUS_PENDING = 3;
+    const ERROR_STATUS_BLOCKED = 4;
+    const ERROR_STATUS_DELETED = 5;
+
+    /**
      * Constructor.
      * @param string $email email
      * @param string $password password
@@ -41,7 +48,13 @@ class UserIdentity extends CUserIdentity
         $record = Users::model()->findByAttributes(array('email'=>$this->email));
         if($record===null)
             $this->errorCode=self::ERROR_USERNAME_INVALID;
-        else if(!$bCrypt->verify($this->password , $record->password))
+        elseif($record->status=='pending')
+            $this->errorCode=self::ERROR_STATUS_PENDING;
+        elseif($record->status=='blocked')
+            $this->errorCode=self::ERROR_STATUS_BLOCKED;
+        elseif($record->status=='deleted')
+            $this->errorCode=self::ERROR_STATUS_DELETED;
+        elseif(!$bCrypt->verify($this->password , $record->password))
             $this->errorCode=self::ERROR_PASSWORD_INVALID;
         else
         {

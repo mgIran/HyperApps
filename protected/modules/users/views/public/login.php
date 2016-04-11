@@ -1,7 +1,13 @@
 <div class="login-form">
-    <h1>
-        ورود به حساب کاربری
-    </h1>
+
+    <div class="alert alert-danger hidden" id="validate-message"></div>
+    <?php if(Yii::app()->user->hasFlash('success')):?>
+        <div class="alert alert-success fade in">
+            <?php echo Yii::app()->user->getFlash('success');?>
+        </div>
+    <?php endif;?>
+
+    <h1>ورود به حساب کاربری</h1>
     <?php
     $form=$this->beginWidget('CActiveForm', array(
         'id'=>'login-form',

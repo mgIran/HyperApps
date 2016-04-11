@@ -1,7 +1,12 @@
 <div class="login-form signup">
-    <h1>
-        ثبت نام
-    </h1>
+
+    <?php if(Yii::app()->user->hasFlash('success')):?>
+        <div class="alert alert-success fade in">
+            <?php echo Yii::app()->user->getFlash('success');?>
+        </div>
+    <?php endif;?>
+
+    <h1>ثبت نام</h1>
     <?php
     $form=$this->beginWidget('CActiveForm', array(
         'id'=>'register-form',

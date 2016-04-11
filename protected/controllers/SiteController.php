@@ -250,46 +250,43 @@ class SiteController extends Controller
         if(isset($_POST['Users']))
         {
             $model->attributes = $_POST['Users'];
+            $model->status='pending';
+            $model->create_date=time();
             $pass = $_POST['Users']['password'];
             Yii::import('users.components.*');
             $login = new UserLoginForm;
             if($model->save())
             {
+                $serverProtocol=(strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://';
+                $token=md5($model->id.'#'.$model->password.'#'.$model->email.'#'.$model->create_date);
+                $model->updateByPk($model->id, array('verification_token'=>$token));
+                $userDetails=new UserDetails();
+                $userDetails->user_id=$model->id;
+                $userDetails->save();
                 $msg = '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">هایپر اپس<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></span> </h2>';
                 $msg .= '<div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">';
                 $msg .= '<div style="direction:rtl;display:block;overflow:hidden;border:1px solid #efefef;text-align: center;padding:15px;">';
                 $msg .= '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در هایپر اپس بر روی لینک زیر کلیک کنید:</div>';
                 $msg .= '<div style="text-align: right;font-size: 9pt;">';
-                $msg .= '<a href="http://cafebazaar.ir/verify/86bd53dc83072a1c4177d7fee38712978a3d56fd/">http://cafebazaar.ir/verify/86bd53dc83072a1c4177d7fee38712978a3d56fd/</a>';
+                $msg .= '<a href="'.$serverProtocol.$_SERVER['HTTP_HOST'].'/users/public/verify/token/'.$token.'">'.$serverProtocol.$_SERVER['HTTP_HOST'].'/users/public/verify/token/'.$token.'</a>';
                 $msg .= '</div>';
                 $msg .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
                 $msg .= '</div>';
                 $msg .= '</div>';
                 $msg .= '<div style="font-size: 8pt;color: #bbb;text-align: right;font-family: tahoma;padding: 15px;">';
-                $msg .= '<a href="http://cafebazaar.ir/about">درباره</a> | <a href="http://cafebazaar.ir/help">راهنما</a>';
+                $msg .= '<a href="'.$serverProtocol.$_SERVER['HTTP_HOST'].'/about">درباره</a> | <a href="'.$serverProtocol.$_SERVER['HTTP_HOST'].'/help">راهنما</a>';
                 $msg .= '<span style="float: left;"> همهٔ حقوق برای هایپر اپس محفوظ است. ©‏ 1395 </span>';
                 $msg .= '</div>';
                 Yii::import('application.extensions.phpmailer.JPhpMailer');
                 $mail = new JPhpMailer;
-                $mail->IsSMTP();
-                $mail->Host = 'smpt.163.com';
-                $mail->SMTPAuth = true;
-                $mail->Username = 'yourname@163.com';
-                $mail->Password = 'yourpassword';
                 $mail->SetFrom(Yii::app()->params['no-reply-email'],Yii::app()->name);
                 $mail->Subject = 'ثبت نام در '.Yii::app()->name;
                 $mail->MsgHTML($msg);
                 $mail->AddAddress($model->email);
                 $mail->Send();
-                $msg = 'ثبت نام با موفقیت انجام شد.';
 
-                $login->attributes = $_POST['Users'];
-                $login->password = $pass;
-                if($login->validate() && $login->login())
-                    if(Yii::app()->user->returnUrl != Yii::app()->request->baseUrl.'/')
-                        $this->redirect(Yii::app()->user->returnUrl);
-                    else
-                        $this->redirect(Yii::app()->createAbsoluteUrl('//'));
+                Yii::app()->user->setFlash('success' , 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد.');
+                $this->refresh();
             }
         }
         $this->render( 'register', array( 'model' => $model ) );

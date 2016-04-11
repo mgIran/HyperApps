@@ -3,7 +3,7 @@ return array(
     'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
     'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
 	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'ایران اپس',
+	'name'=>'هایپر اپس',
     'timeZone' => 'Asia/Tehran',
     'theme' => 'abound',
     'language' => 'fa_ir',
@@ -119,7 +119,7 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
-        'no-replay-email' => 'noreply@domain.com'
+		'adminEmail'=>'webmaster@avayeshahir.com',
+        'no-reply-email' => 'fake@avayeshahir.com'
 	),
 );

@@ -25,7 +25,7 @@ class PublicController extends Controller
                 'users' => array('@'),
             ),
             array('allow',  // allow all users to perform 'index' and 'views' actions
-                'actions'=>array('login'),
+                'actions'=>array('login','verify'),
                 'users' => array('*'),
                 //'roles'=>array('admin','validator'),
             ),
@@ -132,6 +132,21 @@ class PublicController extends Controller
         $this->render('setting', array(
             'model'=>$model,
         ));
+    }
+
+    /**
+     * Verify email
+     */
+    public function actionVerify()
+    {
+        $token=Yii::app()->request->getQuery('token');
+        $model=Users::model()->find('verification_token=:token', array(':token'=>$token));
+        if(time() <= $model->create_date+259200)
+        {
+            $model->updateByPk($model->id, array('status'=>'active'));
+            Yii::app()->user->setFlash('success' , 'حساب کاربری شما فعال گردید. هم اکنون می توانید وارد شوید.');
+            $this->redirect($this->createUrl('/login'));
+        }
     }
 
     /**
