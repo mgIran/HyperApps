@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50612
 File Encoding         : 65001
 
-Date: 2016-04-11 11:44:14
+Date: 2016-04-11 16:19:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -188,7 +188,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1460358761');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1460370859');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -773,27 +773,30 @@ CREATE TABLE `ym_users` (
   `password` varchar(100) NOT NULL,
   `email` varchar(255) NOT NULL COMMENT 'پست الکترونیک',
   `role_id` int(10) unsigned DEFAULT NULL,
-  `create_date` timestamp NULL DEFAULT NULL,
+  `create_date` varchar(20) DEFAULT NULL,
   `status` enum('pending','active','blocked','deleted') DEFAULT 'pending',
+  `verification_token` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '2', null, 'pending');
-INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'masoud@gmail.com', '2', null, 'pending');
-INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null, null, 'pending');
-INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null, null, 'pending');
+INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '2', null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'masoud@gmail.com', '2', null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null, null, 'pending', null);
+INSERT INTO `ym_users` VALUES ('23', '', '$2a$12$WdOyD.ae7NxYz0wdwCUHiexTQfZrVw6/3fU3Qvf4htn09a3W..QAK', 'gharagozlu.masoud@gmail.com', '1', '1460361827', 'pending', '202b3c3b071cf7c9ca19f8f68bb85232');
+INSERT INTO `ym_users` VALUES ('24', '', '$2a$12$WiZYKzWKevV.9/b3eUulK.Oy0CDh/1WlFzTRM21I9QllUnABh2l1S', 'gharagozlu.amasoud@gmail.com', '1', '1460364861', 'pending', '2b60060523aff84d960fe770ae947740');
 
 -- ----------------------------
 -- Table structure for ym_user_details
@@ -817,13 +820,15 @@ CREATE TABLE `ym_user_details` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
 INSERT INTO `ym_user_details` VALUES ('1', '8', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', null, null, null, null, null, '5000', '', null);
 INSERT INTO `ym_user_details` VALUES ('2', '9', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', '0370518926', '6Own01460349732.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد خ شوندی ک12 پ5', '1500', null, 'pending');
+INSERT INTO `ym_user_details` VALUES ('5', '23', null, null, null, null, null, null, null, null, null, null, null, 'accepted');
+INSERT INTO `ym_user_details` VALUES ('6', '24', null, null, null, null, null, null, null, null, null, null, null, 'accepted');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
