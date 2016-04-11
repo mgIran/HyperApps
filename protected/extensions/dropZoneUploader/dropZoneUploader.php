@@ -76,7 +76,7 @@ class dropZoneUploader extends CWidget
     /**
      * @var string File too big message
      */
-    public $dictFileTooBig = 'حجم فایل زیاداست. حداکثر حجم مجاز :{{maxFilesize}} MB';
+    public $dictFileTooBig = "حجم فایل زیاد است.\n حداکثر حجم مجاز :{{maxFilesize}}";
 
     /**
      * @var array Of array files attributes that exist on server and we will added to DropZone

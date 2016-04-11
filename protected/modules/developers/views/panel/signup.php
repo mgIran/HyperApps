@@ -1,7 +1,7 @@
 <?php
 /* @var $this PanelController */
 /* @var $step String */
-/* @var $agreementText String */
+/* @var $data Array */
 ?>
 
 <div class="container developer-signup-container">
@@ -9,31 +9,36 @@
         <h2 class="text-center">توسعه دهنده شوید</h2>
         <div class="steps-container">
             <ul class="steps">
-                <li<?php if($step=='agreement'):?> class="active"<?php endif;?>>
+                <li class="col-md-4<?php if($step=='agreement'):?> active<?php endif;?>">
                     <span><span class="num">1</span>توافق نامه</span>
                     <div class="arrow"><div></div></div>
                 </li>
-                <li<?php if($step=='information'):?> class="active"<?php endif;?>>
+                <li class="col-md-4<?php if($step=='profile'):?> active<?php endif;?>">
                     <span><span class="num">2</span>اطلاعات قرارداد</span>
                     <div class="arrow"><div></div></div>
                 </li>
-                <li<?php if($step=='profile'):?> class="active"<?php endif;?>>
-                    <span><span class="num">3</span>پروفایل</span>
-                    <div class="arrow"><div></div></div>
-                </li>
-                <li<?php if($step=='finish'):?> class="active"<?php endif;?>>
-                    <span><span class="num">4</span>اتمام</span>
+                <li class="col-md-4<?php if($step=='finish'):?> active<?php endif;?>">
+                    <span><span class="num">3</span>اتمام</span>
                 </li>
             </ul>
             <div class="step-content"></div>
                 <?php switch($step){
                     case 'agreement':
                         $this->renderPartial('_agreement', array(
-                            'text'=>$agreementText
+                            'text'=>$data['agreementText']['summary']
                         ));
-
-                    case 'information':
-                        $this->renderPartial('_information', array());
+                        break;
+                    case 'profile':
+                        $this->renderPartial('_profile', array(
+                            'model'=>$data['detailsModel'],
+                            'nationalCardImage'=>$data['nationalCardImage']
+                        ));
+                        break;
+                    case 'finish':
+                        $this->renderPartial('_finish', array(
+                            'model'=>$data['userDetails'],
+                        ));
+                        break;
                 }?>
             </div>
         </div>

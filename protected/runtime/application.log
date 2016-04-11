@@ -16057,3 +16057,51 @@ in D:\Important\Xamppp\htdocs\Market\index.php (11)
 2016/03/01 03:38:46 [warning] [application] Failed to set unsafe attribute "file" of "Apps".
 in D:\Important\Xamppp\htdocs\Market\protected\modules\manageApps\components\BaseManageController.php (117)
 in D:\Important\Xamppp\htdocs\Market\index.php (11)
+2016/03/03 10:08:35 [warning] [application] Failed to set unsafe attribute "fa_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:35 [warning] [application] Failed to set unsafe attribute "fa_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:35 [warning] [application] Failed to set unsafe attribute "en_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:35 [warning] [application] Failed to set unsafe attribute "en_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:37 [warning] [application] Failed to set unsafe attribute "fa_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:37 [warning] [application] Failed to set unsafe attribute "fa_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:37 [warning] [application] Failed to set unsafe attribute "en_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:37 [warning] [application] Failed to set unsafe attribute "en_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:53 [warning] [application] Failed to set unsafe attribute "fa_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:53 [warning] [application] Failed to set unsafe attribute "fa_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:53 [warning] [application] Failed to set unsafe attribute "en_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:53 [warning] [application] Failed to set unsafe attribute "en_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:59 [warning] [application] Failed to set unsafe attribute "fa_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:59 [warning] [application] Failed to set unsafe attribute "fa_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:59 [warning] [application] Failed to set unsafe attribute "en_name" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)
+2016/03/03 10:08:59 [warning] [application] Failed to set unsafe attribute "en_web_url" of "Users".
+in C:\wamp\www\Masoud\market\protected\modules\developers\controllers\PanelController.php (66)
+in C:\wamp\www\Masoud\market\index.php (11)

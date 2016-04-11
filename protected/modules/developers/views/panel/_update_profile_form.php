@@ -8,7 +8,7 @@
 <div class="col-md-6">
     <h1>مشخصات</h1>
 
-    <div class="form">
+    <div class="form update-developer-form">
 
     <?php $form=$this->beginWidget('CActiveForm', array(
         'id'=>'update-profile-form',
@@ -79,7 +79,7 @@
                 'name' => 'national_card_image',
                 'dictDefaultMessage'=>$model->getAttributeLabel('national_card_image').' را به اینجا بکشید',
                 'maxFiles' => 1,
-                'maxFileSize' => 0.4, //MB
+                'maxFileSize' => 0.5, //MB
                 'data'=>array('user_id'=>$model->user_id),
                 'url' => $this->createUrl('/developers/panel/uploadNationalCardImage'),
                 'acceptedFiles' => 'image/jpeg , image/png',

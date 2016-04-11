@@ -77,7 +77,6 @@ header
     position: relative;
     list-style: none;
     float: right;
-    width: 25%;
     text-align: center;
     padding: 20px 0;
     border-top: 1px solid #ccc;
@@ -148,4 +147,11 @@ header
 }
 .developer-signup-container .step-content .text{
     margin-bottom: 30px;
+}
+.information-step #update-profile-form > p{
+    margin: 8.33333% 0 20px;
+}
+.update-developer-form .dropzone.single,
+.information-step .dropzone.single{
+    width: 100%;
 }

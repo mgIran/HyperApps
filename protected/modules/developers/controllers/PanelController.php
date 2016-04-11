@@ -27,11 +27,15 @@ class PanelController extends Controller
     {
         return array(
             array('allow',
+                'actions'=>array('uploadNationalCardImage'),
+                'users'=>array('@'),
+            ),
+            array('allow',
                 'actions'=>array('signup'),
                 'roles'=>array('user'),
             ),
             array('allow',
-                'actions'=>array('account','index','uploadNationalCardImage'),
+                'actions'=>array('account','index'),
                 'roles'=>array('developer'),
             ),
             array('deny',  // deny all users
@@ -148,6 +152,7 @@ class PanelController extends Controller
                     @unlink($uploadDir.$model->national_card_image);
 
                 $model->national_card_image=$file['name'];
+                $model->scenario='upload_photo';
                 $model->save();
 
                 // Resize image
@@ -170,11 +175,76 @@ class PanelController extends Controller
     public function actionSignup()
     {
         Yii::app()->theme='market';
-        Yii::app()->getModule('pages');
-        $agreementText=Pages::model()->find('title=:title', array(':title'=>'قرارداد توسعه دهندگان'));
+        $data=array();
+
+        switch(Yii::app()->request->getQuery('step'))
+        {
+            case 'agreement':
+                Yii::import('application.modules.pages.models.*');
+                $data['agreementText']=Pages::model()->find('title=:title', array(':title'=>'قرارداد توسعه دهندگان'));
+                break;
+
+            case 'profile':
+                Yii::import('application.modules.users.models.*');
+                Yii::import('application.modules.setting.models.*');
+                $data['detailsModel']=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+                $data['detailsModel']->scenario='update_profile';
+                $minCredit=SiteSetting::model()->find('name=:name', array(':name'=>'min_credit'));
+
+                if($data['detailsModel']->credit < $minCredit['value'])
+                {
+                    Yii::app()->user->setFlash('min_credit_fail' , 'برای ثبت نام به عنوان توسعه دهنده باید حداقل '.number_format($minCredit['value'], 0).' تومان اعتبار داشته باشید.');
+                    $this->redirect($this->createUrl('/users/credit/buy'));
+                }
+
+                if(isset($_POST['ajax']) && $_POST['ajax']==='update-profile-form')
+                    $this->performAjaxValidation($data['detailsModel']);
+
+                // Save developer profile
+                if(isset($_POST['UserDetails']))
+                {
+                    unset($_POST['UserDetails']['credit']);
+                    unset($_POST['UserDetails']['developer_id']);
+                    unset($_POST['UserDetails']['details_status']);
+                    $data['detailsModel']->attributes=$_POST['UserDetails'];
+                    $data['detailsModel']->details_status='pending';
+                    if($data['detailsModel']->save())
+                    {
+                        $data['detailsModel']->user->role_id=2;
+                        $data['detailsModel']->user->scenario='change_role';
+                        $data['detailsModel']->user->save(false);
+                        Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
+                        $this->redirect($this->createUrl('/developers/panel/signup/step/finish'));
+                    }
+                    else
+                        Yii::app()->user->setFlash('fail' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+                }
+                $nationalCardImageUrl=$this->createUrl('/uploads/users/national_cards');
+                $nationalCardImagePath=Yii::getPathOfAlias('webroot').'/uploads/users/national_cards';
+                $data['nationalCardImage']=array();
+                if($data['detailsModel']->national_card_image!='')
+                    $data['nationalCardImage']=array(
+                        'name' => $data['detailsModel']->national_card_image,
+                        'src' => $nationalCardImageUrl.'/'.$data['detailsModel']->national_card_image,
+                        'size' => (file_exists($nationalCardImagePath.'/'.$data['detailsModel']->national_card_image))?filesize($nationalCardImagePath.'/'.$data['detailsModel']->national_card_image):0,
+                        'serverName' => $data['detailsModel']->national_card_image,
+                    );
+                break;
+
+            case 'finish':
+                if(isset($_POST['goto_developer_panel']))
+                {
+                    Yii::app()->user->setState('roles', 'developer');
+                    $this->redirect($this->createUrl('/developers/panel'));
+                }
+                Yii::import('application.modules.users.models.*');
+                $data['userDetails']=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+                break;
+        }
+
         $this->render('signup', array(
             'step'=>Yii::app()->request->getQuery('step'),
-            'agreementText'=>$agreementText['summary'],
+            'data'=>$data,
         ));
     }
 

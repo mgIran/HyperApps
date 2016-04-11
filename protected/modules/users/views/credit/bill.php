@@ -14,7 +14,7 @@
             </p>
             <p>
                 <?php echo CHtml::label('اعتبار درخواستی: ','');?>
-                <?php echo number_format($model->userDetails->credit, 0).' تومان';?>
+                <?php echo number_format($amount, 0).' تومان';?>
             </p>
         </div>
     </div>

@@ -44,7 +44,6 @@ class Users extends CActiveRecord
         return array(
             array('email, password', 'required' ,'on' => 'create'),
             array('role_id', 'default' ,'value' => 1,'on' => 'create'),
-            array('password, email', 'required' , 'on' => 'create'),
             array('email' , 'required' ,'on' => 'email'),
             array('email' , 'email'),
             array('oldPassword ,newPassword ,repeatPassword', 'required' , 'on'=>'update'),

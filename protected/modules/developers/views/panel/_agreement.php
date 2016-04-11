@@ -10,7 +10,7 @@
     <div class="panel-body step-content">
         <div class="container-fluid">
             <div class="text"><?php echo $text;?></div>
-            <a href="<?php echo Yii::app()->createUrl('/developers/panel/signup/step/information')?>" class="btn btn-success pull-left">با شرایط و قوانین موافقم</a>
+            <a href="<?php echo Yii::app()->createUrl('/developers/panel/signup/step/profile')?>" class="btn btn-success pull-left">با شرایط و قوانین موافقم</a>
         </div>
     </div>
 </div>

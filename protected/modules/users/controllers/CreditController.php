@@ -64,7 +64,7 @@ class CreditController extends Controller
             $model=Users::model()->findByPk(Yii::app()->user->getId());
             $this->render('bill', array(
                 'model'=>$model,
-                'amount'=>$amount,
+                'amount'=>CHtml::encode($amount),
             ));
         }
         else
