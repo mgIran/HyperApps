@@ -4,6 +4,10 @@
         <div class="alert alert-success fade in">
             <?php echo Yii::app()->user->getFlash('success');?>
         </div>
+    <?php elseif(Yii::app()->user->hasFlash('fail')):?>
+        <div class="alert alert-danger fade in">
+            <?php echo Yii::app()->user->getFlash('fail');?>
+        </div>
     <?php endif;?>
 
     <h1>ثبت نام</h1>

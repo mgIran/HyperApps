@@ -11,6 +11,7 @@ class UserLoginForm extends CFormModel
     public $email;
 	public $password;
 	public $rememberMe;
+    public $authenticate_field;
 
 	private $_identity;
 
@@ -27,8 +28,8 @@ class UserLoginForm extends CFormModel
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
             array('email', 'email'),
-			// password needs to be authenticated
-			array('password', 'authenticate'),
+			// authenticate_field needs to be authenticated
+			array('authenticate_field', 'authenticate'),
 		);
 	}
 
@@ -41,12 +42,13 @@ class UserLoginForm extends CFormModel
             'username' => 'نام کاربری',
             'password' => 'رمز عبور',
 			'rememberMe'=>'مرا بخاطر بسپار',
-            'email' => 'پست الکترونیک'
+            'email' => 'پست الکترونیک',
+            'authenticate_field' => 'Authenticate Field'
 		);
 	}
 
 	/**
-	 * Authenticates the password.
+	 * Authenticates the authenticate_field.
 	 * This is the 'authenticate' validator as declared in rules().
 	 */
 	public function authenticate($attribute,$params)
@@ -54,15 +56,17 @@ class UserLoginForm extends CFormModel
 		if(!$this->hasErrors())
 		{
 			$this->_identity = new UserIdentity($this->email,$this->password);
-            $this->_identity->authenticate();
-			if($this->_identity->errorCode===3)
-				$this->addError($attribute,'این حساب کاربری فعال نشده است.');
-            elseif($this->_identity->errorCode===4)
-                $this->addError($attribute,'این حساب کاربری مسدود شده است.');
-            elseif($this->_identity->errorCode===5)
-                $this->addError($attribute,'این حساب کاربری حذف شده است.');
-            else
-                $this->addError($attribute,'پست الکترونیک یا رمز عبور اشتباه است .');
+            if(!$this->_identity->authenticate())
+            {
+                if($this->_identity->errorCode===3)
+                    $this->addError($attribute,'این حساب کاربری فعال نشده است.');
+                elseif($this->_identity->errorCode===4)
+                    $this->addError($attribute,'این حساب کاربری مسدود شده است.');
+                elseif($this->_identity->errorCode===5)
+                    $this->addError($attribute,'این حساب کاربری حذف شده است.');
+                else
+                    $this->addError($attribute,'پست الکترونیک یا رمز عبور اشتباه است .');
+            }
 		}
 	}
 

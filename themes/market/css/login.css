@@ -53,9 +53,8 @@ img.logo{
     border: 1px solid #efefef;
     padding: 30px 60px;
     font-size: 12px;
-    height: 365px;
 }
-.login-form > h1{
+.login-form h1{
     font-size: 16px;
     text-align: right;
     margin-bottom: 20px;

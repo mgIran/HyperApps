@@ -85,7 +85,7 @@ class PublicController extends Controller
      */
     public function actionLogout() {
         Yii::app()->user->logout(false);
-        $this->redirect(array('/users/login'));
+        $this->redirect(array('/login'));
     }
 
     /**
@@ -141,11 +141,37 @@ class PublicController extends Controller
     {
         $token=Yii::app()->request->getQuery('token');
         $model=Users::model()->find('verification_token=:token', array(':token'=>$token));
-        if(time() <= $model->create_date+259200)
+        if($model)
         {
-            $model->updateByPk($model->id, array('status'=>'active'));
-            Yii::app()->user->setFlash('success' , 'حساب کاربری شما فعال گردید. هم اکنون می توانید وارد شوید.');
-            $this->redirect($this->createUrl('/login'));
+            if($model->status=='pending')
+            {
+                if(time() <= $model->create_date+259200)
+                {
+                    $model->updateByPk($model->id, array('status'=>'active'));
+                    Yii::app()->user->setFlash('success' , 'حساب کاربری شما فعال گردید.');
+                    $this->redirect($this->createUrl('/login'));
+                }
+                else
+                {
+                    Yii::app()->user->setFlash('fail' , 'لینک فعال سازی منقضی شده و نامعتبر می باشد. لطفا مجددا ثبت نام کنید.');
+                    $this->redirect($this->createUrl('/register'));
+                }
+            }
+            elseif($model->status=='active')
+            {
+                Yii::app()->user->setFlash('fail' , 'این حساب کاربری قبلا فعال شده است.');
+                $this->redirect($this->createUrl('/login'));
+            }
+            else
+            {
+                Yii::app()->user->setFlash('fail' , 'امکان فعال سازی این کاربر وجود ندارد. لطفا مجددا ثبت نام کنید.');
+                $this->redirect($this->createUrl('/register'));
+            }
+        }
+        else
+        {
+            Yii::app()->user->setFlash('fail' , 'لینک فعال سازی نامعتبر می باشد.');
+            $this->redirect($this->createUrl('/register'));
         }
     }
 
