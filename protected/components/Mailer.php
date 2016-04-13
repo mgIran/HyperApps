@@ -8,7 +8,6 @@ class Mailer {
     {
         $mail_theme=Yii::app()->params['mailTheme'];
         $message=str_replace('{MessageBody}', $message, $mail_theme);
-        var_dump($message);exit;
         Yii::import('application.extensions.phpmailer.JPhpMailer');
         $mail=new JPhpMailer;
         $mail->SetFrom($from, Yii::app()->name);

@@ -1,8 +1,8 @@
 <div class="login-form">
 
-    <?php echo CHtml::beginForm(Yii::app()->createUrl('/users/public/changePassword'), 'post', array(
-        'id'=>'change-password-form',
-    ));?>
+<!--    --><?php //echo CHtml::beginForm(Yii::app()->createUrl('/users/public/changePassword'), 'post', array(
+//        'id'=>'change-password-form',
+//    ));?>
 
     <?php $form=$this->beginWidget('CActiveForm', array(
         'id'=>'users-form',

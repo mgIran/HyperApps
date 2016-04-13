@@ -51,6 +51,8 @@ class Users extends CActiveRecord
             array('change_password_request_count', 'numerical', 'integerOnly'=>true),
             array('email' , 'email'),
             array('oldPassword ,newPassword ,repeatPassword', 'required' , 'on'=>'update'),
+            array('password', 'required' , 'on'=>'change_password'),
+            array('repeatPassword', 'compare', 'compareAttribute'=>'password', 'on'=>'change_password'),
             array('email' , 'filter' , 'filter' => 'trim' ,'on' => 'create'),
             array('email' , 'unique' ,'on' => 'create'),
             array('username, password, verification_token', 'length', 'max'=>100 ,'on' => 'create'),

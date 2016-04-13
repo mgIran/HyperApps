@@ -259,6 +259,7 @@ class PublicController extends Controller
 
         $token=Yii::app()->request->getQuery('token');
         $model=Users::model()->find('verification_token=:token', array(':token'=>$token));
+        $model->setScenario('change_password');
 
         $this->performAjaxValidation($model);
 
@@ -268,6 +269,19 @@ class PublicController extends Controller
             {
                 Yii::app()->theme='market';
                 $this->layout='//layouts/backgroundImage';
+
+                if(isset($_POST['Users'])) {
+                    $model->password = $_POST['Users']['password'];
+                    $model->repeatPassword = $_POST['Users']['repeatPassword'];
+                    $model->verification_token=null;
+                    $model->change_password_request_count=0;
+                    if ($model->save()) {
+                        Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت تغییر یافت.');
+                        $this->redirect($this->createUrl('/login'));
+                    } else
+                        Yii::app()->user->setFlash('fail', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+                }
+
                 $this->render('change_password', array(
                     'model'=>$model
                 ));
