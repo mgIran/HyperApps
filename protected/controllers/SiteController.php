@@ -279,7 +279,7 @@ class SiteController extends Controller
                 $msg .= '</div>';
                 Yii::import('application.extensions.phpmailer.JPhpMailer');
                 $mail = new JPhpMailer;
-                $mail->SetFrom(Yii::app()->params['no-reply-email'],Yii::app()->name);
+                $mail->SetFrom(Yii::app()->params['noReplyEmail'],Yii::app()->name);
                 $mail->Subject = 'ثبت نام در '.Yii::app()->name;
                 $mail->MsgHTML($msg);
                 $mail->AddAddress($model->email);

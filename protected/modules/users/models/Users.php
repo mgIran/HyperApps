@@ -12,6 +12,7 @@
  * @property string $create_date
  * @property string $status
  * @property string $verification_token
+ * @property integer $change_password_request_count
  * @property string $repeatPassword
  * @property string $oldPassword
  * @property string $newPassword
@@ -47,6 +48,7 @@ class Users extends CActiveRecord
             array('email, password', 'required' ,'on' => 'create'),
             array('role_id', 'default' ,'value' => 1,'on' => 'create'),
             array('email' , 'required' ,'on' => 'email'),
+            array('change_password_request_count', 'numerical', 'integerOnly'=>true),
             array('email' , 'email'),
             array('oldPassword ,newPassword ,repeatPassword', 'required' , 'on'=>'update'),
             array('email' , 'filter' , 'filter' => 'trim' ,'on' => 'create'),
@@ -60,7 +62,7 @@ class Users extends CActiveRecord
             array('create_date', 'length', 'max'=>20),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, username, password, roleId, create_date, status, verification_token', 'safe', 'on'=>'search'),
+            array('id, username, password, roleId, create_date, status, verification_token, change_password_request_count', 'safe', 'on'=>'search'),
         );
     }
 
@@ -72,7 +74,7 @@ class Users extends CActiveRecord
         $bCrypt = new bCrypt();
         $record = Users::model()->findByAttributes( array( 'email' => $this->email ) );
         if ( !$bCrypt->verify( $this->$attribute, $record->password ) )
-            $this->addError( $attribute, 'رمز عبور فعلی اشتباه است' );
+            $this->addError( $attribute, 'کلمه عبور فعلی اشتباه است' );
     }
 
     /**
@@ -107,6 +109,7 @@ class Users extends CActiveRecord
             'create_date' => 'تاریخ ثبت نام',
             'status' => 'وضعیت کاربر',
             'verification_token' => 'Verification Token',
+            'change_password_request_count' => 'تعداد درخواست تغییر کلمه عبور',
         );
     }
 
@@ -134,6 +137,7 @@ class Users extends CActiveRecord
         $criteria->compare('create_date',$this->create_date,true);
         $criteria->compare('status',$this->status,true);
         $criteria->compare('verification_token',$this->verification_token,true);
+        $criteria->compare('change_password_request_count',$this->change_password_request_count);
         $criteria->addSearchCondition('role.id' , $this->roleId );
         $criteria->with = array('role');
         return new CActiveDataProvider($this, array(

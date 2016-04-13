@@ -18,6 +18,10 @@
         'enableClientValidation'=>true,
         'clientOptions'=>array(
             'validateOnSubmit'=>true,
+            'beforeValidate' => "js:function(form) {
+                $('.loading-container').fadeIn();
+                return true;
+            }",
         ),
     )); ?>
     <div class="row">
@@ -26,7 +30,7 @@
         <span class="transition icon-envelope"></span>
     </div>
     <div class="row">
-        <?php echo $form->passwordField($model,'password',array('class'=>'transition','placeholder'=>'رمز عبور')); ?>
+        <?php echo $form->passwordField($model,'password',array('class'=>'transition','placeholder'=>'کلمه عبور')); ?>
         <?php echo $form->error($model,'password'); ?>
         <span class="transition icon-key"></span>
     </div>
@@ -34,4 +38,15 @@
         <input class="transition" type="submit" value="ثبت نام">
     </div>
     <?php $this->endWidget(); ?>
+
+    <p><a href="<?php echo $this->createUrl('/login');?>">ورود به حساب کاربری</a></p>
+
+    <div class="loading-container">
+        <div class="overly"></div>
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
 </div>

@@ -76,7 +76,7 @@ class Admins extends CActiveRecord
         $bCrypt = new bCrypt();
         $record = Admins::model()->findByAttributes( array( 'username' => $this->username ) );
         if ( !$bCrypt->verify( $this->$attribute, $record->password ) )
-            $this->addError( $attribute, 'رمز عبور فعلی اشتباه است' );
+            $this->addError( $attribute, 'کلمه عبور فعلی اشتباه است' );
     }
 
 
@@ -88,10 +88,10 @@ class Admins extends CActiveRecord
         return array(
             'id' => 'شناسه',
             'username' => 'نام کاربری',
-            'password' => 'رمز عبور',
-            'oldPassword' => 'رمز عبور فعلی',
-            'newPassword' => 'رمز عبور جدید',
-            'repeatPassword' => 'تکرار رمز عبور',
+            'password' => 'کلمه عبور',
+            'oldPassword' => 'کلمه عبور فعلی',
+            'newPassword' => 'کلمه عبور جدید',
+            'repeatPassword' => 'تکرار کلمه عبور',
             'role_id' => 'نقش',
             'email' => 'پست الکترونیک'
         );

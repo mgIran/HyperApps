@@ -18,7 +18,7 @@
         <span class="transition icon-envelope"></span>
     </div>
     <div class="row">
-        <?php echo $form->passwordField($model,'password',array('class'=>'transition','placeholder'=>'رمز عبور')); ?>
+        <?php echo $form->passwordField($model,'password',array('class'=>'transition','placeholder'=>'کلمه عبور')); ?>
         <?php echo $form->error($model,'password'); ?>
         <span class="transition icon-key"></span>
     </div>
@@ -28,7 +28,7 @@
     <?php $this->endWidget(); ?>
     <p>
         <a href="#" class="forget-link">
-            رمز عبور خود را فراموش کرده اید؟
+            کلمه عبور خود را فراموش کرده اید؟
         </a>
     </p>
 </div>

@@ -44,7 +44,7 @@ $this->menu=array(
                             <?= $form->emailField($model ,'email',array('class' => 'form-control','placeholder' => 'پست الکترونیک' )); ?>
                         </div>
                         <div class="form-group">
-                            <?= $form->passwordField($model ,'password',array('class' => 'form-control' ,'placeholder' => 'رمز عبور')); ?>
+                            <?= $form->passwordField($model ,'password',array('class' => 'form-control' ,'placeholder' => 'کلمه عبور')); ?>
                         </div>
                         <div class="form-group">
                             <?= CHtml::ajaxSubmitButton('ورود',Yii::app()->createUrl('/site/login/'),array(

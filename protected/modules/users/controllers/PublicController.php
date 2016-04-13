@@ -25,9 +25,8 @@ class PublicController extends Controller
                 'users' => array('@'),
             ),
             array('allow',  // allow all users to perform 'index' and 'views' actions
-                'actions'=>array('login','verify'),
+                'actions'=>array('login','verify','forgetPassword','changePassword'),
                 'users' => array('*'),
-                //'roles'=>array('admin','validator'),
             ),
             array('deny',  // deny all users
                 'users'=>array('*'),
@@ -56,7 +55,7 @@ class PublicController extends Controller
     {
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/backgroundImage';
-        if(!Yii::app()->user->isGuest && Yii::app()->user->type === 'user')
+        if(!Yii::app()->user->isGuest)
             $this->redirect(array('/site/'));
 
         $model = new UserLoginForm;
@@ -139,6 +138,9 @@ class PublicController extends Controller
      */
     public function actionVerify()
     {
+        if(!Yii::app()->user->isGuest)
+            $this->redirect(array('/site/'));
+
         $token=Yii::app()->request->getQuery('token');
         $model=Users::model()->find('verification_token=:token', array(':token'=>$token));
         if($model)
@@ -173,6 +175,108 @@ class PublicController extends Controller
             Yii::app()->user->setFlash('fail' , 'لینک فعال سازی نامعتبر می باشد.');
             $this->redirect($this->createUrl('/register'));
         }
+    }
+
+    /**
+     * Forget password
+     */
+    public function actionForgetPassword()
+    {
+        Yii::app()->theme = 'market';
+        $this->layout = '//layouts/backgroundImage';
+        if(!Yii::app()->user->isGuest)
+            $this->redirect(array('/site/'));
+
+        if(isset($_POST['email']))
+        {
+            $model=Users::model()->findByAttributes(array('email'=>$_POST['email']));
+            if($model)
+            {
+                if($model->status=='active')
+                {
+                    if($model->change_password_request_count!=3)
+                    {
+                        $token=md5($model->id.'#'.$model->password.'#'.$model->email.'#'.$model->create_date.'#'.time());
+                        $count=intval($model->change_password_request_count);
+                        $model->updateByPk($model->id, array('verification_token'=>$token, 'change_password_request_count'=>$count+1));
+                        $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>بنا به درخواست شما جهت تغییر کلمه عبور لینک زیر خدمتتان ارسال گردیده است.</div>';
+                        $message .= '<div style="text-align: right;font-size: 9pt;">';
+                        $message .= '<a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/users/public/changePassword/token/'.$token.'">'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/users/public/changePassword/token/'.$token.'</a>';
+                        $message .= '</div>';
+                        $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">اگر شخص دیگری غیر از شما این درخواست را صادر نموده است، یا شما کلمه عبور خود را به یاد آورده‌اید و دیگر نیازی به تغییر آن ندارید، کلمه عبور قبلی/موجود شما همچنان فعال می‌باشد و می توانید از طریق <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/login">این صفحه</a> وارد حساب کاربری خود شوید.</div>';
+                        $result=Mailer::mail($model->email, 'درخواست تغییر کلمه عبور در '.Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
+                        if($result)
+                            echo CJSON::encode(array(
+                                'hasError'=>false,
+                                'message'=>'لینک تغییر کلمه عبور به '.$model->email.' ارسال شد.'
+                            ));
+                        else
+                            echo CJSON::encode(array(
+                                'hasError'=>true,
+                                'message'=>'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.'
+                            ));
+                    }
+                    else
+                        echo CJSON::encode(array(
+                            'hasError'=>true,
+                            'message'=>'بیش از 3 بار نمی توانید درخواست تغییر کلمه عبور بدهید.'
+                        ));
+                }
+                elseif($model->status=='pending')
+                    echo CJSON::encode(array(
+                        'hasError'=>true,
+                        'message'=>'این حساب کاربری هنوز فعال نشده است.'
+                    ));
+                elseif($model->status=='blocked')
+                    echo CJSON::encode(array(
+                        'hasError'=>true,
+                        'message'=>'این حساب کاربری مسدود می باشد.'
+                    ));
+                elseif($model->status=='deleted')
+                    echo CJSON::encode(array(
+                        'hasError'=>true,
+                        'message'=>'این حساب کاربری حذف شده است.'
+                    ));
+            }
+            else
+                echo CJSON::encode(array(
+                    'hasError'=>true,
+                    'message'=>'پست الکترونیکی وارد شده اشتباه است.'
+                ));
+            Yii::app()->end();
+        }
+
+        $this->render('forget_password');
+    }
+
+    /**
+     * Change password
+     */
+    public function actionChangePassword()
+    {
+        if(!Yii::app()->user->isGuest)
+            $this->redirect(array('/site/'));
+
+        $token=Yii::app()->request->getQuery('token');
+        $model=Users::model()->find('verification_token=:token', array(':token'=>$token));
+
+        $this->performAjaxValidation($model);
+
+        if($model)
+        {
+            if($model->status=='active')
+            {
+                Yii::app()->theme='market';
+                $this->layout='//layouts/backgroundImage';
+                $this->render('change_password', array(
+                    'model'=>$model
+                ));
+            }
+            else
+                $this->redirect($this->createUrl('/'));
+        }
+        else
+            $this->redirect($this->createUrl('/'));
     }
 
     /**

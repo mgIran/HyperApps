@@ -1,7 +1,11 @@
 <div class="login-form">
 
+    <?php echo CHtml::beginForm(Yii::app()->createUrl('/users/public/changePassword'), 'post', array(
+        'id'=>'change-password-form',
+    ));?>
+
     <?php $form=$this->beginWidget('CActiveForm', array(
-        'id'=>'login-form',
+        'id'=>'users-form',
         'enableAjaxValidation'=>true,
         'enableClientValidation'=>true,
         'clientOptions'=>array(
@@ -10,16 +14,9 @@
                 $('.loading-container').fadeIn();
                 return true;
             }",
-            'afterValidateAttribute' => 'js:function(form, attribute, data, hasError) {
-                if(data.UserLoginForm_authenticate_field != undefined)
-                    $("#validate-message").text(data.UserLoginForm_authenticate_field[0]).removeClass("hidden");
-            }',
         ),
     )); ?>
 
-    <div class="alert alert-danger hidden" id="validate-message">
-        <?php echo $form->error($model,'authenticate_field'); ?>
-    </div>
     <?php if(Yii::app()->user->hasFlash('success')):?>
         <div class="alert alert-success fade in">
             <?php echo Yii::app()->user->getFlash('success');?>
@@ -30,24 +27,24 @@
         </div>
     <?php endif;?>
 
-    <h1>ورود به حساب کاربری</h1>
+    <h1>تغییر کلمه عبور</h1>
 
-    <div class="row">
-        <?php echo $form->textField($model,'email',array('class'=>'transition focus-left','placeholder'=>'پست الکترونیکی')); ?>
-        <?php echo $form->error($model,'email'); ?>
-        <span class="transition icon-envelope"></span>
-    </div>
     <div class="row">
         <?php echo $form->passwordField($model,'password',array('class'=>'transition','placeholder'=>'کلمه عبور')); ?>
         <?php echo $form->error($model,'password'); ?>
         <span class="transition icon-key"></span>
     </div>
     <div class="row">
-        <input class="transition" type="submit" value="ورود">
+        <?php echo $form->passwordField($model,'repeatPassword',array('class'=>'transition','placeholder'=>'تکرار کلمه عبور')); ?>
+        <?php echo $form->error($model,'repeatPassword'); ?>
+        <span class="transition icon-key"></span>
+    </div>
+    <div class="row">
+        <?php echo CHtml::SubmitButton('ارسال', array('class'=>'transition'));?>
     </div>
     <?php $this->endWidget(); ?>
-    <p><a href="<?= Yii::app()->createUrl('/users/public/forgetPassword') ?>" class="forget-link">کلمه عبور خود را فراموش کرده اید؟</a></p>
-    <p>تازه وارد هستید؟ <a href="<?= Yii::app()->createUrl('/register') ?>" class="register-link">ثبت نام کنید</a></p>
+
+    <p><a href="<?php echo $this->createUrl('/login');?>">ورود به حساب کاربری</a></p>
 
     <div class="loading-container">
         <div class="overly"></div>
