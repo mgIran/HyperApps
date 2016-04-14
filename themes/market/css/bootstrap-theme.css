@@ -36,9 +36,6 @@
     outline: 0 none !important;
     direction: rtl;
 }
-body{
-    font-size: 13px;
-}
 body *{
     font-family: "IranaianSans","BYekan","Trebuchet MS" !important;
 }
@@ -54,7 +51,8 @@ a{
     -moz-transition: all 0.4s ease-in-out;
 }
 body{
-    background-color: #f8f8f8;
+    background-color: #f0f0f0;
+    font-size: 13px;
 }
 html{
     min-height: 100%;

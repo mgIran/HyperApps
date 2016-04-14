@@ -10,6 +10,10 @@
                 $('.loading-container').fadeIn();
                 return true;
             }",
+            'afterValidate' => "js:function(form) {
+                $('.loading-container').stop().hide();
+                return true;
+            }",
             'afterValidateAttribute' => 'js:function(form, attribute, data, hasError) {
                 if(data.UserLoginForm_authenticate_field != undefined)
                     $("#validate-message").text(data.UserLoginForm_authenticate_field[0]).removeClass("hidden");
@@ -19,7 +23,7 @@
         ),
     )); ?>
 
-    <div class="alert alert-danger hidden" id="validate-message">
+    <div class="alert alert-danger<?php if(!$model->hasErrors()):?> hidden<?php endif;?>" id="validate-message">
         <?php echo $form->error($model,'authenticate_field'); ?>
     </div>
     <?php if(Yii::app()->user->hasFlash('success')):?>

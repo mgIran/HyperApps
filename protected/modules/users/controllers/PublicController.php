@@ -56,7 +56,7 @@ class PublicController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/backgroundImage';
         if(!Yii::app()->user->isGuest)
-            $this->redirect(array('/site/'));
+            $this->redirect(array('/'));
 
         $model = new UserLoginForm;
         // if it is ajax validation request
@@ -138,8 +138,10 @@ class PublicController extends Controller
      */
     public function actionVerify()
     {
-        if(!Yii::app()->user->isGuest)
-            $this->redirect(array('/site/'));
+        if(!Yii::app()->user->isGuest and Yii::app()->user->type!='admin')
+            $this->redirect(array('/'));
+        else if(!Yii::app()->user->isGuest and Yii::app()->user->type =='admin')
+        	Yii::app()->user->logout(false);    
 
         $token=Yii::app()->request->getQuery('token');
         $model=Users::model()->find('verification_token=:token', array(':token'=>$token));
@@ -184,8 +186,10 @@ class PublicController extends Controller
     {
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/backgroundImage';
-        if(!Yii::app()->user->isGuest)
-            $this->redirect(array('/site/'));
+        if(!Yii::app()->user->isGuest and Yii::app()->user->type!='admin')
+            $this->redirect(array('/'));
+        else if(!Yii::app()->user->isGuest and Yii::app()->user->type =='admin')
+            Yii::app()->user->logout(false);
 
         if(isset($_POST['email']))
         {
@@ -254,8 +258,10 @@ class PublicController extends Controller
      */
     public function actionChangePassword()
     {
-        if(!Yii::app()->user->isGuest)
-            $this->redirect(array('/site/'));
+        if(!Yii::app()->user->isGuest and Yii::app()->user->type!='admin')
+            $this->redirect(array('/'));
+        else if(!Yii::app()->user->isGuest and Yii::app()->user->type =='admin')
+            Yii::app()->user->logout(false);
 
         $token=Yii::app()->request->getQuery('token');
         $model=Users::model()->find('verification_token=:token', array(':token'=>$token));

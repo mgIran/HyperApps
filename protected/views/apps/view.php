@@ -82,12 +82,14 @@ if($model->platform)
                     <span>توضیحات بیشتر</span>
                 </a>
             </section>
-            <div class="change-log">
-                <h4>آخرین تغییرات</h4>
-                <div class="app-description">
-                    <?= $model->change_log ?>
+            <?php if(!is_null($model->change_log) or $model->change_log!=''):?>
+                <div class="change-log">
+                    <h4>آخرین تغییرات</h4>
+                    <div class="app-description">
+                        <?= $model->change_log ?>
+                    </div>
                 </div>
-            </div>
+            <?php endif;?>
             <div class="app-details">
                 <h4>اطلاعات برنامه</h4>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 detail">
@@ -99,19 +101,21 @@ if($model->platform)
                     <span class="ltr" ><?= $model->version ?></span>
                 </div>
             </div>
-            <div class="app-details border-none">
-                <?
-                if($model->permissions):
-                    echo '<h4>دسترسی ها</h4>';
-                    echo '<ul class="list-unstyled">';
-                    $model->permissions = CJSON::decode($model->permissions);
-                    foreach($model->permissions as $permission):
-                        echo "<li>- {$permission}</li>";
-                    endforeach;
-                    echo '</ul>';
-                endif;
-                ?>
-            </div>
+            <?php if(!is_null($model->permissions) or $model->permissions!=''):?>
+                <div class="app-details border-none">
+                    <?
+                    if($model->permissions):
+                        echo '<h4>دسترسی ها</h4>';
+                        echo '<ul class="list-unstyled">';
+                        $model->permissions = CJSON::decode($model->permissions);
+                        foreach($model->permissions as $permission):
+                            echo "<li>- {$permission}</li>";
+                        endforeach;
+                        echo '</ul>';
+                    endif;
+                    ?>
+                </div>
+            <?php endif;?>
             <!--<div class="app-comments">
                 <h4 class="pull-right">نظر کاربران</h4>
                     <button class="btn btn-default pull-left">

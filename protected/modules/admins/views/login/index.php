@@ -10,6 +10,17 @@
         'enableClientValidation'=>true,
         'clientOptions'=>array(
             'validateOnSubmit'=>true,
+            'beforeValidate' => "js:function(form) {
+                $('.loading-container').fadeIn();
+                return true;
+            }",
+            'afterValidate' => "js:function(form) {
+                $('.loading-container').stop().hide();
+                return true;
+            }",
+            'afterValidateAttribute' => 'js:function(form, attribute, data, hasError) {
+                $(".loading-container").fadeOut();
+            }',
         ),
     )); ?>
     <div class="row">
@@ -31,4 +42,13 @@
             کلمه عبور خود را فراموش کرده اید؟
         </a>
     </p>
+
+    <div class="loading-container">
+        <div class="overly"></div>
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
 </div>
