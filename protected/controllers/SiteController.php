@@ -267,7 +267,7 @@ class SiteController extends Controller
                 $mail->Subject = 'ثبت نام در '.Yii::app()->name;
                 $mail->MsgHTML($msg);
                 $mail->AddAddress($model->email);
-                var_dump($mail->Send());exit;
+                $mail->Send();
 
                 Yii::app()->user->setFlash('success' , 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد.');
                 $this->refresh();
