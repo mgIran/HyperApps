@@ -12,7 +12,7 @@
         </a>
     </div>
     <div>
-        <a href="<?php echo Yii::app()->createUrl('/widowsphone');?>" class="win" data-platform="windowsphone">
+        <a href="<?php echo Yii::app()->createUrl('/windowsphone');?>" class="win" data-platform="windowsphone">
             <span class="icon-windows icon-2x"></span>
             ویندوز فون
         </a>

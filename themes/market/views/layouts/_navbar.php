@@ -20,22 +20,32 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
                 <div class="panel panel-body dropdown-menu cat-menu-container">
-                    <div class="pull-right col-md-6">
+                    <div class="col-md-4">
                         <div class="row">
                             <a href="<?php echo Yii::app()->createUrl('/apps/programs');?>" class="cat-menu-head">برنامه ها</a>
                             <ul class="cat-menu">
                                 <?php foreach($this->categories['programs'] as $category):?>
-                                    <li><a href="#"><?php echo $category->title;?></a></li>
+                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/programs/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
                                 <?php endforeach;?>
                             </ul>
                         </div>
                     </div>
-                    <div class="pull-left col-md-6">
+                    <div class="col-md-4">
                         <div class="row">
                             <a href="<?php echo Yii::app()->createUrl('/apps/games');?>" class="cat-menu-head">بازی ها</a>
                             <ul class="cat-menu">
                                 <?php foreach($this->categories['games'] as $category):?>
-                                    <li><a href="#"><?php echo $category->title;?></a></li>
+                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/games/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <a href="<?php echo Yii::app()->createUrl('/apps/educations');?>" class="cat-menu-head">آموزش ها</a>
+                            <ul class="cat-menu">
+                                <?php foreach($this->categories['educations'] as $category):?>
+                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/educations/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
                                 <?php endforeach;?>
                             </ul>
                         </div>
@@ -45,7 +55,7 @@
             <li class="divider">
                 <a>|</a>
             </li>
-            <li><a href="<?= Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
+            <li><a href="<?= Yii::app()->createUrl('/') ?>">خانه</a></li>
             <li><a href="#">تخفیفات</a></li>
         </ul>
     </div>

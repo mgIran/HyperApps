@@ -128,6 +128,7 @@ class BaseManageController extends Controller
                 $model->permissions = null;
             if ($this->platform_id)
                 $model->platform_id = $this->platform_id;
+            $model->confirm='accepted';
             if ($model->save()) {
                 if ($model->file_name) {
                     rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);

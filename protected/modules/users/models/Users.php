@@ -57,7 +57,6 @@ class Users extends CActiveRecord
             array('email' , 'unique' ,'on' => 'create'),
             array('username, password, verification_token', 'length', 'max'=>100 ,'on' => 'create'),
             array('oldPassword', 'oldPass' , 'on'=>'update'),
-            array('repeatPassword', 'compare', 'compareAttribute'=>'newPassword' ,'operator'=>'==', 'message' => 'رمز های عبور همخوانی ندارند' , 'on'=>'update'),
             array('email', 'length', 'max'=>255),
             array('role_id', 'length', 'max'=>10),
             array('status', 'length', 'max'=>8),

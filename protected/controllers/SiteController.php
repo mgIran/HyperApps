@@ -30,47 +30,31 @@ class SiteController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
 
-        $criteria=new CDbCriteria();
-        $criteria->addCondition('path LIKE :regex1','OR');
-        $criteria->addCondition('path LIKE :regex2','OR');
-        $criteria->addCondition('id  = :id','OR');
-        $criteria->params[':regex1'] = '1-%';
-        $criteria->params[':regex2'] = '%-1-%';
-        $criteria->params[':id'] = 1;
-        $catIds=AppCategories::model()->findAll($criteria);
-        $catIds = CHtml::listData($catIds,'id','id');
+        $catIds=AppCategories::model()->getCategoryChilds(1);
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
-        if(isset($_GET['ajax']) and $_GET['platform']=='android')
-            $criteria->addCondition('platform_id=1');
-        elseif(isset($_GET['ajax']) and $_GET['platform']=='ios')
-            $criteria->addCondition('platform_id=2');
-        elseif(isset($_GET['ajax']) and $_GET['platform']=='windowsphone')
-            $criteria->addCondition('platform_id=3');
-        else
-            $criteria->addCondition('platform_id=1');
+        $criteria->addCondition('platform_id=:platform_id');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->params[':platform_id']=$this->platform;
+        $criteria->params[':status']='enable';
+        $criteria->params[':confirm']='accepted';
+        $criteria->params[':deleted']=0;
         $criteria->limit=20;
         $newestProgramDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
-        $criteria=new CDbCriteria();
-        $criteria->addCondition('path LIKE :regex1','OR');
-        $criteria->addCondition('path LIKE :regex2','OR');
-        $criteria->addCondition('id  = :id','OR');
-        $criteria->params[':regex1'] = '2-%';
-        $criteria->params[':regex2'] = '%-2-%';
-        $criteria->params[':id'] = 2;
-        $catIds=AppCategories::model()->findAll($criteria);
-        $catIds = CHtml::listData($catIds,'id','id');
+        $catIds=AppCategories::model()->getCategoryChilds(2);
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
-        if(isset($_GET['ajax']) and $_GET['platform']=='android')
-            $criteria->addCondition('platform_id=1');
-        elseif(isset($_GET['ajax']) and $_GET['platform']=='ios')
-            $criteria->addCondition('platform_id=2');
-        elseif(isset($_GET['ajax']) and $_GET['platform']=='windowsphone')
-            $criteria->addCondition('platform_id=3');
-        else
-            $criteria->addCondition('platform_id=1');
+        $criteria->addCondition('platform_id=:platform_id');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->params[':platform_id']=$this->platform;
+        $criteria->params[':status']='enable';
+        $criteria->params[':confirm']='accepted';
+        $criteria->params[':deleted']=0;
         $criteria->limit=20;
         $newestGameDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
@@ -86,7 +70,7 @@ class SiteController extends Controller
 	public function actionError()
 	{
         Yii::app()->theme = 'market';
-        $this->layout = '//layouts/public';
+        $this->layout = '//layouts/error';
 		if($error=Yii::app()->errorHandler->error)
 		{
 			if(Yii::app()->request->isAjaxRequest)
@@ -283,7 +267,7 @@ class SiteController extends Controller
                 $mail->Subject = 'ثبت نام در '.Yii::app()->name;
                 $mail->MsgHTML($msg);
                 $mail->AddAddress($model->email);
-                $mail->Send();
+                var_dump($mail->Send());exit;
 
                 Yii::app()->user->setFlash('success' , 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد.');
                 $this->refresh();

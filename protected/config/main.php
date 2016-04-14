@@ -54,6 +54,7 @@ return array(
             'connectionID'=>'db',
         ),
 		// uncomment the following to enable URLs in path-format
+        // @todo change rules in projects
 		'urlManager'=>array(
 			'urlFormat'=>'path',
             'showScriptName'=>false,
@@ -63,9 +64,11 @@ return array(
                 'login' => 'users/public/login',
                 'dashboard' => 'users/public/dashboard',
                 'register' => 'site/register',
-                'ticket' => 'ticketing/manage',
-                'guidance' => 'site/guidance',
+                'android' => 'site/index/platform/android',
+                'ios' => 'site/index/platform/ios',
+                'windowsphone' => 'site/index/platform/windowsphone',
                 '<module:\w+>/<controller:\w+>'=>'<module>/<controller>/index',
+                '<controller:\w+>/<action:\w+>/<id:\d+>/<title:(.*)>'=>'<controller>/<action>',
                 '<controller:\w+>/<id:\d+>/<title:(.*)>'=>'<controller>/view',
                 '<module:\w+>/<id:\d+>'=>'<module>/manage/view',
                 '<module:\w+>/<controller:\w+>/<id:\d+>/<title:\w+>'=>'<module>/<controller>/view',

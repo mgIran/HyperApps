@@ -29,6 +29,24 @@ class Controller extends CController
     public $pageTitle;
     public $sideRender = null;
     public $categories;
+    public $platform;
+
+    protected function beforeAction($action)
+    {
+        if($this->id==='site' and $action->id==='index')
+        {
+            $queryPlatform=Yii::app()->request->getQuery('platform');
+            if(is_null($queryPlatform))
+                $queryPlatform='android';
+            $platform=AppPlatforms::model()->findByAttributes(array('name'=>$queryPlatform));
+            $this->platform=$platform->id;
+            if(!Yii::app()->user->hasState('platform'))
+                Yii::app()->user->setState('platform', $platform->id);
+        }
+        else
+            $this->platform=Yii::app()->user->getState('platform');
+        return true;
+    }
 
     public function beforeRender($view){
         $this->description = Yii::app()->db->createCommand()
@@ -54,6 +72,7 @@ class Controller extends CController
         $this->categories=array(
             'programs'=>AppCategories::model()->findAll('parent_id=1'),
             'games'=>AppCategories::model()->findAll('parent_id=2'),
+            'educations'=>AppCategories::model()->findAll('parent_id=3'),
         );
         return true;
     }
