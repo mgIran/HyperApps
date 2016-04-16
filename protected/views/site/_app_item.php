@@ -6,7 +6,9 @@
     <div class="app-item-content">
         <div class="pic">
             <div>
-                <img src="<?php echo Yii::app()->baseUrl.'/uploads/apps/icons/'.CHtml::encode($data->icon);?>">
+                <a href="<?php echo Yii::app()->createUrl('/apps/'.$data->id.'/'.urlencode($data->title));?>">
+                    <img src="<?php echo Yii::app()->baseUrl.'/uploads/apps/icons/'.CHtml::encode($data->icon);?>">
+                </a>
             </div>
         </div>
         <div class="detail">

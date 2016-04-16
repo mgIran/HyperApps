@@ -63,7 +63,7 @@ return array(
                 'logout' => 'users/public/logout',
                 'login' => 'users/public/login',
                 'dashboard' => 'users/public/dashboard',
-                'register' => 'site/register',
+                'register' => 'users/public/register',
                 'android' => 'site/index/platform/android',
                 'ios' => 'site/index/platform/ios',
                 'windowsphone' => 'site/index/platform/windowsphone',

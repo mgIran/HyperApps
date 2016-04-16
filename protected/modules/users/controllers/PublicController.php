@@ -25,7 +25,7 @@ class PublicController extends Controller
                 'users' => array('@'),
             ),
             array('allow',  // allow all users to perform 'index' and 'views' actions
-                'actions'=>array('login','verify','forgetPassword','changePassword'),
+                'actions'=>array('register','login','verify','forgetPassword','changePassword'),
                 'users' => array('*'),
             ),
             array('deny',  // deny all users
@@ -35,17 +35,47 @@ class PublicController extends Controller
     }
 
     /**
-     * This is the action to handle external exceptions.
+     * Register user
      */
-    public function actionError()
+    public function actionRegister()
     {
-        if($error=Yii::app()->errorHandler->error)
-        {
-            if(Yii::app()->request->isAjaxRequest)
-                echo $error['message'];
-            else
-                $this->render('error', $error);
+        Yii::app()->theme = 'market';
+        $this->layout = '//layouts/backgroundImage';
+        Yii::import('users.models.*');
+        $model = new Users('create');
+        if ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] === 'register-form' ) {
+            echo CActiveForm::validate( $model );
+            Yii::app()->end();
         }
+        if(isset($_POST['Users']))
+        {
+            $model->attributes = $_POST['Users'];
+            $model->status='pending';
+            $model->create_date=time();
+            $pass = $_POST['Users']['password'];
+            Yii::import('users.components.*');
+            $login = new UserLoginForm;
+            if($model->save())
+            {
+                $serverProtocol=(strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://';
+                $token=md5($model->id.'#'.$model->password.'#'.$model->email.'#'.$model->create_date);
+                $model->updateByPk($model->id, array('verification_token'=>$token));
+                $userDetails=new UserDetails();
+                $userDetails->user_id=$model->id;
+                $userDetails->save();
+
+                $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در هایپر اپس بر روی لینک زیر کلیک کنید:</div>';
+                $message .= '<div style="text-align: right;font-size: 9pt;">';
+                $message .= '<a href="'.$serverProtocol.$_SERVER['HTTP_HOST'].'/users/public/verify/token/'.$token.'">'.$serverProtocol.$_SERVER['HTTP_HOST'].'/users/public/verify/token/'.$token.'</a>';
+                $message .= '</div>';
+                $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
+                Mailer::mail($model->email, 'ثبت نام در '.Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
+
+                Yii::app()->user->setFlash('success' , 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد.');
+                $this->refresh();
+            }
+        }
+        $this->render( 'register', array( 'model' => $model ) );
     }
 
     /**
