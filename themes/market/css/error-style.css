@@ -53,6 +53,8 @@ body {
 	background-attachment: fixed;
 	background-size: cover;
     direction: rtl;
+	height:100vh;
+	overflow: hidden;
 }
 /**-----start-wrap---------**/
 .wrap

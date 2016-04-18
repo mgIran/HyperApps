@@ -48,6 +48,7 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
             'class' => 'WebUser',
+			'loginUrl'=>array('/login'),
 		),
         'authManager'=>array(
             'class'=>'CDbAuthManager',
@@ -121,8 +122,9 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
-		'adminEmail'=>'webmaster@avayeshahir.com',
-        'noReplyEmail' => 'fake@avayeshahir.com',
+		// @todo change webmail of emails
+		'adminEmail'=>'webmaster@hyperapps.ir',
+        'noReplyEmail' => 'no-reply@hyperapps.ir',
         'mailTheme'=>
             '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">هایپر اپس<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
              <div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">

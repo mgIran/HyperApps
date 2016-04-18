@@ -35,11 +35,11 @@ if($model->platform)
             </div>
             <div class="row-fluid">
                 <span class="svg svg-coin green" ></span>
-                <span ><?= $model->price?$model->price:'رایگان'; ?></span>
+                <span ><?= $model->price?number_format($model->price, 0).' تومان':'رایگان'; ?></span>
             </div>
             <div class="row-fluid">
                 <span class="pull-left">
-                    <button class="btn btn-success" type="button" >نصب</button>
+                    <button class="btn btn-success btn-install" type="button" data-toggle="modal" data-target="#install-modal">نصب</button>
                 </span>
                 <span class="pull-left relative">
                     <?= CHtml::ajaxLink('',array('/apps/bookmark'),array(
@@ -281,13 +281,31 @@ if($model->platform)
             </div>
         </div>
     </div>
-<?
-//if(count($model->images)>3){
-    Yii::app()->clientScript->registerScript('app-images-carousel',"
-        $('.images-carousel').owlCarousel({
-            items:4,
-            autoWidth:true,
-            margin:10,
-            rtl:false
-        });
-    ");
+
+    <div id="install-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h3>برای دانلود برنامه کد زیر را اسکن کنید</h3>
+                    <div class="qr-code-container">
+                        <?php if($model->price>0):?>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode(Yii::app()->createAbsoluteUrl('/apps/buy/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));?>" />
+                        <?php else:?>
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode(Yii::app()->createAbsoluteUrl('/apps/download/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));?>" />
+                        <?php endif;?>
+                    </div>
+                    <?php if($model->price>0):?>
+                        <a href="<?php echo $this->createUrl('/apps/buy/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title));?>" class="btn btn-success btn-buy">خرید</a>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php Yii::app()->clientScript->registerScript('app-images-carousel',"
+    $('.images-carousel').owlCarousel({
+        items:4,
+        autoWidth:true,
+        margin:10,
+        rtl:false
+    });
+"); ?>

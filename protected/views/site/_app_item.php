@@ -20,7 +20,11 @@
             </div>
             <div class="app-any">
                 <span class="app-price">
-                    <a href="<?php echo Yii::app()->createUrl('/apps/free')?>">رایگان</a>
+                    <?php if($data->price==0):?>
+                        <a href="<?php echo Yii::app()->createUrl('/apps/free')?>">رایگان</a>
+                    <?php else:?>
+                        <a><?php echo number_format(CHtml::encode($data->price), 0).' تومان';?></a>
+                    <?php endif;?>
                 </span>
                 <span class="app-rate">
                     <span class="icon-star"></span>

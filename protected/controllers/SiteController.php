@@ -132,7 +132,7 @@ class SiteController extends Controller
     }
 
 
-   public function actionGuidance(){
+    public function actionGuidance(){
         Yii::import('pages.models.*');
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
@@ -157,5 +157,4 @@ class SiteController extends Controller
         );
         $this->render('//site/pages/guidance',array('dataProvider' => $dataProvider,'dataProvider2' => $dataProvider2));
     }
-
 }

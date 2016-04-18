@@ -24,7 +24,7 @@
     $cs->registerScriptFile($baseUrl.'/js/scripts.js');
     ?>
 </head>
-<body>
+<body<?php if($this->platform==2):?> class="ios"<?php elseif($this->platform==3):?> class="windowsphone"<?php endif;?>>
 
 <?= $this->renderPartial('//layouts/_header'); ?>
 <?= $this->renderPartial('//layouts/_sidebar'); ?>

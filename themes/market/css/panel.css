@@ -155,3 +155,19 @@ header
 .information-step .dropzone.single{
     width: 100%;
 }
+.buy-form h4{
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+.buy-form h4:first-child{
+    margin-top: 0;
+}
+.buy-form .buy-label{
+    width: 70px;
+    display: inline-block;
+}
+.buy-form .buy-value{
+    margin-right: 15px;
+    color: #337ab7;
+    font-weight: bold;
+}

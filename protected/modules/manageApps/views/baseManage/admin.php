@@ -20,7 +20,7 @@ $this->menu=array(
 		'title',
 		array(
 			'header' => 'توسعه دهنده',
-			'value' => '$data->developer_id && $data->developer->userDetails?$data->developer->userDetails->developer_id:$data->developer_team'
+			'value' => '$data->developer_id?$data->developer->userDetails->developer_id:$data->developer_team'
 		),
 		'category_id',
 		'status',
