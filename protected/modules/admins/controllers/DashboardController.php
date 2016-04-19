@@ -35,8 +35,10 @@ class DashboardController extends Controller
 
 	public function actionIndex()
     {
-
-		$this->render('index');
+        Yii::app()->getModule('users');
+		$this->render('index', array(
+            'devIDRequests'=>UserDevIdRequests::model()->search(),
+        ));
 	}
 
 }

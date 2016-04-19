@@ -30,6 +30,7 @@ class SiteController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
 
+        // get newest programs
         $catIds=AppCategories::model()->getCategoryChilds(1);
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
@@ -44,6 +45,7 @@ class SiteController extends Controller
         $criteria->limit=20;
         $newestProgramDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
+        // get newest games
         $catIds=AppCategories::model()->getCategoryChilds(2);
         $criteria = new CDbCriteria();
         $criteria->addInCondition('category_id',$catIds);
@@ -58,9 +60,25 @@ class SiteController extends Controller
         $criteria->limit=20;
         $newestGameDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
+        // get newest educations
+        $catIds=AppCategories::model()->getCategoryChilds(3);
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('category_id',$catIds);
+        $criteria->addCondition('platform_id=:platform_id');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->params[':platform_id']=$this->platform;
+        $criteria->params[':status']='enable';
+        $criteria->params[':confirm']='accepted';
+        $criteria->params[':deleted']=0;
+        $criteria->limit=20;
+        $newestEducationDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
+
         $this->render('index', array(
             'newestProgramDataProvider'=>$newestProgramDataProvider,
             'newestGameDataProvider'=>$newestGameDataProvider,
+            'newestEducationDataProvider'=>$newestEducationDataProvider,
         ));
 	}
 
