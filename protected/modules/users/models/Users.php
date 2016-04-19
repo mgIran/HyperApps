@@ -18,6 +18,7 @@
  * @property string $newPassword
  *
  * The followings are the available model relations:
+ * @property AppBuys[] $appBuys
  * @property Apps[] $apps
  * @property UserDetails $userDetails
  * @property UserDevIdRequests $userDevIdRequests
@@ -86,6 +87,7 @@ class Users extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'appBuys' => array(self::HAS_MANY, 'AppBuys', 'user_id'),
             'apps' => array(self::HAS_MANY, 'Apps', 'developer_id'),
             'userDetails' => array(self::HAS_ONE, 'UserDetails', 'user_id'),
             'userDevIdRequests' => array(self::HAS_ONE, 'UserDevIdRequests', 'user_id'),

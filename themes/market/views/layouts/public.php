@@ -30,7 +30,7 @@
 <?= $this->renderPartial('//layouts/_sidebar'); ?>
 <?= $this->renderPartial('//layouts/_navbar'); ?>
 <div class="main col-xs-12">
-    <section class="content">
+    <section class="content row">
         <?php
         if(Yii::app()->user->hasFlash('success'))
             echo '<div class=\'alert alert-success rtl fade in\'>

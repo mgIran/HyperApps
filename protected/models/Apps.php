@@ -20,10 +20,13 @@
  * @property string $confirm
  * @property string $platform_id
  * @property string $developer_team
- * @property integer $install
+ * @property integer $seen
+ * @property string $download
+ * @property string $install
  * @property integer $deleted
  *
  * The followings are the available model relations:
+ * @property AppBuys[] $appBuys
  * @property AppImages[] $images
  * @property AppPlatforms $platform
  * @property Users $developer
@@ -53,18 +56,20 @@ class Apps extends CActiveRecord
 		return array(
             array('title, category_id, price, version ,platform_id ,file_name ,icon', 'required'),
             array('price, size, platform_id', 'numerical'),
-            array('install, deleted', 'numerical', 'integerOnly'=>true),
+            array('seen, install, deleted', 'numerical', 'integerOnly'=>true),
 			array('description, change_log','filter','filter'=>array($this->_purifier,'purify')),
-			array('title, icon', 'length', 'max'=>50),
+			array('title, icon, developer_team', 'length', 'max'=>50),
 			array('developer_id, category_id, platform_id', 'length', 'max'=>10),
 			array('status', 'length', 'max'=>7),
 			array('file_name', 'length', 'max'=>100),
 			array('version', 'length', 'max'=>20),
 			array('confirm', 'length', 'max'=>8),
+			array('download, install', 'length', 'max'=>12),
+			array('price, size', 'numerical'),
 			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, developer_id, category_id, status, price, file_name, icon, description, change_log, permissions, size, version, confirm, platform_id', 'safe', 'on'=>'search'),
+			array('id, title, developer_id, category_id, status, price, file_name, icon, description, change_log, permissions, size, version, confirm, platform_id, developer_team, seen, download, install, deleted', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,6 +81,7 @@ class Apps extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'appBuys' => array(self::HAS_MANY, 'AppBuys', 'app_id'),
 			'images' => array(self::HAS_MANY, 'AppImages', 'app_id'),
 			'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
 			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
@@ -105,8 +111,10 @@ class Apps extends CActiveRecord
 			'confirm' => 'وضعیت انتشار',
 			'platform_id' => 'پلتفرم',
             'developer_team' => 'تیم توسعه دهنده',
-            'install' => 'تعداد نصب فعال',
-            'deleted' => 'حذف شده',
+			'seen' => 'دیده شده',
+			'download' => 'تعداد دریافت',
+			'install' => 'تعداد نصب فعال',
+			'deleted' => 'حذف شده',
 		);
 	}
 
@@ -143,10 +151,11 @@ class Apps extends CActiveRecord
 		$criteria->compare('version',$this->version,true);
 		$criteria->compare('confirm',$this->confirm,true);
 		$criteria->compare('platform_id',$this->platform_id,true);
-
-        $criteria->compare('developer_team',$this->developer_team,true);
-        $criteria->compare('install',$this->install);
-        $criteria->compare('deleted',$this->deleted);
+		$criteria->compare('developer_team',$this->developer_team,true);
+		$criteria->compare('seen',$this->seen);
+		$criteria->compare('download',$this->download,true);
+		$criteria->compare('install',$this->install,true);
+		$criteria->compare('deleted',$this->deleted);
 
 
 		return new CActiveDataProvider($this, array(

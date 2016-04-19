@@ -28,7 +28,7 @@
 <body>
 <?= $this->renderPartial('//layouts/_header'); ?>
 <div class="col-xs-12">
-    <section class="content">
+    <section class="content row">
         <?php echo $content; ?>
         <?= $this->renderPartial('//layouts/_footer'); ?>
     </section>

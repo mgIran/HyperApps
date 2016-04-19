@@ -3,6 +3,7 @@
 /* @var $newestProgramDataProvider CActiveDataProvider */
 /* @var $newestGameDataProvider CActiveDataProvider */
 /* @var $newestEducationDataProvider CActiveDataProvider */
+/* @var $suggestedDataProvider CActiveDataProvider */
 
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
@@ -12,7 +13,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
     <div class="app-box">
         <div class="top-box">
             <div class="title pull-right">
-                <h2 >جدیدترین برنامه ها</h2>
+                <h2>جدیدترین برنامه ها</h2>
             </div>
             <a class="pull-left btn btn-success more-app" href="<?php echo $this->createUrl('/apps/programs');?>">بیشتر</a>
         </div>
@@ -27,7 +28,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
     <div class="app-box">
         <div class="top-box">
             <div class="title pull-right">
-                <h2 >جدیدترین بازی ها</h2>
+                <h2>جدیدترین بازی ها</h2>
             </div>
             <a class="pull-left btn btn-success more-app" href="<?php echo $this->createUrl('/apps/games');?>">بیشتر</a>
         </div>
@@ -97,7 +98,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
 <!--    <div class="app-box">-->
 <!--        <div class="top-box">-->
 <!--            <div class="title pull-right">-->
-<!--                <h2 >برترین ها</h2>-->
+<!--                <h2>برترین ها</h2>-->
 <!--            </div>-->
 <!--            <button type="button" class="pull-left btn btn-success more-app" >-->
 <!--                بیشتر-->
@@ -244,7 +245,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
 <!--    <div class="app-box">-->
 <!--        <div class="top-box">-->
 <!--            <div class="title pull-right">-->
-<!--                <h2 >پر فروش های هفته</h2>-->
+<!--                <h2>پر فروش های هفته</h2>-->
 <!--            </div>-->
 <!--            <button type="button" class="pull-left btn btn-success more-app" >-->
 <!--                بیشتر-->
@@ -391,13 +392,27 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
     <div class="app-box">
         <div class="top-box">
             <div class="title pull-right">
-                <h2 >تازه های آموزشی</h2>
+                <h2>تازه های آموزشی</h2>
             </div>
             <a class="pull-left btn btn-success more-app" href="<?php echo $this->createUrl('/apps/educations');?>">بیشتر</a>
         </div>
         <?php $this->widget('zii.widgets.CListView', array(
             'id'=>'newest-educations',
             'dataProvider'=>$newestEducationDataProvider,
+            'itemView'=>'_app_item',
+            'template'=>'{items}',
+            'itemsCssClass'=>'app-carousel'
+        ));?>
+    </div>
+    <div class="app-box suggested-list">
+        <div class="top-box">
+            <div class="title pull-right">
+                <h2>پیشنهاد ما به شما</h2>
+            </div>
+        </div>
+        <?php $this->widget('zii.widgets.CListView', array(
+            'id'=>'newest-educations',
+            'dataProvider'=>$suggestedDataProvider,
             'itemView'=>'_app_item',
             'template'=>'{items}',
             'itemsCssClass'=>'app-carousel'

@@ -75,10 +75,28 @@ class SiteController extends Controller
         $criteria->limit=20;
         $newestEducationDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
+        // get suggested list
+        $visitedCats=CJSON::decode(base64_decode(Yii::app()->request->cookies['VC']));
+        $criteria = new CDbCriteria();
+        $criteria->addInCondition('category_id',$visitedCats);
+        $criteria->addCondition('platform_id=:platform_id');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->order='install DESC, seen DESC';
+        $criteria->params[':platform_id']=$this->platform;
+        $criteria->params[':status']='enable';
+        $criteria->params[':confirm']='accepted';
+        $criteria->params[':deleted']=0;
+        $criteria->limit=20;
+        $suggestedDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
+
+
         $this->render('index', array(
             'newestProgramDataProvider'=>$newestProgramDataProvider,
             'newestGameDataProvider'=>$newestGameDataProvider,
             'newestEducationDataProvider'=>$newestEducationDataProvider,
+            'suggestedDataProvider'=>$suggestedDataProvider,
         ));
 	}
 

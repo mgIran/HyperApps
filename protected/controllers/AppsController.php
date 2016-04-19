@@ -41,6 +41,9 @@ class AppsController extends Controller
         Yii::import('users.models.*');
         Yii::app()->theme = "market";
         $model = $this->loadModel($id);
+        $model->seen=$model->seen+1;
+        $model->save();
+        $this->saveInCookie($model->category_id);
 		$this->render('view',array(
             'model' => $model
         ));

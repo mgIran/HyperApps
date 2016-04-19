@@ -263,4 +263,28 @@ class Controller extends CController
 
 
     }
+
+    public function saveInCookie($catID)
+    {
+        $cookie=Yii::app()->request->cookies->contains('VC')?Yii::app()->request->cookies['VC']:null;
+
+        if(is_null($cookie)) {
+            $cats=base64_encode(CJSON::encode(array($catID)));
+            $newCookie = new CHttpCookie('VC', $cats);
+            $newCookie->domain = '';
+            $newCookie->expire = 0;
+            $newCookie->path='/';
+            $newCookie->secure=false;
+            $newCookie->httpOnly=false;
+            Yii::app()->request->cookies['VC'] = $newCookie;
+        }
+        else {
+            $cats=CJSON::decode(base64_decode($cookie->value));
+            if(!in_array($catID, $cats)) {
+                array_push($cats, $catID);
+                $cats=base64_encode(CJSON::encode($cats));
+                Yii::app()->request->cookies['VC'] = new CHttpCookie('VC', $cats);
+            }
+        }
+    }
 }
