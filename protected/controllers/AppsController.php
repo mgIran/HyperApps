@@ -154,10 +154,14 @@ class AppsController extends Controller
                 break;
         }
 
-        header("Content-Type: $mimeType");
-        header("Content-Disposition: attachment; filename=$fakeFileName");
-        header("Content-Length: " . filesize($file));
-        fpassthru($fp);
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Type: text/html');
+        header('Content-Disposition: attachment; filename='.$fakeFileName);
+
+        echo stream_get_contents($fp,-1,0);
     }
 
     /**

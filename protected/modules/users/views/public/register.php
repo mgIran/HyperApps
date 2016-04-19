@@ -22,6 +22,10 @@
                 $('.loading-container').fadeIn();
                 return true;
             }",
+            'afterValidate' => "js:function(form) {
+                $('.loading-container').stop().hide();
+                return true;
+            }",
         ),
     )); ?>
     <div class="row">

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-04-16 15:20:14
+Date: 2016-04-18 15:28:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,6 +74,8 @@ CREATE TABLE `ym_apps` (
   `confirm` enum('pending','refused','accepted') DEFAULT 'pending',
   `platform_id` int(10) unsigned DEFAULT NULL,
   `developer_team` varchar(50) DEFAULT NULL,
+  `seen` tinyint(1) unsigned DEFAULT '0' COMMENT 'دیده شده',
+  `download` int(12) unsigned DEFAULT '0' COMMENT 'تعداد دریافت',
   `install` int(12) unsigned DEFAULT '0' COMMENT 'تعداد نصب فعال',
   `deleted` tinyint(1) unsigned DEFAULT '0' COMMENT 'حذف شده',
   PRIMARY KEY (`id`),
@@ -83,13 +85,35 @@ CREATE TABLE `ym_apps` (
   CONSTRAINT `ym_apps_ibfk_1` FOREIGN KEY (`developer_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_3` FOREIGN KEY (`platform_id`) REFERENCES `ym_app_platforms` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_apps
 -- ----------------------------
-INSERT INTO `ym_apps` VALUES ('17', 'هواشناسی هوشمند و پیشرفته', null, '4', 'enable', '4000', 'ZHs0h1457613911.apk', '1FUfb1457613932.png', '<p><strong>هواشناسی پیشرفته و جدید کافه بازار</strong><br />\nجدیدترین اپلیکیشین هواشناسی با طراحی فوق العاده و متریال پیش روی شماست !<br />\nبا این برنامه میتونید آب و هوای تمام شهرهای ایران و دنیارو در کمترین زمان با طراحی فوق العاده زیبا مشاهده کنید و برای روزهای بعدی برنامه ریزی داشته باشید !</p>\n\n<p> </p>\n\n<p><strong>امکانات جدید و بی نظیر این نرم افزار شامل :</strong></p>\n\n<p> </p>\n\n<p>- نمایش آب و هوای تمام نقاط و شهرهای دنیا، بویژه ایران<br />\n- پیش بینی آب و هوای شش روز آینده<br />\n- پشتیبانی از چند شهر برای نمایش آب و هوا<br />\n- پشتیبانی از مکان کاربر برای نمایش آب و هوا<br />\n- دارای ویجت صفحه قفل و نوار اعلان برای دسترسی بهتر<br />\n- نمایش آب و هوای نزدیک ترین محل به نقطه ی مورد نظر درصورت پیدا نکردن نام محل (منحصر به فردترین امکان برنامه بدون مشابه داخلی و خارجی)<br />\n- رابط کاربری فوق العاده زیبا و متریال، تغییر ظاهر برنامه با توجه به شرایط و ساعت شبانه روز<br />\n- دریافت اطلاعات از سرور معتبر و دقیق برای هواشناسی برای پیش بینی دقیق<br />\n-پیش بینی دوره ای و ساعتی وضعیت هوا<br />\n- امکان به اشتراک گذاشتن آب و هوا برای اطلاع رسانی به دوستان<br />\n- و ...</p>\n', '<p>بهبود رابط کاربری در اندروید 4.2</p>\n', '[\" \\u0627\\u062c\\u0631\\u0627 \\u0634\\u062f\\u0646 \\u062f\\u0631 \\u0647\\u0646\\u06af\\u0627\\u0645 \\u0631\\u0627\\u0647\\u200c\\u0627\\u0646\\u062f\\u0627\\u0632\\u06cc \",\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u06a9\\u0627\\u0631\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647\"]', '2127', ' 1.0.5', 'accepted', '1', 'سیبچه', '0', '0');
-INSERT INTO `ym_apps` VALUES ('18', 'برنامه آیفون', null, '4', 'enable', '0', 'ZHs0h1457613911.apk', '1FUfb1457613932.png', null, null, null, '2127', null, 'accepted', '2', 'سیبچه', '0', '0');
+INSERT INTO `ym_apps` VALUES ('18', 'کشکول', null, '4', 'enable', '1000', 'sh88h1460630479.apk', 'ksmvp1460630489.png', '<p><strong>با کشکول، مطالب مورد علاقه تون رو دنبال کنید</strong></p>\r\n\r\n<p> </p>\r\n\r\n<p>‎بیشتر پیگیر چه مطالبی هستی ؟؟ <br />\r\n‎دوست داری اخبار جدید رو در مورد یه موضوع مشخص پیگیری کنی؟؟  دوست داری بدونی دوستات یا افراد مهم چه مطالبی میخونن و چه موضوعاتی رو پیگیری می کنن؟؟ دوست داری سایتهایی که برات مهم اند رو پیگیری کنی و هیچ کدوم از مطالب و اخبارشو از دست ندی؟<br />\r\n‎ کشکول یه سرویس جدیده که در اون میتونی به مطالبی که علاقه داری خیلی راحت دسترسی پیدا کنی و اون ها رو پیگیری کنی.</p>\r\n\r\n<p> </p>\r\n\r\n<p>‎اگر شما از اون دسته آدمهایی هستید که توی اینترنت دنبال مطالب و اخبار مورد علاقه ی خودشون میگردند، باید بهتون یه مژده بدم چون با کشکول دیگه لازم نیست دنبال اخبار و مطالب مورد علاقه تون بگردید. کشکول تمام آن چیزی که بهش علاقمندید رو در اختیارتون قرار میده.شما فقط کافیه به ما بگید به چه چیزی علاقه دارید. اینطوری خیلی توی وقتتون و ترافیک مصرفی اینترنتتون صرفه جویی میشه. <br />\r\n‎چون لازم نیست به سایتهای مختلف سر بزنید و همه ی مطالبشونرو بصورت یکجا توی کشکول ملاحظه خواهید کرد. </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎شما حتی میتونید مطالبی که علاقه دارید را توی پروفایل شخصی خودتون بازنشر کنید تا بتونید این مطالب و سایتها رو به اونها هم معرفی کنید. برای معرفی صفحه شخصی به دوستاتون، فقط لازمه در قسمت تنظیمات، یک شناسه کاربری برای خودتون تعیین کنید. <br />\r\n‎ازین پس شما دارای لینک شخصی در کشکول میشید. </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎اگر سایت مورد علاقه تون توی کشکول ثبت نشده بود، خودتون میتونید وارد سایت کشکول بشید و اون رو در قسمت \"افزودن سایت\"  ثبت کنید.</p>\r\n\r\n<p> </p>\r\n\r\n<p>‎نکته خیلی مهم: <br />\r\n‎تمامی امکانات فوق، در سایت کشکول به آدرس https://kashkol.ir قابل دسترسی هست<br />\r\n‎اپلیکیشن کشکول هنوز در مرحله ی تکمیل قرار داره و به شما قول میدیم در کوتاهترین زمان، تمامی این امکانات رو در اپلیکیشن هم قرار بدیم. </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎درخواست:<br />\r\n‎پس از نصب و استفاده از کشکول، یک نکته یا نظر برای بهبود کشکول به ما بگید. ممنونم. </p>\r\n\r\n<p> </p>\r\n\r\n<p> </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎برای استفاده از تمامی امکانات به آدرس https://kashkol.ir مراجعه کنید.</p>\r\n', '<p>- اضافه شدن صفحه تنظیمات</p>\r\n\r\n<p>- بهبود ثبت نام</p>\r\n\r\n<p>- رفع باگ</p>\r\n', '[\" \\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u062a\\u0646\\u0638\\u06cc\\u0645\\u0627\\u062a \",\" \\u06a9\\u0646\\u062a\\u0631\\u0644 \\u0644\\u0631\\u0632\\u0634 \",\" \\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647 \",\" \\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647 \",\" \\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u06a9\\u0627\\u0645\\u0644 \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a \"]', '2127', ' 0.4 ', 'accepted', '1', 'کشکول', '0', '0', '1', '0');
+INSERT INTO `ym_apps` VALUES ('19', ' آواز (شانس خوانندگی)', null, '4', 'enable', '0', 'GCeJf1460630634.apk', 'F22F91460630643.png', '<p><strong>آواز شانس شما برای شنیده شدن</strong></p>\n\n<p> </p>\n\n<h4><strong>بیش از 50 ترانه ی محبوب در سبک های مختلف پاپ، سنتی، رپ و برخی ترانه های پر طرفدار لاتین را در آکادمی آواز ارائه کردیم که بیشتر آن ها بدون پرداخت هیچ هزینه ای در اختیار شما هستند.</strong></h4>\n\n<p> </p>\n\n<p>امکان استفاده از این اپلیکیشن را برای نسخه های قدیمی و جدید اندروید فراهم ساختیم.</p>\n\n<p> </p>\n\n<p>با کمک گرافیست های مجرب محیطی جذاب جهت جلب نطر کاربران عزیز این برنامه طراحی کردیم.</p>\n\n<p> </p>\n\n<p>قابلیت جدید و منحصر به فردی را با عنوان <strong>avas beats</strong> طراحی کردیم که از طریق تب بیتس در داخل اپلیکیشن قابل دسترسی است و با استفاده از آن می توانید در سبک پاپ یا رپ روی سمپل های آماده هر چه می خواهید بخوانید و اثری منحصر به خودتان بسازید.</p>\n\n<p> </p>\n\n<p>امکان برگزاری مسابقه خوانندگی را نیز مهیا کردیم که به طور مداوم برگزار خواهد شد و میتوانید علاوه بر سرگرمی استعداد خوانندگی خود را به چالش کشیده و جایزه ببرید.</p>\n\n<p> </p>\n\n<p>در قدم های بعدی نیز علاوه بر بهبود کیفی بخش های مختلف برنامه، بهترین ها رو برای شما در نظر گرفتیم که در حال حاضر در حال بررسی و اجرا می باشند.</p>\n\n<p> </p>\n\n<p>قرن هاست که آواز ابزاری تأثیرگذار برای بیان احساسات انسان به شمار می رود و همواره از محبوبیت خاصی در عموم فرهنگ های دنیا برخوردار بوده. با توجه به اینکه همه ی ما بنا به طبع و سلیقه ی خود با سبکی از هنر موسیقی ارتباط برقرار میکنیم، تیم آکادمی آواز با بهره گیری از اساتید متخصص در حوزه های برنامه نویسی و موسیقی مفتخر است این محصول را با امکانات جدید و منحصر به فرد که برخی از آن ها برای اولین بار به واسطه ی این اپلیکیشن ارائه میشود، به تمام علاقه مندان به خوانندگی در سبک ها و سطوح متفاوت تقدیم کند.</p>\n\n<p> </p>\n\n<p>طی چند ماه تلاش پی در پی و با استفاده از تجربیات اساتید موسیقی در رشته ی آهنگسازی و آواز، همچنین متخصصین برنامه نویس که جزئی از تیم آکادمی آواز هستند مقدمات یک اتفاق بزرگ را فراهم کردیم.</p>\n\n<p> </p>\n\n<p>آواز به معنی جمع آواهای شماست پس با پشتیبانی و حمایت شما کاربران گرامی هر روز با ترانه ها و قابلیت های جدید در جهت نزدیک کردن این برنامه به خواسته های شما قدم برمی داریم.</p>\n\n<p> </p>\n\n<p>هدف اصلی ما جلب رضایت شماست</p>\n\n<p> </p>\n\n<p>بخوانید، لذت ببرید و ستاره شوید...</p>\n\n<p> </p>\n\n<p><strong>توجه:</strong></p>\n\n<p> </p>\n\n<p><strong>هنگام ضبط حتماً از هدفون با کیفیت استفاده کنید و نیز بهتر است درمقدار فاصله میکروفون با دهان خود دقت فرمایید.</strong></p>\n\n<p> </p>\n\n<p><strong>هر هفته بدون نیاز به آپدیت از ترانه های جدید و به روز تهیه شده توسط تیم آکادمی آواز بهره مند شوید.</strong></p>\n', '', '[\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u062a\\u0646\\u0638\\u06cc\\u0645\\u0627\\u062a\",\"\\u06a9\\u0646\\u062a\\u0631\\u0644 \\u0644\\u0631\\u0632\\u0634\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u06a9\\u0627\\u0645\\u0644 \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\" \\u062a\\u063a\\u06cc\\u06cc\\u0631 \\u06cc\\u0627 \\u062d\\u0630\\u0641 \\u0645\\u062d\\u062a\\u0648\\u06cc\\u0627\\u062a \\u06a9\\u0627\\u0631\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \"]', '2127', '1.0', 'accepted', '1', 'mass music box', '0', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('20', ' برنامه لیدکامب - لکنت کودکان', '43', '8', 'enable', '8000', '3vTXT1460814161.apk', 'ktQO11460814173.png', '<p>برنامه ی لیدکامب یک درمان رفتاری است که لکنت کودکان را مد نظر قرار می ­دهد. در طول برنامه ی لیدکامب، به هیچ عنوان از کودکان تحت درمان خواسته نمی ­شود الگوی صحبت کردن عادی خود را تغییر دهند. والدین تحت هیچ شرایطی نه عادات گفتاری معمولی خود را تغییر می دهند، نه سبک زندگی خود را. والدین، یا گاهی اوقات پرستاران، برنامه ی درمانی لیدکامب را با آموزش و نظارت یک درمانگر متخصص اجرا می کنند.</p>\n\n<p> </p>\n\n<p>«مراجعه ی هفتگی والدین به کلینیک» - «اهداف درمانی» - «اندازه گیری لکنت» - «هدف SR» - «اهداف درمانی مشخص شده توسط SR» - «بازخورد کلامی والدین» از آیتم های برنامه لیدکامب می باشد.</p>\n\n<p> </p>\n\n<p>......</p>\n\n<p> </p>\n\n<p>این برنامه با همکاری گروه نرم افزاری هورماه و کلینیک گفتاردرمانی آیران ارايه و آماده سازی شده است.</p>\n\n<p> </p>\n\n<p>مشاوران درمانی :</p>\n\n<p> </p>\n\n<p>عاطفه موذنی - کارشناس ارشد گفتاردرمانی</p>\n\n<p> </p>\n\n<p>میثم شفیعی - کارشناس ارشد گفتاردرمانی</p>\n\n<p> </p>\n\n<p>توسعه دهنده اپلیکیشن :</p>\n\n<p> </p>\n\n<p>سید محمد حسین سجادی منش</p>\n\n<p> </p>\n\n<p>وبسایت:</p>\n\n<p> </p>\n\n<p><a href=\"http://www.stutteringapk.ir\">stutteringapk.ir</a></p>\n', '', '[\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u06a9\\u0627\\u0631\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647\",\"\\u06cc\\u0627\\u0641\\u062a\\u0646 \\u062d\\u0633\\u0627\\u0628\\u200c\\u0647\\u0627 \\u062f\\u0631 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0627\\u0632 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\"]', '2127', '1.3', 'pending', '1', null, '0', '0', '0', '0');
+
+-- ----------------------------
+-- Table structure for ym_app_buys
+-- ----------------------------
+DROP TABLE IF EXISTS `ym_app_buys`;
+CREATE TABLE `ym_app_buys` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `app_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `date` varchar(20) DEFAULT NULL COMMENT 'تاریخ',
+  PRIMARY KEY (`id`),
+  KEY `app_id` (`app_id`) USING BTREE,
+  KEY `user_id` (`user_id`) USING BTREE,
+  CONSTRAINT `ym_app_buys_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `ym_app_buys_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of ym_app_buys
+-- ----------------------------
+INSERT INTO `ym_app_buys` VALUES ('1', '18', '43', '1460966302');
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -103,7 +127,7 @@ CREATE TABLE `ym_app_categories` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `ym_app_categories_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_app_categories
@@ -111,11 +135,14 @@ CREATE TABLE `ym_app_categories` (
 INSERT INTO `ym_app_categories` VALUES ('1', 'برنامه ها', null, null);
 INSERT INTO `ym_app_categories` VALUES ('2', 'بازی ها', null, null);
 INSERT INTO `ym_app_categories` VALUES ('3', 'آموزش ها', null, null);
-INSERT INTO `ym_app_categories` VALUES ('4', 'کاربردی', '1', '1-');
-INSERT INTO `ym_app_categories` VALUES ('5', 'آب و هوا', '1', '1-');
-INSERT INTO `ym_app_categories` VALUES ('6', 'موسیقی', '1', '1-');
-INSERT INTO `ym_app_categories` VALUES ('7', 'اکشن', '2', '2-');
-INSERT INTO `ym_app_categories` VALUES ('8', 'فکری', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('4', 'آب و هوا', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('5', 'ماجراجویی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('6', 'اخبار و مجلات', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('7', 'ارتباطات', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('8', 'پزشکی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('9', 'استراتژی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('10', 'خانوادگی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('11', 'تفننی', '2', '2-');
 
 -- ----------------------------
 -- Table structure for ym_app_images
@@ -128,14 +155,20 @@ CREATE TABLE `ym_app_images` (
   PRIMARY KEY (`id`),
   KEY `app_id` (`app_id`),
   CONSTRAINT `ym_app_images_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_app_images
 -- ----------------------------
-INSERT INTO `ym_app_images` VALUES ('15', '31', 'IY4ef1457338577IY4ef1457338577.jpg');
-INSERT INTO `ym_app_images` VALUES ('16', '31', 'rwrJK1457338579rwrJK1457338579.jpg');
-INSERT INTO `ym_app_images` VALUES ('17', '32', 'aPZHE1457339210aPZHE1457339210.jpg');
+INSERT INTO `ym_app_images` VALUES ('7', '18', '7i1hq1460630601.jpg');
+INSERT INTO `ym_app_images` VALUES ('8', '18', 'TwYEo1460630602.jpg');
+INSERT INTO `ym_app_images` VALUES ('9', '18', 'b5Ueb1460630604.jpg');
+INSERT INTO `ym_app_images` VALUES ('10', '19', 'N9QpK1460630672.jpg');
+INSERT INTO `ym_app_images` VALUES ('11', '19', 'AFD1r1460630679.jpg');
+INSERT INTO `ym_app_images` VALUES ('12', '19', 'daS8E1460630684.jpg');
+INSERT INTO `ym_app_images` VALUES ('13', '20', 'lV7Hb1460814214lV7Hb1460814214.jpg');
+INSERT INTO `ym_app_images` VALUES ('14', '20', 'AYGcM1460814245AYGcM1460814245.jpg');
+INSERT INTO `ym_app_images` VALUES ('15', '20', 'wCnw21460814247wCnw21460814247.jpg');
 
 -- ----------------------------
 -- Table structure for ym_app_platforms
@@ -169,11 +202,11 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '28');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457495');
-INSERT INTO `ym_counter_save` VALUES ('max_count', '1');
-INSERT INTO `ym_counter_save` VALUES ('max_time', '1455957000');
-INSERT INTO `ym_counter_save` VALUES ('yesterday', '0');
+INSERT INTO `ym_counter_save` VALUES ('counter', '58');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457497');
+INSERT INTO `ym_counter_save` VALUES ('max_count', '5');
+INSERT INTO `ym_counter_save` VALUES ('max_time', '1457598600');
+INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
 
 -- ----------------------------
 -- Table structure for ym_counter_users
@@ -188,7 +221,8 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1460790399');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1460976800');
+INSERT INTO `ym_counter_users` VALUES ('f528764d624db129b32c21fbca0cb8d6', '1460973700');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -202,7 +236,7 @@ CREATE TABLE `ym_pages` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `ym_pages_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `ym_page_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_pages
@@ -215,7 +249,6 @@ INSERT INTO `ym_pages` VALUES ('13', 'سلام', '<p>سشیکمئبمسشئبئ�
 INSERT INTO `ym_pages` VALUES ('14', 'راهنما', '<p>ستیدبمشسکدئیب</p>\r\n', '2');
 INSERT INTO `ym_pages` VALUES ('15', 'ljdvn', '<p>ksdmnkafm</p>\r\n', '2');
 INSERT INTO `ym_pages` VALUES ('16', 'sdfjnsfl;km', '<p>&nbsp;</p>\r\n\r\n<p>dfasfsf</p>\r\n\r\n<p>&nbsp;</p>\r\n', '2');
-INSERT INTO `ym_pages` VALUES ('17', 'قرارداد توسعه دهندگان', 'متن قرارداد', '4');
 
 -- ----------------------------
 -- Table structure for ym_page_categories
@@ -276,34 +309,20 @@ CREATE TABLE `ym_users` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('8', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'e@s.s', '2', null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('9', '', '$2a$12$Fdjxz7ATPpgbZf50mx40uudLwdWL1tMCgpftg6NdK/8xVXT2jgog.', 'masoud@gmail.com', '2', null, 'active', '4a50c13f6b162f3f2d7e8373c512e3b2', '0');
-INSERT INTO `ym_users` VALUES ('10', '', '$2a$12$WSwoxdogvRqsDvbAHpc2uO9nuUe5r4pGkXJFhXqpGzMO.0xOnGhNG', 'wsd@sd.s', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('11', '', '$2a$12$ag4jsnZyO41SZEZlViKxN.LXiKEJ.xusW1LGaPAtEVAoNzAVNINOi', 'alskmd@akslm.asd', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('14', '', '$2a$12$nYpXPB/Kciy8N7Rqt58HZ.Ik/tiZj5ktsbyqEigDFibusySaAJRNq', 'yusef.mobasheri@gmail.com', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('15', '', '$2a$12$0T2WyDqGudDBUBcL.OHAsOCQ7cvt/u7A6ATPgsH1FMmDUr8Q57Lpy', 'sa@asd.d', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('16', '', '$2a$12$qhZe7dYMfopnusz7UmZiP.qQxLI5cRxQk4WzCJsKWrtmqo.gMIEJO', 'sami@a.s', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('17', '', '$2a$12$iHTF9okp6f9jjne60rJDwe7Y5GpcESJkx9BTZ1oSCv0Mha6I446zW', 'asd@asd.asdaaaaa', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('18', '', '$2a$12$ElmUqOc0ZPVlQIzDEbjd6eDZVyA4U0KwjANPkVr/pIZtbvbv8RHYa', 'asd@asd.asdaaaaaa', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('19', '', '$2a$12$/hxj8aQdI8.qgzkjq78R4un.cxofTHV1a.xG7LOvPQ3gRtxkIwUnq', 'asd@asd.as', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('20', '', '$2a$12$BAGEBr9mDIM3zd0Gojeghuo6myrvlrsU//5nY4hWgjYjgziSChWky', 'ae@asd.aa', null, null, 'pending', null, '0');
-INSERT INTO `ym_users` VALUES ('23', '', '$2a$12$WdOyD.ae7NxYz0wdwCUHiexTQfZrVw6/3fU3Qvf4htn09a3W..QAK', 'gharagozlu.masoud@gmail.com', '1', '1460361827', 'pending', '202b3c3b071cf7c9ca19f8f68bb85232', '0');
-INSERT INTO `ym_users` VALUES ('24', '', '$2a$12$WiZYKzWKevV.9/b3eUulK.Oy0CDh/1WlFzTRM21I9QllUnABh2l1S', 'gharagozlu.amasoud@gmail.com', '1', '1460364861', 'pending', '2b60060523aff84d960fe770ae947740', '0');
-INSERT INTO `ym_users` VALUES ('25', '', '$2a$12$ZEPk9MlddmE3J4rGMtw/uuKHl1X0sWSxS6iSgEr5Z.EwI577ybeAm', 'gharadgozlu.masoud@gmail.com', '1', '1460521814', 'pending', '0dba9a0699e816bbce7e43ce2b6233aa', '0');
-INSERT INTO `ym_users` VALUES ('26', '', '$2a$12$Hnkw1kkb3kwMv7oR4VnLBuEXy0n4kXNQBY95Eno03D7qtrNzgytjW', 'masou1d@gmail.com', '1', '1460787564', 'pending', '9aa9b5d21567c554ea571550ec4a5d25', '0');
+INSERT INTO `ym_users` VALUES ('39', '', '$2a$12$b.1R4HTOHrMZCQgcxlhhZu5zPaXPw.Nc26DgAhEjxytpiviSjPG.6', 'm@gmail.com', '1', '1460625263', 'pending', '23aa8793179b679912142a701e3a9632', '0');
+INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'ec0bfa4e54eed8afb0d7fb0305d52759', '0');
 
 -- ----------------------------
 -- Table structure for ym_user_details
 -- ----------------------------
 DROP TABLE IF EXISTS `ym_user_details`;
 CREATE TABLE `ym_user_details` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه',
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
+  `user_id` int(10) unsigned NOT NULL COMMENT 'کاربر',
   `fa_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام فارسی',
   `en_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام انگلیسی',
   `fa_web_url` varchar(255) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'آدرس سایت فارسی',
@@ -312,35 +331,29 @@ CREATE TABLE `ym_user_details` (
   `national_card_image` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'تصویر کارت ملی',
   `phone` varchar(11) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'تلفن',
   `zip_code` varchar(10) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'کد پستی',
-  `address` longtext COLLATE utf8_persian_ci COMMENT 'نشانی دقیق پستی',
+  `address` varchar(1000) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نشانی دقیق پستی',
   `credit` double DEFAULT NULL COMMENT 'اعتبار',
   `developer_id` varchar(20) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شناسه توسعه دهنده',
-  `details_status` enum('accepted','pending','failed') COLLATE utf8_persian_ci DEFAULT 'accepted' COMMENT 'وضعیت اطلاعات کاربر',
-  PRIMARY KEY (`id`),
+  `details_status` enum('refused','pending','accepted') CHARACTER SET utf8 DEFAULT 'pending' COMMENT 'وضعیت اطلاعات کاربر',
+  PRIMARY KEY (`user_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('1', '8', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', null, null, null, null, null, '5000', '', null);
-INSERT INTO `ym_user_details` VALUES ('2', '9', 'مسعود قراگوزلو', 'Masoud Gharagozlu', '', '', '0370518926', '6Own01460349732.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد خ شوندی ک12 پ5', '1500', null, 'pending');
-INSERT INTO `ym_user_details` VALUES ('5', '23', null, null, null, null, null, null, null, null, null, null, null, 'accepted');
-INSERT INTO `ym_user_details` VALUES ('6', '24', null, null, null, null, null, null, null, null, null, null, null, 'accepted');
-INSERT INTO `ym_user_details` VALUES ('7', '25', null, null, null, null, null, null, null, null, null, null, null, 'accepted');
-INSERT INTO `ym_user_details` VALUES ('8', '26', null, null, null, null, null, null, null, null, null, null, null, 'accepted');
+INSERT INTO `ym_user_details` VALUES ('39', null, null, null, null, null, null, null, null, null, null, null, 'pending');
+INSERT INTO `ym_user_details` VALUES ('43', 'مسعود قراگوزلو', 'masoud', '', '', '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1000', null, 'pending');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
 -- ----------------------------
 DROP TABLE IF EXISTS `ym_user_dev_id_requests`;
 CREATE TABLE `ym_user_dev_id_requests` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه',
-  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
+  `user_id` int(10) unsigned NOT NULL COMMENT 'کاربر',
   `requested_id` varchar(20) DEFAULT NULL COMMENT 'شناسه درخواستی',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
+  PRIMARY KEY (`user_id`),
   CONSTRAINT `ym_user_dev_id_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

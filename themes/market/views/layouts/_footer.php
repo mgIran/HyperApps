@@ -8,7 +8,11 @@
                 <a href="<?= Yii::app()->createUrl('/site/terms'); ?>"></a>
                 شرایط استفاده از خدمات
             </li><li>
-                <a href="<?= Yii::app()->createUrl('/developers/panel'); ?>"></a>
+                <?php if(isset(Yii::app()->user->roles) and Yii::app()->user->roles=='developer'):?>
+                    <a href="<?= Yii::app()->createUrl('/developers/panel'); ?>"></a>
+                <?php else:?>
+                    <a href="<?= Yii::app()->createUrl('/developers/panel/signup/step/agreement'); ?>"></a>
+                <?php endif;?>
                 توسعه دهندگان
             </li><li>
                 <a href="#"></a>

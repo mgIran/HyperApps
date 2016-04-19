@@ -62,6 +62,7 @@ class PublicController extends Controller
                 $model->updateByPk($model->id, array('verification_token'=>$token));
                 $userDetails=new UserDetails();
                 $userDetails->user_id=$model->id;
+                $userDetails->credit=0;
                 $userDetails->save();
 
                 $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در هایپر اپس بر روی لینک زیر کلیک کنید:</div>';
@@ -86,7 +87,7 @@ class PublicController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/backgroundImage';
         if(!Yii::app()->user->isGuest)
-            $this->redirect(array('/'));
+            $this->redirect($this->createAbsoluteUrl('//'));
 
         $model = new UserLoginForm;
         // if it is ajax validation request
@@ -169,7 +170,7 @@ class PublicController extends Controller
     public function actionVerify()
     {
         if(!Yii::app()->user->isGuest and Yii::app()->user->type!='admin')
-            $this->redirect(array('/'));
+            $this->redirect($this->createAbsoluteUrl('//'));
         else if(!Yii::app()->user->isGuest and Yii::app()->user->type =='admin')
         	Yii::app()->user->logout(false);    
 
@@ -217,7 +218,7 @@ class PublicController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/backgroundImage';
         if(!Yii::app()->user->isGuest and Yii::app()->user->type!='admin')
-            $this->redirect(array('/'));
+            $this->redirect($this->createAbsoluteUrl('//'));
         else if(!Yii::app()->user->isGuest and Yii::app()->user->type =='admin')
             Yii::app()->user->logout(false);
 
@@ -289,44 +290,43 @@ class PublicController extends Controller
     public function actionChangePassword()
     {
         if(!Yii::app()->user->isGuest and Yii::app()->user->type!='admin')
-            $this->redirect(array('/'));
+            $this->redirect($this->createAbsoluteUrl('//'));
         else if(!Yii::app()->user->isGuest and Yii::app()->user->type =='admin')
             Yii::app()->user->logout(false);
 
         $token=Yii::app()->request->getQuery('token');
         $model=Users::model()->find('verification_token=:token', array(':token'=>$token));
-        $model->setScenario('change_password');
 
+        if(!$model)
+            $this->redirect($this->createAbsoluteUrl('//'));
+        elseif($model->change_password_request_count==0)
+            $this->redirect($this->createAbsoluteUrl('//'));
+
+        $model->setScenario('change_password');
         $this->performAjaxValidation($model);
 
-        if($model)
-        {
-            if($model->status=='active')
-            {
-                Yii::app()->theme='market';
-                $this->layout='//layouts/backgroundImage';
+        if($model->status=='active') {
+            Yii::app()->theme = 'market';
+            $this->layout = '//layouts/backgroundImage';
 
-                if(isset($_POST['Users'])) {
-                    $model->password = $_POST['Users']['password'];
-                    $model->repeatPassword = $_POST['Users']['repeatPassword'];
-                    $model->verification_token=null;
-                    $model->change_password_request_count=0;
-                    if ($model->save()) {
-                        Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت تغییر یافت.');
-                        $this->redirect($this->createUrl('/login'));
-                    } else
-                        Yii::app()->user->setFlash('fail', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
-                }
-
-                $this->render('change_password', array(
-                    'model'=>$model
-                ));
+            if (isset($_POST['Users'])) {
+                $model->password = $_POST['Users']['password'];
+                $model->repeatPassword = $_POST['Users']['repeatPassword'];
+                $model->verification_token = null;
+                $model->change_password_request_count = 0;
+                if ($model->save()) {
+                    Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت تغییر یافت.');
+                    $this->redirect($this->createUrl('/login'));
+                } else
+                    Yii::app()->user->setFlash('fail', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
             }
-            else
-                $this->redirect($this->createUrl('/'));
+
+            $this->render('change_password', array(
+                'model' => $model
+            ));
         }
         else
-            $this->redirect($this->createUrl('/'));
+            $this->redirect($this->createAbsoluteUrl('//'));
     }
 
     /**

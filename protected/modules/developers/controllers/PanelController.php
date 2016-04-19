@@ -191,6 +191,9 @@ class PanelController extends Controller
                 $data['detailsModel']->scenario='update_profile';
                 $minCredit=SiteSetting::model()->find('name=:name', array(':name'=>'min_credit'));
 
+                if(is_null($data['detailsModel']->credit))
+                    $data['detailsModel']->credit=0;
+
                 if($data['detailsModel']->credit < $minCredit['value'])
                 {
                     Yii::app()->user->setFlash('min_credit_fail' , 'برای ثبت نام به عنوان توسعه دهنده باید حداقل '.number_format($minCredit['value'], 0).' تومان اعتبار داشته باشید.');

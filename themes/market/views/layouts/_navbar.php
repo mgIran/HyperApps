@@ -55,7 +55,7 @@
             <li class="divider">
                 <a>|</a>
             </li>
-            <li><a href="<?= Yii::app()->createUrl('/') ?>">خانه</a></li>
+            <li><a href="<?= Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
             <li><a href="#">تخفیفات</a></li>
         </ul>
     </div>
