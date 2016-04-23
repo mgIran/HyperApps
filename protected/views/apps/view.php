@@ -1,6 +1,7 @@
 <?php
 /* @var $this AppsController */
 /* @var $model Apps */
+/* @var $similar CActiveDataProvider */
 
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.theme.default.min.css');
@@ -41,20 +42,25 @@ if($model->platform)
                 <span class="pull-left">
                     <button class="btn btn-success btn-install" type="button" data-toggle="modal" data-target="#install-modal">نصب</button>
                 </span>
-                <span class="pull-left relative">
-                    <?= CHtml::ajaxLink('',array('/apps/bookmark'),array(
-                        'data' => "js:{appId:$model->id}",
-                        'type' => 'POST',
-                        'dataType' => 'json',
-                        'success' => 'js:function(data){
-                            console.log(data);
-                        }'
-                    ),array(
-                        'id' =>"bookmark-app"
-                    )); ?>
-                    <span class="svg svg-bookmark green" ></span>
-                    <span class="green" >نشان کردن</span>
-                </span>
+                <?php if(!Yii::app()->user->isGuest):?>
+                    <span class="pull-left relative">
+                        <?= CHtml::ajaxLink('',array('/apps/bookmark'),array(
+                            'data' => "js:{appId:$model->id}",
+                            'type' => 'POST',
+                            'dataType' => 'JSON',
+                            'success' => 'js:function(data){
+                                if(data.status)
+                                    return;
+                                else
+                                    alert("در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.");
+                            }'
+                        ),array(
+                            'id' =>"bookmark-app"
+                        )); ?>
+                        <span class="svg svg-bookmark green" ></span>
+                        <span class="green" >نشان کردن</span>
+                    </span>
+                <?php endif;?>
             </div>
         </div>
         <div class="app-body">
@@ -126,158 +132,20 @@ if($model->platform)
         </div>
     </div>
 </div>
-    <div class=" app-like col-sm-12 col-xs-12">
+    <div class="app-like col-sm-12 col-xs-12">
         <div class="app-box">
             <div class="top-box">
                 <div class="title pull-right">
-                    <h2 >برترین ها</h2>
+                    <h2>مشابه</h2>
                 </div>
-                <button type="button" class="pull-left btn btn-success more-app" >
-                    بیشتر
-                </button>
             </div>
             <div class="app-vertical">
-                <div class="app-details">
-                    <div class="pic">
-                        <img src="<?= Yii::app()->theme->baseUrl; ?>/images/login-back.png">
-                    </div>
-                    <div class="app-content">
-                        <div class="title">
-                            <a href="#">
-                                خشم سرعت
-                            </a>
-                        </div>
-                        <div class="title" >
-                                    <span class="text-right green col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                                        رایگان
-                                    </span>
-                                    <span class="ltr text-left app-rate col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left" >
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star-half-empty"></span>
-                                        <span class="icon-star-empty"></span>
-                                    </span>
-                        </div>
-                        <div class="app-desc">
-                            جـاده هـای ایـران شـما را بـه
-                            چـالـشی تـازه فـرا می خوانند؛
-                            رانـنـده خـود را انتـخاب کنید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقاتید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقاتید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقات
-                            <span class="paragraph-end"></span>
-                        </div>
-                    </div>
-                    <div class="app-footer">
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
-                                    20,0000+ دانلود
-                                </span>
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
-                                    3.7 مگابایت
-                                </span>
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs green">
-                                    گروه پولاد
-                                </span>
-                    </div>
-                </div>
-                <div class="app-details">
-                    <div class="pic">
-                        <img src="<?= Yii::app()->theme->baseUrl; ?>/images/login-back.png">
-                    </div>
-                    <div class="app-content">
-                        <div class="title">
-                            <a href="#">
-                                خشم سرعت
-                            </a>
-                        </div>
-                        <div class="title" >
-                                    <span class="text-right green col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                                        رایگان
-                                    </span>
-                                    <span class="ltr text-left app-rate col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left" >
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star-half-empty"></span>
-                                        <span class="icon-star-empty"></span>
-                                    </span>
-                        </div>
-                        <div class="app-desc">
-                            جـاده هـای ایـران شـما را بـه
-                            چـالـشی تـازه فـرا می خوانند؛
-                            رانـنـده خـود را انتـخاب کنید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقاتید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقاتید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقات
-                            <span class="paragraph-end"></span>
-                        </div>
-                    </div>
-                    <div class="app-footer">
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
-                                    20,0000+ دانلود
-                                </span>
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
-                                    3.7 مگابایت
-                                </span>
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs green">
-                                    گروه پولاد
-                                </span>
-                    </div>
-                </div>
-                <div class="app-details">
-                    <div class="pic">
-                        <img src="<?= Yii::app()->theme->baseUrl; ?>/images/login-back.png">
-                    </div>
-                    <div class="app-content">
-                        <div class="title">
-                            <a href="#">
-                                خشم سرعت
-                            </a>
-                        </div>
-                        <div class="title" >
-                                    <span class="text-right green col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-                                        رایگان
-                                    </span>
-                                    <span class="ltr text-left app-rate col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left" >
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star"></span>
-                                        <span class="icon-star-half-empty"></span>
-                                        <span class="icon-star-empty"></span>
-                                    </span>
-                        </div>
-                        <div class="app-desc">
-                            جـاده هـای ایـران شـما را بـه
-                            چـالـشی تـازه فـرا می خوانند؛
-                            رانـنـده خـود را انتـخاب کنید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقاتید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقاتید،
-                            از یـک رانـنـده تـاکـسی عـادی
-                            گرفته تا قـهرمـان مـسابـقات
-                            <span class="paragraph-end"></span>
-                        </div>
-                    </div>
-                    <div class="app-footer">
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
-                                    20,0000+ دانلود
-                                </span>
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
-                                    3.7 مگابایت
-                                </span>
-                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs green">
-                                    گروه پولاد
-                                </span>
-                    </div>
-                </div>
+                <?php $this->widget('zii.widgets.CListView', array(
+                    'id'=>'similar-apps',
+                    'dataProvider'=>$similar,
+                    'itemView'=>'_vertical_app_item',
+                    'template'=>'{items}',
+                ));?>
             </div>
         </div>
     </div>

@@ -272,7 +272,7 @@ class Controller extends CController
             $cats=base64_encode(CJSON::encode(array($catID)));
             $newCookie = new CHttpCookie('VC', $cats);
             $newCookie->domain = '';
-            $newCookie->expire = 0;
+            $newCookie->expire = time()+(60*60*24*365);
             $newCookie->path='/';
             $newCookie->secure=false;
             $newCookie->httpOnly=false;

@@ -11,6 +11,7 @@ class AppsController extends Controller
     {
         return array(
             'accessControl', // perform access control for CRUD operations
+            'postOnly + bookmark',
         );
     }
 
@@ -27,7 +28,7 @@ class AppsController extends Controller
                 'users'=>array('*'),
             ),
             array('allow',
-                'actions'=>array('buy'),
+                'actions'=>array('buy','bookmark'),
                 'users'=>array('@'),
             ),
             array('deny',  // deny all users
@@ -44,8 +45,26 @@ class AppsController extends Controller
         $model->seen=$model->seen+1;
         $model->save();
         $this->saveInCookie($model->category_id);
+        // Get similar apps
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('id!=:id');
+        $criteria->addCondition('category_id=:cat_id');
+        $criteria->addCondition('platform_id=:platform_id');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->order='install DESC, seen DESC';
+        $criteria->params[':id']=$model->id;
+        $criteria->params[':cat_id']=$model->category_id;
+        $criteria->params[':platform_id']=$model->platform_id;
+        $criteria->params[':status']='enable';
+        $criteria->params[':confirm']='accepted';
+        $criteria->params[':deleted']=0;
+        $criteria->limit=20;
+        $similar=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 		$this->render('view',array(
-            'model' => $model
+            'model' => $model,
+            'similar' => $similar,
         ));
 	}
 
@@ -229,6 +248,24 @@ class AppsController extends Controller
             'title'=>(!is_null($title))?$title:null,
             'pageTitle'=>$pageTitle
         ));
+    }
+
+    /**
+     * Bookmark app
+     */
+    public function actionBookmark()
+    {
+        $model=new UserAppBookmark();
+        $model->app_id=$_POST['appId'];
+        $model->user_id=Yii::app()->user->getId();
+        if($model->save())
+            echo CJSON::encode(array(
+                'status'=>true
+            ));
+        else
+            echo CJSON::encode(array(
+                'status'=>false
+            ));
     }
 
     /**

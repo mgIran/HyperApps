@@ -1118,6 +1118,7 @@ ul.nav li{
     padding: 0;
     display: inline-block;
     overflow: visible;
+    width: 100%;
 }
 .app-like .app-box .top-box{
     margin-bottom: 30px;
