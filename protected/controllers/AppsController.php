@@ -45,6 +45,13 @@ class AppsController extends Controller
         $model->seen=$model->seen+1;
         $model->save();
         $this->saveInCookie($model->category_id);
+        // Has bookmarked this apps by user
+        $bookmarked=false;
+        if(!Yii::app()->user->isGuest) {
+            $hasRecord = UserAppBookmark::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $id));
+            if ($hasRecord)
+                $bookmarked = true;
+        }
         // Get similar apps
         $criteria = new CDbCriteria();
         $criteria->addCondition('id!=:id');
@@ -62,9 +69,11 @@ class AppsController extends Controller
         $criteria->params[':deleted']=0;
         $criteria->limit=20;
         $similar=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
+
 		$this->render('view',array(
             'model' => $model,
             'similar' => $similar,
+            'bookmarked' => $bookmarked,
         ));
 	}
 
@@ -255,17 +264,30 @@ class AppsController extends Controller
      */
     public function actionBookmark()
     {
-        $model=new UserAppBookmark();
-        $model->app_id=$_POST['appId'];
-        $model->user_id=Yii::app()->user->getId();
-        if($model->save())
-            echo CJSON::encode(array(
-                'status'=>true
-            ));
-        else
-            echo CJSON::encode(array(
-                'status'=>false
-            ));
+        Yii::app()->getModule('users');
+        $model=UserAppBookmark::model()->find('user_id=:user_id AND app_id=:app_id', array(':user_id'=>Yii::app()->user->getId(),':app_id'=>$_POST['appId']));
+        if(!$model) {
+            $model = new UserAppBookmark();
+            $model->app_id = $_POST['appId'];
+            $model->user_id = Yii::app()->user->getId();
+            if ($model->save())
+                echo CJSON::encode(array(
+                    'status' => true
+                ));
+            else
+                echo CJSON::encode(array(
+                    'status' => false
+                ));
+        }else {
+            if (UserAppBookmark::model()->deleteAllByAttributes(array('user_id'=>Yii::app()->user->getId(),'app_id'=>$_POST['appId'])))
+                echo CJSON::encode(array(
+                    'status' => true
+                ));
+            else
+                echo CJSON::encode(array(
+                    'status' => false
+                ));
+        }
     }
 
     /**

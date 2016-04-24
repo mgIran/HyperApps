@@ -2,6 +2,7 @@
 /* @var $this AppsController */
 /* @var $model Apps */
 /* @var $similar CActiveDataProvider */
+/* @var $bookmarked boolean */
 
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.theme.default.min.css');
@@ -43,22 +44,31 @@ if($model->platform)
                     <button class="btn btn-success btn-install" type="button" data-toggle="modal" data-target="#install-modal">نصب</button>
                 </span>
                 <?php if(!Yii::app()->user->isGuest):?>
-                    <span class="pull-left relative">
+                    <span class="pull-left relative bookmark<?php echo ($bookmarked)?' bookmarked':null;?>">
                         <?= CHtml::ajaxLink('',array('/apps/bookmark'),array(
                             'data' => "js:{appId:$model->id}",
                             'type' => 'POST',
                             'dataType' => 'JSON',
                             'success' => 'js:function(data){
-                                if(data.status)
-                                    return;
+                                if(data.status){
+                                    if($(".bookmark").hasClass("bookmarked")){
+                                        $(".bookmark").removeClass("bookmarked");
+                                        $(".bookmark").find(".title").text("نشان کردن");
+                                    }
+                                    else{
+                                        $(".bookmark").addClass("bookmarked");
+                                        $(".bookmark").find(".title").text("نشان شده");
+                                    }
+                                }
                                 else
                                     alert("در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.");
+                                return false;
                             }'
                         ),array(
                             'id' =>"bookmark-app"
                         )); ?>
                         <span class="svg svg-bookmark green" ></span>
-                        <span class="green" >نشان کردن</span>
+                        <span class="green title" ><?php echo ($bookmarked)?'نشان شده':'نشان کردن';?></span>
                     </span>
                 <?php endif;?>
             </div>

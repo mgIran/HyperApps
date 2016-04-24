@@ -25,9 +25,16 @@
     height: 14px;
 }
 .svg-bookmark{
-    background: url("../svg/bookmark.svg") no-repeat scroll 0 0 transparent;
-    width: 12px;
-    height: 18px;
+    background: url("../svg/add-to-bookmark.svg") no-repeat scroll 0 0 transparent;
+    width: 15px;
+    height: 20px;
     float: right;
-    margin: 7px 0;
+    margin: 5px 0;
+}
+.bookmarked .svg-bookmark{
+    background: url("../svg/bookmarked.svg") no-repeat scroll 0 0 transparent;
+    height:19px;
+}
+.bookmarked:hover .svg-bookmark{
+    background: url("../svg/remove-bookmark.svg") no-repeat scroll 0 0 transparent;
 }
