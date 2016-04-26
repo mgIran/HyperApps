@@ -134,6 +134,7 @@ class CreditController extends Controller
             if($result['Status'] == 100) {
                 $model->status='paid';
                 $model->token=$result['RefID'];
+                $model->description='خرید اعتبار از طریق درگاه زرین پال';
                 $model->save();
                 // Increase credit
                 $userDetails->credit=$userDetails->credit+$model->amount;

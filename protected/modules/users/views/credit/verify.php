@@ -10,7 +10,6 @@
         <div class="panel-body">
             <?php if(Yii::app()->user->hasFlash('success')):?>
                 <div class="alert alert-success fade in">
-                    <button class="close close-sm" type="button" data-dismiss="alert"><i class="icon-remove"></i></button>
                     <?php echo Yii::app()->user->getFlash('success');?>
                 </div>
                 <h4>اطلاعات تراکنش</h4>
@@ -30,7 +29,6 @@
                 </div>
             <?php elseif(Yii::app()->user->hasFlash('failed')):?>
                 <div class="alert alert-danger fade in">
-                    <button class="close close-sm" type="button" data-dismiss="alert"><i class="icon-remove"></i></button>
                     <?php echo Yii::app()->user->getFlash('failed');?>
                     <?php if(Yii::app()->user->hasFlash('transactionFailed')) echo '<br>'.Yii::app()->user->getFlash('transactionFailed');?>
                 </div>

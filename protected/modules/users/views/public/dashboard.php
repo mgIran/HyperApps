@@ -8,25 +8,22 @@
             <a data-toggle="tab" href="#credit-tab">اعتبار</a>
         </li>
         <li>
-            <a data-toggle="tab" onclick="loadTransactionsTab()" href="#tabs-transactions">تراکنش&zwnj;ها</a>
+            <a data-toggle="tab" href="#transactions-tab">تراکنش ها</a>
         </li>
         <li>
-            <a data-toggle="tab" onclick="loadPurchasesTab()" href="#tabs-purchases">خریدها</a>
+            <a data-toggle="tab" href="#tabs-purchases">خریدها</a>
         </li>
         <li>
-            <a data-toggle="tab" onclick="loadBookmarksTab()" href="#tabs-bookmarks">نشان&zwnj;ها</a>
+            <a data-toggle="tab" href="#bookmarks-tab">نشان شده ها</a>
         </li>
         <li>
             <a data-toggle="tab" href="#setting-tab">تنظیمات</a>
         </li>
-        <?php if(Yii::app()->user->roles=='developer'):?>
-            <li>
-                <a href="<?php echo $this->createUrl('/developers/panel')?>">پنل توسعه دهندگان</a>
-            </li>
-        <?php endif;?>
     </ul>
     <?php if(Yii::app()->user->roles!='developer'):?>
         <a class="btn btn-danger developer-signup-link" href="<?php echo Yii::app()->createUrl('/developers/panel/signup/step/agreement')?>">توسعه دهنده شوید</a>
+    <?php elseif(Yii::app()->user->roles=='developer'):?>
+        <a class="btn btn-success developer-signup-link" href="<?php echo Yii::app()->createUrl('/developers/panel')?>">پنل توسعه دهندگان</a>
     <?php endif;?>
 
     <div class="tab-content">
@@ -35,8 +32,18 @@
                 'model'=>$model,
             ))?>
         </div>
+        <div id="transactions-tab" class="tab-pane fade">
+            <?php $this->renderPartial('_transactions',array(
+                'model'=>$model,
+            ))?>
+        </div>
         <div id="setting-tab" class="tab-pane fade">
             <?php $this->renderPartial('_setting',array(
+                'model'=>$model,
+            ))?>
+        </div>
+        <div id="bookmarks-tab" class="tab-pane fade">
+            <?php $this->renderPartial('_bookmarks',array(
                 'model'=>$model,
             ))?>
         </div>
