@@ -1,4 +1,4 @@
-<div class="sidebar col-xs-12">
+<div class="sidebar hidden-sm hidden-xs">
     <?php if($this->platform==1):?>
         <div>
             <a href="<?php echo Yii::app()->createUrl('/android');?>" class="android" data-platform="android">

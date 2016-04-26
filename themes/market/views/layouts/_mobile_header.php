@@ -1,14 +1,72 @@
-<?php
-/* @var $category AppCategories */
-?>
-<nav class="navbar navbar-default hidden-sm hidden-xs">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-            <span class="icon-download-alt"></span>
-            هایپر اپس را دانلود کنید
+<header class="mobile hidden-lg hidden-md col-sm-12 col-xs-12">
+    <div class="logo-box pull-right">
+        <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>"></a>
+        <h1><?= $this->siteName ?></h1>
+        <h2><?= $this->pageTitle ?></h2>
+        <img class="logo" src="<?= Yii::app()->createAbsoluteUrl('themes/market/images/logo.png'); ?>" alt="HyperApps" >
+    </div>
+    <ul class="mobile-nav nav">
+        <li class="navbar-trigger">
+            <a href="#"></a>
+            <span class="svg svg-bars"></span>
+        </li>
+        <li class="os-menu-trigger">
+            <a href="#"></a>
+            <span class="svg svg-os"></span>
+        </li>
+        <li class="search-trigger">
+            <a href="#"></a>
+            <span class="svg svg-search"></span>
+        </li>
+    </ul>
+    <div class="mobile-search col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <span class="svg svg-close search-trigger"></span>
+        <?
+        $form = $this->beginWidget('CActiveForm',array(
+            'id' => 'mobile-search-form',
+            'action' => array('/site/search'),
+        ));
+        ?>
+        <div class="form-group">
+            <?= CHtml::textField('searchText','',array('placeholder' => 'جستجو کنید ...')); ?>
+            <span class="add-in svg svg-search"></span>
+        </div>
+        <?
+        $this->endWidget();
+        ?>
+    </div>
+</header>
+<div class="os-menu">
+    <span class="svg svg-close os-menu-trigger"></span>
+    <div>
+        <a href="<?php echo Yii::app()->createUrl('/android');?>" class="android" data-platform="android">
+            <span class="icon-android "></span>
+                <span class="label">
+                    اندروید
+                </span>
         </a>
     </div>
+    <div>
+        <a href="<?php echo Yii::app()->createUrl('/ios');?>" class="apple" data-platform="ios">
+            <span class="icon-apple "></span>
+                <span class="label">
+                    iOS
+                </span>
+        </a>
+    </div>
+    <div>
+        <a href="<?php echo Yii::app()->createUrl('/windowsphone');?>" class="win" data-platform="windowsphone">
+            <span class="icon-windows "></span>
+                <span class="label">
+                    ویندوز فون
+                </span>
+        </a>
+    </div>
+</div>
 
+
+<!-- mobile nav bar -->
+<nav class="navbar navbar-default hidden-lg hidden-md">
     <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
             <li class="dropdown">
@@ -51,6 +109,12 @@
             </li>
             <li><a href="<?= Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
             <li><a href="#">تخفیفات</a></li>
+            <li>
+                <a class="navbar-brand" href="#">
+                    <span class="icon-download-alt"></span>
+                    هایپر اپس را دانلود کنید
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

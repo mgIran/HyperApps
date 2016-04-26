@@ -11,7 +11,7 @@
         </ul>
     </div>
 <? endif;?>
-<header class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<header class="col-lg-12 col-md-12 hidden-sm hidden-xs">
     <div class="logo-box col-xs-12">
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>"></a>
         <h1><?= $this->siteName ?></h1>
@@ -31,7 +31,7 @@
             ?>
                 <div class="form-group pull-left col-lg-10 col-md-10 col-sm-12 col-xs-12">
                     <?= CHtml::textField('searchText','',array('placeholder' => 'جستجو کنید ...')); ?>
-                    <span class="add-in icon-search"></span>
+                    <span class="add-in svg svg-search"></span>
                 </div>
             <?
             $this->endWidget();

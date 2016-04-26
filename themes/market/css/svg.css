@@ -24,6 +24,26 @@
     width: 16px;
     height: 14px;
 }
+.svg-os{
+    background: url("../svg/os.svg") no-repeat scroll 0 0 transparent;
+    width:24px;
+    height:24px;
+}
+.svg-close{
+    background: url("../svg/close.svg") no-repeat scroll 0 0 transparent;
+    width:24px;
+    height:24px;
+}
+.svg-search{
+    background: url("../svg/search.svg") no-repeat scroll 0 0 transparent;
+    width:24px;
+    height:24px;
+}
+.svg-bars{
+    background: url("../svg/bars.svg") no-repeat scroll 0 0 transparent;
+    width:24px;
+    height:24px;
+}
 .svg-bookmark{
     background: url("../svg/add-to-bookmark.svg") no-repeat scroll 0 0 transparent;
     width: 15px;

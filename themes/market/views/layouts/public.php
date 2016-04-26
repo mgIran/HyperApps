@@ -17,6 +17,8 @@
 
     $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
     $cs->registerCssFile($baseUrl.'/css/font-awesome.css');
+    $cs->registerCssFile($baseUrl.'/css/animate.min.css');
+    $cs->registerCssFile($baseUrl.'/css/svg.css');
     $cs->registerCssFile($baseUrl.'/css/bootstrap-theme.css');
     $cs->registerCssFile($baseUrl.'/css/responsive-theme.css');
 
@@ -27,9 +29,10 @@
 <body<?php if($this->platform==2):?> class="ios"<?php elseif($this->platform==3):?> class="windowsphone"<?php endif;?>>
 
 <?= $this->renderPartial('//layouts/_header'); ?>
+<?= $this->renderPartial('//layouts/_mobile_header'); ?>
 <?= $this->renderPartial('//layouts/_sidebar'); ?>
 <?= $this->renderPartial('//layouts/_navbar'); ?>
-<div class="main col-xs-12">
+<div class="main">
     <section class="content row">
         <?php
         if(Yii::app()->user->hasFlash('success'))
