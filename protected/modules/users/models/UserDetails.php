@@ -17,6 +17,7 @@
  * @property double $credit
  * @property string $developer_id
  * @property string $details_status
+ * @property integer $monthly_settlement
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -50,9 +51,10 @@ class UserDetails extends CActiveRecord
             array('developer_id', 'length', 'max'=>20, 'min'=>5),
 			array('address', 'length', 'max'=>1000),
             array('details_status', 'length', 'max'=>8),
+			array('monthly_settlement', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id, details_status', 'safe', 'on'=>'search'),
+			array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id, details_status, monthly_settlement', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,6 +90,7 @@ class UserDetails extends CActiveRecord
             'developer_id' => 'شناسه توسعه دهنده',
             'status' => 'وضعیت کاربر',
             'details_status' => 'وضعیت اطلاعات کاربر',
+			'monthly_settlement' => 'تسویه حساب ماهانه',
 		);
 	}
 
@@ -122,6 +125,7 @@ class UserDetails extends CActiveRecord
 		$criteria->compare('credit',$this->credit);
         $criteria->compare('developer_id',$this->developer_id,true);
         $criteria->compare('details_status',$this->details_status,true);
+		$criteria->compare('monthly_settlement',$this->monthly_settlement);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

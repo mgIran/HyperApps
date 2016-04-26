@@ -31,6 +31,7 @@
  * @property AppPlatforms $platform
  * @property Users $developer
  * @property AppCategories $category
+ * @property Users[] $bookmarker
  */
 class Apps extends CActiveRecord
 {
@@ -91,6 +92,7 @@ class Apps extends CActiveRecord
 			'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
 			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
 			'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
+			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
 		);
 	}
 

@@ -171,3 +171,30 @@ header
     color: #337ab7;
     font-weight: bold;
 }
+.bookmarked-app{
+    overflow: hidden;
+    position: relative;
+}
+.bookmarked-app a{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index:2;
+}
+.bookmarked-app .info{
+    padding:0;
+}
+.bookmarked-app .image img{
+    max-height: 100%;
+    width: 100%;
+}
+.bookmarked-app .info h5{
+    display: block;
+    position: relative;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

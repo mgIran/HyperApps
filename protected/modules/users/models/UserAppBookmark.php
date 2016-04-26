@@ -1,28 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "ym_user_transactions".
+ * This is the model class for table "ym_user_app_bookmark".
  *
- * The followings are the available columns in table 'ym_user_transactions':
- * @property string $id
+ * The followings are the available columns in table 'ym_user_app_bookmark':
  * @property string $user_id
- * @property string $amount
- * @property string $date
- * @property string $status
- * @property string $token
- * @property string $description
+ * @property string $app_id
  *
  * The followings are the available model relations:
  * @property Users $user
+ * @property Apps $app
  */
-class UserTransactions extends CActiveRecord
+class UserAppBookmark extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'ym_user_transactions';
+		return 'ym_user_app_bookmark';
 	}
 
 	/**
@@ -33,14 +29,10 @@ class UserTransactions extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, amount', 'length', 'max'=>10),
-			array('date', 'length', 'max'=>20),
-			array('status', 'length', 'max'=>6),
-			array('token', 'length', 'max'=>50),
-			array('description', 'length', 'max'=>200),
+			array('user_id, app_id', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, amount, date, status, token, description', 'safe', 'on'=>'search'),
+			array('user_id, app_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,6 +45,7 @@ class UserTransactions extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'app' => array(self::BELONGS_TO, 'Apps', 'app_id'),
 		);
 	}
 
@@ -62,13 +55,8 @@ class UserTransactions extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'شناسه',
-			'user_id' => 'کاربر',
-			'amount' => 'مقدار',
-			'date' => 'تاریخ',
-			'status' => 'وضعیت',
-			'token' => 'کد رهگیری',
-			'description' => 'توضیحات',
+			'user_id' => 'User',
+			'app_id' => 'App',
 		);
 	}
 
@@ -90,13 +78,8 @@ class UserTransactions extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
 		$criteria->compare('user_id',$this->user_id,true);
-		$criteria->compare('amount',$this->amount,true);
-		$criteria->compare('date',$this->date,true);
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('token',$this->token,true);
-		$criteria->compare('description',$this->description,true);
+		$criteria->compare('app_id',$this->app_id,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -107,7 +90,7 @@ class UserTransactions extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return UserTransactions the static model class
+	 * @return UserAppBookmark the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

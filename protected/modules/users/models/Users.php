@@ -20,8 +20,10 @@
  * The followings are the available model relations:
  * @property AppBuys[] $appBuys
  * @property Apps[] $apps
+ * @property Apps[] $bookmarkedApps
  * @property UserDetails $userDetails
  * @property UserDevIdRequests $userDevIdRequests
+ * @property UserTransactions[] $transactions
  * @property UserRoles $role
  */
 class Users extends CActiveRecord
@@ -91,7 +93,9 @@ class Users extends CActiveRecord
             'apps' => array(self::HAS_MANY, 'Apps', 'developer_id'),
             'userDetails' => array(self::HAS_ONE, 'UserDetails', 'user_id'),
             'userDevIdRequests' => array(self::HAS_ONE, 'UserDevIdRequests', 'user_id'),
+            'transactions' => array(self::HAS_MANY, 'UserTransactions', 'user_id'),
             'role' => array(self::BELONGS_TO, 'UserRoles', 'role_id'),
+            'bookmarkedApps' => array(self::MANY_MANY, 'Apps', 'ym_user_app_bookmark(user_id,app_id)'),
         );
     }
 
