@@ -146,7 +146,7 @@ class SiteController extends Controller
         Yii::import('pages.models.*');
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
-        $model = Pages::model()->findByPk(2);
+        $model = Pages::model()->findByPk(1);
         $this->render('//site/pages/page',array('model' => $model));
     }
 
@@ -154,43 +154,32 @@ class SiteController extends Controller
         Yii::import('pages.models.*');
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
-        $model = Pages::model()->findByPk(3);
+        $model = Pages::model()->findByPk(2);
         $this->render('//site/pages/page',array('model' => $model));
     }
 
+    public function actionHelp(){
+        Yii::import('pages.models.*');
+        Yii::app()->theme = 'market';
+        $this->layout = '//layouts/public';
+        $model = Pages::model()->findByPk(3);
+        $this->render('//site/pages/page',array('model' => $model));
+    }
 
     public function actionTerms(){
         Yii::import('pages.models.*');
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
-        $model = Pages::model()->findByPk(5);
+        $model = Pages::model()->findByPk(4);
         $this->render('//site/pages/page',array('model' => $model));
     }
 
-
-    public function actionGuidance(){
+    public function actionPrivacy()
+    {
         Yii::import('pages.models.*');
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/public';
-        $dataProvider = new CActiveDataProvider("Pages",array(
-            'criteria' => array(
-                'condition' => 'category_id = 2'
-            ),
-            'pagination' => array(
-                'pageSize' => 10
-            )
-        ));
-       $dataProvider2 = new CActiveDataProvider("Pages",array(
-           'criteria' => array(
-               'condition' => 'category_id = 3'
-           ),
-           'pagination' => array(
-               'pageSize' => 10
-           )
-       ));
-        $this->sideRender = array(
-            '//layouts/_support'
-        );
-        $this->render('//site/pages/guidance',array('dataProvider' => $dataProvider,'dataProvider2' => $dataProvider2));
+        $model = Pages::model()->findByPk(5);
+        $this->render('//site/pages/page',array('model' => $model));
     }
 }

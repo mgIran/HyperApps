@@ -2,7 +2,7 @@
     <nav>
         <ul class="nav nav-list">
             <li>
-                <a href="#"></a>
+                <a href="<?= Yii::app()->createUrl('/site/privacy'); ?>"></a>
                 حریم شخصی
             </li><li>
                 <a href="<?= Yii::app()->createUrl('/site/terms'); ?>"></a>
@@ -15,10 +15,7 @@
                 <?php endif;?>
                 توسعه دهندگان
             </li><li>
-                <a href="#"></a>
-                رسانه ها
-            </li><li>
-                <a href="<?= Yii::app()->createUrl('/guidance');?>"></a>
+                <a href="<?= Yii::app()->createUrl('/site/help');?>"></a>
                 راهنما
             </li><li>
                 <a href="<?= Yii::app()->createUrl('/site/contactUs'); ?>"></a>

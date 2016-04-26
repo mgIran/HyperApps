@@ -155,54 +155,6 @@ class Controller extends CController
                     'url' => array('/admins/login/logout') ,
                     'visible' => !Yii::app()->user->isGuest) ,
             );
-        elseif(Yii::app()->user->type === 'validator')
-            return array(
-                array(
-                    'label' => 'پیشخوان' ,
-                    'url' => array('/admins/dashboard')
-                ) ,
-                array(
-                    'label' => 'آگهی ها <span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
-                    'items' => array(
-                        array('label' => 'مدیریت آگهی ها' ,'url' => Yii::app()->createUrl('/advertises/manage/admin')) ,
-                        array('label' => 'افزودن آگهی' ,'url' => Yii::app()->createUrl('/advertises/manage/create')) ,
-                        array('label' => 'مدیریت دسته بندی های آگهی' ,'url' => Yii::app()->createUrl('/advertises/categories/admin')) ,
-                    )
-                ) ,
-                array(
-                    'label' => 'صفحات متنی<span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
-                    'items' => array(
-                        array('label' => 'صفحات اصلی سایت' ,'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=base')) ,
-                        array('label' => 'قوانین' ,'url' => Yii::app()->createUrl('/pages/manage/update/5?slug=rules')) ,
-                        array('label' => 'صفحات راهنما' ,'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=guide')) ,
-                        array('label' => 'صفحات آزاد' ,'url' => Yii::app()->createUrl('/pages/manage/admin/')) ,
-                    )
-                ) ,
-                array(
-                    'label' => 'کاربران <span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
-                    'items' => array(
-                        array('label' => 'مدیریت' ,'url' => Yii::app()->createUrl('/users/manage')) ,
-                    )
-                ) ,
-                array(
-                    'label' => 'ورود' ,
-                    'url' => array('/admins/login') ,
-                    'visible' => Yii::app()->user->isGuest
-                ) ,
-                array(
-                    'label' => 'خروج' ,
-                    'url' => array('/admins/login/logout') ,
-                    'visible' => !Yii::app()->user->isGuest) ,
-            );
         else
             return array();
     }

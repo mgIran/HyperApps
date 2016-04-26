@@ -43,6 +43,11 @@ class Apps extends CActiveRecord
 	}
 
 	private $_purifier;
+	public $platformsID=array(
+		'1'=>'android',
+		'2'=>'iOS',
+		'3'=>'windowsPhone',
+	);
 
 	/**
 	 * @return array validation rules for model attributes.

@@ -29,7 +29,7 @@ class UsersManageController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'views' actions
-				'actions'=>array('index','view','create','update','admin','delete','confirmDevID'),
+				'actions'=>array('index','view','create','update','admin','delete','confirmDevID','deleteDevID'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -151,6 +151,19 @@ class UsersManageController extends Controller
 			else
 				Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 		}
+		else
+			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+		$this->redirect(array('/admins'));
+	}
+
+	/**
+	 * Delete requested ID of developer
+	 */
+	public function actionDeleteDevID($id)
+	{
+		$model=UserDevIdRequests::model()->findByAttributes(array('user_id'=>$id));
+		if($model->delete())
+			Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 		else
 			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 		$this->redirect(array('/admins'));

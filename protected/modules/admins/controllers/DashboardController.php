@@ -24,7 +24,6 @@ class DashboardController extends Controller
             array('allow',  // allow all users to perform 'index' and 'views' actions
                 'actions'=>array('index'),
                 'roles' => array('admin'),
-                //'roles'=>array('admin','validator'),
             ),
             array('deny',  // deny all users
                 'actions'=>array('index'),
@@ -36,8 +35,15 @@ class DashboardController extends Controller
 	public function actionIndex()
     {
         Yii::app()->getModule('users');
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->params=array(':confirm'=>'pending');
+        $newestPrograms=new CActiveDataProvider('Apps', array(
+            'criteria'=>$criteria,
+        ));
 		$this->render('index', array(
             'devIDRequests'=>UserDevIdRequests::model()->search(),
+            'newestPrograms'=>$newestPrograms,
         ));
 	}
 

@@ -1,6 +1,7 @@
 <?php
 /* @var $this DashboardController*/
 /* @var $devIDRequests CActiveDataProvider*/
+/* @var $newestPrograms CActiveDataProvider*/
 ?>
 <?php if(Yii::app()->user->hasFlash('success')):?>
     <div class="alert alert-success fade in">
@@ -13,21 +14,40 @@
         <?php echo Yii::app()->user->getFlash('failed');?>
     </div>
 <?php endif;?>
-<div class="panel panel-default col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="panel-heading">
-        آمار بازدیدکنندگان
+        جدیدترین نرم افزار ها
     </div>
     <div class="panel-body">
-        <p>
-            افراد آنلاین : <?php echo Yii::app()->userCounter->getOnline(); ?><br />
-            بازدید امروز : <?php echo Yii::app()->userCounter->getToday(); ?><br />
-            بازدید دیروز : <?php echo Yii::app()->userCounter->getYesterday(); ?><br />
-            تعداد کل بازدید ها : <?php echo Yii::app()->userCounter->getTotal(); ?><br />
-            بیشترین بازدید : <?php echo Yii::app()->userCounter->getMaximal(); ?><br />
-        </p>
+        <?php $this->widget('zii.widgets.grid.CGridView', array(
+            'id'=>'newest-apps-grid',
+            'dataProvider'=>$newestPrograms,
+            'columns'=>array(
+                'title',
+                'developer_id'=>array(
+                    'name'=>'developer_id',
+                    'value'=>'(is_null($data->developer_id) or empty($data->developer_id))?$data->developer_team:$data->developer->userDetails->developer_id'
+                ),
+                array(
+                    'class'=>'CButtonColumn',
+                    'template' => '{view}{confirm}{delete}',
+                    'buttons'=>array(
+                        'confirm'=>array(
+                            'label'=>'تایید کردن',
+                            'url'=>"CHtml::normalizeUrl(array('/manageApps/usersManage/confirmDevID'))",
+                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
+                        ),
+                        'delete'=>array(
+                            'url'=>'CHtml::normalizeUrl(array(\'/users/\'.$data->platformsID[$data->platform_id].\'/confirm\'))'
+                        ),
+                    ),
+                ),
+            ),
+        ));?>
     </div>
 </div>
-<div class="panel panel-default col-lg-4 col-md-4 col-sm-6 col-xs-12">
+<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="panel-heading">
         درخواست های تغییر شناسه توسعه دهنده
     </div>
@@ -51,9 +71,26 @@
                             'url'=>"CHtml::normalizeUrl(array('/users/usersManage/confirmDevID', 'id'=>\$data->user_id))",
                             'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
                         ),
+                        'delete'=>array(
+                            'url'=>'CHtml::normalizeUrl(array(\'/users/usersManage/deleteDevID\', \'id\'=>$data->user_id))'
+                        ),
                     ),
                 ),
             ),
         ));?>
+    </div>
+</div>
+<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="panel-heading">
+        آمار بازدیدکنندگان
+    </div>
+    <div class="panel-body">
+        <p>
+            افراد آنلاین : <?php echo Yii::app()->userCounter->getOnline(); ?><br />
+            بازدید امروز : <?php echo Yii::app()->userCounter->getToday(); ?><br />
+            بازدید دیروز : <?php echo Yii::app()->userCounter->getYesterday(); ?><br />
+            تعداد کل بازدید ها : <?php echo Yii::app()->userCounter->getTotal(); ?><br />
+            بیشترین بازدید : <?php echo Yii::app()->userCounter->getMaximal(); ?><br />
+        </p>
     </div>
 </div>
