@@ -45,6 +45,7 @@ class AppsController extends Controller
         $model->seen=$model->seen+1;
         $model->save();
         $this->saveInCookie($model->category_id);
+        $this->platform = $model->platform_id;
         // Has bookmarked this apps by user
         $bookmarked=false;
         if(!Yii::app()->user->isGuest) {
@@ -69,7 +70,6 @@ class AppsController extends Controller
         $criteria->params[':deleted']=0;
         $criteria->limit=20;
         $similar=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
-
 		$this->render('view',array(
             'model' => $model,
             'similar' => $similar,

@@ -32,11 +32,11 @@ if($model->platform)
                 </span>
             </div>
             <div class="row-fluid">
-                <span class="svg svg-bag green" ></span>
+                <svg class="svg svg-bag green"><use xlink:href="#bag"></use></svg>
                 <span ><?= $model->install ?>&nbsp;نصب فعال</span>
             </div>
             <div class="row-fluid">
-                <span class="svg svg-coin green" ></span>
+                <svg class="svg svg-coin green"><use xlink:href="#coin"></use></svg>
                 <span ><?= $model->price?number_format($model->price, 0).' تومان':'رایگان'; ?></span>
             </div>
             <div class="row-fluid">
@@ -44,7 +44,7 @@ if($model->platform)
                     <button class="btn btn-success btn-install" type="button" data-toggle="modal" data-target="#install-modal">نصب</button>
                 </span>
                 <?php if(!Yii::app()->user->isGuest):?>
-                    <span class="pull-left relative bookmark<?php echo ($bookmarked)?' bookmarked':null;?>">
+                    <span class="pull-left relative bookmark<?php echo ($bookmarked)?' bookmarked':'';?>">
                         <?= CHtml::ajaxLink('',array('/apps/bookmark'),array(
                             'data' => "js:{appId:$model->id}",
                             'type' => 'POST',
@@ -52,12 +52,14 @@ if($model->platform)
                             'success' => 'js:function(data){
                                 if(data.status){
                                     if($(".bookmark").hasClass("bookmarked")){
+                                        $(".svg-bookmark#bookmark").html("<use xlink:href=\'#add-to-bookmark\'></use>");
                                         $(".bookmark").removeClass("bookmarked");
                                         $(".bookmark").find(".title").text("نشان کردن");
                                     }
                                     else{
-                                        $(".bookmark").addClass("bookmarked");
+                                        $(".svg-bookmark#bookmark").html("<use xlink:href=\'#bookmarked\'></use>");
                                         $(".bookmark").find(".title").text("نشان شده");
+                                        $(".bookmark").addClass("bookmarked");
                                     }
                                 }
                                 else
@@ -67,10 +69,25 @@ if($model->platform)
                         ),array(
                             'id' =>"bookmark-app"
                         )); ?>
-                        <span class="svg svg-bookmark green" ></span>
+                        <svg id="bookmark" class="svg svg-bookmark green"><use xlink:href="<?php echo ($bookmarked)?'#bookmarked':'#add-to-bookmark';?>"></use></svg>
+                        <svg id="remove" class="svg svg-bookmark green"><use xlink:href="#remove-bookmark"></use></svg>
+                        <script>
+                            $(function(){
+                                $(this).find(".svg-bookmark#remove").hide();
+                                $('body').on('mouseenter','.bookmark',function(){
+                                    $(this).find(".svg-bookmark#bookmark").hide();
+                                    $(this).find(".svg-bookmark#remove").show();
+                                });
+                                $('body').on('mouseleave','.bookmark',function(){
+                                    $(this).find(".svg-bookmark#bookmark").show();
+                                    $(this).find(".svg-bookmark#remove").hide();
+                                });
+                            });
+                        </script>
                         <span class="green title" ><?php echo ($bookmarked)?'نشان شده':'نشان کردن';?></span>
                     </span>
-                <?php endif;?>
+                <?php endif;
+                ?>
             </div>
         </div>
         <div class="app-body">
@@ -108,11 +125,11 @@ if($model->platform)
             <?php endif;?>
             <div class="app-details">
                 <h4>اطلاعات برنامه</h4>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 detail">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 detail">
                     <h5>حجم</h5>
                     <span class="ltr" ><?= Controller::fileSize($filePath.$model->file_name) ?></span>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 detail">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 detail">
                     <h5>نسخه</h5>
                     <span class="ltr" ><?= $model->version ?></span>
                 </div>

@@ -201,19 +201,24 @@ class Controller extends CController
     }
 
     public static function fileSize($file){
-        $size = filesize($file);
-        if($size < 1024)
-            return $size.' Byte';
-        elseif($size < 1024*1024){
-            $size = (float)$size/1024;
-            return number_format($size,1). ' KB';
+        if(file_exists($file)) {
+            $size = filesize($file);
+            if($size < 1024)
+                return $size.' Byte';
+            elseif($size < 1024*1024){
+                $size = (float)$size/1024;
+                return number_format($size,1). ' KB';
+            }
+            elseif($size < 1024*1024*1024){
+                $size = (float)$size/(1024*1024);
+                return number_format($size,1). ' MB';
+            }else
+            {
+                $size = (float)$size/(1024*1024*1024);
+                return number_format($size,1). ' MB';
+            }
         }
-        elseif($size < 1024*1024*1024){
-            $size = (float)$size/1024;
-            return number_format($size,1). ' KB';
-        }
-
-
+        return 0;
     }
 
     public function saveInCookie($catID)

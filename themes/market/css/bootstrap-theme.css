@@ -90,10 +90,25 @@ html{
     color: #77c159 !important;
     fill: #77c159 !important;
 }
+
+body.ios .green{
+    color: #666 !important;
+    fill: #666 !important;
+}
+body.windows-phone .green{
+    color: #04a5f0 !important;
+    fill: #04a5f0 !important;
+}
 .btn.btn-success{
     background-color: #77c159 !important;
     border-radius: 2px;
     border: none;
+}
+body.ios .btn.btn-success{
+    background-color: #666 !important;
+}
+body.windows-phone .btn.btn-success{
+    background-color: #04a5f0 !important;
 }
 .ltr{
     direction: ltr;
@@ -381,7 +396,7 @@ header .right-header .user-section .type{
 }
 .sidebar .apple,
 .os-menu .apple{
-        background-color: rgba(242, 242, 242, 0.6);
+    background-color: rgba(242, 242, 242, 0.6);
     color: #555;
 }
 .sidebar .win,
@@ -545,11 +560,19 @@ ul.nav li{
     border-radius: 2px;
     border: none;
 }
+body.ios .content .app-box .top-box .btn.more-app{
+    background-color: #666 !important;
+    color: #fff;
+}
+body.windows-phone .content .app-box .top-box .btn.more-app{
+    background-color: #04a5f0 !important;
+    color: #fff;
+}
 .content .app-box .top-box .btn.more-app:hover,
 .content .app-box .top-box .btn.more-app:active,
 .content .app-box .top-box .btn.more-app:focus{
-    background-color: #82d361 !important;
-    border-color: #82d361 !important;
+    background-color: #77c159 !important;
+    border-color: #77c159 !important;
 }
 .content .app-box .app-carousel{
     display: inline-block;
@@ -689,8 +712,14 @@ ul.nav li{
     font-size: 11px;
 }
 .content .app-box .app-item .detail .app-any .app-price{
-    color: #82d361;
+    color: #77c159;
     font-size: 11px;
+}
+body.ios .content .app-box .app-item .detail .app-any .app-price{
+    color: #666;
+}
+body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
+    color: #04a5f0;
 }
 .content .banner-box{
     display: block;
@@ -881,7 +910,19 @@ ul.nav li{
 .footer .nav li:active,
 .footer .nav li:focus,
 .footer .nav li.active{
-    color: #82d361;
+    color: #77c159;
+}
+body.windows-phone .footer .nav li:hover,
+body.windows-phone .footer .nav li:active,
+body.windows-phone .footer .nav li:focus,
+body.windows-phone .footer .nav li.active{
+    color: #04a5f0;
+}
+body.ios .footer .nav li:hover,
+body.ios .footer .nav li:active,
+body.ios .footer .nav li:focus,
+body.ios .footer .nav li.active{
+    color: #666;
 }
 .footer .nav li > a{
     position: absolute;
@@ -932,7 +973,6 @@ ul.nav li{
 }
 .app{
     padding:0 25px;
-    width: 65%;
 }
 .app-inner{
     padding: 25px;
@@ -1101,7 +1141,7 @@ ul.nav li{
     left: 0;
     padding: 50px 0 40px;
     font-size: 13px;
-    color: #82d361;
+    color: #77c159;
     text-align: center;
     background: rgba(255,255,255,0);
     background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
@@ -1111,10 +1151,14 @@ ul.nav li{
     background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
 }
+body.ios .app-inner .app-body > section .more-text{
+    color: #666;
+}
+body.windows-phone .app-inner .app-body > section .more-text{
+    color: #04a5f0;
+}
 .app-like{
-    padding: 0;
-    width: 35%;
-    padding-left: 20px;
+    padding: 0 25px;
 }
 .app-like .app-box{
     padding: 0;

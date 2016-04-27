@@ -4,23 +4,18 @@
     margin-left: 5px !important;
 }
 .svg-bag{
-    background: url("../svg/bag.svg") no-repeat scroll 0 0 transparent;
     width: 17px;
     height: 16px;
-    margin-right: 5px !important;
 }
 .svg-coin{
-    background: url("../svg/coin.svg") no-repeat scroll 0 0 transparent;
     width: 22px;
     height: 11px;
 }
 .svg-star{
-    background: url("../svg/star.svg") no-repeat scroll 0 0 transparent;
     width: 16px;
     height: 14px;
 }
 .svg-star-empty{
-    background: url("../svg/star-empty.svg") no-repeat scroll 0 0 transparent;
     width: 16px;
     height: 14px;
 }
@@ -45,16 +40,8 @@
     height:24px;
 }
 .svg-bookmark{
-    background: url("../svg/add-to-bookmark.svg") no-repeat scroll 0 0 transparent;
     width: 15px;
     height: 20px;
     float: right;
     margin: 5px 0;
-}
-.bookmarked .svg-bookmark{
-    background: url("../svg/bookmarked.svg") no-repeat scroll 0 0 transparent;
-    height:19px;
-}
-.bookmarked:hover .svg-bookmark{
-    background: url("../svg/remove-bookmark.svg") no-repeat scroll 0 0 transparent;
 }

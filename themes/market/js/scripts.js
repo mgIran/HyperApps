@@ -26,15 +26,10 @@ $(function() {
         $(".app-description").next().show();
     $('body').on('click', '.more-text', function(){
         var $h = $(".app-description").height();
-        if($(this).parent().hasClass('open'))
-        {
-            $(this).parent().animate({height:230},0).removeClass('open');
-            $(this).find('span').html('توضیحات بیشتر');
-        }
-        else if($h>230)
+        if($h>230)
         {
             $(this).parent().animate({height:$h+80},0).addClass('open');
-            $(this).find('span').html('بستن');
+            $(this).remove();
         }
         return false;
     });
