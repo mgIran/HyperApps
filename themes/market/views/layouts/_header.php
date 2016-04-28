@@ -1,16 +1,3 @@
-<? if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user'):?>
-    <div id="user-menu">
-        <div class="overly"></div>
-        <ul class="user-menu">
-            <li>
-                <a href="<?= Yii::app()->createUrl('/dashboard') ?>"><span class="icon-dashboard"></span>داشبورد</a>
-            </li>
-            <li>
-                <a href="<?= Yii::app()->createUrl('logout') ?>"><span class="icon-exit"></span>خروج</a>
-            </li>
-        </ul>
-    </div>
-<? endif;?>
 <header class="col-lg-12 col-md-12 hidden-sm hidden-xs">
     <div class="logo-box col-xs-12">
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>"></a>
@@ -38,27 +25,39 @@
             ?>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                 <?
-                if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user'){
+                if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user') {
                     ?>
-                    <div class="user-section" data-toggle="dropdown" data-target="#user-menu">
+                    <div class="user-section">
                         <div class="avatar">
                             <span class="icon icon-user"></span>
+                            <div class="tri-1"></div>
+                            <div class="tri-2"></div>
                         </div>
-                        <div class="user-detail">
-                            <span class="name"><?= Yii::app()->user->email ?></span>
-                            <span class="type"><?= Yii::app()->user->type ?></span>
+                        <div class="user-menu">
+                            <div class="inner">
+                                <div class="avatar">
+                                    <span class="icon icon-user"></span>
+                                </div>
+                                <div class="user-detail">
+                                    <span class="name"><?= $this->userDetails->getShowName(); ?></span>
+                                    <span class="type"><?= $this->userDetails->roleLabels[Yii::app()->user->roles] ?></span>
+                                    <span class="type">اعتبار : <?= Controller::parseNumbers($this->userDetails->credit) ?> تومان</span>
+                                </div>
+                                <footer>
+                                    <a class="btn btn-default" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
+                                    <?
+                                    if(Yii::app()->user->roles == 'developer'):
+                                    ?>
+                                    <a class="btn btn-default" href="<?= Yii::app()->createUrl('/developers/panel') ?>">پنل توسعه دهندگان</a>
+                                    <?
+                                    endif;
+                                    ?>
+                                    <a class="btn btn-danger pull-left" href="<?= Yii::app()->createUrl('logout') ?>">خروج</a>
+                                </footer>
+                            </div>
                         </div>
                     </div>
                     <?
-                    Yii::app()->clientScript->registerScript('userSection' ,"$('body').on('click','.user-section',function(){
-                                if($(this).attr('aria-expanded') != true)
-                                    $('body,html').css({'overflow':'hidden','padding-right':'9px'});
-                            });
-                            $('body').on('click',function(event){
-                                if(event.target.className == 'overly')
-                                    $('body,html').css({'overflow-y':'visible','padding-right':'0'});
-                            });
-                            ");
                 }
                 else{
                     ?>

@@ -94,12 +94,12 @@ if($model->platform)
             <div class="images-carousel">
                 <?
                 $imager=new Imager();
-                foreach($model->images as $image):
+                foreach($model->images as $key => $image):
                     if(file_exists(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image)):
                         $imageInfo=$imager->getImageInfo(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image);
                         $ratio=$imageInfo['width']/$imageInfo['height'];
                 ?>
-                        <div class="image-item" style="width: <?php echo 318*$ratio;?>px;">
+                        <div class="image-item" style="width: <?php echo 318*$ratio;?>px;" data-toggle="modal" data-index="<?= $key ?>" data-target="#carousesl-modal">
                             <img src="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>" alt="<?= $model->title ?>" >
                         </div>
                 <?
@@ -189,18 +189,39 @@ if($model->platform)
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode(Yii::app()->createAbsoluteUrl('/apps/download/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));?>" />
                         <?php endif;?>
                     </div>
-                    <?php if($model->price>0):?>
-                        <a href="<?php echo $this->createUrl('/apps/buy/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title));?>" class="btn btn-success btn-buy">خرید</a>
-                    <?php endif;?>
+                    <?php
+                    if($model->price>0) {
+                        ?>
+                        <a href="<?php echo $this->createUrl('/apps/buy/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)); ?>"
+                           class="btn btn-success btn-buy">خرید</a>
+                        <?php
+                    }else {
+                        ?>
+                        <a href="#"
+                           data-dismiss="modal"
+                           class="btn btn-default">بستن</a>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="carousel-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+
                 </div>
             </div>
         </div>
     </div>
 <?php Yii::app()->clientScript->registerScript('app-images-carousel',"
     $('.images-carousel').owlCarousel({
-        items:4,
         autoWidth:true,
         margin:10,
-        rtl:false
+        rtl:true,
+        dots:false
     });
 "); ?>

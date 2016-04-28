@@ -19,6 +19,7 @@
 	?>
     <!-- Fav and Touch and touch icons -->
     <link rel="shortcut icon" href="<?php echo $baseUrl;?>/img/icons/favicon.ico">
+    <link rel="stylesheet" href="<?php echo $baseUrl;?>/css/fontiran.css">
 	<?php
 
 	  $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');

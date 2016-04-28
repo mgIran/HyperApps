@@ -49,7 +49,7 @@
             <li class="divider">
                 <a>|</a>
             </li>
-            <li><a href="<?= Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
+            <li><a href="<?= Yii::app()->user->hasState('platformName')?Yii::app()->baseUrl.'/'.Yii::app()->user->getState('platformName'):Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
             <li><a href="#">تخفیفات</a></li>
         </ul>
     </div>

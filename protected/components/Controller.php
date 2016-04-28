@@ -30,6 +30,7 @@ class Controller extends CController
     public $sideRender = null;
     public $categories;
     public $platform;
+    public $userDetails;
 
     protected function beforeAction($action)
     {
@@ -40,11 +41,14 @@ class Controller extends CController
                 $queryPlatform='android';
             $platform=AppPlatforms::model()->findByAttributes(array('name'=>$queryPlatform));
             $this->platform=$platform->id;
-            if(!Yii::app()->user->hasState('platform'))
-                Yii::app()->user->setState('platform', $platform->id);
+            Yii::app()->user->setState('platform', $platform->id);
+            Yii::app()->user->setState('platformName', $queryPlatform);
         }
         else
             $this->platform=Yii::app()->user->getState('platform');
+
+        Yii::import("users.models.*");
+        $this->userDetails = UserDetails::model()->findByPk(Yii::app()->user->getId());
         return true;
     }
 

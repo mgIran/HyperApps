@@ -61,10 +61,7 @@ return array(
             'showScriptName'=>false,
             'appendParams'=>true,
 			'rules'=>array(
-                'logout' => 'users/public/logout',
-                'login' => 'users/public/login',
-                'dashboard' => 'users/public/dashboard',
-                'register' => 'users/public/register',
+				'<action:(logout|login|register|dashboard)>' => 'users/public/<action>',
                 'android' => 'site/index/platform/android',
                 'ios' => 'site/index/platform/ios',
                 'windowsphone' => 'site/index/platform/windowsphone',

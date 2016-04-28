@@ -66,12 +66,60 @@
 
 
 <!-- mobile nav bar -->
-<nav class="navbar navbar-default hidden-lg hidden-md">
-    <div class="collapse navbar-collapse" id="navbar-collapse">
+<nav class="mobile-navbar navbar navbar-default hidden-lg hidden-md">
+    <div class="navbar-header">
+        <?
+        if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user') {
+            ?>
+            <div class="avatar">
+                <span class="icon icon-user"></span>
+            </div>
+            <div class="user-detail">
+                <span class="name"><?= $this->userDetails->getShowName(); ?></span>
+                <span class="type"><?= $this->userDetails->roleLabels[Yii::app()->user->roles] ?></span>
+                <span class="type">اعتبار : <?= Controller::parseNumbers($this->userDetails->credit) ?> تومان</span>
+            </div>
+            <div class="navbar-links">
+                <a class="btn btn-default" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
+                <?
+                if(Yii::app()->user->roles == 'developer'):
+                    ?>
+                    <a class="btn btn-default" href="<?= Yii::app()->createUrl('/developers/panel') ?>">
+                        پنل توسعه دهندگان
+                    </a>
+                    <?
+                endif;
+                ?>
+                <a class="btn btn-danger pull-left" href="<?= Yii::app()->createUrl('logout') ?>">خروج</a>
+            </div>
+            <?
+        }else
+        {
+        ?>
+            <div class="header-links">
+                <a href="<?= Yii::app()->createUrl('/login') ?>">
+                    ورود
+                </a>
+                <a href="<?= Yii::app()->createUrl('/register') ?>">
+                    ثبت نام
+                </a>
+            </div>
+        <?
+        }
+        ?>
+    </div>
         <ul class="nav navbar-nav">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
-                <div class="panel panel-body dropdown-menu cat-menu-container">
+            <li>
+                <a class="navbar-brand" href="#">
+                    <span class="icon-download-alt"></span>
+                    هایپر اپس را دانلود کنید
+                </a>
+            </li>
+            <li><a href="<?= Yii::app()->user->hasState('platformName')?Yii::app()->baseUrl.'/'.Yii::app()->user->getState('platformName'):Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
+            <li><a href="#">تخفیفات</a></li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="collapse" role="button" aria-expanded="false">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
+                <div class="panel panel-body collapse  cat-menu-container">
                     <div class="col-md-4">
                         <div class="row">
                             <a href="<?php echo Yii::app()->createUrl('/apps/programs');?>" class="cat-menu-head">برنامه ها</a>
@@ -104,17 +152,6 @@
                     </div>
                 </div>
             </li>
-            <li class="divider">
-                <a>|</a>
-            </li>
-            <li><a href="<?= Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
-            <li><a href="#">تخفیفات</a></li>
-            <li>
-                <a class="navbar-brand" href="#">
-                    <span class="icon-download-alt"></span>
-                    هایپر اپس را دانلود کنید
-                </a>
-            </li>
         </ul>
-    </div>
 </nav>
+<div class="overlay fade"></div>

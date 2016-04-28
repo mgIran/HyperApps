@@ -200,6 +200,7 @@ class AppsController extends Controller
      */
     public function actionPrograms($id=null, $title=null)
     {
+
         if(is_null($id))
             $id=1;
         $this->showCategory($id, $title, 'برنامه ها');
@@ -237,7 +238,6 @@ class AppsController extends Controller
         $criteria->addCondition('deleted=:deleted');
         $criteria->addCondition('status=:status');
         $criteria->addCondition('platform_id=:platform');
-
         $criteria->params=array(
             ':confirm'=>'accepted',
             ':deleted'=>0,

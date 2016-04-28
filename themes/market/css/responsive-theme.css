@@ -57,7 +57,7 @@
         padding-left: 35px;
     }
     .content{
-        margin-top:0;
+        margin-top:80px;
     }
     .app-inner .pic{
         width: 100%;
@@ -69,6 +69,23 @@
     }
     .app-inner .app-heading > h2{
         font-size: 1.5em;
+    }
+    .app-inner .app-body{
+        margin-top: 0;
+    }
+    .header-links{
+        width: 100%;
+        padding: 0;
+        height: 30vh;
+        display: table-row;
+    }
+    .header-links a{
+        float: none;
+        display: table-cell;
+        width: 1%;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 1.4em;
     }
 }
 @media all and (max-width: 400px) {

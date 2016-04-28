@@ -86,7 +86,7 @@ class PublicController extends Controller
     {
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/backgroundImage';
-        if(!Yii::app()->user->isGuest)
+        if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user')
             $this->redirect($this->createAbsoluteUrl('//'));
 
         $model = new UserLoginForm;

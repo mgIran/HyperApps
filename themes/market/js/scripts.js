@@ -34,6 +34,7 @@ $(function() {
         return false;
     });
 
+    // Responsive Scripts
     $("body").on('click',".os-menu-trigger",function(){
         var $this = $(this);
         var $osMenu = $('.os-menu');
@@ -79,23 +80,23 @@ $(function() {
 
     $("body").on('click',".navbar-trigger",function(){
         var $this = $(this);
-        var $searchBox = $('.mobsile-search');
-        if($searchBox.parents('header.mobile').hasClass('search-open'))
-        {
-            $searchBox.parents('header.mobile').removeClass('search-open');
-            $('.mobile-nav').removeClass('fadeInLeft fadeOutLeft animated').addClass('fadeInLeft animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            $('.logo-box').removeClass('fadeInRight fadeOutRight animated').addClass('fadeInRight animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            $searchBox.find('.svg-close').removeClass('bounceIn bounceOut animated').addClass('bounceOut animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                $(this).removeClass('bounceOut animated');
-            });
-        }else
-        {
-            $searchBox.parents('header.mobile').addClass('search-open');
-            $('.mobile-nav').removeClass('fadeInLeft fadeOutLeft animated').addClass('fadeOutLeft animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            $('.logo-box').removeClass('fadeInRight fadeOutRight animated').addClass('fadeOutRight animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend');
-            $searchBox.find('.svg-close').removeClass('bounceOut bounceIn animated').addClass('bounceIn animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                $(this).removeClass('bounceIn animated');
-            });
-        }
+        var $overlay = $('.overlay');
+        var $navbar = $('.mobile-navbar');
+        $navbar.toggleClass('open');
+        $overlay.toggleClass('in');
+        $('body,html').toggleClass('overflow');
+    });
+    $("body").on('click',".overlay",function(){
+        var $overlay = $('.overlay');
+        var $navbar = $('.mobile-navbar');
+        $navbar.toggleClass('open');
+        $overlay.toggleClass('in');
+        $('body,html').toggleClass('overflow');
+    });
+
+    // user menu show
+    $("body").on('click',".user-section .avatar",function(){
+        var $this = $(this);
+        $this.parent().toggleClass('open');
     });
 });

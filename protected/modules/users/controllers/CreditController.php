@@ -44,7 +44,7 @@ class CreditController extends Controller
         $buyCreditOptions=SiteSetting::model()->findByAttributes(array('name'=>'buy_credit_options'));
         $amounts=array();
         foreach(CJSON::decode($buyCreditOptions->value) as $amount)
-            $amounts[$amount]=number_format($amount, 0).' تومان';
+            $amounts[$amount]=Controller::parseNumbers(number_format($amount, 0)).' تومان';
 
         $this->render('buy', array(
             'model'=>$model,
