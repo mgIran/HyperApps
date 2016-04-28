@@ -27,6 +27,10 @@ class PanelController extends Controller
     {
         return array(
             array('allow',
+                'actions'=>array('manageSettlement'),
+                'roles'=>array('admin')
+            ),
+            array('allow',
                 'actions'=>array('uploadNationalCardImage'),
                 'users'=>array('@'),
             ),
@@ -35,7 +39,7 @@ class PanelController extends Controller
                 'roles'=>array('user'),
             ),
             array('allow',
-                'actions'=>array('account','index'),
+                'actions'=>array('account','index','settlement','sales'),
                 'roles'=>array('developer'),
             ),
             array('deny',  // deny all users
@@ -248,6 +252,137 @@ class PanelController extends Controller
         $this->render('signup', array(
             'step'=>Yii::app()->request->getQuery('step'),
             'data'=>$data,
+        ));
+    }
+
+    /**
+     * Settlement
+     */
+    public function actionSettlement()
+    {
+        Yii::app()->theme='market';
+        $this->layout='//layouts/panel';
+
+        Yii::app()->getModule('users');
+        Yii::app()->getModule('pages');
+        $userDetailsModel=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+        $helpText=Pages::model()->findByPk(6);
+        $userDetailsModel->setScenario('update-settlement');
+        // Get history of settlements
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('user_id=:user_id');
+        $criteria->params=array(':user_id'=>Yii::app()->user->getId());
+        $settlementHistory=new CActiveDataProvider('UserSettlement', array(
+            'criteria'=>$criteria,
+        ));
+
+        $this->performAjaxValidation($userDetailsModel);
+
+        if(isset($_POST['UserDetails'])) {
+            $userDetailsModel->monthly_settlement=$_POST['UserDetails']['monthly_settlement'];
+            if($_POST['UserDetails']['monthly_settlement']==1)
+                $userDetailsModel->iban=$_POST['UserDetails']['iban'];
+            else
+                $userDetailsModel->iban=null;
+            if($userDetailsModel->save())
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+            else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+        }
+
+        $this->render('settlement', array(
+            'userDetailsModel'=>$userDetailsModel,
+            'helpText'=>$helpText->summary,
+            'settlementHistory'=>$settlementHistory,
+        ));
+    }
+
+    /**
+     * Report sales
+     */
+    public function actionSales()
+    {
+        Yii::app()->theme='market';
+        $this->layout='//layouts/panel';
+
+        // user's apps
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('developer_id=:dev_id');
+        $criteria->params=array(':dev_id'=>Yii::app()->user->getId());
+        $apps=new CActiveDataProvider('Apps', array(
+            'criteria'=>$criteria,
+        ));
+
+        $labels = $values = array();
+        if(isset($_POST['show-chart'])) {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('date > :from_date');
+            $criteria->addCondition('date < :to_date');
+            $criteria->addCondition('app_id=:app_id');
+            $criteria->params = array(
+                ':from_date' => $_POST['from_date_altField'],
+                ':to_date' => $_POST['to_date_altField'],
+                ':app_id' => $_POST['app_id'],
+            );
+            $report = AppBuys::model()->findAll($criteria);
+            if ($_POST['to_date_altField'] - $_POST['from_date_altField'] < (60 * 60 * 24 * 30)) {
+                // show daily report
+                $datesDiff = $_POST['to_date_altField'] - $_POST['from_date_altField'];
+                $daysCount = ($datesDiff / (60 * 60 * 24));
+                for ($i = 1; $i < $daysCount; $i++) {
+                    $labels[] = JalaliDate::date('d F Y', $_POST['from_date_altField'] + (60 * 60 * (24 * $i)));
+                    $count = 0;
+                    foreach ($report as $model) {
+                        if ($model->date >= $_POST['from_date_altField'] + (60 * 60 * (24 * $i)) and $model->date < $_POST['from_date_altField'] + (60 * 60 * (24 * ($i + 1))))
+                            $count++;
+                    }
+                    $values[] = $count;
+                }
+            }
+        }
+
+        $this->render('sales',array(
+            'apps'=>$apps,
+            'labels'=>$labels,
+            'values'=>$values,
+        ));
+    }
+
+    /**
+     * Manage settlement
+     */
+    public function actionManageSettlement()
+    {
+        Yii::app()->theme='abound';
+        $this->layout='//layouts/column2';
+        $criteria=new CDbCriteria();
+        $criteria->select='SUM(amount) AS amount, date';
+        $criteria->group='date';
+        $settlementHistory=new CActiveDataProvider('UserSettlement', array(
+            'criteria'=>$criteria,
+        ));
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('monthly_settlement=1');
+        $settlementRequiredUsers=new CActiveDataProvider('UserDetails', array(
+            'criteria'=>$criteria,
+        ));
+
+        if(isset($_POST['submit'])) {
+            foreach($settlementRequiredUsers->getData() as $userDetails)
+            {
+                $model=new UserSettlement();
+                $model->user_id=$userDetails->user_id;
+                $model->amount=$userDetails->getSettlementAmount();
+                $model->date=time();
+                $model->iban=$userDetails->iban;
+                $model->save();
+            }
+            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+        }
+
+        $this->render('manage_settlement', array(
+            'settlementHistory'=>$settlementHistory,
+            'settlementRequiredUsers'=>$settlementRequiredUsers,
         ));
     }
 
