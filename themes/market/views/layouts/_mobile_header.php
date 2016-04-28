@@ -110,7 +110,7 @@
     </div>
         <ul class="nav navbar-nav">
             <li>
-                <a class="navbar-brand" href="#">
+                <a href="#">
                     <span class="icon-download-alt"></span>
                     هایپر اپس را دانلود کنید
                 </a>
@@ -118,8 +118,8 @@
             <li><a href="<?= Yii::app()->user->hasState('platformName')?Yii::app()->baseUrl.'/'.Yii::app()->user->getState('platformName'):Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
             <li><a href="#">تخفیفات</a></li>
             <li>
-                <a href="#" class="dropdown-toggle" data-toggle="collapse" role="button" aria-expanded="false">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
-                <div class="panel panel-body collapse  cat-menu-container">
+                <a href="#" data-toggle="collapse" data-target="#mobile-categories">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
+                <div class="panel panel-body collapse" id="mobile-categories">
                     <div class="col-md-4">
                         <div class="row">
                             <a href="<?php echo Yii::app()->createUrl('/apps/programs');?>" class="cat-menu-head">برنامه ها</a>

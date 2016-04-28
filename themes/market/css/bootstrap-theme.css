@@ -257,7 +257,7 @@ header .right-header .user-section .avatar .icon{
     border-bottom: 1px solid #ccc;
     -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
-.mobile-navbar .navbar ul.nav{
+.mobile-navbar.navbar ul.nav{
     width: 100%;
     margin: 0;
 }
@@ -266,6 +266,7 @@ header .right-header .user-section .avatar .icon{
     float: none;
     text-align: center;
     width: 100%;
+    border-bottom: 1px solid #ddd;
 }
 .mobile-navbar .user-detail {
     display: block;
@@ -386,6 +387,7 @@ header .right-header .user-section .type{
     z-index: 100;
     min-width: 350px;
     opacity: 0;
+    visibility: hidden;
     margin-top: 2px;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
