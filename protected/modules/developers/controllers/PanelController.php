@@ -137,6 +137,8 @@ class PanelController extends Controller
     public function actionUploadNationalCardImage()
     {
         $uploadDir = Yii::getPathOfAlias("webroot").'/uploads/users/national_cards/';
+        if (!is_dir(Yii::getPathOfAlias("webroot").'/uploads/users/'))
+            mkdir(Yii::getPathOfAlias("webroot").'/uploads/users/');
         if (!is_dir($uploadDir))
             mkdir($uploadDir);
         if (isset($_FILES)) {

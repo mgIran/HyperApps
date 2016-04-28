@@ -240,7 +240,7 @@ header .right-header .user-section .avatar{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     position: absolute;
-    left: 60px;
+    left: 20px;
     top: 10px;
 }
 header .right-header .user-section .avatar .icon{
@@ -250,6 +250,7 @@ header .right-header .user-section .avatar .icon{
     top: 50%;
 }
 .mobile-navbar .navbar-header {
+    width: 100%;
     display: block;
     overflow: hidden;
     padding: 30px;
@@ -257,7 +258,7 @@ header .right-header .user-section .avatar .icon{
     border-bottom: 1px solid #ccc;
     -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
-.mobile-navbar .navbar ul.nav{
+.mobile-navbar.navbar ul.nav{
     width: 100%;
     margin: 0;
 }
@@ -266,6 +267,7 @@ header .right-header .user-section .avatar .icon{
     float: none;
     text-align: center;
     width: 100%;
+    border-bottom: 1px solid #ddd;
 }
 .mobile-navbar .user-detail {
     display: block;
@@ -319,7 +321,7 @@ header .right-header .user-section .avatar .tri-2{
     border-style: dashed dashed solid;
     border-width: 0 8.5px 8.5px;
     display: block;
-    opacity: 0;
+    opacity: 1;
     visibility: hidden;
     height: 0;
     left:22px;
@@ -327,7 +329,13 @@ header .right-header .user-section .avatar .tri-2{
     top: 100%;
     width: 0;
     z-index: 110;
-    margin-top: 5px;
+    margin-top: 15px;
+
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 header .right-header .user-section .avatar .tri-1{
     border-color: transparent transparent rgba(0, 0, 0, 0.2);
@@ -342,7 +350,13 @@ header .right-header .user-section .avatar .tri-1{
     top: 100%;
     width: 0;
     z-index: 110;
-    margin-top: 4px;
+    margin-top: 14px;
+
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 header .right-header .user-section .name{
     font-size: 14px;
@@ -372,7 +386,7 @@ header .right-header .user-section .type{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-.user-menu{
+.user-menu {
     background: #fff none repeat scroll 0 0;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 2px;
@@ -381,21 +395,36 @@ header .right-header .user-section .type{
     display: block;
     outline: medium none;
     position: absolute;
-    left:10px;
+    left: 10px;
     top: 100%;
     z-index: 100;
     min-width: 350px;
     opacity: 0;
-    margin-top: 2px;
+    visibility: hidden;
+    margin-top: 12px;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-.user-section.open .tri-1,
-.user-section.open .tri-2,
+.user-section.open .tri-2{
+    margin-top: 5px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.user-section.open .tri-1{
+    margin-top: 4px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    -webkit-transition-duration: 0s;
+    -moz-transition-duration: 0s;
+    -ms-transition-duration: 0s;
+    -o-transition-duration: 0s;
+    transition-duration: 0s;
+}
 .user-section.open .user-menu{
+    margin-top: 2px;
     opacity: 1 !important;
     visibility: visible !important;
 }
@@ -432,9 +461,10 @@ header .right-header .user-section .user-menu .inner > footer{
     background: #f5f5f5 none repeat scroll 0 0;
     border-color: rgba(0, 0, 0, 0.2);
     border-top: 1px solid rgba(0, 0, 0, 0.2);
-    display: table;
+    display: block;
     padding: 10px 20px;
     width: 100%;
+    float: right;
 }
 header .right-header .user-section .user-menu .inner > footer > a:first-of-type{
     width: 96px;
@@ -1451,8 +1481,10 @@ ul.cat-menu li a
 }
 .mobile-nav.nav > li{
     float: left;
-    width: 50px;
+    width: 40px;
     height: 80px;
+    margin: 0 5px;
+    text-align: center;
 }
 .mobile-nav.nav > li .svg{
     margin-left:0 !important;
@@ -1695,4 +1727,15 @@ header.mobile.search-open .mobile-search{
     -webkit-transform: translate3D(-50%, -50%, 0); -moz-transform: translate3D(-50%, -50%, 0); -ms-transform: translate3D(-50%, -50%, 0); -o-transform: translate3D(-50%, -50%, 0); transform: translate3D(-50%, -50%, 0);
     max-width: 90%;
     max-height: 90%;
+}
+.mobile-navbar .panel.panel-body{
+    padding: 0;
+    margin: 0;
+}
+.mobile-navbar .panel.panel-body > div{
+    text-align: center;
+    border-bottom-color: #dedede;
+}
+.mobile-navbar .panel.panel-body > div:last-of-type .cat-menu-head{
+    border: none;
 }
