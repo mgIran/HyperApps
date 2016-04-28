@@ -9,7 +9,7 @@
         right: 10px;
     }
 }
-@media all and (max-width: 991px) {
+@media all and (max-width: 992px) {
     header {
         background-color: #fff;
         -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
@@ -21,7 +21,10 @@
         width: 240px;
     }
 }
-@media all and (max-width: 767px) {
+@media all and (max-width: 768px) {
+    h1{
+        font-size: 1.75em;
+    }
     .app-carousel .owl-item {
         text-align: center;
     }
@@ -87,6 +90,17 @@
         text-align: center;
         font-size: 1.4em;
     }
+    .content{
+        padding-top: 0;
+    }
+    .dashboard-container ul.nav.nav-tabs{
+        margin-top: 45px;
+    }
+    .developer-signup-link{
+        width: 150px;
+        left: 50%;
+        margin-left: -75px;
+    }
 }
 @media all and (max-width: 400px) {
     header .mobile-nav.nav > li{
@@ -107,6 +121,15 @@
 
     .logo-box {
         width: 20%;
+    }
+}
+
+@media all and (min-width: 320px) {
+    .logo-box{
+        width: 170px;
+    }
+    header .mobile-nav.nav > li{
+        width: 30px !important;
     }
 }
 
