@@ -197,4 +197,13 @@ class Users extends CActiveRecord
         }
         return true;
     }
+
+
+    public function getStatusDropdown()
+    {
+        return CHtml::activeDropDownList($this,'status',$this->statusLabels, array(
+            'id' => 'statusDropdown',
+            'data-id'   => $this->id,
+        ));
+    }
 }
