@@ -14,7 +14,10 @@
             <a href="<?php echo $this->createUrl('/developers/panel/account');?>">حساب توسعه دهنده</a>
         </li>
         <li>
-            <a href="/developers/panel/financial/?l=fa">امور مالی و فروش</a>
+            <a href="<?php echo $this->createUrl('/developers/panel/sales');?>">گزارش فروش</a>
+        </li>
+        <li>
+            <a href="<?php echo $this->createUrl('/developers/panel/settlement');?>">تسویه حساب</a>
         </li>
         <li>
             <a href="/developers/panel/support/?l=fa">پشتیبانی</a>

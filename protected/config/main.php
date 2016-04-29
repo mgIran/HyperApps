@@ -1,4 +1,5 @@
 <?php
+Yii::setPathOfAlias('chartjs', dirname(__FILE__).'/../extensions/yii-chartjs');
 return array(
     'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
     'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
@@ -7,8 +8,8 @@ return array(
     'timeZone' => 'Asia/Tehran',
     'theme' => 'abound',
     'language' => 'fa_ir',
-	// preloading 'log' component
-	'preload'=>array('log','userCounter'),
+		// preloading 'log' component
+	'preload'=>array('log','userCounter','chartjs'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -54,6 +55,7 @@ return array(
             'class'=>'CDbAuthManager',
             'connectionID'=>'db',
         ),
+		'chartjs' => array('class' => 'chartjs.components.ChartJs'),
 		// uncomment the following to enable URLs in path-format
         // @todo change rules in projects
 		'urlManager'=>array(

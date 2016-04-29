@@ -34,13 +34,20 @@
                     'class'=>'CButtonColumn',
                     'template' => '{view}{confirm}{delete}',
                     'buttons'=>array(
+                        'view'=>array(
+                            'label'=>'مشاهده برنامه',
+                            'url'=>'Yii::app()->createUrl("/apps/".$data->id."/".urlencode($data->title))',
+                            'options'=>array(
+                                'target'=>'_blank'
+                            ),
+                        ),
                         'confirm'=>array(
                             'label'=>'تایید کردن',
-                            'url'=>"CHtml::normalizeUrl(array('/manageApps/usersManage/confirmDevID'))",
+                            'url'=>'CHtml::normalizeUrl(array(\'/manageApps/\'.$data->platformsID[$data->platform_id].\'/confirm/\'.$data->id))',
                             'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
                         ),
                         'delete'=>array(
-                            //'url'=>'CHtml::normalizeUrl(array(\'/users/\'.$data->platformsID[$data->platform_id].\'/confirm\'))'
+                            'url'=>'CHtml::normalizeUrl(array(\'/users/\'.$data->platformsID[$data->platform_id].\'/delete/\'.$data->id))'
                         ),
                     ),
                 ),

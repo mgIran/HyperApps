@@ -55,7 +55,7 @@ class BaseManageController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'confirm'),
                 'roles' => array('admin'),
             ),
             array('deny',  // deny all users
@@ -426,5 +426,16 @@ class BaseManageController extends Controller
             echo CJSON::encode($response);
             Yii::app()->end();
         }
+    }
+
+    public function actionConfirm($id)
+    {
+        $model=$this->loadModel($id);
+        $model->confirm='accepted';
+        if($model->save())
+            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+        else
+            Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+        $this->redirect(array('/admins'));
     }
 }
