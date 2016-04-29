@@ -37,7 +37,9 @@
     </div>
 </header>
 <div class="os-menu">
-    <span class="svg svg-close os-menu-trigger"></span>
+    <span class="close-button">
+        <span class="svg svg-close os-menu-trigger"></span>
+    </span>
     <div>
         <a href="<?php echo Yii::app()->createUrl('/android');?>" class="android" data-platform="android">
             <span class="icon-android "></span>
@@ -113,37 +115,39 @@
                 <a href="#" data-toggle="collapse" data-target="#mobile-categories">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
             </li>
             <div class="panel panel-body panel-group collapse" id="mobile-categories">
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <a data-toggle="collapse" data-parent="#mobile-categories" data-target="#m-app-cat" href="#" class="cat-menu-head">برنامه ها</a>
-                        <ul class="cat-menu collapse" id="m-app-cat">
-                            <li><a href="<?php echo Yii::app()->createUrl('/apps/programs');?>">همه برنامه ها</a></li>
-                            <?php foreach($this->categories['programs'] as $category):?>
-                                <li><a href="<?php echo Yii::app()->createUrl('/apps/programs/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
-                            <?php endforeach;?>
-                        </ul>
+                <div id="category-collapse-parent">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <a data-toggle="collapse" data-parent="#category-collapse-parent" data-target="#m-app-cat" href="#" class="cat-menu-head">برنامه ها</a>
+                            <ul class="cat-menu collapse" id="m-app-cat">
+                                <li><a href="<?php echo Yii::app()->createUrl('/apps/programs');?>">همه برنامه ها</a></li>
+                                <?php foreach($this->categories['programs'] as $category):?>
+                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/programs/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <a data-toggle="collapse" data-target="#m-games-cat" data-parent="#mobile-categories" href="#" class="cat-menu-head">بازی ها</a>
-                        <ul class="cat-menu collapse" id="m-games-cat">
-                            <li><a href="<?php echo Yii::app()->createUrl('/apps/games');?>">همه بازی ها</a></li>
-                            <?php foreach($this->categories['games'] as $category):?>
-                                <li><a href="<?php echo Yii::app()->createUrl('/apps/games/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
-                            <?php endforeach;?>
-                        </ul>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <a data-toggle="collapse" data-target="#m-games-cat" data-parent="#category-collapse-parent" href="#" class="cat-menu-head">بازی ها</a>
+                            <ul class="cat-menu collapse" id="m-games-cat">
+                                <li><a href="<?php echo Yii::app()->createUrl('/apps/games');?>">همه بازی ها</a></li>
+                                <?php foreach($this->categories['games'] as $category):?>
+                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/games/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <a data-toggle="collapse" data-target="#m-edu-cat" data-parent="#mobile-categories" href="#" class="cat-menu-head">آموزش ها</a>
-                        <ul class="cat-menu collapse" id="m-edu-cat">
-                            <li><a href="<?php echo Yii::app()->createUrl('/apps/educations');?>">همه آموزش ها</a></li>
-                            <?php foreach($this->categories['educations'] as $category):?>
-                                <li><a href="<?php echo Yii::app()->createUrl('/apps/educations/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
-                            <?php endforeach;?>
-                        </ul>
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <a data-toggle="collapse" data-target="#m-edu-cat" data-parent="#category-collapse-parent" href="#" class="cat-menu-head">آموزش ها</a>
+                            <ul class="cat-menu collapse" id="m-edu-cat">
+                                <li><a href="<?php echo Yii::app()->createUrl('/apps/educations');?>">همه آموزش ها</a></li>
+                                <?php foreach($this->categories['educations'] as $category):?>
+                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/educations/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

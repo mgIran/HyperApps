@@ -3,27 +3,63 @@
 /* @var $model Users */
 
 $this->breadcrumbs=array(
-	'Users'=>array('index'),
-	$model->id,
+	'کاربران'=>array('index'),
+	$model->userDetails->fa_name && !empty($model->userDetails->fa_name)?$model->userDetails->fa_name:$model->email,
 );
 
 $this->menu=array(
-	array('label'=>'List Users', 'url'=>array('index')),
-	array('label'=>'Create Users', 'url'=>array('create')),
-	array('label'=>'Update Users', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Users', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Users', 'url'=>array('admin')),
+	array('label'=>'مدیرت کاربران', 'url'=>array('admin')),
+	array('label'=>'حذف کاربر', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'آیا از حذف کاربر اطمینان دارید؟')),
 );
 ?>
 
-<h1>View Users #<?php echo $model->id; ?></h1>
+<h1>نمایش اطلاعات <?php echo $model->userDetails->fa_name && !empty($model->userDetails->fa_name)?$model->userDetails->fa_name:$model->email; ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
+
+<?php
+$this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
-		'id',
-		'username',
-		'password',
-		'roles',
+		array(
+			'name'=>'نام',
+			'value'=>$model->userDetails->fa_name,
+		),
+		array(
+			'name'=>'نام انگلیسی',
+			'value'=>$model->userDetails->en_name,
+		),
+		array(
+			'name'=>'نام کاربری',
+			'value'=>$model->userDetails->developer_id,
+		),
+		array(
+			'name'=>'اعتبار',
+			'value'=>$model->userDetails->credit.'تومان',
+		),
+		array(
+			'name'=>'آدرس وبسایت',
+			'value'=>$model->userDetails->fa_web_url,
+		),
+		array(
+			'name'=>'شماره تماس',
+			'value'=>$model->userDetails->phone,
+		),
+		array(
+			'name'=>'کد ملی',
+			'value'=>$model->userDetails->national_code,
+		),
+		array(
+			'name'=>'کد پستی',
+			'value'=>$model->userDetails->zip_code,
+		),
+		array(
+			'name'=>'آدرس',
+			'value'=>$model->userDetails->address,
+		),
+		array(
+			'name'=>'نوع کاربری',
+			'value'=>$model->role->name,
+		),
 	),
 )); ?>
+

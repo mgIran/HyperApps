@@ -80,15 +80,28 @@ class UsersManageController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
+		$model->scenario = 'changeStatus';
 		if(isset($_POST['Users']))
 		{
 			$model->attributes=$_POST['Users'];
 			if($model->save())
-				$this->redirect(array('views','id'=>$model->id));
+			{
+				Yii::app()->user->setFlash('success' ,'<span class="icon-check"></span>&nbsp;&nbsp;اطلاعات با موفقیت ذخیره شد.');
+				if(isset($_POST['ajax']))
+				{
+					echo CJSON::encode(['status' => 'ok']);
+					Yii::app()->end();
+				}else
+					$this->redirect(array('admin'));
+			}else
+			{
+				Yii::app()->user->setFlash('failed' ,'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+				if(isset($_POST['ajax']))
+				{
+					echo CJSON::encode(['status' => 'error']);
+					Yii::app()->end();
+				}
+			}
 		}
 
 		$this->render('update',array(
@@ -103,7 +116,8 @@ class UsersManageController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		$model = $this->loadModel($id);
+		$model->updateByPk($model->id,array('status' => 'deleted'));
 
 		// if AJAX request (triggered by deletion via admin grid views), we should not redirect the browser
 		if(!isset($_GET['ajax']))
@@ -115,10 +129,7 @@ class UsersManageController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Users');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$this->actionAdmin();
 	}
 
 	/**

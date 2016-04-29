@@ -36,6 +36,14 @@ class Users extends CActiveRecord
         return 'ym_users';
     }
 
+    public $statusLabels = array(
+        'pending' => 'در انتظار تایید',
+        'active' => 'فعال',
+        'blocked' => 'مسدود',
+        'deleted' => 'حذف شده'
+    );
+    public $fa_name;
+    public $statusFilter;
     public $repeatPassword;
     public $oldPassword;
     public $newPassword;
@@ -48,16 +56,16 @@ class Users extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('email, password', 'required' ,'on' => 'create'),
-            array('role_id', 'default' ,'value' => 1,'on' => 'create'),
+            array('email, password', 'required' ,'on' => 'insert,create'),
+            array('role_id', 'default' ,'value' => 1),
             array('email' , 'required' ,'on' => 'email'),
+            array('email', 'unique','on' => 'insert,create'),
             array('change_password_request_count', 'numerical', 'integerOnly'=>true),
             array('email' , 'email'),
             array('oldPassword ,newPassword ,repeatPassword', 'required' , 'on'=>'update'),
             array('password', 'required' , 'on'=>'change_password'),
             array('repeatPassword', 'compare', 'compareAttribute'=>'password', 'on'=>'change_password'),
             array('email' , 'filter' , 'filter' => 'trim' ,'on' => 'create'),
-            array('email' , 'unique' ,'on' => 'create'),
             array('username, password, verification_token', 'length', 'max'=>100 ,'on' => 'create'),
             array('oldPassword', 'oldPass' , 'on'=>'update'),
             array('email', 'length', 'max'=>255),
@@ -66,7 +74,7 @@ class Users extends CActiveRecord
             array('create_date', 'length', 'max'=>20),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, username, password, roleId, create_date, status, verification_token, change_password_request_count', 'safe', 'on'=>'search'),
+            array('roleId, create_date, status, verification_token, change_password_request_count ,fa_name ,email ,statusFilter', 'safe', 'on'=>'search'),
         );
     }
 
@@ -142,11 +150,13 @@ class Users extends CActiveRecord
         $criteria->compare('username',$this->username,true);
         $criteria->compare('password',$this->password,true);
         $criteria->compare('create_date',$this->create_date,true);
-        $criteria->compare('status',$this->status,true);
+        $criteria->compare('status', $this->statusFilter, true);
         $criteria->compare('verification_token',$this->verification_token,true);
         $criteria->compare('change_password_request_count',$this->change_password_request_count);
         $criteria->addSearchCondition('role.id' , $this->roleId );
-        $criteria->with = array('role');
+        $criteria->addSearchCondition('userDetails.fa_name' , $this->fa_name );
+        $criteria->with = array('role','userDetails');
+        $criteria->order = 'status ,t.id DESC';
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
@@ -178,10 +188,12 @@ class Users extends CActiveRecord
     public function afterSave(){
         if(parent::afterSave())
         {
-            $model = new UserDetails;
-            $model->user_id = $this->id;
-            $model->credit = 0;
-            $model->save();
+            if($this->isNewRecord){
+                $model = new UserDetails;
+                $model->user_id = $this->id;
+                $model->credit = 0;
+                $model->save();
+            }
         }
         return true;
     }

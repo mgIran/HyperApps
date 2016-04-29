@@ -15,13 +15,14 @@
     </div>
 <?php endif;?>
 
-<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
+<div class="panel <?= $newestPrograms->totalItemCount>0?'panel-warning':'panel-default'; ?> col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="panel-heading">
         جدیدترین نرم افزار ها
     </div>
     <div class="panel-body">
         <?php $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'newest-apps-grid',
+            'template' => '{items}',
             'dataProvider'=>$newestPrograms,
             'columns'=>array(
                 'title',
@@ -39,7 +40,7 @@
                             'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
                         ),
                         'delete'=>array(
-                            'url'=>'CHtml::normalizeUrl(array(\'/users/\'.$data->platformsID[$data->platform_id].\'/confirm\'))'
+                            //'url'=>'CHtml::normalizeUrl(array(\'/users/\'.$data->platformsID[$data->platform_id].\'/confirm\'))'
                         ),
                     ),
                 ),
@@ -47,6 +48,7 @@
         ));?>
     </div>
 </div>
+
 <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="panel-heading">
         درخواست های تغییر شناسه توسعه دهنده
@@ -54,6 +56,7 @@
     <div class="panel-body">
         <?php $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'dev-id-requests-grid',
+            'template' => '{items}',
             'dataProvider'=>$devIDRequests,
             'columns'=>array(
                 'user_id'=>array(

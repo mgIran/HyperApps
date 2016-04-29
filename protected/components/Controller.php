@@ -118,8 +118,8 @@ class Controller extends CController
                     'items' => array(
                         array('label' => 'صفحات اصلی سایت' ,'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=base')) ,
                         array('label' => 'قوانین' ,'url' => Yii::app()->createUrl('/pages/manage/update/5?slug=rules')) ,
-                        array('label' => 'صفحات راهنما' ,'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=guide')) ,
-                        array('label' => 'صفحات آزاد' ,'url' => Yii::app()->createUrl('/pages/manage/admin/')) ,
+                        /*array('label' => 'صفحات راهنما' ,'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=guide')) ,
+                        array('label' => 'صفحات آزاد' ,'url' => Yii::app()->createUrl('/pages/manage/admin/')) ,*/
                     )
                 ) ,
                 array(

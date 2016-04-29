@@ -1519,14 +1519,18 @@ ul.cat-menu li a
     bottom:0;
     z-index:101;
 }
-.os-menu .svg.svg-close{
+.os-menu .close-button .svg.svg-close{
+    animation-delay: 1s !important;
+    margin: 0 !important;
+}
+.os-menu .close-button{
     position: absolute;
-    top: 15px;
-    left:15px;
+    top: 0;
+    left:0;
     z-index:102;
     cursor: pointer;
     opacity: 0.7;
-    animation-delay: 1s !important;
+    padding: 15px;
 }
 .os-menu .svg.svg-close:hover{
     opacity: 1;

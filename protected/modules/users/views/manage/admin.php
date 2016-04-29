@@ -1,6 +1,6 @@
 <?php
-/* @var $this AdminsManageController */
-/* @var $model Admins */
+/* @var $this UsersManageController */
+/* @var $model Users */
 
 $this->breadcrumbs=array(
     'کاربران'=>array('manage'),
@@ -8,40 +8,32 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-    //array('label'=>'افزودن', 'url'=>array('create')),
+    array('label'=>'افزودن', 'url'=>array('create')),
 );
-
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$('#admins-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
 ?>
-
+<? $this->renderPartial('//layouts/_flashMessage'); ?>
 <h1>مدیریت کاربران</h1>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'admins-grid',
     'dataProvider'=>$model->search(),
     'filter'=>$model,
     'columns'=>array(
         'email',
         array(
-            'header' => 'نقش',
-            'name' => 'role.name',
-            'filter' => CHtml::activeDropDownList($model , 'roleId' ,
-                CHtml::listData(AdminRoles::model()->findAll() , 'id' , 'name'))
+            'header' => 'نام کامل',
+            'value' => '$data->userDetails->fa_name',
+            'filter' => CHtml::activeTextField($model,'fa_name')
+        ),
+        array(
+            'header' => 'وضعیت',
+            'value' => '$data->statusLabels[$data->status]',
+            'filter' => CHtml::activeDropDownList($model,'statusFilter',$model->statusLabels,array('prompt' => 'همه'))
         ),
         array(
             'class'=>'CButtonColumn',
-            'template' => '{update}{delete}'
+            'template' => '{view}{update}{delete}'
         ),
     ),
 )); ?>
