@@ -72,7 +72,7 @@ class PublicController extends Controller
                 $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
                 Mailer::mail($model->email, 'ثبت نام در '.Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
 
-                Yii::app()->user->setFlash('success' , 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد.');
+                Yii::app()->user->setFlash('success' , 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد. لطفا Inbox و Spam پست الکترونیکی خود را چک کنید.');
                 $this->refresh();
             }
         }

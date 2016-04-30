@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c271373e-e792-4e65-80c2-5dfe77ac3688" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/protected/extensions/Hzl/google/HzlVisualizationChart.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/protected/extensions/Hzl/google/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/protected/extensions/Hzl/google/google chart.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php" afterPath="$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/manage/view.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/manage/view.php" />
     </list>
     <ignored path="market.iws" />
@@ -28,32 +32,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="view.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/protected/modules/users/views/manage/view.php">
+      <file leaf-file-name="PublicController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.20975609">
-              <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Users.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/modules/users/models/Users.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-155.84616">
-              <caret line="205" column="36" selection-start-line="205" selection-start-column="25" selection-end-line="205" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UserDetails.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/modules/users/models/UserDetails.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.377193">
-              <caret line="43" column="26" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
-              <folding />
+            <state vertical-scroll-proportion="0.7491187">
+              <caret line="74" column="16" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="155" />
+              <folding>
+                <marker date="1462015347192" expanded="true" signature="2315:2364" placeholder="..." />
+                <marker date="1462015347192" expanded="true" signature="2497:2530" placeholder="..." />
+                <marker date="1462015347192" expanded="true" signature="2817:2862" placeholder="..." />
+                <marker date="1462015347192" expanded="true" signature="8953:9002" placeholder="..." />
+                <marker date="1462015347192" expanded="true" signature="9146:9179" placeholder="..." />
+                <marker date="1462015347192" expanded="true" signature="9614:9659" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,7 +57,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php" />
         <option value="$PROJECT_DIR$/themes/market/css/bootstrap-theme.css" />
         <option value="$PROJECT_DIR$/themes/market/views/layouts/_sidebar.php" />
         <option value="$PROJECT_DIR$/protected/views/apps/sales_report.php" />
@@ -83,6 +73,7 @@
         <option value="$PROJECT_DIR$/protected/modules/users/controllers/UsersManageController.php" />
         <option value="$PROJECT_DIR$/protected/modules/users/models/UserDetails.php" />
         <option value="$PROJECT_DIR$/protected/modules/users/views/manage/view.php" />
+        <option value="$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php" />
       </list>
     </option>
   </component>
@@ -476,7 +467,13 @@
       <option name="project" value="LOCAL" />
       <updated>1462014143599</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Sales report - admin">
+      <created>1462014771553</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1462014771553</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -818,23 +815,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/config/main.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5452409">
-          <caret line="125" column="50" selection-start-line="125" selection-start-column="50" selection-end-line="125" selection-end-column="50" />
-          <folding>
-            <marker date="1461998414831" expanded="true" signature="4712:4884" placeholder="..." />
-            <marker date="1461998414831" expanded="true" signature="4908:4937" placeholder="..." />
-            <marker date="1461998414831" expanded="false" signature="5016:5087" placeholder="..." />
-            <marker date="1461998414831" expanded="true" signature="5088:5259" placeholder="..." />
-            <marker date="1461998414831" expanded="false" signature="5118:5219" placeholder="..." />
-            <marker date="1461998414831" expanded="false" signature="5286:5365" placeholder="..." />
-            <marker date="1461998414831" expanded="true" signature="5366:5745" placeholder="..." />
-            <marker date="1461998414831" expanded="false" signature="5660:5672" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/protected/views/apps/report_sales.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5558167">
@@ -875,21 +855,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35898942">
-          <caret line="26" column="75" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
-          <folding>
-            <marker date="1461938760000" expanded="true" signature="2315:2364" placeholder="..." />
-            <marker date="1461938760000" expanded="true" signature="2497:2530" placeholder="..." />
-            <marker date="1461938760000" expanded="true" signature="2817:2862" placeholder="..." />
-            <marker date="1461938760000" expanded="true" signature="8904:8953" placeholder="..." />
-            <marker date="1461938760000" expanded="true" signature="9097:9130" placeholder="..." />
-            <marker date="1461938760000" expanded="true" signature="9565:9610" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/protected/modules/users/controllers/UsersManageController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.27262044">
@@ -898,27 +863,59 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/users/models/UserDetails.php">
+    <entry file="file://$PROJECT_DIR$/protected/config/main.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.377193">
-          <caret line="43" column="26" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.025264395">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="79" />
+          <folding>
+            <marker date="1461998414831" expanded="true" signature="4712:4884" placeholder="..." />
+            <marker date="1461998414831" expanded="true" signature="4908:4937" placeholder="..." />
+            <marker date="1461998414831" expanded="false" signature="5016:5087" placeholder="..." />
+            <marker date="1461998414831" expanded="true" signature="5088:5259" placeholder="..." />
+            <marker date="1461998414831" expanded="false" signature="5118:5219" placeholder="..." />
+            <marker date="1461998414831" expanded="false" signature="5286:5365" placeholder="..." />
+            <marker date="1461998414831" expanded="true" signature="5366:5745" placeholder="..." />
+            <marker date="1461998414831" expanded="false" signature="5660:5672" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/users/views/manage/view.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47560975">
+          <caret line="76" column="133" selection-start-line="76" selection-start-column="133" selection-end-line="76" selection-end-column="133" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/modules/users/models/Users.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-155.84616">
+        <state vertical-scroll-proportion="4.761457">
           <caret line="205" column="36" selection-start-line="205" selection-start-column="25" selection-end-line="205" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/protected/modules/users/views/manage/view.php">
+    <entry file="file://$PROJECT_DIR$/protected/modules/users/models/UserDetails.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20975609">
-          <caret line="8" column="14" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.7908537">
+          <caret line="43" column="26" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7491187">
+          <caret line="74" column="16" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="155" />
+          <folding>
+            <marker date="1462015347192" expanded="true" signature="2315:2364" placeholder="..." />
+            <marker date="1462015347192" expanded="true" signature="2497:2530" placeholder="..." />
+            <marker date="1462015347192" expanded="true" signature="2817:2862" placeholder="..." />
+            <marker date="1462015347192" expanded="true" signature="8953:9002" placeholder="..." />
+            <marker date="1462015347192" expanded="true" signature="9146:9179" placeholder="..." />
+            <marker date="1462015347192" expanded="true" signature="9614:9659" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>

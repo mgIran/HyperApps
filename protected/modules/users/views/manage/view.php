@@ -74,7 +74,7 @@ $this->widget('zii.widgets.CDetailView', array(
 		),
 		array(
 			'name'=>'تصویر کارت ملی',
-			'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/national_cards/".$model->userDetails->national_card_image, array('class'=>'national-card-image')),
+			'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/national_cards/".$model->userDetails->national_card_image, '', array('class'=>'national-card-image')),
 			'type'=>'raw'
 		),
 		array(
