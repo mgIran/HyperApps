@@ -2,6 +2,14 @@
 /* @var $this UsersManageController */
 /* @var $model Users */
 
+Yii::app()->clientScript->registerCss('imgSize','
+.national-card-image
+{
+	max-width:500px;
+	max-height:500px;
+}
+');
+
 $this->breadcrumbs=array(
 	'کاربران'=>array('index'),
 	$model->userDetails->fa_name && !empty($model->userDetails->fa_name)?$model->userDetails->fa_name:$model->email,
@@ -66,7 +74,7 @@ $this->widget('zii.widgets.CDetailView', array(
 		),
 		array(
 			'name'=>'تصویر کارت ملی',
-			'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/national_cards/".$model->userDetails->national_card_image),
+			'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/national_cards/".$model->userDetails->national_card_image, array('class'=>'national-card-image')),
 			'type'=>'raw'
 		),
 		array(
