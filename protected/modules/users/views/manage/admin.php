@@ -28,8 +28,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'header' => 'وضعیت',
-            'type'  => 'raw',
-            'value' => '$data->statusDropdown',
+            'value' => '$data->statusLabels[$data->status]',
             'filter' => CHtml::activeDropDownList($model,'statusFilter',$model->statusLabels,array('prompt' => 'همه'))
         ),
         array(
@@ -37,14 +36,4 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'template' => '{view}{update}{delete}'
         ),
     ),
-));
-
-$url = $this->createUrl('/users/manage/update/');
-Yii::app()->clientScript->registerScript('initStatus',
-    "$('body').on('change','select#statusDropdown',function() {
-        el = $(this);
-        $.post('$url'+'/'+el.data('id'), {Users:{status: el.val()}});
-    });",
-    CClientScript::POS_END
-);
-?>
+)); ?>

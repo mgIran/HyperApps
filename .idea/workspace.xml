@@ -1,16 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c271373e-e792-4e65-80c2-5dfe77ac3688" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/protected/views/apps/sales_report.php" />
+    <list default="true" id="c271373e-e792-4e65-80c2-5dfe77ac3688" name="Default" comment="Fix phase 1 bugs">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/protected/views/apps/sales_report.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/market.sql" afterPath="$PROJECT_DIR$/market.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/components/Controller.php" afterPath="$PROJECT_DIR$/protected/components/Controller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/controllers/AppCategoriesController.php" afterPath="$PROJECT_DIR$/protected/controllers/AppCategoriesController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/controllers/AppsController.php" afterPath="$PROJECT_DIR$/protected/controllers/AppsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/admins/controllers/DashboardController.php" afterPath="$PROJECT_DIR$/protected/modules/admins/controllers/DashboardController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/admins/views/dashboard/index.php" afterPath="$PROJECT_DIR$/protected/modules/admins/views/dashboard/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/controllers/SiteController.php" afterPath="$PROJECT_DIR$/protected/controllers/SiteController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/controllers/PanelController.php" afterPath="$PROJECT_DIR$/protected/modules/developers/controllers/PanelController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/apps/_form.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/apps/_form.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/_agreement.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/_agreement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/_finish.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/_finish.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/_profile.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/_profile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/_report_sale_app_list.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/_report_sale_app_list.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/_settlement_list.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/_settlement_list.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/_update_profile_form.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/_update_profile_form.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/account.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/account.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/manage_settlement.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/manage_settlement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/sales.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/sales.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/settlement.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/settlement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/developers/views/panel/signup.php" afterPath="$PROJECT_DIR$/protected/modules/developers/views/panel/signup.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/components/UserIdentity.php" afterPath="$PROJECT_DIR$/protected/modules/users/components/UserIdentity.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/controllers/CreditController.php" afterPath="$PROJECT_DIR$/protected/modules/users/controllers/CreditController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php" afterPath="$PROJECT_DIR$/protected/modules/users/controllers/PublicController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/themes/market/css/bootstrap-theme.css" afterPath="$PROJECT_DIR$/themes/market/css/bootstrap-theme.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/themes/market/views/layouts/_sidebar.php" afterPath="$PROJECT_DIR$/themes/market/views/layouts/_sidebar.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/controllers/UsersManageController.php" afterPath="$PROJECT_DIR$/protected/modules/users/controllers/UsersManageController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/models/UserDetails.php" afterPath="$PROJECT_DIR$/protected/modules/users/models/UserDetails.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/models/UserLoginForm.php" afterPath="$PROJECT_DIR$/protected/modules/users/models/UserLoginForm.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/models/UserSettlement.php" afterPath="$PROJECT_DIR$/protected/modules/users/models/UserSettlement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/models/Users.php" afterPath="$PROJECT_DIR$/protected/modules/users/models/Users.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/credit/bill.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/credit/bill.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/credit/buy.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/credit/buy.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/credit/verify.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/credit/verify.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/manage/admin.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/manage/admin.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/manage/update.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/manage/update.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/manage/view.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/manage/view.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/public/_bookmarks.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/public/_bookmarks.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/public/_transactions.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/public/_transactions.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/public/change_password.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/public/change_password.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/public/dashboard.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/public/dashboard.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/public/forget_password.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/public/forget_password.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/public/login.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/public/login.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/modules/users/views/public/register.php" afterPath="$PROJECT_DIR$/protected/modules/users/views/public/register.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/appCategories/_form.php" afterPath="$PROJECT_DIR$/protected/views/appCategories/_form.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/appCategories/admin.php" afterPath="$PROJECT_DIR$/protected/views/appCategories/admin.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/appCategories/create.php" afterPath="$PROJECT_DIR$/protected/views/appCategories/create.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/appCategories/index.php" afterPath="$PROJECT_DIR$/protected/views/appCategories/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/appCategories/update.php" afterPath="$PROJECT_DIR$/protected/views/appCategories/update.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/apps/_vertical_app_item.php" afterPath="$PROJECT_DIR$/protected/views/apps/_vertical_app_item.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/apps/apps_list.php" afterPath="$PROJECT_DIR$/protected/views/apps/apps_list.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/apps/buy.php" afterPath="$PROJECT_DIR$/protected/views/apps/buy.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/apps/download.php" afterPath="$PROJECT_DIR$/protected/views/apps/download.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/apps/view.php" afterPath="$PROJECT_DIR$/protected/views/apps/view.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/site/_app_item.php" afterPath="$PROJECT_DIR$/protected/views/site/_app_item.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/site/error.php" afterPath="$PROJECT_DIR$/protected/views/site/error.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/protected/views/site/index.php" afterPath="$PROJECT_DIR$/protected/views/site/index.php" />
     </list>
     <ignored path="market.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,19 +83,13 @@
       <file leaf-file-name="AppsController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/protected/controllers/AppsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.365385">
-              <caret line="303" column="35" selection-start-line="303" selection-start-column="23" selection-end-line="303" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="sales_report.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/views/apps/sales_report.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="4" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="4" />
-              <folding />
+            <state vertical-scroll-proportion="-3.7884614">
+              <caret line="289" column="9" selection-start-line="289" selection-start-column="9" selection-end-line="289" selection-end-column="9" />
+              <folding>
+                <marker date="1461938776000" expanded="true" signature="548:610" placeholder="..." />
+                <marker date="1461938776000" expanded="true" signature="567:610" placeholder="..." />
+                <marker date="1461938776000" expanded="true" signature="9175:9181" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,8 +97,8 @@
       <file leaf-file-name="Controller.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/protected/components/Controller.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.27908343">
-              <caret line="123" column="42" selection-start-line="123" selection-start-column="42" selection-end-line="123" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.48119858">
+              <caret line="131" column="42" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -309,14 +348,22 @@
       <option name="number" value="Default" />
       <updated>1461999021291</updated>
     </task>
+    <task id="LOCAL-00001" summary="Fix phase 1 bugs">
+      <created>1462000180623</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1462000180623</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-16" y="-16" width="3872" height="2092" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30294117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30294117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982844" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32927504" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982844" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -326,7 +373,6 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32816902" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982844" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -348,18 +394,15 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fix phase 1 bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix phase 1 bugs" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/protected/modules/developers/views/panel/manage_settlement.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/protected/modules/admins/views/dashboard/index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -674,12 +717,12 @@
         <state vertical-scroll-proportion="0.025264395">
           <caret line="103" column="64" selection-start-line="103" selection-start-column="64" selection-end-line="103" selection-end-column="64" />
           <folding>
-            <marker date="1461998613387" expanded="true" signature="2315:2364" placeholder="..." />
-            <marker date="1461998613387" expanded="true" signature="2497:2530" placeholder="..." />
-            <marker date="1461998613387" expanded="true" signature="2817:2862" placeholder="..." />
-            <marker date="1461998613387" expanded="true" signature="8729:8778" placeholder="..." />
-            <marker date="1461998613387" expanded="true" signature="8922:8955" placeholder="..." />
-            <marker date="1461998613387" expanded="true" signature="9390:9435" placeholder="..." />
+            <marker date="1461938760000" expanded="true" signature="2315:2364" placeholder="..." />
+            <marker date="1461938760000" expanded="true" signature="2497:2530" placeholder="..." />
+            <marker date="1461938760000" expanded="true" signature="2817:2862" placeholder="..." />
+            <marker date="1461938760000" expanded="true" signature="8904:8953" placeholder="..." />
+            <marker date="1461938760000" expanded="true" signature="9097:9130" placeholder="..." />
+            <marker date="1461938760000" expanded="true" signature="9565:9610" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -702,24 +745,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/controllers/AppsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.365385">
-          <caret line="303" column="35" selection-start-line="303" selection-start-column="23" selection-end-line="303" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/protected/views/apps/sales_report.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="4" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="4" />
-          <folding />
+        <state vertical-scroll-proportion="-3.7884614">
+          <caret line="289" column="9" selection-start-line="289" selection-start-column="9" selection-end-line="289" selection-end-column="9" />
+          <folding>
+            <marker date="1461938776000" expanded="true" signature="548:610" placeholder="..." />
+            <marker date="1461938776000" expanded="true" signature="567:610" placeholder="..." />
+            <marker date="1461938776000" expanded="true" signature="9175:9181" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/protected/components/Controller.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27908343">
-          <caret line="123" column="42" selection-start-line="123" selection-start-column="42" selection-end-line="123" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.48119858">
+          <caret line="131" column="42" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
           <folding />
         </state>
       </provider>

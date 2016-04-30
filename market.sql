@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-04-29 02:25:46
+Date: 2016-04-30 11:43:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -202,8 +202,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '68');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457508');
+INSERT INTO `ym_counter_save` VALUES ('counter', '69');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457509');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '5');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1457598600');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -221,7 +221,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1461880358');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1462000108');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -235,7 +235,7 @@ CREATE TABLE `ym_pages` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `ym_pages_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `ym_page_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_pages
@@ -246,6 +246,7 @@ INSERT INTO `ym_pages` VALUES ('3', 'راهنما', 'متن صفحه راهنم�
 INSERT INTO `ym_pages` VALUES ('4', 'شرایط استفاده از خدمات', 'متن صفحه شرایط استفاده از خدمات', '1');
 INSERT INTO `ym_pages` VALUES ('5', 'حریم شخصی', 'متن صفحه حریم شخصی', '1');
 INSERT INTO `ym_pages` VALUES ('6', 'متن راهنمای تسویه حساب', 'متن راهنما', '1');
+INSERT INTO `ym_pages` VALUES ('7', 'قرارداد توسعه دهندگان', 'متن قرارداد', '1');
 
 -- ----------------------------
 -- Table structure for ym_page_categories
@@ -308,7 +309,7 @@ CREATE TABLE `ym_users` (
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
-INSERT INTO `ym_users` VALUES ('39', '', '$2a$12$b.1R4HTOHrMZCQgcxlhhZu5zPaXPw.Nc26DgAhEjxytpiviSjPG.6', 'm@gmail.com', '1', '1460625263', 'pending', '23aa8793179b679912142a701e3a9632', '0');
+INSERT INTO `ym_users` VALUES ('39', '', '$2a$12$aZ3RdEA7oLAVEcYrs.TT/uO6yC6lUADCi8AoOntHdvdui9WwR6nJ2', 'm@gmail.com', '1', '1460625263', 'pending', '23aa8793179b679912142a701e3a9632', '0');
 INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'ec0bfa4e54eed8afb0d7fb0305d52759', '1');
 
 -- ----------------------------

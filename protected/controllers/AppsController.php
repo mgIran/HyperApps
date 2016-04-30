@@ -24,10 +24,6 @@ class AppsController extends Controller
     {
         return array(
             array('allow',
-                'actions'=>array('salesReport'),
-                'roles'=>array('admin'),
-            ),
-            array('allow',
                 'actions'=>array('view','download','programs','games','educations'),
                 'users'=>array('*'),
             ),
@@ -292,16 +288,6 @@ class AppsController extends Controller
                     'status' => false
                 ));
         }
-    }
-
-    /**
-     * Sales Report
-     */
-    public function actionSalesReport()
-    {
-        Yii::app()->theme='abound';
-        $this->layout='//layouts/column2';
-        $this->render('sales_report');
     }
 
     /**
