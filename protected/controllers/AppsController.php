@@ -24,6 +24,10 @@ class AppsController extends Controller
     {
         return array(
             array('allow',
+                'actions'=>array('reportSales'),
+                'roles'=>array('admin'),
+            ),
+            array('allow',
                 'actions'=>array('view','download','programs','games','educations'),
                 'users'=>array('*'),
             ),
@@ -288,6 +292,62 @@ class AppsController extends Controller
                     'status' => false
                 ));
         }
+    }
+
+    /**
+     * Report sales
+     */
+    public function actionReportSales()
+    {
+        Yii::app()->theme='abound';
+        $this->layout='//layouts/column2';
+
+        $labels = $values = array();
+        if(isset($_POST['show-chart'])) {
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('date > :from_date');
+            $criteria->addCondition('date < :to_date');
+            $criteria->addCondition('app_id=:app_id');
+            $criteria->params = array(
+                ':from_date' => $_POST['from_date_altField'],
+                ':to_date' => $_POST['to_date_altField'],
+                ':app_id' => $_POST['app_id'],
+            );
+            $report = AppBuys::model()->findAll($criteria);
+            if ($_POST['to_date_altField'] - $_POST['from_date_altField'] < (60 * 60 * 24 * 30)) {
+                // show daily report
+                $datesDiff = $_POST['to_date_altField'] - $_POST['from_date_altField'];
+                $daysCount = ($datesDiff / (60 * 60 * 24));
+                for ($i = 0; $i < $daysCount; $i++) {
+                    $labels[] = JalaliDate::date('d F Y', $_POST['from_date_altField'] + (60 * 60 * (24 * $i)));
+                    $count = 0;
+                    foreach ($report as $model) {
+                        if ($model->date >= $_POST['from_date_altField'] + (60 * 60 * (24 * $i)) and $model->date < $_POST['from_date_altField'] + (60 * 60 * (24 * ($i + 1))))
+                            $count++;
+                    }
+                    $values[] = $count;
+                }
+            }
+            else {
+                // show monthly report
+                $datesDiff = $_POST['to_date_altField'] - $_POST['from_date_altField'];
+                $monthCount = ceil($datesDiff / (60 * 60 * 24 * 30));
+                for ($i = 0; $i < $monthCount; $i++) {
+                    $labels[] = JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * $i))).' الی '.JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * ($i+1))));
+                    $count = 0;
+                    foreach ($report as $model) {
+                        if ($model->date >= $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * $i)) and $model->date < $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * ($i + 1))))
+                            $count++;
+                    }
+                    $values[] = $count;
+                }
+            }
+        }
+
+        $this->render('report_sales', array(
+            'labels'=>$labels,
+            'values'=>$values,
+        ));
     }
 
     /**

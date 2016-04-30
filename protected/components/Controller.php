@@ -117,20 +117,12 @@ class Controller extends CController
                     'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
                     'items' => array(
                         array('label' => 'تسویه حساب','url' => Yii::app()->createUrl('/developers/panel/manageSettlement')) ,
-                        array('label' => 'افزودن' ,'url' => Yii::app()->createUrl('/appCategories/create/')) ,
+                        array('label' => 'گزارش فروش' ,'url' => Yii::app()->createUrl('/apps/reportSales')) ,
                     )
                 ) ,
                 array(
-                    'label' => 'صفحات متنی<span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
-                    'items' => array(
-                        array('label' => 'صفحات اصلی سایت' ,'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=base')) ,
-                        array('label' => 'قوانین' ,'url' => Yii::app()->createUrl('/pages/manage/update/5?slug=rules')) ,
-                        /*array('label' => 'صفحات راهنما' ,'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=guide')) ,
-                        array('label' => 'صفحات آزاد' ,'url' => Yii::app()->createUrl('/pages/manage/admin/')) ,*/
-                    )
+                    'label' => 'صفحات متنی' ,
+                    'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=base'),
                 ) ,
                 array(
                     'label' => 'مدیران <span class="caret"></span>' ,

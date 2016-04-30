@@ -331,11 +331,25 @@ class PanelController extends Controller
                 // show daily report
                 $datesDiff = $_POST['to_date_altField'] - $_POST['from_date_altField'];
                 $daysCount = ($datesDiff / (60 * 60 * 24));
-                for ($i = 1; $i < $daysCount; $i++) {
+                for ($i = 0; $i < $daysCount; $i++) {
                     $labels[] = JalaliDate::date('d F Y', $_POST['from_date_altField'] + (60 * 60 * (24 * $i)));
                     $count = 0;
                     foreach ($report as $model) {
                         if ($model->date >= $_POST['from_date_altField'] + (60 * 60 * (24 * $i)) and $model->date < $_POST['from_date_altField'] + (60 * 60 * (24 * ($i + 1))))
+                            $count++;
+                    }
+                    $values[] = $count;
+                }
+            }
+            else {
+                // show monthly report
+                $datesDiff = $_POST['to_date_altField'] - $_POST['from_date_altField'];
+                $monthCount = ceil($datesDiff / (60 * 60 * 24 * 30));
+                for ($i = 0; $i < $monthCount; $i++) {
+                    $labels[] = JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * $i))) . ' الی ' . JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * ($i + 1))));
+                    $count = 0;
+                    foreach ($report as $model) {
+                        if ($model->date >= $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * $i)) and $model->date < $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * ($i + 1))))
                             $count++;
                     }
                     $values[] = $count;
