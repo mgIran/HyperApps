@@ -303,7 +303,72 @@ class AppsController extends Controller
         $this->layout='//layouts/column2';
 
         $labels = $values = array();
-        if(isset($_POST['show-chart'])) {
+        $showChart=false;
+        $activeTab='monthly';
+        if(isset($_POST['show-chart-monthly'])) {
+            $activeTab = 'monthly';
+            $startDate = JalaliDate::toGregorian(JalaliDate::date('Y', $_POST['month_altField'], false), JalaliDate::date('m', $_POST['month_altField'], false), 1);
+            $startTime = strtotime($startDate[0] . '/' . $startDate[1] . '/' . $startDate[2]);
+            $endTime = '';
+            if (JalaliDate::date('m', $_POST['month_altField'], false) <= 6)
+                $endTime = $startTime + (60 * 60 * 24 * 31);
+            else
+                $endTime = $startTime + (60 * 60 * 24 * 30);
+            $showChart = true;
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('date >= :start_date');
+            $criteria->addCondition('date <= :end_date');
+            $criteria->params = array(
+                ':start_date' => $startTime,
+                ':end_date' => $endTime,
+            );
+            $report = AppBuys::model()->findAll($criteria);
+            // show daily report
+            $daysCount = (JalaliDate::date('m', $_POST['month_altField'], false) <= 6) ? 31 : 30;
+            for ($i = 0; $i < $daysCount; $i++) {
+                $labels[] = JalaliDate::date('d F Y', $startTime + (60 * 60 * (24 * $i)));
+                $count = 0;
+                foreach ($report as $model) {
+                    if ($model->date >= $startTime + (60 * 60 * (24 * $i)) and $model->date < $startTime + (60 * 60 * (24 * ($i + 1))))
+                        $count++;
+                }
+                $values[] = $count;
+            }
+        }
+        elseif(isset($_POST['show-chart-yearly'])) {
+            $activeTab = 'yearly';
+            $startDate = JalaliDate::toGregorian(JalaliDate::date('Y', $_POST['year_altField'], false), 1, 1);
+            $startTime = strtotime($startDate[0] . '/' . $startDate[1] . '/' . $startDate[2]);
+            $endTime = $startTime + (60 * 60 * 24 * 365);
+            $showChart = true;
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('date >= :start_date');
+            $criteria->addCondition('date <= :end_date');
+            $criteria->params = array(
+                ':start_date' => $startTime,
+                ':end_date' => $endTime,
+            );
+            $report = AppBuys::model()->findAll($criteria);
+            // show monthly report
+            $tempDate=$startTime;
+            for ($i = 0; $i < 12; $i++) {
+                if ($i < 6)
+                    $monthDaysCount = 31;
+                else
+                    $monthDaysCount = 30;
+                $labels[] = JalaliDate::date('F', $tempDate);
+                $tempDate = $tempDate + (60 * 60 * 24 * ($monthDaysCount));
+                $count = 0;
+                foreach ($report as $model) {
+                    if ($model->date >= $startTime + (60 * 60 * 24 * ($monthDaysCount * $i)) and $model->date < $startTime + (60 * 60 * 24 * ($monthDaysCount * ($i + 1))))
+                        $count++;
+                }
+                $values[] = $count;
+            }
+        }
+        elseif(isset($_POST['show-chart-by-program'])) {
+            $activeTab='by-program';
+            $showChart=true;
             $criteria = new CDbCriteria();
             $criteria->addCondition('date > :from_date');
             $criteria->addCondition('date < :to_date');
@@ -343,10 +408,51 @@ class AppsController extends Controller
                 }
             }
         }
+        elseif(isset($_POST['show-chart-by-developer'])) {
+            $activeTab='by-developer';
+            $showChart=true;
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('date > :from_date');
+            $criteria->addCondition('date < :to_date');
+            $criteria->addInCondition('app_id',CHtml::listData(Apps::model()->findAllByAttributes(array('developer_id'=>$_POST['developer'])), 'id', 'id'));
+            $criteria->params[':from_date'] = $_POST['from_date_developer_altField'];
+            $criteria->params[':to_date'] = $_POST['to_date_developer_altField'];
+            $report = AppBuys::model()->findAll($criteria);
+            if ($_POST['to_date_developer_altField'] - $_POST['from_date_developer_altField'] < (60 * 60 * 24 * 30)) {
+                // show daily report
+                $datesDiff = $_POST['to_date_developer_altField'] - $_POST['from_date_developer_altField'];
+                $daysCount = ($datesDiff / (60 * 60 * 24));
+                for ($i = 0; $i < $daysCount; $i++) {
+                    $labels[] = JalaliDate::date('d F Y', $_POST['from_date_developer_altField'] + (60 * 60 * (24 * $i)));
+                    $count = 0;
+                    foreach ($report as $model) {
+                        if ($model->date >= $_POST['from_date_developer_altField'] + (60 * 60 * (24 * $i)) and $model->date < $_POST['from_date_developer_altField'] + (60 * 60 * (24 * ($i + 1))))
+                            $count++;
+                    }
+                    $values[] = $count;
+                }
+            }
+            else {
+                // show monthly report
+                $datesDiff = $_POST['to_date_developer_altField'] - $_POST['from_date_developer_altField'];
+                $monthCount = ceil($datesDiff / (60 * 60 * 24 * 30));
+                for ($i = 0; $i < $monthCount; $i++) {
+                    $labels[] = JalaliDate::date('d F', $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * $i))).' الی '.JalaliDate::date('d F', $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * ($i+1))));
+                    $count = 0;
+                    foreach ($report as $model) {
+                        if ($model->date >= $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * $i)) and $model->date < $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * ($i + 1))))
+                            $count++;
+                    }
+                    $values[] = $count;
+                }
+            }
+        }
 
         $this->render('report_sales', array(
             'labels'=>$labels,
             'values'=>$values,
+            'showChart'=>$showChart,
+            'activeTab'=>$activeTab,
         ));
     }
 

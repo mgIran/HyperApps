@@ -197,4 +197,15 @@ class Users extends CActiveRecord
         }
         return true;
     }
+
+    public function getDeveloers()
+    {
+        $criteria=new CDbCriteria;
+
+        $criteria->addCondition('role_id=2');
+        $criteria->with='userDetails';
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
 }

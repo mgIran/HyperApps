@@ -2,6 +2,8 @@
 /* @var $this AppsController */
 /* @var $labels array */
 /* @var $values array */
+/* @var $showChart boolean */
+/* @var $activeTab string */
 
 Yii::app()->clientScript->registerCss('appsStyle','
 .report-sale .app-item:nth-child(n+3){
@@ -34,58 +36,29 @@ Yii::app()->clientScript->registerCss('appsStyle','
 
 <h1>گزارش فروش</h1>
 
-<div class="report-sale">
-<?php echo CHtml::beginForm();?>
-    <h4>برنامه مورد نظر را انتخاب کنید:</h4>
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <?php $this->widget('zii.widgets.CListView', array(
-                'dataProvider'=>Apps::model()->search(),
-                'itemView'=>'_report_sale_app_list',
-                'template'=>'{items}'
-            ));?>
-        </div>
+<ul class="nav nav-tabs">
+    <li <?php if($activeTab=='monthly'):?>class="active"<?php endif;?>><a data-toggle="tab" href="#monthly">ماهیانه</a></li>
+    <li <?php if($activeTab=='yearly'):?>class="active"<?php endif;?>><a data-toggle="tab" href="#yearly">سالیانه</a></li>
+    <li <?php if($activeTab=='by-program'):?>class="active"<?php endif;?>><a data-toggle="tab" href="#by-program">بر اساس برنامه</a></li>
+    <li <?php if($activeTab=='by-developer'):?>class="active"<?php endif;?>><a data-toggle="tab" href="#by-developer">بر اساس توسعه دهنده</a></li>
+</ul>
+
+<div class="tab-content report-sale">
+    <div id="monthly" class="tab-pane<?php if($activeTab=='monthly'):?> fade in active<?php endif;?>">
+        <?php $this->renderPartial('_report_monthly', array('labels'=>$labels,'values'=>$values)); ?>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <?php echo CHtml::label('از تاریخ', 'from_date');?>
-        </div>
-        <div class="col-md-4">
-            <?php echo CHtml::label('تا تاریخ', 'to_date');?>
-        </div>
+    <div id="yearly" class="tab-pane<?php if($activeTab=='yearly'):?> fade in active<?php endif;?>">
+        <?php $this->renderPartial('_report_yearly', array('labels'=>$labels,'values'=>$values)); ?>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <?php $this->widget('application.extensions.PDatePicker.PDatePicker', array(
-                'id'=>'from_date',
-                'options'=>array(
-                    'format'=>'DD MMMM YYYY'
-                ),
-                'htmlOptions'=>array(
-                    'class'=>'form-control'
-                ),
-            ));?>
-        </div>
-        <div class="col-md-4">
-            <?php $this->widget('application.extensions.PDatePicker.PDatePicker', array(
-                'id'=>'to_date',
-                'options'=>array(
-                    'format'=>'DD MMMM YYYY'
-                ),
-                'htmlOptions'=>array(
-                    'class'=>'form-control'
-                ),
-            ));?>
-        </div>
-        <div class="col-md-4">
-            <?php echo CHtml::submitButton('جستجو', array(
-                'class'=>'btn btn-info',
-                'name'=>'show-chart',
-                'id'=>'show-chart',
-            ));?>
-        </div>
+    <div id="by-program" class="tab-pane<?php if($activeTab=='by-program'):?> fade in active<?php endif;?>">
+        <?php $this->renderPartial('_report_by_program', array('labels'=>$labels,'values'=>$values)); ?>
     </div>
-<?php if(isset($_POST['from_date_altField'])):?>
+    <div id="by-developer" class="tab-pane<?php if($activeTab=='by-developer'):?> fade in active<?php endif;?>">
+        <?php $this->renderPartial('_report_by_developer', array('labels'=>$labels,'values'=>$values)); ?>
+    </div>
+</div>
+
+<?php if($showChart):?>
     <div class="panel panel-default chart-container">
         <div class="panel-body">
             <h4>نمودار گزارش</h4>
@@ -111,13 +84,3 @@ Yii::app()->clientScript->registerCss('appsStyle','
         </div>
     </div>
 <?php endif;?>
-<?php echo CHtml::endForm();?>
-</div>
-<?php Yii::app()->clientScript->registerScript('submitReport', "
-    $('#show-chart').click(function(){
-        if($('input[name=\"app_id\"]:checked').length==0){
-            alert('لطفا برنامه مورد نظر خود را انتخاب کنید.');
-            return false;
-        }
-    });
-");?>
