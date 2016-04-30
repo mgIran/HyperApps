@@ -58,3 +58,9 @@
         </div>
     <?php endif;?>
 </div>
+
+<div class="partners-logo hidden-xs hidden-sm">
+    <div class="item">
+        <script type="text/javascript" src="https://www.zarinpal.com/webservice/TrustCode"></script>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 /* @var $this DashboardController*/
 /* @var $devIDRequests CActiveDataProvider*/
 /* @var $newestPrograms CActiveDataProvider*/
+/* @var $newestDevelopers CActiveDataProvider*/
 ?>
 <?php if(Yii::app()->user->hasFlash('success')):?>
     <div class="alert alert-success fade in">
@@ -15,14 +16,13 @@
     </div>
 <?php endif;?>
 
-<div class="panel <?= $newestPrograms->totalItemCount>0?'panel-warning':'panel-default'; ?> col-lg-6 col-md-6 col-sm-12 col-xs-12">
+<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="panel-heading">
         جدیدترین نرم افزار ها
     </div>
     <div class="panel-body">
         <?php $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'newest-apps-grid',
-            'template' => '{items}',
             'dataProvider'=>$newestPrograms,
             'columns'=>array(
                 'title',
@@ -55,7 +55,6 @@
         ));?>
     </div>
 </div>
-
 <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="panel-heading">
         درخواست های تغییر شناسه توسعه دهنده
@@ -63,12 +62,11 @@
     <div class="panel-body">
         <?php $this->widget('zii.widgets.grid.CGridView', array(
             'id'=>'dev-id-requests-grid',
-            'template' => '{items}',
             'dataProvider'=>$devIDRequests,
             'columns'=>array(
                 'user_id'=>array(
                     'name'=>'user_id',
-                    'value'=>'CHtml::link($data->user->userDetails->fa_name, Yii::app()->createUrl("/users/manage/views/".$data->user->id))',
+                    'value'=>'CHtml::link($data->user->userDetails->fa_name, Yii::app()->createUrl("/users/".$data->user->id))',
                     'type'=>'raw'
                 ),
                 'requested_id',
@@ -83,6 +81,41 @@
                         ),
                         'delete'=>array(
                             'url'=>'CHtml::normalizeUrl(array(\'/users/usersManage/deleteDevID\', \'id\'=>$data->user_id))'
+                        ),
+                    ),
+                ),
+            ),
+        ));?>
+    </div>
+</div>
+<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="panel-heading">
+        توسعه دهندگان جدید<small>(تایید نشده)</small>
+    </div>
+    <div class="panel-body">
+        <?php $this->widget('zii.widgets.grid.CGridView', array(
+            'id'=>'newest-developers-grid',
+            'dataProvider'=>$newestDevelopers,
+            'columns'=>array(
+                'email'=>array(
+                    'name'=>'email',
+                    'value'=>'CHtml::link($data->user->email, Yii::app()->createUrl("/users/".$data->user_id))',
+                    'type'=>'raw'
+                ),
+                'fa_name',
+                array(
+                    'class'=>'CButtonColumn',
+                    'template' => '{confirm}{refused}',
+                    'buttons'=>array(
+                        'confirm'=>array(
+                            'label'=>'تایید کردن',
+                            'url'=>"CHtml::normalizeUrl(array('/users/usersManage/confirmDeveloper', 'id'=>\$data->user_id))",
+                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
+                        ),
+                        'refused'=>array(
+                            'label'=>'رد کردن',
+                            'url'=>'CHtml::normalizeUrl(array(\'/users/usersManage/refuseDeveloper\', \'id\'=>$data->user_id))',
+                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/refused.png',
                         ),
                     ),
                 ),

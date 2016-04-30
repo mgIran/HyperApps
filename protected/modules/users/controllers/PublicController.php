@@ -101,10 +101,7 @@ class PublicController extends Controller
             $model->attributes = $_POST[ 'UserLoginForm' ];
             // validate user input and redirect to the previous page if valid
             if ( $model->validate() && $model->login())
-                if(Yii::app()->user->returnUrl != Yii::app()->request->baseUrl.'/')
-                    $this->redirect(Yii::app()->user->returnUrl);
-                else
-                    $this->redirect($this->createUrl('/dashboard'));
+                $this->redirect($this->createAbsoluteUrl('//'));
         }
         // display the login form
         $this->render( 'login', array( 'model' => $model ) );
