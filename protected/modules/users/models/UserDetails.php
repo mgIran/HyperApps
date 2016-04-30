@@ -37,6 +37,13 @@ class UserDetails extends CActiveRecord
 		'user' => 'کاربر',
 		'developer' => 'توسعه دهنده'
 	);
+
+	public $detailsStatusLabels=array(
+		'pending'=>'در انتظار تایید',
+		'accepted'=>'تایید شده',
+		'refused'=>'رد شده',
+	);
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */

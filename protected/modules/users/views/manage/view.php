@@ -29,16 +29,20 @@ $this->widget('zii.widgets.CDetailView', array(
 			'value'=>$model->userDetails->en_name,
 		),
 		array(
-			'name'=>'نام کاربری',
+			'name'=>'شناسه توسعه دهنده',
 			'value'=>$model->userDetails->developer_id,
 		),
 		array(
 			'name'=>'اعتبار',
-			'value'=>$model->userDetails->credit.'تومان',
+			'value'=>number_format($model->userDetails->credit,0).'تومان',
 		),
 		array(
-			'name'=>'آدرس وبسایت',
+			'name'=>'آدرس وبسایت فارسی',
 			'value'=>$model->userDetails->fa_web_url,
+		),
+		array(
+			'name'=>'آدرس وبسایت انگلیسی',
+			'value'=>$model->userDetails->en_web_url,
 		),
 		array(
 			'name'=>'شماره تماس',
@@ -59,6 +63,19 @@ $this->widget('zii.widgets.CDetailView', array(
 		array(
 			'name'=>'نوع کاربری',
 			'value'=>$model->role->name,
+		),
+		array(
+			'name'=>'تصویر کارت ملی',
+			'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/national_cards/".$model->userDetails->national_card_image),
+			'type'=>'raw'
+		),
+		array(
+			'name'=>'وضعیت',
+			'value'=>$model->statusLabels[$model->status],
+		),
+		array(
+			'name'=>'وضعیت اطلاعات',
+			'value'=>$model->userDetails->detailsStatusLabels[$model->userDetails->details_status],
 		),
 	),
 )); ?>
