@@ -1,35 +1,3 @@
-@media all and (max-width: 991px) {
-    header {
-        background-color: #fff;
-        -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-    }
-    .main{
-        width: 100% !important;
-    }
-    .logo-box {
-        width: 240px;
-    }
-
-    .content{
-        margin-top:80px;
-    }
-
-    .header-links{
-        width: 100%;
-        padding: 0;
-        height: 10vh;
-        display: table-row;
-        max-height: 130px;
-    }
-    .header-links a{
-        float: none;
-        display: table-cell;
-        width: 1%;
-        vertical-align: middle;
-        text-align: center;
-        font-size: 1.4em;
-    }
-}
 @media all and (max-width: 850px) {
     .sidebar ul.sidebar-dropdown > li{
         padding-right: 15px;
@@ -41,12 +9,31 @@
         right: 10px;
     }
 }
-@media all and (max-width: 767px) {
-    h1{
-        font-size: 1.75em;
+@media all and (max-width: 991px) {
+    header {
+        background-color: #fff;
     }
-    .header-links{
-        height: 20vh;
+    .main{
+        width: 100% !important;
+    }
+    .logo-box {
+        width: 240px;
+    }
+
+    .os-menu{
+        display: block;
+    }
+    .os-menu > div {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        height: 45px;
+        line-height: 45px;
+    }
+}
+@media all and (max-width: 767px) {
+    .os-menu{
+        top: 60px;
     }
     .app-carousel .owl-item {
         text-align: center;
@@ -82,6 +69,9 @@
     .app-inner .app-body > .app-details > .detail{
         padding-left: 35px;
     }
+    .content{
+        margin-top:110px;
+    }
     .app-inner .pic{
         width: 100%;
         float: none;
@@ -96,16 +86,19 @@
     .app-inner .app-body{
         margin-top: 0;
     }
-    .content{
-        padding-top: 0;
+    .header-links{
+        width: 100%;
+        padding: 0;
+        height: 30vh;
+        display: table-row;
     }
-    .dashboard-container ul.nav.nav-tabs{
-        margin-top: 45px;
-    }
-    .developer-signup-link{
-        width: 150px;
-        left: 50%;
-        margin-left: -75px;
+    .header-links a{
+        float: none;
+        display: table-cell;
+        width: 1%;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 1.4em;
     }
 }
 @media all and (max-width: 400px) {
@@ -127,15 +120,6 @@
 
     .logo-box {
         width: 20%;
-    }
-}
-
-@media (min-width: 320px) and (max-width: 767px) {
-    .logo-box{
-        width: 170px;
-    }
-    header .mobile-nav.nav > li{
-        width: 30px !important;
     }
 }
 
