@@ -240,7 +240,7 @@ header .right-header .user-section .avatar{
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     position: absolute;
-    left: 60px;
+    left: 10px;
     top: 10px;
 }
 header .right-header .user-section .avatar .icon{
@@ -250,6 +250,7 @@ header .right-header .user-section .avatar .icon{
     top: 50%;
 }
 .mobile-navbar .navbar-header {
+    width: 100%;
     display: block;
     overflow: hidden;
     padding: 30px;
@@ -257,7 +258,7 @@ header .right-header .user-section .avatar .icon{
     border-bottom: 1px solid #ccc;
     -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
-.mobile-navbar .navbar ul.nav{
+.mobile-navbar.navbar ul.nav {
     width: 100%;
     margin: 0;
 }
@@ -266,6 +267,11 @@ header .right-header .user-section .avatar .icon{
     float: none;
     text-align: center;
     width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+.mobile-navbar .nav.navbar-nav > .panel-body{
+    padding: 0;
+    margin: 0;
 }
 .mobile-navbar .user-detail {
     display: block;
@@ -279,20 +285,20 @@ header .right-header .user-section .avatar .icon{
 }
 .mobile-navbar .user-detail > span.name {
     font-size: 1.20em;
-    line-height: 30px;font-weight: 500;
+    line-height: 30px; font-weight: 500;
 }
 .mobile-navbar .navbar-links {
     display: block;
     overflow: hidden;
     margin-top: 20px;
 }
-.mobile-navbar .navbar-links a{
+.mobile-navbar .navbar-links a {
     display: block;
     overflow: hidden;
     margin-bottom: 10px;
     width: 100% !important;
 }
-.mobile-navbar .avatar{
+.mobile-navbar .avatar {
     background-color: #d5d5d5;
     border-radius: 50%;
     box-sizing: border-box;
@@ -305,7 +311,7 @@ header .right-header .user-section .avatar .icon{
     text-align: center;
     width: 100px;
 }
-.mobile-navbar .avatar .icon{
+.mobile-navbar .avatar .icon {
     display: block;
     font-size: 2em;
     left: 50%;
@@ -327,7 +333,13 @@ header .right-header .user-section .avatar .tri-2{
     top: 100%;
     width: 0;
     z-index: 110;
-    margin-top: 5px;
+    margin-top: 15px;
+
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 header .right-header .user-section .avatar .tri-1{
     border-color: transparent transparent rgba(0, 0, 0, 0.2);
@@ -342,7 +354,12 @@ header .right-header .user-section .avatar .tri-1{
     top: 100%;
     width: 0;
     z-index: 110;
-    margin-top: 4px;
+    margin-top: 14px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 header .right-header .user-section .name{
     font-size: 14px;
@@ -386,16 +403,27 @@ header .right-header .user-section .type{
     z-index: 100;
     min-width: 350px;
     opacity: 0;
-    margin-top: 2px;
+    visibility: hidden;
+    margin-top: 12px;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-.user-section.open .tri-1,
-.user-section.open .tri-2,
+.user-section.open .tri-1{
+    margin-top: 4px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    -webkit-transition-delay: 0.3s; -moz-transition-delay: 0.3s; -ms-transition-delay: 0.3s; -o-transition-delay: 0.3s; transition-delay: 0.3s;
+}
+.user-section.open .tri-2{
+    margin-top: 5px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
 .user-section.open .user-menu{
+    margin-top: 2px;
     opacity: 1 !important;
     visibility: visible !important;
 }
@@ -1397,10 +1425,10 @@ body.windows-phone .app-inner .app-body > section .more-text{
 }
 .cat-menu-head
 {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #eee;
     display: block;
     text-align: justify;
-    padding: 8px 10px;
+    padding: 10px;
     font-size: 12px;
 }
 .cat-menu-head:hover
@@ -1419,6 +1447,7 @@ ul.cat-menu li
 }
 ul.cat-menu li a
 {
+    text-align: center;
     display: block;
     width:100%;
     height:100%;

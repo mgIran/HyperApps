@@ -59,7 +59,6 @@
     </div>
 </div>
 
-
 <!-- mobile nav bar -->
 <nav class="mobile-navbar navbar navbar-default hidden-lg hidden-md">
     <div class="navbar-header">
@@ -75,11 +74,11 @@
                 <span class="type">اعتبار : <?= Controller::parseNumbers($this->userDetails->credit) ?> تومان</span>
             </div>
             <div class="navbar-links">
-                <a class="btn btn-default" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
+                <a class="btn btn-info" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
                 <?
                 if(Yii::app()->user->roles == 'developer'):
                     ?>
-                    <a class="btn btn-default" href="<?= Yii::app()->createUrl('/developers/panel') ?>">
+                    <a class="btn btn-success" href="<?= Yii::app()->createUrl('/developers/panel') ?>">
                         پنل توسعه دهندگان
                     </a>
                     <?
@@ -90,7 +89,7 @@
             <?
         }else
         {
-        ?>
+            ?>
             <div class="header-links">
                 <a href="<?= Yii::app()->createUrl('/login') ?>">
                     ورود
@@ -99,54 +98,59 @@
                     ثبت نام
                 </a>
             </div>
-        <?
+            <?
         }
         ?>
     </div>
-        <ul class="nav navbar-nav">
-            <li>
-                <a class="navbar-brand" href="#">
-                    <span class="icon-download-alt"></span>
-                    هایپر اپس را دانلود کنید
-                </a>
-            </li>
-            <li><a href="<?= Yii::app()->user->hasState('platformName')?Yii::app()->baseUrl.'/'.Yii::app()->user->getState('platformName'):Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
-            <li><a href="#">تخفیفات</a></li>
-            <li>
-                <a href="#" class="dropdown-toggle" data-toggle="collapse" role="button" aria-expanded="false">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
-                <div class="panel panel-body collapse  cat-menu-container">
-                    <div class="col-md-4">
-                        <div class="row">
-                            <a href="<?php echo Yii::app()->createUrl('/apps/programs');?>" class="cat-menu-head">برنامه ها</a>
-                            <ul class="cat-menu">
-                                <?php foreach($this->categories['programs'] as $category):?>
-                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/programs/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
-                                <?php endforeach;?>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <a href="<?php echo Yii::app()->createUrl('/apps/games');?>" class="cat-menu-head">بازی ها</a>
-                            <ul class="cat-menu">
-                                <?php foreach($this->categories['games'] as $category):?>
-                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/games/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
-                                <?php endforeach;?>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <a href="<?php echo Yii::app()->createUrl('/apps/educations');?>" class="cat-menu-head">آموزش ها</a>
-                            <ul class="cat-menu">
-                                <?php foreach($this->categories['educations'] as $category):?>
-                                    <li><a href="<?php echo Yii::app()->createUrl('/apps/educations/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
-                                <?php endforeach;?>
-                            </ul>
-                        </div>
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="#" data-toggle="collapse" data-target="#mobile-categories">دسته ها&nbsp;&nbsp;<span class="icon-chevron-down"></span></a>
+        </li>
+        <div class="panel panel-body panel-group collapse" id="mobile-categories">
+            <div id="category-collapse-parent">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <a data-toggle="collapse" data-parent="#category-collapse-parent" data-target="#m-app-cat" href="#" class="cat-menu-head">برنامه ها</a>
+                        <ul class="cat-menu collapse" id="m-app-cat">
+                            <li><a href="<?php echo Yii::app()->createUrl('/apps/programs');?>">همه برنامه ها</a></li>
+                            <?php foreach($this->categories['programs'] as $category):?>
+                                <li><a href="<?php echo Yii::app()->createUrl('/apps/programs/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
+                            <?php endforeach;?>
+                        </ul>
                     </div>
                 </div>
-            </li>
-        </ul>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <a data-toggle="collapse" data-target="#m-games-cat" data-parent="#category-collapse-parent" href="#" class="cat-menu-head">بازی ها</a>
+                        <ul class="cat-menu collapse" id="m-games-cat">
+                            <li><a href="<?php echo Yii::app()->createUrl('/apps/games');?>">همه بازی ها</a></li>
+                            <?php foreach($this->categories['games'] as $category):?>
+                                <li><a href="<?php echo Yii::app()->createUrl('/apps/games/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
+                            <?php endforeach;?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <a data-toggle="collapse" data-target="#m-edu-cat" data-parent="#category-collapse-parent" href="#" class="cat-menu-head">آموزش ها</a>
+                        <ul class="cat-menu collapse" id="m-edu-cat">
+                            <li><a href="<?php echo Yii::app()->createUrl('/apps/educations');?>">همه آموزش ها</a></li>
+                            <?php foreach($this->categories['educations'] as $category):?>
+                                <li><a href="<?php echo Yii::app()->createUrl('/apps/educations/'.$category->id.'/'.urlencode($category->title));?>"><?php echo $category->title;?></a></li>
+                            <?php endforeach;?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <li><a href="<?= Yii::app()->user->hasState('platformName')?Yii::app()->baseUrl.'/'.Yii::app()->user->getState('platformName'):Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
+        <li><a href="#">تخفیفات</a></li>
+        <li>
+            <a href="#">
+                <span class="icon-download-alt"></span>
+                هایپر اپس را دانلود کنید
+            </a>
+        </li>
+    </ul>
 </nav>
 <div class="overlay fade"></div>
