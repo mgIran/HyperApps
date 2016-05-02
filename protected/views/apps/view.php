@@ -41,7 +41,12 @@ if($model->platform)
             </div>
             <div class="row-fluid">
                 <span class="pull-left">
-                    <button class="btn btn-success btn-install" type="button" data-toggle="modal" data-target="#install-modal">نصب</button>
+                    <button class="btn btn-success btn-install hidden-sm hidden-xs" type="button" data-toggle="modal" data-target="#install-modal">نصب</button>
+                    <?php if($model->price>0):?>
+                        <a class="btn btn-success btn-install hidden-md hidden-lg" href="<?php echo Yii::app()->createAbsoluteUrl('/apps/buy/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title));?>">نصب</a>
+                    <?php else:?>
+                        <a class="btn btn-success btn-install hidden-md hidden-lg" href="<?php echo Yii::app()->createAbsoluteUrl('/apps/download/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title));?>">نصب</a>
+                    <?php endif;?>
                 </span>
                 <?php if(!Yii::app()->user->isGuest):?>
                     <span class="pull-left relative bookmark<?php echo ($bookmarked)?' bookmarked':'';?>">

@@ -32,7 +32,7 @@
                 ),
                 array(
                     'class'=>'CButtonColumn',
-                    'template' => '{view}{confirm}{delete}',
+                    'template' => '{view}{confirm}{delete}{download}',
                     'buttons'=>array(
                         'view'=>array(
                             'label'=>'مشاهده برنامه',
@@ -48,6 +48,11 @@
                         ),
                         'delete'=>array(
                             'url'=>'CHtml::normalizeUrl(array(\'/users/\'.$data->platformsID[$data->platform_id].\'/delete/\'.$data->id))'
+                        ),
+                        'download'=>array(
+                            'label'=>'دانلود',
+                            'url'=>'Yii::app()->createUrl("/uploads/apps/files/".$data->platformsID[$data->platform_id]."/".$data->file_name)',
+                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/download.png',
                         ),
                     ),
                 ),

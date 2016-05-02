@@ -373,27 +373,39 @@ class PanelController extends Controller
         $this->layout='//layouts/column2';
         $criteria=new CDbCriteria();
         $criteria->select='SUM(amount) AS amount, date';
-        $criteria->group='date';
+        $criteria->group='EXTRACT(DAY FROM FROM_UNIXTIME(date, "%Y %D %M %h:%i:%s %x"))';
         $settlementHistory=new CActiveDataProvider('UserSettlement', array(
             'criteria'=>$criteria,
         ));
+        Yii::app()->getModule('setting');
+        $setting=SiteSetting::model()->find('name=:name', array(':name'=>'min_credit'));
         $criteria=new CDbCriteria();
         $criteria->addCondition('monthly_settlement=1');
+        $criteria->addCondition('credit>:credit');
+        $criteria->params=array(':credit'=>$setting->value);
         $settlementRequiredUsers=new CActiveDataProvider('UserDetails', array(
             'criteria'=>$criteria,
         ));
 
-        if(isset($_POST['submit'])) {
-            foreach($settlementRequiredUsers->getData() as $userDetails)
-            {
-                $model=new UserSettlement();
-                $model->user_id=$userDetails->user_id;
-                $model->amount=$userDetails->getSettlementAmount();
-                $model->date=time();
-                $model->iban=$userDetails->iban;
-                $model->save();
+        if(isset($_POST['ajax']) and isset($_POST['uid'])) {
+            $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>$_POST['uid']));
+            $model=new UserSettlement();
+            $model->user_id=$userDetails->user_id;
+            $model->amount=$userDetails->getSettlementAmount();
+            $model->date=time();
+            $model->iban=$userDetails->iban;
+            if($model->save()) {
+                $userDetails->credit=$userDetails->credit-$userDetails->getSettlementAmount();
+                $userDetails->save();
+                echo CJSON::encode(array(
+                    'status' => true
+                ));
             }
-            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+            else
+                echo CJSON::encode(array(
+                    'status'=>false
+                ));
+            Yii::app()->end();
         }
 
         $this->render('manage_settlement', array(

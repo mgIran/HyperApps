@@ -9,12 +9,6 @@
         <?php echo Yii::app()->user->getFlash('success');?>
     </div>
 <?php endif;?>
-<?php echo CHtml::beginForm();?>
-    <?php echo CHtml::submitButton('امور مالی این ماه تسویه شد', array(
-        'class'=>'btn btn-success',
-        'name'=>'submit'
-    ));?>
-<?php echo CHtml::endForm();?>
 <h3>تاریخچه تسویه حساب ها</h3>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'settlements-grid',
@@ -32,7 +26,7 @@
 ));?>
 <h3>کاربرانی که درخواست تسویه حساب دارند</h3>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-    'id'=>'requeired-settlements-grid',
+    'id'=>'required-settlements-grid',
     'dataProvider'=>$settlementRequiredUsers,
     'columns'=>array(
         'fa_name'=>array(
@@ -40,6 +34,32 @@
             'value'=>'CHtml::link($data->user->userDetails->fa_name, Yii::app()->createUrl("/users/manage/views/".$data->user->id))',
             'type'=>'raw'
         ),
-        'iban',
+        'iban'=>array(
+            'name'=>'iban',
+            'value'=>'"IR".$data->iban'
+        ),
+        'amount'=>array(
+            'header'=>'مبلغ قابل تسویه',
+            'value'=>'number_format($data->getSettlementAmount(), 0)." تومان"'
+        ),
+        'settled'=>array(
+            'value'=>'CHtml::ajaxButton("تسویه شد", Yii::app()->createUrl("/developers/panel/manageSettlement"), array(
+                "type"=>"POST",
+                "dataType"=>"JSON",
+                "data"=>"js:{uid:".$data->user_id.", ajax:\"submit-settlement\"}",
+                "success"=>"function(data){
+                    if(data.status) {
+                        $.fn.yiiGridView.update(\'required-settlements-grid\');
+                        $.fn.yiiGridView.update(\'settlements-grid\');
+                    }
+                    else
+                        alert(\"در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.\");
+                }"
+            ), array(
+                "class"=>"btn btn-success",
+                "id"=>"btn-settled-".$data->user_id
+            ))',
+            'type'=>'raw'
+        ),
     ),
 ));?>
