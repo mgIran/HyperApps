@@ -114,6 +114,9 @@ class AppsController extends Controller
             {
                 $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
                 $userDetails->credit=$userDetails->credit-$model->price;
+                if($model->developer)
+                    $model->developer->userDetails->credit=$model->developer->userDetails->credit+$model->getDeveloperPortion();
+                $model->developer->userDetails->save();
                 if($userDetails->save())
                     $this->redirect(array('/apps/download/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));
             }
