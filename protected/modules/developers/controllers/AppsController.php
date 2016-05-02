@@ -32,7 +32,7 @@ class AppsController extends Controller
 		return array(
 				array(
 						'allow', // allow authenticated user to perform 'create' and 'update' actions
-						'actions' => array('create', 'update', 'delete', 'uploadImage', 'deleteImage', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile'),
+						'actions' => array('create', 'update', 'delete', 'uploadImage', 'deleteImage', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'images'),
 						'roles' => array('developer'),
 				),
 				array(
@@ -55,7 +55,7 @@ class AppsController extends Controller
 				mkdir($tmpDIR);
 			$tmpUrl = Yii::app()->createAbsoluteUrl('/uploads/temp/');
 
-            $appIconsDIR = Yii::getPathOfAlias("webroot").'/uploads/apps/icons/';
+			$appIconsDIR = Yii::getPathOfAlias("webroot").'/uploads/apps/icons/';
 
 			Yii::app()->theme = 'market';
 			$this->layout = '//layouts/panel';
@@ -89,25 +89,25 @@ class AppsController extends Controller
 
 			// Step 2
 			if(isset($_POST['Apps'])) {
+				$step = 2;
 				$model->attributes = $_POST['Apps'];
-                if($model->platform_id)
-                {
-                    $platform = AppPlatforms::model()->findByPk($model->platform_id);
-                    $formats = explode(',', $platform->file_types);
-                    if(count($formats) > 1) {
-                        foreach($formats as $key => $format) {
-                            $format = '.'.trim($format);
-                            $formats[$key] = $format;
-                        }
-                        $this->formats = implode(',', $formats);
-                    } else
-                        $this->formats = '.'.trim($formats[0]);
+				if($model->platform_id) {
+					$platform = AppPlatforms::model()->findByPk($model->platform_id);
+					$formats = explode(',', $platform->file_types);
+					if(count($formats) > 1) {
+						foreach($formats as $key => $format) {
+							$format = '.'.trim($format);
+							$formats[$key] = $format;
+						}
+						$this->formats = implode(',', $formats);
+					} else
+						$this->formats = '.'.trim($formats[0]);
 
-                    $this->filesFolder = $platform->name;
-                    if(!is_dir(Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/"))
-                        mkdir(Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/");
-                    $appFilesDIR = Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/";
-                }
+					$this->filesFolder = $platform->name;
+					if(!is_dir(Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/"))
+						mkdir(Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/");
+					$appFilesDIR = Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/";
+				}
 				if(isset($_POST['Apps']['file_name'])) {
 					$file = $_POST['Apps']['file_name'];
 					$app = array(
@@ -142,17 +142,16 @@ class AppsController extends Controller
 					$model->permissions = null;
 				$model->developer_id = Yii::app()->user->getId();
 				if($model->save()) {
-					if ($model->file_name) {
-						rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);
+					if($model->file_name) {
+						rename($tmpDIR.$model->file_name, $appFilesDIR.$model->file_name);
 					}
-					if ($model->icon) {
+					if($model->icon) {
 						$thumbnail = new Imager();
-						$thumbnail->createThumbnail($tmpDIR . $model->icon, 150, 150, false, $appIconsDIR . $model->icon);
-						@unlink($tmpDIR . $model->icon);
+						$thumbnail->createThumbnail($tmpDIR.$model->icon, 150, 150, false, $appIconsDIR.$model->icon);
+						@unlink($tmpDIR.$model->icon);
 					}
 					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-					$this->redirect('update/' . $model->id . '/?step=2');
-					$step = 2;
+					$this->redirect('update/'.$model->id.'/?step=2');
 				} else
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
@@ -165,7 +164,7 @@ class AppsController extends Controller
 					'step' => $step
 			));
 		} else {
-			Yii::app()->user->setFlash('failed' ,'از طریق مدیریت اقدام کنید');
+			Yii::app()->user->setFlash('failed', 'از طریق مدیریت اقدام کنید');
 			$this->redirect(array('/admins/dashboard'));
 		}
 	}
@@ -250,7 +249,7 @@ class AppsController extends Controller
 				$icon = array(array('name' => $file, 'src' => $tmpUrl.'/'.$file, 'size' => filesize($tmpDIR.$file), 'serverName' => $file,));
 				$iconFlag = true;
 			}
-            $model->attributes = $_POST['Apps'];
+			$model->attributes = $_POST['Apps'];
 			if(count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
 				foreach($_POST['Apps']['permissions'] as $key => $permission) {
 					if(empty($permission))
@@ -270,13 +269,14 @@ class AppsController extends Controller
 					unlink($tmpDIR.$model->icon);
 				}
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت وایریش شد.');
-				$this->refresh();
+				$this->redirect(array('/developers/apps/update/' . $model->id. '?step=1'));
 			} else {
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
 		}
 		$this->render('update', array(
 				'model' => $model,
+				'imageModel' => new AppImages(),
 				'images' => $images,
 				'app' => $app,
 				'icon' => $icon,
@@ -435,7 +435,7 @@ class AppsController extends Controller
 	 */
 	public function actionUploadImage()
 	{
-		$uploadDir = Yii::getPathOfAlias("webroot").'/uploads/apps/images';
+		$uploadDir = Yii::getPathOfAlias("webroot").'/uploads/temp';
 		if(!is_dir($uploadDir))
 			mkdir($uploadDir);
 		if(isset($_FILES)) {
@@ -444,15 +444,9 @@ class AppsController extends Controller
 			$file['name'] = Controller::generateRandomString(5).time();
 			while(file_exists($uploadDir.DIRECTORY_SEPARATOR.$file['name'].'.'.$ext))
 				$file['name'] = Controller::generateRandomString(5).time();
-			$file['name'] .= $file['name'].'.'.$ext;
+			$file['name'] = $file['name'].'.'.$ext;
 			if(move_uploaded_file($file['tmp_name'], $uploadDir.DIRECTORY_SEPARATOR.CHtml::encode($file['name']))) {
 				$response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
-				// Save image into db
-				$model = new AppImages();
-				$data = CJSON::decode($_POST['data']);
-				$model->app_id = $data['app_id'];
-				$model->image = $file['name'];
-				$model->save();
 			} else
 				$response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
 		} else
@@ -467,21 +461,48 @@ class AppsController extends Controller
 	public function actionDeleteImage()
 	{
 		if(isset($_POST['fileName'])) {
+
 			$fileName = $_POST['fileName'];
+
 			$uploadDir = Yii::getPathOfAlias("webroot").'/uploads/apps/images/';
+			$tempDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
 
 			$model = AppImages::model()->findByAttributes(array('image' => $fileName));
-			$response = null;
-			if(!is_null($model)) {
-				if(@unlink($uploadDir.$fileName)) {
-					$response = ['state' => 'ok', 'msg' => 'حذف شد.'];
+			if($model) {
+				if(unlink($uploadDir.$model->image)) {
 					$model->delete();
+					$response = ['state' => 'ok', 'msg' => $this->implodeErrors($model)];
 				} else
 					$response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
+			} else {
+				@unlink($tempDir.$fileName);
+				$response = ['state' => 'ok', 'msg' => 'حذف شد.'];
 			}
 			echo CJSON::encode($response);
 			Yii::app()->end();
 		}
 	}
 
+	public function actionImages($id)
+	{
+		$tempDir = Yii::getPathOfAlias("webroot").'/uploads/temp/';
+		$uploadDir = Yii::getPathOfAlias("webroot").'/uploads/apps/images/';
+		if(isset($_POST['AppImages']['image'])) {
+			$flag = true;
+			foreach($_POST['AppImages']['image'] as $image) {
+				$model = new AppImages();
+				$model->app_id = (int)$id;
+				$model->image = $image;
+				rename($tempDir.$image, $uploadDir.$image);
+				if(!$model->save(false))
+					$flag = false;
+			}
+			if($flag)
+				Yii::app()->user->setFlash('images-success', 'اطلاعات با موفقیت ثبت شد.');
+			else
+				Yii::app()->user->setFlash('images-failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+		} else
+			Yii::app()->user->setFlash('images-failed', 'تصاویر برنامه را آپلود کنید.');
+		$this->redirect('update/'.$id.'/?step=2');
+	}
 }

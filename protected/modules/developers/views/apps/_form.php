@@ -21,8 +21,7 @@
     ));
     echo $form->hiddenField($model,'platform_id');
     ?>
-
-        <?php echo $form->errorSummary($model); ?>
+        <?= $this->renderPartial('//layouts/_flashMessage'); ?>
 
         <div class="form-group">
             <?php echo $form->textField($model,'title',array('placeholder'=>$model->getAttributeLabel('title').' *','maxlength'=>50,'class'=>'form-control')); ?>
