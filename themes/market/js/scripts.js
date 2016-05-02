@@ -35,27 +35,6 @@ $(function() {
     });
 
     // Responsive Scripts
-    $("body").on('click',".os-menu-trigger",function(){
-        var $this = $(this);
-        var $osMenu = $('.os-menu');
-        if($osMenu.hasClass('open'))
-        {
-            $osMenu.find('.svg-close').removeClass('bounceIn bounceOut animated').addClass('bounceOut animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                $(this).removeClass('bounceOut animated');
-            });
-            $('body,html').removeClass('overflow');
-            $osMenu.removeClass('open');
-        }
-        else
-        {
-            $('body,html').addClass('overflow');
-            $osMenu.addClass('open');
-            $osMenu.find('.svg-close').removeClass('bounceOut bounceIn animated').addClass('bounceIn animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                $(this).removeClass('bounceIn animated');
-            });
-        }
-    });
-
     $("body").on('click',".search-trigger",function(){
         var $this = $(this);
         var $searchBox = $('.mobile-search');
@@ -100,28 +79,3 @@ $(function() {
         $this.parent().toggleClass('open');
     });
 });
-
-function submitAjaxForm(form ,url ,loading ,callback) {
-    loading = typeof loading !== 'undefined' ? loading : null;
-    callback = typeof callback !== 'undefined' ? callback : null;
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: form.serialize(),
-        dataType: "json",
-        beforeSend: function () {
-            if(loading)
-                loading.show();
-        },
-        success: function (html) {
-            if(loading)
-                loading.hide();
-            if (typeof html === "object" && typeof html.state === 'undefined') {
-                $.each(html, function (key, value) {
-                    $("#" + key + "_em_").show().html(value.toString());
-                });
-            }else
-                eval(callback);
-        }
-    });
-}
