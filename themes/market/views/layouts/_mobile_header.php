@@ -48,11 +48,11 @@
                 <span class="type">اعتبار : <?= Controller::parseNumbers($this->userDetails->credit) ?> تومان</span>
             </div>
             <div class="navbar-links">
-                <a class="btn btn-info" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
+                <a class="btn btn-default" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
                 <?
                 if(Yii::app()->user->roles == 'developer'):
                     ?>
-                    <a class="btn btn-success" href="<?= Yii::app()->createUrl('/developers/panel') ?>">
+                    <a class="btn btn-default" href="<?= Yii::app()->createUrl('/developers/panel') ?>">
                         پنل توسعه دهندگان
                     </a>
                     <?

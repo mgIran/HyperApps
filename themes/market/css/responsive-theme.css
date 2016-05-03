@@ -107,6 +107,11 @@
         font-size: 1.4em;
     }
 }
+@media all and (max-width: 650px) {
+    .nav.nav-tabs{
+        margin-top: 30px;
+    }
+}
 @media all and (max-width: 400px) {
     header .mobile-nav.nav > li{
         width: 40px;

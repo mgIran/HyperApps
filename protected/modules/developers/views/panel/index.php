@@ -30,12 +30,10 @@
         </div>
         <div class="table text-center">
             <div class="thead">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5">عنوان برنامه</div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5">عنوان برنامه</div>
                 <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">وضعیت</div>
-                <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">قیمت</div>
-                <div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">فروش</div>
+                <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">قیمت</div>
                 <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">تعداد نصب شده</div>
-                <div class="col-lg-1 col-md-1 hidden-sm hidden-xs">امتیاز</div>
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-3">عملیات</div>
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">تاییدیه</div>
             </div>
