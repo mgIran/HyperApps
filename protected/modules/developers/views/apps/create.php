@@ -1,6 +1,8 @@
 <?php
 /* @var $this AppsController */
 /* @var $model Apps */
+/* @var $tax string */
+/* @var $commission string */
 ?>
 
 <div class="container">
@@ -42,7 +44,9 @@
             <?php $this->renderPartial('_form', array(
                 'model'=>$model,
                 'icon' => $icon,
-                'app' => $app
+                'app' => $app,
+                'tax'=>$tax,
+                'commission'=>$commission,
             )); ?>
         </div>
         <?

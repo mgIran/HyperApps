@@ -37,7 +37,8 @@ class DashboardController extends Controller
         Yii::app()->getModule('users');
         $criteria=new CDbCriteria();
         $criteria->addCondition('confirm=:confirm');
-        $criteria->params=array(':confirm'=>'pending');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->params=array(':confirm'=>'pending',':deleted'=>'0');
         $newestPrograms=new CActiveDataProvider('Apps', array(
             'criteria'=>$criteria,
         ));

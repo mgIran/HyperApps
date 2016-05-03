@@ -63,7 +63,7 @@ class UserDetails extends CActiveRecord
             array('developer_id', 'length', 'max'=>20, 'min'=>5),
 			array('address', 'length', 'max'=>1000),
             array('details_status', 'length', 'max'=>8),
-			array('iban', 'length', 'is'=>24, 'on'=>'update-settlement'),
+			array('iban', 'length', 'is'=>24, 'on'=>'update-settlement', 'message'=>'شماره شبا باید 24 کاراکتر باشد'),
 			array('iban', 'ibanRequiredConditional', 'on'=>'update-settlement'),
 			array('monthly_settlement', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().

@@ -155,12 +155,16 @@ class AppsController extends Controller
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
 
+			Yii::app()->getModule('setting');
+
 			$this->render('create', array(
-					'model' => $model,
-					'icon' => $icon,
-					'app' => $app,
-					'images' => array(),
-					'step' => $step
+				'model' => $model,
+				'icon' => $icon,
+				'app' => $app,
+				'images' => array(),
+				'step' => $step,
+				'tax'=>SiteSetting::model()->findByAttributes(array('name'=>'tax'))->value,
+				'commission'=>SiteSetting::model()->findByAttributes(array('name'=>'commission'))->value,
 			));
 		} else {
 			Yii::app()->user->setFlash('failed', 'از طریق مدیریت اقدام کنید');

@@ -4,6 +4,7 @@
 /* @var $userDetailsModel UserDetails */
 /* @var $helpText string */
 /* @var $settlementHistory CActiveDataProvider */
+/* @var $formDisabled boolean */
 ?>
 
 <div class="container">
@@ -63,7 +64,7 @@
                 'enableClientValidation'=>true,
                 'clientOptions' => array(
                     'validateOnSubmit' => true
-                )
+                ),
             ));?>
 
                 <div class="panel panel-default">
@@ -76,6 +77,7 @@
                         <div class="col-md-6">
                             <?php echo $form->checkBox($userDetailsModel, 'monthly_settlement', array(
                                 'onchange'=>"$('#UserDetails_iban').prop('disabled', function(i, v){return !v;});",
+                                'disabled'=>$formDisabled,
                             ));?>
                             <?php echo $form->label($userDetailsModel, 'monthly_settlement', array(
                                 'style'=>'display:inline-block',
@@ -87,12 +89,18 @@
                                 <?php echo $form->label($userDetailsModel, 'iban');?>
                                 <div class="input-group" style="direction: ltr;">
                                     <span id="basic-addon1" class="input-group-addon">IR</span>
+                                    <?php
+                                    if(!$formDisabled)
+                                        $disabled=(!is_null($userDetailsModel->iban))?false:true;
+                                    else
+                                        $disabled=true;
+                                    ?>
                                     <?php echo $form->textField($userDetailsModel, 'iban', array(
                                         'class'=>'form-control',
                                         'aria-describedby'=>'basic-addon1',
                                         'style'=>'direction: ltr;',
                                         'placeholder'=>'10002000300040005000607:مثال',
-                                        'disabled'=>(!is_null($userDetailsModel->iban))?false:true,
+                                        'disabled'=>$disabled,
                                     ));?>
                                 </div>
                                 <?php echo $form->error($userDetailsModel, 'iban');?>
@@ -102,6 +110,7 @@
                                     <?php echo CHtml::submitButton('ثبت', array(
                                         'class'=>'btn btn-success pull-left',
                                         'id'=>'settlement-button',
+                                        'disabled'=>$formDisabled,
                                     ));?>
                                 </div>
                             </div>

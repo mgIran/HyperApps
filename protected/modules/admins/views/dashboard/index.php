@@ -30,9 +30,14 @@
                     'name'=>'developer_id',
                     'value'=>'(is_null($data->developer_id) or empty($data->developer_id))?$data->developer_team:$data->developer->userDetails->developer_id'
                 ),
+                'confirm'=>array(
+                    'name'=>'confirm',
+                    'value'=>'CHtml::dropDownList("confirm", "pending", $data->confirmLabels, array("class"=>"change-confirm", "data-id"=>$data->id))',
+                    'type'=>'raw'
+                ),
                 array(
                     'class'=>'CButtonColumn',
-                    'template' => '{view}{confirm}{delete}{download}',
+                    'template' => '{view}{delete}{download}',
                     'buttons'=>array(
                         'view'=>array(
                             'label'=>'مشاهده برنامه',
@@ -41,13 +46,8 @@
                                 'target'=>'_blank'
                             ),
                         ),
-                        'confirm'=>array(
-                            'label'=>'تایید کردن',
-                            'url'=>'CHtml::normalizeUrl(array(\'/manageApps/\'.$data->platformsID[$data->platform_id].\'/confirm/\'.$data->id))',
-                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
-                        ),
                         'delete'=>array(
-                            'url'=>'CHtml::normalizeUrl(array(\'/users/\'.$data->platformsID[$data->platform_id].\'/delete/\'.$data->id))'
+                            'url'=>'CHtml::normalizeUrl(array(\'/manageApps/\'.$data->platformsID[$data->platform_id].\'/delete/\'.$data->id))'
                         ),
                         'download'=>array(
                             'label'=>'دانلود',
@@ -58,6 +58,22 @@
                 ),
             ),
         ));?>
+        <?php Yii::app()->clientScript->registerScript('changeConfirm', "
+            $('.change-confirm').on('change', function(){
+                $.ajax({
+                    url:'".$this->createUrl('/manageApps/android/changeConfirm')."',
+                    type:'POST',
+                    dataType:'JSON',
+                    data:{app_id:$(this).data('id'), value:$(this).val()},
+                    success:function(data){
+                        if(data.status)
+                            $.fn.yiiGridView.update('newest-apps-grid');
+                        else
+                            alert('در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+                    }
+                });
+            });
+        ");?>
     </div>
 </div>
 <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">

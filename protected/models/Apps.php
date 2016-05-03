@@ -49,6 +49,12 @@ class Apps extends CActiveRecord
 		'2'=>'iOS',
 		'3'=>'windowsPhone',
 	);
+	public $confirmLabels=array(
+		'pending'=>'در حال بررسی',
+		'refused'=>'رد شده',
+		'accepted'=>'تایید شده',
+		'change_required'=>'نیاز به تغییر',
+	);
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -69,7 +75,6 @@ class Apps extends CActiveRecord
 			array('status', 'length', 'max'=>7),
 			array('file_name', 'length', 'max'=>100),
 			array('version', 'length', 'max'=>20),
-			array('confirm', 'length', 'max'=>8),
 			array('download, install', 'length', 'max'=>12),
 			array('price, size', 'numerical'),
 			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
