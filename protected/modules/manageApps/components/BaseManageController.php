@@ -55,7 +55,7 @@ class BaseManageController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'confirm'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm'),
                 'roles' => array('admin'),
             ),
             array('deny',  // deny all users
@@ -258,17 +258,8 @@ class BaseManageController extends Controller
     public function actionDelete($id)
     {
         $model = $this->loadModel($id);
-        if ($model) {
-            if (file_exists(Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$this->filesFolder}/" . $model->file_name))
-                unlink(Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$this->filesFolder}" . $model->file_name);
-            if (file_exists(Yii::getPathOfAlias("webroot") . '/uploads/apps/icons/' . $model->icon))
-                unlink(Yii::getPathOfAlias("webroot") . '/uploads/apps/icons/' . $model->icon);
-            if ($model->images)
-                foreach ($model->images as $image)
-                    if (file_exists(Yii::getPathOfAlias("webroot") . '/uploads/apps/images/' . $image->$image))
-                        unlink(Yii::getPathOfAlias("webroot") . '/uploads/apps/images/' . $image->$image);
-            $model->delete();
-        }
+        $model->deleted=1;
+        $model->save();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
@@ -428,14 +419,17 @@ class BaseManageController extends Controller
         }
     }
 
-    public function actionConfirm($id)
+    public function actionChangeConfirm()
     {
-        $model=$this->loadModel($id);
-        $model->confirm='accepted';
+        $model=$this->loadModel($_POST['app_id']);
+        $model->confirm=$_POST['value'];
         if($model->save())
-            Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+            echo CJSON::encode(array(
+                'status'=>true
+            ));
         else
-            Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
-        $this->redirect(array('/admins'));
+            echo CJSON::encode(array(
+                'status'=>false
+            ));
     }
 }

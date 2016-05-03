@@ -296,6 +296,7 @@ class PanelController extends Controller
             'userDetailsModel'=>$userDetailsModel,
             'helpText'=>$helpText->summary,
             'settlementHistory'=>$settlementHistory,
+            'formDisabled'=>(JalaliDate::date('d', time(), false)<20)?false:true,
         ));
     }
 
