@@ -25,7 +25,9 @@ if(isset($_GET['step']) && !empty($_GET['step']))
             <?php $this->renderPartial('_form', array(
                 'model'=>$model,
                 'icon' => $icon,
-                'app' => $app
+                'app' => $app,
+                'tax'=>$tax,
+                'commission'=>$commission,
             ));
             ?>
         </div>
