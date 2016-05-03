@@ -31,6 +31,7 @@
 
 <?= $this->renderPartial('//layouts/_header'); ?>
 <?= $this->renderPartial('//layouts/_mobile_header'); ?>
+<?= $this->renderPartial('//layouts/_platforms'); ?>
 <?= $this->renderPartial('//layouts/_sidebar'); ?>
 <?= $this->renderPartial('//layouts/_navbar'); ?>
 <div class="main">

@@ -53,6 +53,7 @@ class PanelController extends Controller
         Yii::app()->theme='market';
         $criteria=new CDbCriteria();
         $criteria->addCondition('developer_id = :user_id');
+        $criteria->addCondition('deleted = 0');
         $criteria->params=array(':user_id'=>Yii::app()->user->getId());
         $appsDataProvider=new CActiveDataProvider('Apps', array(
             'criteria'=>$criteria,

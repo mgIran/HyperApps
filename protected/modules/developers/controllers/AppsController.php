@@ -18,7 +18,6 @@ class AppsController extends Controller
 	{
 		return array(
 				'accessControl', // perform access control for CRUD operations
-				'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -176,7 +175,7 @@ class AppsController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$step = 2;
+		$step = 1;
 		Yii::app()->theme = 'market';
 		$this->layout = '//layouts/panel';
 		$model = $this->loadModel($id);
@@ -259,6 +258,7 @@ class AppsController extends Controller
 			} else
 				$model->permissions = null;
 
+			$model->confirm = 'pending';
 			if($model->save()) {
 				if($fileFlag) {
 					rename($tmpDIR.$model->file_name, $appFilesDIR.$model->file_name);
@@ -268,6 +268,7 @@ class AppsController extends Controller
 					$thumbnail->createThumbnail($tmpDIR.$model->icon, 150, 150, false, $appIconsDIR.$model->icon);
 					unlink($tmpDIR.$model->icon);
 				}
+				$step = 2;
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت وایریش شد.');
 				$this->redirect(array('/developers/apps/update/' . $model->id. '?step=1'));
 			} else {
@@ -291,11 +292,11 @@ class AppsController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		Apps::model()->updateByPk($id,array('deleted' => 1));
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('/developers/panel'));
 	}
 
 	/**
@@ -490,12 +491,14 @@ class AppsController extends Controller
 		if(isset($_POST['AppImages']['image'])) {
 			$flag = true;
 			foreach($_POST['AppImages']['image'] as $image) {
-				$model = new AppImages();
-				$model->app_id = (int)$id;
-				$model->image = $image;
-				rename($tempDir.$image, $uploadDir.$image);
-				if(!$model->save(false))
-					$flag = false;
+				if(file_exists($tempDir.$image)) {
+					$model = new AppImages();
+					$model->app_id = (int)$id;
+					$model->image = $image;
+					rename($tempDir.$image, $uploadDir.$image);
+					if(!$model->save(false))
+						$flag = false;
+				}
 			}
 			if($flag)
 				Yii::app()->user->setFlash('images-success', 'اطلاعات با موفقیت ثبت شد.');

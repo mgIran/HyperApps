@@ -30,6 +30,12 @@
         height: 45px;
         line-height: 45px;
     }
+    .nav-tabs > li > a{
+        padding: 10px 5px;
+    }
+    .content{
+        margin-top: 75px;
+    }
 }
 @media all and (max-width: 767px) {
     .os-menu{
@@ -110,6 +116,9 @@
     }
     .content .app-box .app-carousel .app-item{
         float: none;
+    }
+    .hidden-phone{
+        display: none;
     }
 }
 
