@@ -735,6 +735,9 @@ body.windows-phone .content .app-box .top-box .btn.more-app{
     max-width: 165px;
     padding: 0;
 }
+.content .app-box .app-carousel > .app-item{
+    margin: 0 5px;
+}
 .content .app-box .owl-carousel .app-item {
     width: 100%;
 }

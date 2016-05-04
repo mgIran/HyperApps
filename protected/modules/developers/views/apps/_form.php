@@ -200,13 +200,13 @@
                 ),
                 'serverFiles' => $app,
                 'onSuccess' => '
-                var responseObj = JSON.parse(res);
-                if(responseObj.state == "ok")
-                {
-                    {serverName} = responseObj.fileName;
-                }else if(responseObj.state == "error"){
-                    console.log(responseObj.msg);
-                }
+                    var responseObj = JSON.parse(res);
+                    if(responseObj.state == "ok")
+                    {
+                        {serverName} = responseObj.fileName;
+                    }else if(responseObj.state == "error"){
+                        console.log(responseObj.msg);
+                    }
             ',
             ));
             ?>
@@ -230,13 +230,13 @@
                     'filesFolder' => $model->platform->name
                 ),
                 'onSuccess' => '
-                var responseObj = JSON.parse(res);
-                if(responseObj.state == "ok")
-                {
-                    {serverName} = responseObj.fileName;
-                }else if(responseObj.state == "error"){
-                    console.log(responseObj.msg);
-                }
+                    var responseObj = JSON.parse(res);
+                    if(responseObj.state == "ok")
+                    {
+                        {serverName} = responseObj.fileName;
+                    }else if(responseObj.state == "error"){
+                        console.log(responseObj.msg);
+                    }
             ',
             ));
             ?>

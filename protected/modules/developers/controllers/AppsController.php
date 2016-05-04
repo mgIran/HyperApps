@@ -127,30 +127,27 @@ class AppsController extends Controller
 						mkdir(Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/");
 					$appFilesDIR = Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$this->filesFolder}/";
 				}
-				if(isset($_POST['Apps']['file_name'])) {
+				if(isset($_POST['Apps']['file_name']) && file_exists($tmpDIR.$model->file_name)) {
 					$file = $_POST['Apps']['file_name'];
 					$app = array(
-							array(
-									'name' => $file,
-									'src' => $tmpUrl.'/'.$file,
-									'size' => filesize($tmpDIR.$file),
-									'serverName' => $file,
-							)
+						'name' => $file,
+						'src' => $tmpUrl.'/'.$file,
+						'size' => filesize($tmpDIR.$file),
+						'serverName' => $file,
 					);
 					$model->size = filesize($tmpDIR.$model->file_name);
-				}
-
-				if(isset($_POST['Apps']['icon'])) {
+				}else
+					$model->file_name = null;
+				if(isset($_POST['Apps']['icon']) && file_exists($tmpDIR.$model->icon)) {
 					$file = $_POST['Apps']['icon'];
 					$icon = array(
-							array(
-									'name' => $file,
-									'src' => $tmpUrl.'/'.$file,
-									'size' => filesize($tmpDIR.$file),
-									'serverName' => $file,
-							)
+						'name' => $file,
+						'src' => $tmpUrl.'/'.$file,
+						'size' => filesize($tmpDIR.$file),
+						'serverName' => $file,
 					);
-				}
+				}else
+					$model->icon = null;
 				if(count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
 					foreach($_POST['Apps']['permissions'] as $key => $permission) {
 						if(empty($permission))
@@ -244,18 +241,18 @@ class AppsController extends Controller
 		$icon = array();
 		if(file_exists($appIconsDIR.$model->icon))
 			$icon = array(
-					'name' => $model->icon,
-					'src' => $appIconsUrl.'/'.$model->icon,
-					'size' => filesize($appIconsDIR.$model->icon),
-					'serverName' => $model->icon
+				'name' => $model->icon,
+				'src' => $appIconsUrl.'/'.$model->icon,
+				'size' => filesize($appIconsDIR.$model->icon),
+				'serverName' => $model->icon
 			);
 		$app = array();
 		if(file_exists($appFilesDIR.$model->file_name))
 			$app = array(
-					'name' => $model->file_name,
-					'src' => $appFilesUrl.'/'.$model->file_name,
-					'size' => filesize($appFilesDIR.$model->file_name),
-					'serverName' => $model->file_name
+				'name' => $model->file_name,
+				'src' => $appFilesUrl.'/'.$model->file_name,
+				'size' => filesize($appFilesDIR.$model->file_name),
+				'serverName' => $model->file_name
 			);
 
 		$images = array();
@@ -263,21 +260,21 @@ class AppsController extends Controller
 			foreach($model->images as $image)
 				if(file_exists($appImagesDIR.$image->image))
 					$images[] = array(
-							'name' => $image->image,
-							'src' => $appImagesUrl.'/'.$image->image,
-							'size' => filesize($appImagesDIR.$image->image),
-							'serverName' => $image->image,
+						'name' => $image->image,
+						'src' => $appImagesUrl.'/'.$image->image,
+						'size' => filesize($appImagesDIR.$image->image),
+						'serverName' => $image->image,
 					);
 		if(isset($_POST['Apps'])) {
 			$fileFlag = false;
 			$iconFlag = false;
-			if(isset($_POST['Apps']['file_name']) && $_POST['Apps']['file_name'] != $model->file_name) {
+			if(isset($_POST['Apps']['file_name']) && file_exists($tmpDIR.$_POST['Apps']['file_name']) && $_POST['Apps']['file_name'] != $model->file_name) {
 				$file = $_POST['Apps']['file_name'];
 				$app = array(array('name' => $file, 'src' => $tmpUrl.'/'.$file, 'size' => filesize($tmpDIR.$file), 'serverName' => $file,));
 				$fileFlag = true;
 				$model->size = filesize($tmpDIR.$model->file_name);
 			}
-			if(isset($_POST['Apps']['icon']) && $_POST['Apps']['icon'] != $model->icon) {
+			if(isset($_POST['Apps']['icon']) && file_exists($tmpDIR.$_POST['Apps']['icon']) && $_POST['Apps']['icon'] != $model->icon) {
 				$file = $_POST['Apps']['icon'];
 				$icon = array(array('name' => $file, 'src' => $tmpUrl.'/'.$file, 'size' => filesize($tmpDIR.$file), 'serverName' => $file,));
 				$iconFlag = true;
