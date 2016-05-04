@@ -4,9 +4,9 @@
         <div class="alert alert-success fade in">
             <?php echo Yii::app()->user->getFlash('success');?>
         </div>
-    <?php elseif(Yii::app()->user->hasFlash('fail')):?>
+    <?php elseif(Yii::app()->user->hasFlash('failed')):?>
         <div class="alert alert-danger fade in">
-            <?php echo Yii::app()->user->getFlash('fail');?>
+            <?php echo Yii::app()->user->getFlash('failed');?>
         </div>
     <?php endif;?>
 

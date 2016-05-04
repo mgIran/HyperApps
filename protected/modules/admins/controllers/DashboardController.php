@@ -44,14 +44,23 @@ class DashboardController extends Controller
         ));
         $criteria=new CDbCriteria();
         $criteria->with='user';
-        $criteria->addCondition('details_status=:status');
         $criteria->addCondition('user.role_id=2');
-        $criteria->params=array(':status'=>'pending');
+        $criteria->addCondition('user.status=:userStatus');
+        $criteria->addCondition('details_status=:status');
+        $criteria->params=array(':status'=>'pending',':userStatus'=>'active');
         $newestDevelopers=new CActiveDataProvider('UserDetails', array(
             'criteria'=>$criteria,
         ));
+
+        $criteria=new CDbCriteria();
+        $criteria->with='user';
+        $criteria->addCondition('user.status=:userStatus');
+        $criteria->params=array(':userStatus'=>'active');
+        $newestDevIdRequests=new CActiveDataProvider('UserDevIdRequests', array(
+            'criteria'=>$criteria,
+        ));
 		$this->render('index', array(
-            'devIDRequests'=>UserDevIdRequests::model()->search(),
+            'devIDRequests'=>$newestDevIdRequests,
             'newestPrograms'=>$newestPrograms,
             'newestDevelopers'=>$newestDevelopers,
         ));

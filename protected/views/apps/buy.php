@@ -5,16 +5,16 @@
 /* @var $bought boolean */
 ?>
 
-<div class="col-md-6 col-md-offset-3">
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 buy-box">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">خرید</h3>
         </div>
         <div class="panel-body step-content">
             <div class="container-fluid buy-form">
-                <?php if(Yii::app()->user->hasFlash('fail')):?>
+                <?php if(Yii::app()->user->hasFlash('failed')):?>
                 <div class="alert alert-danger fade in">
-                    <?php echo Yii::app()->user->getFlash('fail');?>
+                    <?php echo Yii::app()->user->getFlash('failed');?>
                     <?php if(Yii::app()->user->hasFlash('failReason') and Yii::app()->user->getFlash('failReason')=='min_credit'):?>
                         <a href="<?php echo $this->createUrl('/users/credit/buy');?>">خرید اعتبار</a>
                     <?php endif;?>

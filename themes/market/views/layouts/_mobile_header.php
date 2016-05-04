@@ -32,32 +32,6 @@
         ?>
     </div>
 </header>
-<div class="os-menu">
-    <div class="col-xs-4">
-        <a href="<?php echo Yii::app()->createUrl('/android');?>" class="android" data-platform="android">
-            <span class="icon-android "></span>
-                <span class="label">
-                    اندروید
-                </span>
-        </a>
-    </div>
-    <div class="col-xs-4">
-        <a href="<?php echo Yii::app()->createUrl('/ios');?>" class="apple" data-platform="ios">
-            <span class="icon-apple "></span>
-                <span class="label">
-                    iOS
-                </span>
-        </a>
-    </div>
-    <div class="col-xs-4">
-        <a href="<?php echo Yii::app()->createUrl('/windowsphone');?>" class="win" data-platform="windowsphone">
-            <span class="icon-windows "></span>
-                <span class="label">
-                    ویندوز فون
-                </span>
-        </a>
-    </div>
-</div>
 
 <!-- mobile nav bar -->
 <nav class="mobile-navbar navbar navbar-default hidden-lg hidden-md">
@@ -74,11 +48,11 @@
                 <span class="type">اعتبار : <?= Controller::parseNumbers($this->userDetails->credit) ?> تومان</span>
             </div>
             <div class="navbar-links">
-                <a class="btn btn-info" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
+                <a class="btn btn-default" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
                 <?
                 if(Yii::app()->user->roles == 'developer'):
                     ?>
-                    <a class="btn btn-success" href="<?= Yii::app()->createUrl('/developers/panel') ?>">
+                    <a class="btn btn-default" href="<?= Yii::app()->createUrl('/developers/panel') ?>">
                         پنل توسعه دهندگان
                     </a>
                     <?

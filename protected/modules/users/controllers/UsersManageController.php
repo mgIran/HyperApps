@@ -29,7 +29,7 @@ class UsersManageController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'views' actions
-				'actions'=>array('index','view','create','update','admin','delete','confirmDevID','deleteDevID'),
+				'actions'=>array('index','view','create','update','admin','delete','confirmDevID','deleteDevID','confirmDeveloper','refuseDeveloper'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -152,18 +152,21 @@ class UsersManageController extends Controller
 	 */
 	public function actionConfirmDevID($id)
 	{
-		$model=UserDetails::model()->findByAttributes(array('user_id'=>$id));
-		$request=UserDevIdRequests::model()->findByAttributes(array('user_id'=>$id));
-		$model->developer_id=$request->requested_id;
-		if($model->save())
-		{
-			if($request->delete())
-				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-			else
+		$model = UserDetails::model()->findByAttributes(array('user_id' => $id));
+		if($model->details_status != 'accepted')
+			Yii::app()->user->setFlash('failed', 'اطلاعات توسعه دهنده مورد نظر هنوز تایید نشده است.');
+		else {
+			$model->scenario = 'confirmDev';
+			$request = UserDevIdRequests::model()->findByAttributes(array('user_id' => $id));
+			$model->developer_id = $request->requested_id;
+			if($model->save()) {
+				if($request->delete())
+					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+				else
+					Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+			} else
 				Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 		}
-		else
-			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 		$this->redirect(array('/admins'));
 	}
 
@@ -175,6 +178,38 @@ class UsersManageController extends Controller
 		$model=UserDevIdRequests::model()->findByAttributes(array('user_id'=>$id));
 		if($model->delete())
 			Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+		else
+			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+		$this->redirect(array('/admins'));
+	}
+
+	/**
+	 * Confirm developer
+	 */
+	public function actionConfirmDeveloper($id)
+	{
+		$model=UserDetails::model()->findByAttributes(array('user_id'=>$id));
+		$model->details_status = 'accepted';
+		if($model->update())
+		{
+			Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+		}
+		else
+			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+		$this->redirect(array('/admins'));
+	}
+
+	/**
+	 * Delete developer
+	 */
+	public function actionRefuseDeveloper($id)
+	{
+		$model=UserDetails::model()->findByAttributes(array('user_id'=>$id));
+		$model->details_status = 'refused';
+		if($model->update())
+		{
+			Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+		}
 		else
 			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 		$this->redirect(array('/admins'));

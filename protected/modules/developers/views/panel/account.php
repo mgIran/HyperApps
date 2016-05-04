@@ -29,17 +29,7 @@
 
     <div class="tab-content card-container">
         <div class="tab-pane active">
-            <?php if(Yii::app()->user->hasFlash('success')):?>
-                <div class="alert alert-success fade in">
-                    <button class="close close-sm" type="button" data-dismiss="alert"><i class="icon-remove"></i></button>
-                    <?php echo Yii::app()->user->getFlash('success');?>
-                </div>
-            <?php elseif(Yii::app()->user->hasFlash('fail')):?>
-                <div class="alert alert-danger fade in">
-                    <button class="close close-sm" type="button" data-dismiss="alert"><i class="icon-remove"></i></button>
-                    <?php echo Yii::app()->user->getFlash('fail');?>
-                </div>
-            <?php endif;?>
+            <?php $this->renderPartial('//layouts/_flashMessage'); ?>
 
             <?php $this->renderPartial('_update_profile_form', array(
                 'model'=>$detailsModel,

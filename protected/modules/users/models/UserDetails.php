@@ -53,6 +53,7 @@ class UserDetails extends CActiveRecord
 		// will receive user inputs.
 		return array(
             array('fa_name, en_name, national_code, phone, zip_code, address, national_card_image', 'required', 'on'=>'update'),
+			array('developer_id', 'required', 'on'=>'confirmDev'),
 			array('credit, national_code, phone, zip_code', 'numerical'),
 			array('user_id, national_code, zip_code', 'length', 'max'=>10),
 			array('national_code, zip_code', 'length', 'min'=>10),

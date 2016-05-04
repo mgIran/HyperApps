@@ -12,7 +12,7 @@ if(isset($_GET['step']) && !empty($_GET['step']))
 <div class="container">
     <h3>ویرایش برنامه <?= $model->title; ?></h3>
     <ul class="nav nav-tabs">
-        <li <?= $step == 1 ?'class="active"':''; ?> >
+        <li <?= !isset($step) || $step == 1 ?'class="active"':''; ?> >
             <a data-toggle="tab" href="#info">اطلاعات برنامه</a>
         </li>
         <li <?= $step == 2?'class="active"':''; ?>>
@@ -21,11 +21,13 @@ if(isset($_GET['step']) && !empty($_GET['step']))
     </ul>
 
     <div class="tab-content">
-        <div id="info" class="tab-pane fade <?= $step == 1?'in active':''; ?>">
+        <div id="info" class="tab-pane fade <?= !isset($step) || $step == 1?'in active':''; ?>">
             <?php $this->renderPartial('_form', array(
                 'model'=>$model,
                 'icon' => $icon,
-                'app' => $app
+                'app' => $app,
+                'tax'=>$tax,
+                'commission'=>$commission,
             ));
             ?>
         </div>

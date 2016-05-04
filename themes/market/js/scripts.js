@@ -78,4 +78,12 @@ $(function() {
         var $this = $(this);
         $this.parent().toggleClass('open');
     });
+
+    $(window).resize(function(){
+        if($(window).width() > 991)
+        {
+            $(".overlay").removeClass('in');
+            $(".open").removeClass('open');
+        }
+    });
 });

@@ -18,7 +18,6 @@ class AppsController extends Controller
 	{
 		return array(
 				'accessControl', // perform access control for CRUD operations
-				'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -49,6 +48,26 @@ class AppsController extends Controller
 	public function actionCreate()
 	{
 		if(Yii::app()->user->isGuest || Yii::app()->user->type != 'admin') {
+			$user = UserDetails::model()->findByPk(Yii::app()->user->getId());
+			if($user->details_status == 'refused')
+			{
+				Yii::app()->user->setFlash('failed','اطلاعات قرارداد شما رد شده است و نمیتوانید برنامه ثبت کنید. در صورت نیاز نسبت به تغییر اطلاعات خود اقدام کنید.');
+				$this->redirect(array('/developers/panel/account'));
+			}
+			elseif($user->details_status == 'pending')
+			{
+				Yii::app()->user->setFlash('warning','اطلاعات قرارداد شما در انتظار تایید می باشد،لطفا پس از تایید اطلاعات مجددا تلاش کنید.');
+				$this->redirect(array('/developers/panel/account'));
+			}
+			if(!$user->developer_id)
+			{
+				$devIdRequestModel=UserDevIdRequests::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+				if($devIdRequestModel)
+					Yii::app()->user->setFlash('warning','درخواست شما برای شناسه توسعه دهنده در انتظار تایید می باشد، لطفا شکیبا باشید.');
+				else
+					Yii::app()->user->setFlash('failed','شناسه توسعه دهنده تنظیم نشده است. برای ثبت برنامه شناسه توسعه دهنده الزامیست.');
+				$this->redirect(array('/developers/panel/account'));
+			}
 			$step = 1;
 			$tmpDIR = Yii::getPathOfAlias("webroot").'/uploads/temp/';
 			if(!is_dir($tmpDIR))
@@ -141,6 +160,18 @@ class AppsController extends Controller
 				} else
 					$model->permissions = null;
 				$model->developer_id = Yii::app()->user->getId();
+
+				$pt = $_POST['priceType'];
+				switch($pt){
+					case 'free':
+						$model->price = 0;
+						break;
+					case 'online-payment':
+						break;
+					case 'in-app-payment':
+						$model->price = -1;
+						break;
+				}
 				if($model->save()) {
 					if($model->file_name) {
 						rename($tmpDIR.$model->file_name, $appFilesDIR.$model->file_name);
@@ -155,9 +186,7 @@ class AppsController extends Controller
 				} else
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
-
 			Yii::app()->getModule('setting');
-
 			$this->render('create', array(
 				'model' => $model,
 				'icon' => $icon,
@@ -180,7 +209,7 @@ class AppsController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$step = 2;
+		$step = 1;
 		Yii::app()->theme = 'market';
 		$this->layout = '//layouts/panel';
 		$model = $this->loadModel($id);
@@ -263,6 +292,19 @@ class AppsController extends Controller
 			} else
 				$model->permissions = null;
 
+			$model->confirm = 'pending';
+
+			$pt = $_POST['priceType'];
+			switch($pt){
+				case 'free':
+					$model->price = 0;
+					break;
+				case 'online-payment':
+					break;
+				case 'in-app-payment':
+					$model->price = -1;
+					break;
+			}
 			if($model->save()) {
 				if($fileFlag) {
 					rename($tmpDIR.$model->file_name, $appFilesDIR.$model->file_name);
@@ -272,19 +314,24 @@ class AppsController extends Controller
 					$thumbnail->createThumbnail($tmpDIR.$model->icon, 150, 150, false, $appIconsDIR.$model->icon);
 					unlink($tmpDIR.$model->icon);
 				}
+				$step = 2;
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت وایریش شد.');
 				$this->redirect(array('/developers/apps/update/' . $model->id. '?step=1'));
 			} else {
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
 		}
+
+		Yii::app()->getModule('setting');
 		$this->render('update', array(
 				'model' => $model,
 				'imageModel' => new AppImages(),
 				'images' => $images,
 				'app' => $app,
 				'icon' => $icon,
-				'step' => $step
+				'step' => $step,
+				'tax'=>SiteSetting::model()->findByAttributes(array('name'=>'tax'))->value,
+				'commission'=>SiteSetting::model()->findByAttributes(array('name'=>'commission'))->value,
 		));
 	}
 
@@ -295,11 +342,11 @@ class AppsController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		Apps::model()->updateByPk($id,array('deleted' => 1));
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('/developers/panel'));
 	}
 
 	/**
@@ -495,12 +542,14 @@ class AppsController extends Controller
 		if(isset($_POST['AppImages']['image'])) {
 			$flag = true;
 			foreach($_POST['AppImages']['image'] as $image) {
-				$model = new AppImages();
-				$model->app_id = (int)$id;
-				$model->image = $image;
-				rename($tempDir.$image, $uploadDir.$image);
-				if(!$model->save(false))
-					$flag = false;
+				if(file_exists($tempDir.$image)) {
+					$model = new AppImages();
+					$model->app_id = (int)$id;
+					$model->image = $image;
+					rename($tempDir.$image, $uploadDir.$image);
+					if(!$model->save(false))
+						$flag = false;
+				}
 			}
 			if($flag)
 				Yii::app()->user->setFlash('images-success', 'اطلاعات با موفقیت ثبت شد.');

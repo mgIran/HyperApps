@@ -23,6 +23,7 @@
  * @property integer $seen
  * @property string $download
  * @property string $install
+ * @property string $rate
  * @property integer $deleted
  *
  * The followings are the available model relations:

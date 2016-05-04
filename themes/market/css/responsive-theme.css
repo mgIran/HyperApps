@@ -30,6 +30,12 @@
         height: 45px;
         line-height: 45px;
     }
+    .nav-tabs > li > a{
+        padding: 10px 5px;
+    }
+    .content{
+        margin-top: 75px;
+    }
 }
 @media all and (max-width: 767px) {
     .os-menu{
@@ -101,6 +107,11 @@
         font-size: 1.4em;
     }
 }
+@media all and (max-width: 650px) {
+    .nav.nav-tabs{
+        margin-top: 30px;
+    }
+}
 @media all and (max-width: 400px) {
     header .mobile-nav.nav > li{
         width: 40px;
@@ -110,6 +121,9 @@
     }
     .content .app-box .app-carousel .app-item{
         float: none;
+    }
+    .hidden-phone{
+        display: none;
     }
 }
 
@@ -136,4 +150,15 @@
         padding: 0;
         padding-left: 20px;
     }
+    .col-md-offset-1{
+        margin-right: 8.33333%;
+    }
+    .col-md-offset-2{
+        margin-right: 16.6667%;
+    }
+    .col-md-offset-3{
+        margin-right: 25%;
+    }
+}
+@media all and (min-width: 1200px) {
 }

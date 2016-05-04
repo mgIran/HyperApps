@@ -30,6 +30,12 @@ class UserDevIdRequests extends CActiveRecord
 		return array(
             array('requested_id', 'required'),
             array('requested_id', 'unique'),
+			array('requested_id', 'unique', 'caseSensitive'=>false,
+				  'criteria'=>array(
+						  'join'=>'LEFT JOIN ym_user_details as `UserDetails` ON UserDetails.developer_id=t.requested_id',
+						  'condition'=>'UserDetails.developer_id=t.requested_id',
+				  )),
+            array('requested_id', 'uniqueInUserDetails'),
             //array('requested_id', 'uniqueInUserDetails'),
 			array('user_id', 'length', 'max'=>10),
 			array('requested_id', 'length', 'max'=>20, 'min'=>5),
