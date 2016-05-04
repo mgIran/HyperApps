@@ -181,7 +181,7 @@
             <?php echo $form->error($model,'icon'); ?>
         </div>
         <br>
-        <div class="input-group buttons">
+        <div class="input-group buttons" style="clear:both;">
             <?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره تغییرات',array('class'=>'btn btn-success')); ?>
         </div>
 
