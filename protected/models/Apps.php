@@ -75,6 +75,7 @@ class Apps extends CActiveRecord
 			array('developer_id, category_id, platform_id', 'length', 'max'=>10),
 			array('status', 'length', 'max'=>7),
 			array('file_name', 'length', 'max'=>100),
+			array('file_name', 'unique', 'message'=>'این برنامه قبلا بارگذاری شده است.'),
 			array('version', 'length', 'max'=>20),
 			array('download, install', 'length', 'max'=>12),
 			array('price, size', 'numerical'),
