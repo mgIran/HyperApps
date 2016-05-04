@@ -261,3 +261,9 @@ header
 .chart-container{
     margin-top: 50px;
 }
+input[type='radio'],
+input[type='checkbox']{
+    height: auto;
+    display: inline-block;
+    width: auto;
+}

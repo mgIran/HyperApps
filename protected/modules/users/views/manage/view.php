@@ -17,6 +17,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'مدیرت کاربران', 'url'=>array('admin')),
+	array('label'=>'تایید اطلاعات کاربر', 'url'=>array('confirmDeveloper', 'id'=>$model->id)),
+	array('label'=>'رد اطلاعات کاربر', 'url'=>array('refuseDeveloper', 'id'=>$model->id)),
 	array('label'=>'حذف کاربر', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'آیا از حذف کاربر اطمینان دارید؟')),
 );
 ?>

@@ -78,6 +78,44 @@
 </div>
 <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <div class="panel-heading">
+        اطلاعات توسعه دهندگان جدید<small>(تایید نشده)</small>
+    </div>
+    <div class="panel-body">
+        <?php $this->widget('zii.widgets.grid.CGridView', array(
+            'id'=>'newest-developers-grid',
+            'dataProvider'=>$newestDevelopers,
+            'columns'=>array(
+                'email'=>array(
+                    'name'=>'email',
+                    'value'=>'CHtml::link($data->user->email, Yii::app()->createUrl("/users/".$data->user_id))',
+                    'type'=>'raw'
+                ),
+                'fa_name',
+                array(
+                    'class'=>'CButtonColumn',
+                    'template' => '{view}{confirm}{refused}',
+                    'buttons'=>array(
+                        'confirm'=>array(
+                            'label'=>'تایید کردن',
+                            'url'=>"CHtml::normalizeUrl(array('/users/usersManage/confirmDeveloper', 'id'=>\$data->user_id))",
+                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
+                        ),
+                        'refused'=>array(
+                            'label'=>'رد کردن',
+                            'url'=>'CHtml::normalizeUrl(array(\'/users/usersManage/refuseDeveloper\', \'id\'=>$data->user_id))',
+                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/refused.png',
+                        ),
+                        'view'=>array(
+                            'url'=>'CHtml::normalizeUrl(array("/users/".$data->user_id))',
+                        ),
+                    ),
+                ),
+            ),
+        ));?>
+    </div>
+</div>
+<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="panel-heading">
         درخواست های تغییر شناسه توسعه دهنده
     </div>
     <div class="panel-body">
@@ -102,41 +140,6 @@
                         ),
                         'delete'=>array(
                             'url'=>'CHtml::normalizeUrl(array(\'/users/usersManage/deleteDevID\', \'id\'=>$data->user_id))'
-                        ),
-                    ),
-                ),
-            ),
-        ));?>
-    </div>
-</div>
-<div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <div class="panel-heading">
-        توسعه دهندگان جدید<small>(تایید نشده)</small>
-    </div>
-    <div class="panel-body">
-        <?php $this->widget('zii.widgets.grid.CGridView', array(
-            'id'=>'newest-developers-grid',
-            'dataProvider'=>$newestDevelopers,
-            'columns'=>array(
-                'email'=>array(
-                    'name'=>'email',
-                    'value'=>'CHtml::link($data->user->email, Yii::app()->createUrl("/users/".$data->user_id))',
-                    'type'=>'raw'
-                ),
-                'fa_name',
-                array(
-                    'class'=>'CButtonColumn',
-                    'template' => '{confirm}{refused}',
-                    'buttons'=>array(
-                        'confirm'=>array(
-                            'label'=>'تایید کردن',
-                            'url'=>"CHtml::normalizeUrl(array('/users/usersManage/confirmDeveloper', 'id'=>\$data->user_id))",
-                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/confirm.png',
-                        ),
-                        'refused'=>array(
-                            'label'=>'رد کردن',
-                            'url'=>'CHtml::normalizeUrl(array(\'/users/usersManage/refuseDeveloper\', \'id\'=>$data->user_id))',
-                            'imageUrl'=>Yii::app()->theme->baseUrl.'/img/refused.png',
                         ),
                     ),
                 ),

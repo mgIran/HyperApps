@@ -102,7 +102,7 @@ class AppsController extends Controller
         {
             if($user->userDetails->credit<$model->price)
             {
-                Yii::app()->user->setFlash('fail' , 'اعتبار فعلی شما کافی نیست!');
+                Yii::app()->user->setFlash('failed' , 'اعتبار فعلی شما کافی نیست!');
                 Yii::app()->user->setFlash('failReason' , 'min_credit');
                 $this->refresh();
             }

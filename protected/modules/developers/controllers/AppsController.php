@@ -48,6 +48,26 @@ class AppsController extends Controller
 	public function actionCreate()
 	{
 		if(Yii::app()->user->isGuest || Yii::app()->user->type != 'admin') {
+			$user = UserDetails::model()->findByPk(Yii::app()->user->getId());
+			if($user->details_status == 'refused')
+			{
+				Yii::app()->user->setFlash('failed','اطلاعات قرارداد شما رد شده است و نمیتوانید برنامه ثبت کنید. در صورت نیاز نسبت به تغییر اطلاعات خود اقدام کنید.');
+				$this->redirect(array('/developers/panel/account'));
+			}
+			elseif($user->details_status == 'pending')
+			{
+				Yii::app()->user->setFlash('warning','اطلاعات قرارداد شما در انتظار تایید می باشد،لطفا پس از تایید اطلاعات مجددا تلاش کنید.');
+				$this->redirect(array('/developers/panel/account'));
+			}
+			if(!$user->developer_id)
+			{
+				$devIdRequestModel=UserDevIdRequests::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+				if($devIdRequestModel)
+					Yii::app()->user->setFlash('warning','درخواست شما برای شناسه توسعه دهنده در انتظار تایید می باشد، لطفا شکیبا باشید.');
+				else
+					Yii::app()->user->setFlash('failed','شناسه توسعه دهنده تنظیم نشده است. برای ثبت برنامه شناسه توسعه دهنده الزامیست.');
+				$this->redirect(array('/developers/panel/account'));
+			}
 			$step = 1;
 			$tmpDIR = Yii::getPathOfAlias("webroot").'/uploads/temp/';
 			if(!is_dir($tmpDIR))
@@ -140,6 +160,18 @@ class AppsController extends Controller
 				} else
 					$model->permissions = null;
 				$model->developer_id = Yii::app()->user->getId();
+
+				$pt = $_POST['priceType'];
+				switch($pt){
+					case 'free':
+						$model->price = 0;
+						break;
+					case 'online-payment':
+						break;
+					case 'in-app-payment':
+						$model->price = -1;
+						break;
+				}
 				if($model->save()) {
 					if($model->file_name) {
 						rename($tmpDIR.$model->file_name, $appFilesDIR.$model->file_name);
@@ -154,9 +186,7 @@ class AppsController extends Controller
 				} else
 					Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 			}
-
 			Yii::app()->getModule('setting');
-
 			$this->render('create', array(
 				'model' => $model,
 				'icon' => $icon,
@@ -263,6 +293,18 @@ class AppsController extends Controller
 				$model->permissions = null;
 
 			$model->confirm = 'pending';
+
+			$pt = $_POST['priceType'];
+			switch($pt){
+				case 'free':
+					$model->price = 0;
+					break;
+				case 'online-payment':
+					break;
+				case 'in-app-payment':
+					$model->price = -1;
+					break;
+			}
 			if($model->save()) {
 				if($fileFlag) {
 					rename($tmpDIR.$model->file_name, $appFilesDIR.$model->file_name);

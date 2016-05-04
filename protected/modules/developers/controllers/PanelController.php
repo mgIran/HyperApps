@@ -74,7 +74,7 @@ class PanelController extends Controller
         $detailsModel=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
         $devIdRequestModel=UserDevIdRequests::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
         if($detailsModel->developer_id=='' && is_null($devIdRequestModel))
-            $devIdRequestModel=new UserDevIdRequests();
+            $devIdRequestModel=new UserDevIdRequests;
 
         $detailsModel->scenario='update_profile';
 
@@ -97,7 +97,7 @@ class PanelController extends Controller
                 $this->refresh();
             }
             else
-                Yii::app()->user->setFlash('fail' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+                Yii::app()->user->setFlash('failed' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
 
         // Save the change request developerID
@@ -107,11 +107,11 @@ class PanelController extends Controller
             $devIdRequestModel->requested_id=$_POST['UserDevIdRequests']['requested_id'];
             if($devIdRequestModel->save())
             {
-                Yii::app()->user->setFlash('success' , 'اطلاعات با موفقیت ثبت شد.');
+                Yii::app()->user->setFlash('success' , 'شناسه درخواستی ثبت گردید و در انتظار تایید می باشد.');
                 $this->refresh();
             }
             else
-                Yii::app()->user->setFlash('fail' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+                Yii::app()->user->setFlash('failed' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
 
         $nationalCardImageUrl=$this->createUrl('/uploads/users/national_cards');
@@ -227,7 +227,7 @@ class PanelController extends Controller
                         $this->redirect($this->createUrl('/developers/panel/signup/step/finish'));
                     }
                     else
-                        Yii::app()->user->setFlash('fail' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+                        Yii::app()->user->setFlash('failed' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
                 }
                 $nationalCardImageUrl=$this->createUrl('/uploads/users/national_cards');
                 $nationalCardImagePath=Yii::getPathOfAlias('webroot').'/uploads/users/national_cards';

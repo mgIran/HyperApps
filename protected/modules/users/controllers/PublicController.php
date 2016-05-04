@@ -156,7 +156,7 @@ class PublicController extends Controller
                     $this->redirect($this->createUrl('/dashboard'));
                 }
                 else
-                    Yii::app()->user->setFlash('fail' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+                    Yii::app()->user->setFlash('failed' , 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
             }
         }
 
@@ -189,24 +189,24 @@ class PublicController extends Controller
                 }
                 else
                 {
-                    Yii::app()->user->setFlash('fail' , 'لینک فعال سازی منقضی شده و نامعتبر می باشد. لطفا مجددا ثبت نام کنید.');
+                    Yii::app()->user->setFlash('failed' , 'لینک فعال سازی منقضی شده و نامعتبر می باشد. لطفا مجددا ثبت نام کنید.');
                     $this->redirect($this->createUrl('/register'));
                 }
             }
             elseif($model->status=='active')
             {
-                Yii::app()->user->setFlash('fail' , 'این حساب کاربری قبلا فعال شده است.');
+                Yii::app()->user->setFlash('failed' , 'این حساب کاربری قبلا فعال شده است.');
                 $this->redirect($this->createUrl('/login'));
             }
             else
             {
-                Yii::app()->user->setFlash('fail' , 'امکان فعال سازی این کاربر وجود ندارد. لطفا مجددا ثبت نام کنید.');
+                Yii::app()->user->setFlash('failed' , 'امکان فعال سازی این کاربر وجود ندارد. لطفا مجددا ثبت نام کنید.');
                 $this->redirect($this->createUrl('/register'));
             }
         }
         else
         {
-            Yii::app()->user->setFlash('fail' , 'لینک فعال سازی نامعتبر می باشد.');
+            Yii::app()->user->setFlash('failed' , 'لینک فعال سازی نامعتبر می باشد.');
             $this->redirect($this->createUrl('/register'));
         }
     }
@@ -319,7 +319,7 @@ class PublicController extends Controller
                     Yii::app()->user->setFlash('success', 'کلمه عبور با موفقیت تغییر یافت.');
                     $this->redirect($this->createUrl('/login'));
                 } else
-                    Yii::app()->user->setFlash('fail', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+                    Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
             }
 
             $this->render('change_password', array(
