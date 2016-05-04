@@ -72,7 +72,8 @@ class CreditController extends Controller
                 $Description = 'افزایش اعتبار در هایپر اپس';  // Required
                 $Email = Yii::app()->user->email; // Optional
                 $Mobile = '0'; // Optional
-                $CallbackURL = 'http://www.hyperapps.ir/users/credit/verify';  // Required
+
+                $CallbackURL = Yii::app()->getBaseUrl(true).'/users/credit/verify';  // Required
 
                 include("lib/nusoap.php");
                 $client = new NuSOAP_Client('https://ir.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
