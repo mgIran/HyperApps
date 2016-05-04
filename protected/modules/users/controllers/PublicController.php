@@ -67,7 +67,7 @@ class PublicController extends Controller
 
                 $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در هایپر اپس بر روی لینک زیر کلیک کنید:</div>';
                 $message .= '<div style="text-align: right;font-size: 9pt;">';
-                $message .= '<a href="'.$serverProtocol.$_SERVER['HTTP_HOST'].'/users/public/verify/token/'.$token.'">'.$serverProtocol.$_SERVER['HTTP_HOST'].'/users/public/verify/token/'.$token.'</a>';
+                $message .= '<a href="'.$serverProtocol.$_SERVER['HTTP_HOST'].'/market/users/public/verify/token/'.$token.'">'.$serverProtocol.$_SERVER['HTTP_HOST'].'/market/users/public/verify/token/'.$token.'</a>';
                 $message .= '</div>';
                 $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
                 Mailer::mail($model->email, 'ثبت نام در '.Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
@@ -101,10 +101,7 @@ class PublicController extends Controller
             $model->attributes = $_POST[ 'UserLoginForm' ];
             // validate user input and redirect to the previous page if valid
             if ( $model->validate() && $model->login())
-                if(Yii::app()->user->returnUrl != Yii::app()->request->baseUrl.'/')
-                    $this->redirect(Yii::app()->user->returnUrl);
-                else
-                    $this->redirect(Yii::app()->request->baseUrl);
+                $this->redirect(Yii::app()->baseUrl);
         }
         // display the login form
         $this->render( 'login', array( 'model' => $model ) );
@@ -236,7 +233,7 @@ class PublicController extends Controller
                         $model->updateByPk($model->id, array('verification_token'=>$token, 'change_password_request_count'=>$count+1));
                         $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>بنا به درخواست شما جهت تغییر کلمه عبور لینک زیر خدمتتان ارسال گردیده است.</div>';
                         $message .= '<div style="text-align: right;font-size: 9pt;">';
-                        $message .= '<a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/users/public/changePassword/token/'.$token.'">'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/users/public/changePassword/token/'.$token.'</a>';
+                        $message .= '<a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/market/users/public/changePassword/token/'.$token.'">'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/market/users/public/changePassword/token/'.$token.'</a>';
                         $message .= '</div>';
                         $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">اگر شخص دیگری غیر از شما این درخواست را صادر نموده است، یا شما کلمه عبور خود را به یاد آورده‌اید و دیگر نیازی به تغییر آن ندارید، کلمه عبور قبلی/موجود شما همچنان فعال می‌باشد و می توانید از طریق <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/login">این صفحه</a> وارد حساب کاربری خود شوید.</div>';
                         $result=Mailer::mail($model->email, 'درخواست تغییر کلمه عبور در '.Yii::app()->name, $message, Yii::app()->params['noReplyEmail']);
