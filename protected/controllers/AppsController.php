@@ -113,6 +113,7 @@ class AppsController extends Controller
             if($buy->save())
             {
                 $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+                $userDetails->setScenario('update-credit');
                 $userDetails->credit=$userDetails->credit-$model->price;
                 if($model->developer)
                     $model->developer->userDetails->credit=$model->developer->userDetails->credit+$model->getDeveloperPortion();

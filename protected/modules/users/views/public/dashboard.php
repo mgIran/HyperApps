@@ -11,7 +11,7 @@
             <a data-toggle="tab" href="#transactions-tab">تراکنش ها</a>
         </li>
         <li>
-            <a data-toggle="tab" href="#tabs-purchases">خریدها</a>
+            <a data-toggle="tab" href="#buys-tab">خریدها</a>
         </li>
         <li>
             <a data-toggle="tab" href="#bookmarks-tab">نشان شده ها</a>
@@ -34,6 +34,11 @@
         </div>
         <div id="transactions-tab" class="tab-pane fade">
             <?php $this->renderPartial('_transactions',array(
+                'model'=>$model,
+            ))?>
+        </div>
+        <div id="buys-tab" class="tab-pane fade">
+            <?php $this->renderPartial('_buys_list',array(
                 'model'=>$model,
             ))?>
         </div>
