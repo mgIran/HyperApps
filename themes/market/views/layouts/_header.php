@@ -41,7 +41,7 @@
                                 <div class="user-detail">
                                     <span class="name"><?= $this->userDetails->getShowName(); ?></span>
                                     <span class="type"><?= $this->userDetails->roleLabels[Yii::app()->user->roles] ?></span>
-                                    <span class="type">اعتبار : <?= Controller::parseNumbers($this->userDetails->credit) ?> تومان</span>
+                                    <span class="type">اعتبار : <?= Controller::parseNumbers(number_format($this->userDetails->credit, 0)) ?> تومان</span>
                                 </div>
                                 <footer>
                                     <a class="btn btn-default" href="<?= Yii::app()->createUrl('/dashboard') ?>">پنل کاربری</a>
