@@ -538,18 +538,20 @@ class AppsController extends Controller
 		$uploadDir = Yii::getPathOfAlias("webroot").'/uploads/apps/images/';
 		if(isset($_POST['AppImages']['image'])) {
 			$flag = true;
-			foreach($_POST['AppImages']['image'] as $image) {
-				if(file_exists($tempDir.$image)) {
+			foreach ($_POST['AppImages']['image'] as $image) {
+				if (file_exists($tempDir . $image)) {
 					$model = new AppImages();
 					$model->app_id = (int)$id;
 					$model->image = $image;
-					rename($tempDir.$image, $uploadDir.$image);
-					if(!$model->save(false))
+					rename($tempDir . $image, $uploadDir . $image);
+					if (!$model->save(false))
 						$flag = false;
 				}
 			}
-			if($flag)
+			if ($flag) {
 				Yii::app()->user->setFlash('images-success', 'اطلاعات با موفقیت ثبت شد.');
+				$this->redirect($this->createUrl('/developers/panel'));
+			}
 			else
 				Yii::app()->user->setFlash('images-failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		} else

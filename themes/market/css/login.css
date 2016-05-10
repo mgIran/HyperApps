@@ -25,7 +25,8 @@ a{
 
 }
 .mask:after{
-    background: url("../svg/pattern.svg") repeat scroll center center rgba(0, 0, 0, 0);
+    /*background: url("../svg/pattern.svg") repeat scroll center center rgba(0, 0, 0, 0);*/
+    background: rgba(0,0,0,0.5);
     bottom: 0;
     content: "";
     height: 100%;

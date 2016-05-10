@@ -218,8 +218,43 @@ header .right-header .user-section{
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    cursor: pointer;
     position: relative;
+}
+header .right-header .user-section .notification{
+    position: absolute;
+    left: 100px;
+    top: 25px;
+    width: 30px;
+    height: 30px;
+}
+header .right-header .user-section .notification.active{
+    background: #d9534f;
+    border-radius: 50%;
+}
+header .right-header .user-section .notification.active a{
+    color: #fff;
+}
+header .right-header .user-section .notification a{
+    display: block;
+    line-height: 30px;
+    height:30px;
+    text-align: center;
+    font-size: 18px;
+    color: #bbb;
+}
+header .right-header .user-section .notification a .lbl{
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    font-weight:bold;
+    background: #ccc;
+    color: #d9534f;
+    font-size: 9pt;
+    width: 20px;
+    height:20px;
+    line-height: 23px;
+    text-align: center;
+    border-radius: 50%;
 }
 header .right-header .user-section .avatar{
     display: block;
@@ -236,6 +271,7 @@ header .right-header .user-section .avatar{
     position: absolute;
     left: 10px;
     top: 10px;
+    cursor: pointer;
 }
 header .right-header .user-section .avatar .icon{
     display: block;
@@ -1177,7 +1213,7 @@ body.ios .footer .nav li.active{
     font-size: 13px;
     color: #a6a6a6;
     max-width: 30%;
-    margin: 0;
+    margin: 0 15px 0 0;
 }
 .app-inner .app-body{
     display: block;
@@ -1410,6 +1446,7 @@ body.windows-phone .app-inner .app-body > section .more-text{
 .border-none{
     border: none !important;
 }
+
 #bookmark-app{
     position: absolute;
     top:0;right: 0;left: 0;bottom: 0;
@@ -1699,4 +1736,18 @@ header.mobile.search-open .mobile-search{
     -webkit-transform: translate3D(-50%, -50%, 0); -moz-transform: translate3D(-50%, -50%, 0); -ms-transform: translate3D(-50%, -50%, 0); -o-transform: translate3D(-50%, -50%, 0); transform: translate3D(-50%, -50%, 0);
     max-width: 90%;
     max-height: 90%;
+}
+.under-construction{
+    background: #fff;
+}
+.under-construction-bg{
+    background: url("../images/under-construction.jpg") no-repeat center / cover;
+    height: 100vh;
+    width: 100%;
+}
+.under-construction .back-link{
+    position: absolute;
+    left: 15px;
+    bottom:15px;
+    padding: 15px;
 }

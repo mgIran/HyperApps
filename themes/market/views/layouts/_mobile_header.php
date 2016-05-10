@@ -120,7 +120,7 @@
         <li><a href="<?= Yii::app()->user->hasState('platformName')?Yii::app()->baseUrl.'/'.Yii::app()->user->getState('platformName'):Yii::app()->createAbsoluteUrl('//') ?>">خانه</a></li>
         <li><a href="#">تخفیفات</a></li>
         <li>
-            <a href="#">
+            <a href="<?php echo $this->createUrl('/site/underConstruction');?>">
                 <span class="icon-download-alt"></span>
                 هایپر اپس را دانلود کنید
             </a>

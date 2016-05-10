@@ -259,7 +259,9 @@ class BaseManageController extends Controller
     {
         $model = $this->loadModel($id);
         $model->deleted=1;
-        $model->save();
+        if($model->save())
+            $this->createLog('برنامه '.$model->title.' توسط مدیر سیستم حذف شد.', $model->developer_id);
+
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
@@ -423,10 +425,27 @@ class BaseManageController extends Controller
     {
         $model=$this->loadModel($_POST['app_id']);
         $model->confirm=$_POST['value'];
-        if($model->save())
+        if($model->save()) {
+            $message='';
+            switch($_POST['value'])
+            {
+                case 'refused':
+                    $message='برنامه '.$model->title.' رد شده است.';
+                    break;
+
+                case 'accepted':
+                    $message='برنامه '.$model->title.' تایید شده است.';
+                    break;
+
+                case 'change_required':
+                    $message='برنامه '.$model->title.' نیاز به تغییرات دارد.';
+                    break;
+            }
+            $this->createLog($message, $model->developer_id);
             echo CJSON::encode(array(
-                'status'=>true
+                'status' => true
             ));
+        }
         else
             echo CJSON::encode(array(
                 'status'=>false

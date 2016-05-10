@@ -182,4 +182,11 @@ class SiteController extends Controller
         $model = Pages::model()->findByPk(5);
         $this->render('//site/pages/page',array('model' => $model));
     }
+
+    public function actionUnderConstruction()
+    {
+        Yii::app()->theme = 'market';
+        $this->layout = '//layouts/empty';
+        $this->render('//site/pages/under_construction');
+    }
 }

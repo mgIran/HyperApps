@@ -25,6 +25,7 @@
     </ul>
     <a class="btn btn-success developer-signup-link" href="<?php echo Yii::app()->createUrl('/dashboard')?>">پنل کاربری</a>
     <div class="tab-content card-container">
+        <?php $this->renderPartial('//layouts/_flashMessage', array('prefix'=>'images-'));?>
         <div class="tab-pane active">
             <a class="btn btn-success" href="<?php echo $this->createUrl('/developers/apps/create');?>"><i class="icon icon-plus"></i> افزودن برنامه جدید</a>
         </div>

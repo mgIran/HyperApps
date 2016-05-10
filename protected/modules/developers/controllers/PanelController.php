@@ -58,6 +58,8 @@ class PanelController extends Controller
         $appsDataProvider=new CActiveDataProvider('Apps', array(
             'criteria'=>$criteria,
         ));
+        Yii::app()->getModule('users');
+
 		$this->render('index', array(
             'appsDataProvider'=>$appsDataProvider,
         ));

@@ -8,6 +8,27 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.c
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.theme.default.min.css');
 //Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl.carousel.min.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.magnific-popup.min.js');
+Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/magnific-popup.css');
+Yii::app()->clientScript->registerScript('callImageGallery',"
+    $('.images-carousel').magnificPopup({
+		delegate: 'a',
+		type: 'image',
+		tLoading: 'Loading image #%curr%...',
+		mainClass: 'mfp-img-mobile',
+		gallery: {
+			enabled: true,
+			navigateByImgClick: true,
+			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+		},
+		image: {
+			tError: '<a href=\"%url%\">The image #%curr%</a> could not be loaded.',
+			titleSrc: function(item) {
+				return '';
+			}
+		}
+	});
+");
 
 if($model->platform)
 {
@@ -80,8 +101,10 @@ if($model->platform)
                             $(function(){
                                 $(this).find(".svg-bookmark#remove").hide();
                                 $('body').on('mouseenter','.bookmark',function(){
-                                    $(this).find(".svg-bookmark#bookmark").hide();
-                                    $(this).find(".svg-bookmark#remove").show();
+                                    if($(this).hasClass('bookmarked')) {
+                                        $(this).find(".svg-bookmark#bookmark").hide();
+                                        $(this).find(".svg-bookmark#remove").show();
+                                    }
                                 });
                                 $('body').on('mouseleave','.bookmark',function(){
                                     $(this).find(".svg-bookmark#bookmark").show();
@@ -105,7 +128,7 @@ if($model->platform)
                         $ratio=$imageInfo['width']/$imageInfo['height'];
                 ?>
                         <div class="image-item" style="width: <?php echo 318*$ratio;?>px;" data-toggle="modal" data-index="<?= $key ?>" data-target="#carousesl-modal">
-                            <img src="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>" alt="<?= $model->title ?>" >
+                            <a href="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>"><img src="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>" alt="<?= $model->title ?>" ></a>
                         </div>
                 <?
                     endif;

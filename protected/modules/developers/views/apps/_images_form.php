@@ -27,7 +27,7 @@
         'model' => $imageModel,
         'name' => 'image',
         'maxFiles' => 10,
-        'maxFileSize' => 0.2, //MB
+        'maxFileSize' => 1, //MB
         'data'=>array('app_id'=>$model->id),
         'url' => $this->createUrl('/developers/apps/uploadImage'),
         'deleteUrl' => $this->createUrl('/developers/apps/deleteImage'),

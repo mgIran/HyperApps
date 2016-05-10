@@ -21,7 +21,7 @@ class PublicController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'views' actions
-                'actions'=>array('dashboard','logout','setting'),
+                'actions'=>array('dashboard','logout','setting','notifications'),
                 'users' => array('@'),
             ),
             array('allow',  // allow all users to perform 'index' and 'views' actions
@@ -323,6 +323,20 @@ class PublicController extends Controller
         }
         else
             $this->redirect($this->createAbsoluteUrl('//'));
+    }
+
+    /**
+     * List all notifications
+     */
+    public function actionNotifications()
+    {
+        $model=UserNotifications::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->getId()));
+        UserNotifications::model()->updateAll(array('seen'=>'1'),'user_id=:user_id',array(':user_id'=>Yii::app()->user->getId()));
+        $this->layout='//layouts/panel';
+        Yii::app()->theme='market';
+        $this->render('notifications',array(
+            'model'=>$model
+        ));
     }
 
     /**

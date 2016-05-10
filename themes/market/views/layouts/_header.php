@@ -28,6 +28,13 @@
                 if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user') {
                     ?>
                     <div class="user-section">
+                        <div class="notification<?php echo (count($this->userNotifications)==0)?null:' active';?>">
+                            <a href="<?php echo $this->createUrl('/users/public/notifications');?>" class="icon icon-bell">
+                                <?php if(count($this->userNotifications)!=0):?>
+                                    <span class="lbl"><?php echo count($this->userNotifications);?></span>
+                                <?php endif;?>
+                            </a>
+                        </div>
                         <div class="avatar">
                             <span class="icon icon-user"></span>
                             <div class="tri-1"></div>

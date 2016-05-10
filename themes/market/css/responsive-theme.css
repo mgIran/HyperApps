@@ -41,6 +41,16 @@
     .os-menu{
         top: 60px;
     }
+    .os-menu > div > a [class*="icon-"]{
+        margin-right: 0;
+        left:50%;
+        right:auto;
+        -webkit-transform: translateX(-50%);
+        -moz-transform: translateX(-50%);
+        -ms-transform: translateX(-50%);
+        -o-transform: translateX(-50%);
+        transform: translateX(-50%);
+    }
     .app-carousel .owl-item {
         text-align: center;
     }

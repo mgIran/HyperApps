@@ -160,8 +160,10 @@ class UsersManageController extends Controller
 			$request = UserDevIdRequests::model()->findByAttributes(array('user_id' => $id));
 			$model->developer_id = $request->requested_id;
 			if($model->save()) {
-				if($request->delete())
+				if($request->delete()) {
+					$this->createLog('شناسه شما توسط مدیر سیستم تایید شد.', $model->user_id);
 					Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+				}
 				else
 					Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 			} else
@@ -175,9 +177,11 @@ class UsersManageController extends Controller
 	 */
 	public function actionDeleteDevID($id)
 	{
-		$model=UserDevIdRequests::model()->findByAttributes(array('user_id'=>$id));
-		if($model->delete())
+		$model = UserDevIdRequests::model()->findByAttributes(array('user_id' => $id));
+		if ($model->delete()) {
+			$this->createLog('شناسه شما توسط مدیر سیستم رد شد.', $model->user_id);
 			Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+		}
 		else
 			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 		$this->redirect(array('/admins'));
@@ -192,6 +196,7 @@ class UsersManageController extends Controller
 		$model->details_status = 'accepted';
 		if($model->update())
 		{
+			$this->createLog('اطلاعات شما توسط مدیر سیستم تایید شد.', $model->user_id);
 			Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 		}
 		else
@@ -208,6 +213,7 @@ class UsersManageController extends Controller
 		$model->details_status = 'refused';
 		if($model->update())
 		{
+			$this->createLog('اطلاعات شما توسط مدیر سیستم رد شد.', $model->user_id);
 			Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 		}
 		else

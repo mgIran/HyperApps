@@ -31,6 +31,7 @@ class Controller extends CController
     public $categories;
     public $platform;
     public $userDetails;
+    public $userNotifications;
 
     protected function beforeAction($action)
     {
@@ -49,6 +50,7 @@ class Controller extends CController
 
         Yii::import("users.models.*");
         $this->userDetails = UserDetails::model()->findByPk(Yii::app()->user->getId());
+        $this->userNotifications=UserNotifications::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->getId(),'seen'=>'0'));
         return true;
     }
 
@@ -249,5 +251,16 @@ class Controller extends CController
                 Yii::app()->request->cookies['VC'] = new CHttpCookie('VC', $cats);
             }
         }
+    }
+
+    public function createLog($message, $userID)
+    {
+        Yii::app()->getModule('users');
+        $model=new UserNotifications();
+        $model->user_id=$userID;
+        $model->message=$message;
+        $model->seen=0;
+        $model->date=time();
+        $model->save();
     }
 }

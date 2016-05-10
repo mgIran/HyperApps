@@ -3,7 +3,7 @@
 ?>
 <nav class="navbar navbar-default hidden-sm hidden-xs">
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="<?php echo $this->createUrl('/site/underConstruction');?>">
             <span class="icon-download-alt"></span>
             هایپر اپس را دانلود کنید
         </a>

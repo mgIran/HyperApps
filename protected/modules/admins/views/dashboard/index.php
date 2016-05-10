@@ -51,7 +51,7 @@
                         ),
                         'download'=>array(
                             'label'=>'دانلود',
-                            'url'=>'Yii::app()->createUrl("/uploads/apps/files/".$data->platformsID[$data->platform_id]."/".$data->file_name)',
+                            'url'=>'Yii::app()->createUrl("/uploads/apps/files/".strtolower($data->platformsID[$data->platform_id])."/".$data->file_name)',
                             'imageUrl'=>Yii::app()->theme->baseUrl.'/img/download.png',
                         ),
                     ),
