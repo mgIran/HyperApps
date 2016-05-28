@@ -55,7 +55,7 @@ class BaseManageController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm', 'changePackageStatus', 'deletePackage', 'savePackage'),
                 'roles' => array('admin'),
             ),
             array('deny',  // deny all users
@@ -82,33 +82,17 @@ class BaseManageController extends Controller
     public function actionCreate()
     {
         $model = new Apps;
-
-        $step = 1;
         $tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
         if (!is_dir($tmpDIR))
             mkdir($tmpDIR);
         $tmpUrl = Yii::app()->createAbsoluteUrl('/uploads/temp/');
-        $appFilesDIR = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$this->filesFolder}/";
         $appIconsDIR = Yii::getPathOfAlias("webroot") . "/uploads/apps/icons/";
-
         $icon = array();
-        $app = array();
 
         $this->performAjaxValidation($model);
 
         if (isset($_POST['Apps'])) {
             $model->attributes = $_POST['Apps'];
-            if (isset($_POST['Apps']['file_name'])) {
-                $file = $_POST['Apps']['file_name'];
-                $app = array(
-                    'name' => $file,
-                    'src' => $tmpUrl . '/' . $file,
-                    'size' => filesize($tmpDIR . $file),
-                    'serverName' => $file,
-                );
-                $model->size = filesize($tmpDIR . $model->file_name);
-            }
-
             if (isset($_POST['Apps']['icon'])) {
                 $file = $_POST['Apps']['icon'];
                 $icon = array(
@@ -130,9 +114,6 @@ class BaseManageController extends Controller
                 $model->platform_id = $this->platform_id;
             $model->confirm='accepted';
             if ($model->save()) {
-                if ($model->file_name) {
-                    rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);
-                }
                 if ($model->icon) {
                     $thumbnail = new Imager();
                     $thumbnail->createThumbnail($tmpDIR . $model->icon, 150, 150, false, $appIconsDIR . $model->icon);
@@ -140,7 +121,6 @@ class BaseManageController extends Controller
                 }
                 Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
                 $this->redirect('update/' . $model->id . '/?step=2');
-                $step = 2;
             } else
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
@@ -148,8 +128,6 @@ class BaseManageController extends Controller
         $this->render('manageApps.views.baseManage.create', array(
             'model' => $model,
             'icon' => $icon,
-            'app' => $app,
-            'step' => $step
         ));
     }
 
@@ -182,15 +160,6 @@ class BaseManageController extends Controller
                 'size' => filesize($appIconsDIR . $model->icon),
                 'serverName' => $model->icon,
             );
-
-        $app = array();
-        if(file_exists($appFilesDIR . $model->file_name))
-            $app = array(
-                'name' => $model->file_name,
-                'src' => $appFilesUrl . '/' . $model->file_name,
-                'size' => filesize($appFilesDIR . $model->file_name),
-                'serverName' => $model->file_name,
-                );
 
         $images = array();
         if($model->images)
@@ -247,7 +216,20 @@ class BaseManageController extends Controller
             }
         }
 
-        $this->render('manageApps.views.baseManage.update', array('model' => $model, 'icon' => $icon, 'app' => $app, 'images' => $images, 'step' => 1));
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('app_id=:app_id');
+        $criteria->params=array(
+            ':app_id'=>$id,
+        );
+        $packageDataProvider=new CActiveDataProvider('AppPackages', array('criteria'=>$criteria));
+
+        $this->render('manageApps.views.baseManage.update', array(
+            'model' => $model,
+            'icon' => $icon,
+            'images' => $images,
+            'step' => 1,
+            'packageDataProvider'=>$packageDataProvider,
+        ));
     }
 
     /**
@@ -261,7 +243,6 @@ class BaseManageController extends Controller
         $model->deleted=1;
         if($model->save())
             $this->createLog('برنامه '.$model->title.' توسط مدیر سیستم حذف شد.', $model->developer_id);
-
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
@@ -379,17 +360,14 @@ class BaseManageController extends Controller
                 mkdir($tempDir);
             if (isset($_FILES)) {
                 $file = $_FILES['file_name'];
-                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-                $file['name'] = Controller::generateRandomString(5) . time();
-                while (file_exists($tempDir . DIRECTORY_SEPARATOR . $file['name']))
-                    $file['name'] = Controller::generateRandomString(5) . time();
-                $file['name'] = $file['name'] . '.' . $ext;
-                if (move_uploaded_file($file['tmp_name'], $tempDir . DIRECTORY_SEPARATOR . CHtml::encode($file['name'])))
-                    $response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
+                $file['name'] = str_replace(' ', '_', $file['name']);
+                $file['name'] = time() . '-' . $file['name'];
+                if (move_uploaded_file($file['tmp_name'], $tempDir . DIRECTORY_SEPARATOR . $file['name']))
+                    $response = ['status' => true, 'fileName' => CHtml::encode($file['name'])];
                 else
-                    $response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
+                    $response = ['status' => false, 'message' => 'در عملیات آپلود فایل خطایی رخ داده است.'];
             } else
-                $response = ['state' => 'error', 'msg' => 'فایلی ارسال نشده است.'];
+                $response = ['status' => false, 'message' => 'فایلی ارسال نشده است.'];
             echo CJSON::encode($response);
             Yii::app()->end();
         }
@@ -397,28 +375,7 @@ class BaseManageController extends Controller
 
     public function actionDeleteUploadFile()
     {
-        $Dir = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$this->filesFolder}/";
-
-        if (isset($_POST['fileName'])) {
-
-            $fileName = $_POST['fileName'];
-
-            $tempDir = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
-
-            $model = Apps::model()->findByAttributes(array('file_name' => $fileName));
-            if ($model) {
-                if (unlink($Dir . $model->file_name)) {
-                    $model->updateByPk($model->id, array('file_name' => null));
-                    $response = ['state' => 'ok', 'msg' => $this->implodeErrors($model)];
-                } else
-                    $response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
-            } else {
-                @unlink($tempDir . $fileName);
-                $response = ['state' => 'ok', 'msg' => 'حذف شد.'];
-            }
-            echo CJSON::encode($response);
-            Yii::app()->end();
-        }
+        echo CJSON::encode(['state' => 'ok', 'msg' => 'فایل با موفقیت حذف شد.']);
     }
 
     public function actionChangeConfirm()
@@ -426,6 +383,13 @@ class BaseManageController extends Controller
         $model=$this->loadModel($_POST['app_id']);
         $model->confirm=$_POST['value'];
         if($model->save()) {
+            if($_POST['value']=='accepted') {
+                $package = AppPackages::model()->find(array('condition' => 'app_id=:app_id', 'params' => array(':app_id' => $model->id), 'order' => 'id DESC'));
+                $package->publish_date = time();
+                $package->status='accepted';
+                $package->setScenario('publish');
+                $package->save();
+            }
             $message='';
             switch($_POST['value'])
             {
@@ -450,5 +414,97 @@ class BaseManageController extends Controller
             echo CJSON::encode(array(
                 'status'=>false
             ));
+    }
+
+    public function actionChangePackageStatus()
+    {
+        if (isset($_POST['package_id'])) {
+            $model = AppPackages::model()->findByPk($_POST['package_id']);
+            $model->status = $_POST['value'];
+            $model->setScenario('publish');
+            if ($_POST['value'] == 'accepted')
+                $model->publish_date = time();
+            if ($model->save()) {
+                if ($_POST['value'] == 'accepted')
+                    $this->createLog('بسته ' . $model->package_name . ' توسط مدیر سیستم تایید شد.', $model->app->developer_id);
+                elseif ($_POST['value'] == 'refused')
+                    $this->createLog('بسته ' . $model->package_name . ' توسط مدیر سیستم رد شد.', $model->app->developer_id);
+                elseif ($_POST['value'] == 'change_required')
+                    $this->createLog('بسته ' . $model->package_name . ' نیاز به تغییر دارد.', $model->app->developer_id);
+                echo CJSON::encode(array('status' => true));
+            } else
+                echo CJSON::encode(array('status' => false));
+        }
+    }
+
+    public function actionDeletePackage($id)
+    {
+        $model=AppPackages::model()->findByPk($id);
+        $uploadDir = Yii::getPathOfAlias("webroot") . '/uploads/apps/files/'.$model->app->platform->name;
+        if(file_exists($uploadDir.'/'.$model->file_name))
+            if(unlink($uploadDir.'/'.$model->file_name))
+                if($model->delete())
+                    $this->createLog('بسته ' . $model->package_name . ' توسط مدیر سیستم حذف شد.', $model->app->developer_id);
+
+        if (!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    }
+
+    /**
+     * Return APK file info
+     * @param string $filename file name
+     * @return array of apk file info
+     */
+    public function apkParser($filename)
+    {
+        $apk = new \ApkParser\Parser($filename);
+        $manifest = $apk->getManifest();
+
+        return array(
+            'package_name'=>$manifest->getPackageName(),
+            'version'=>$manifest->getVersionName(),
+            'min_sdk_level'=>$manifest->getMinSdkLevel(),
+            'min_sdk_platform'=>$manifest->getMinSdk()->platform,
+        );
+    }
+
+    /**
+     * Save app package info
+     */
+    public function actionSavePackage()
+    {
+        if(isset($_POST['app_id'])) {
+            $uploadDir = Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $_POST['filesFolder'];
+            $tempDir = Yii::getPathOfAlias("webroot") . '/uploads/temp';
+            if (!is_dir($uploadDir))
+                mkdir($uploadDir);
+
+            $model = new AppPackages();
+            $model->app_id = $_POST['app_id'];
+            $model->create_date = time();
+            $model->publish_date = time();
+            $model->status='accepted';
+            if ($_POST['platform'] == 'android') {
+                $apkInfo = $this->apkParser($tempDir . DIRECTORY_SEPARATOR . $_POST['Apps']['file_name']);
+                $model->version = $apkInfo['version'];
+                $model->package_name = $apkInfo['package_name'];
+                $model->file_name = $apkInfo['version'] . '-' . $apkInfo['package_name'] . '.' . pathinfo($_POST['Apps']['file_name'], PATHINFO_EXTENSION);
+            } else {
+                $model->version = $_POST['version'];
+                $model->package_name = $_POST['package_name'];
+                $model->file_name = $_POST['version'] . '-' . $_POST['package_name'] . '.' . pathinfo($_POST['Apps']['file_name'], PATHINFO_EXTENSION);
+            }
+
+            if ($model->save()) {
+                $response = ['status' => true, 'fileName' => CHtml::encode($model->file_name)];
+                rename($tempDir . DIRECTORY_SEPARATOR . $_POST['Apps']['file_name'], $uploadDir . DIRECTORY_SEPARATOR . $model->file_name);
+            } else {
+                $response = ['status' => false, 'message' => $model->getError('package_name')];
+                unlink($tempDir . '/' . $_POST['Apps']['file_name']);
+            }
+
+            echo CJSON::encode($response);
+            Yii::app()->end();
+        }
     }
 }

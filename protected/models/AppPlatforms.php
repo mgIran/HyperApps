@@ -15,6 +15,12 @@
  */
 class AppPlatforms extends CActiveRecord
 {
+	public $platformsLabel=array(
+		'android'=>'Android',
+		'ios'=>'iOS',
+		'windowsPhone'=>'Windows Phone',
+	);
+
 	/**
 	 * @return string the associated database table name
 	 */

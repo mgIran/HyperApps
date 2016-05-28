@@ -137,7 +137,7 @@ if($model->platform)
             </div>
             <section>
                 <div class="app-description">
-                    <?= $model->description ?>
+                    <?= $model->description; ?>
                 </div>
                 <a class="more-text" href="#">
                     <span>توضیحات بیشتر</span>
@@ -155,11 +155,11 @@ if($model->platform)
                 <h4>اطلاعات برنامه</h4>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 detail">
                     <h5>حجم</h5>
-                    <span class="ltr" ><?= Controller::fileSize($filePath.$model->file_name) ?></span>
+                    <span class="ltr" ><?= Controller::fileSize($filePath.$model->lastPackage->file_name) ?></span>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 detail">
                     <h5>نسخه</h5>
-                    <span class="ltr" ><?= $model->version ?></span>
+                    <span class="ltr" ><?= $model->lastPackage->version ?></span>
                 </div>
             </div>
             <?php if(!is_null($model->permissions) or $model->permissions!=''):?>

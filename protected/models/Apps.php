@@ -10,21 +10,19 @@
  * @property string $category_id
  * @property string $status
  * @property double $price
- * @property string $file_name
  * @property string $icon
  * @property string $description
  * @property string $change_log
  * @property string $permissions
  * @property double $size
- * @property string $version
  * @property string $confirm
  * @property string $platform_id
  * @property string $developer_team
  * @property integer $seen
  * @property string $download
  * @property string $install
- * @property string $rate
  * @property integer $deleted
+ * @property AppPackages $lastPackage
  *
  * The followings are the available model relations:
  * @property AppBuys[] $appBuys
@@ -33,6 +31,7 @@
  * @property Users $developer
  * @property AppCategories $category
  * @property Users[] $bookmarker
+ * @property AppPackages[] $packages
  */
 class Apps extends CActiveRecord
 {
@@ -56,6 +55,7 @@ class Apps extends CActiveRecord
 		'accepted'=>'تایید شده',
 		'change_required'=>'نیاز به تغییر',
 	);
+	public $lastPackage;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -67,22 +67,21 @@ class Apps extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('title, category_id, price, version ,platform_id ,file_name ,icon', 'required'),
+			array('platform_id', 'required', 'on'=>'insert'),
+            array('title, category_id, price ,platform_id ,icon', 'required', 'on'=>'update'),
             array('price, size, platform_id', 'numerical'),
             array('seen, install, deleted', 'numerical', 'integerOnly'=>true),
 			array('description, change_log','filter','filter'=>array($this->_purifier,'purify')),
 			array('title, icon, developer_team', 'length', 'max'=>50),
 			array('developer_id, category_id, platform_id', 'length', 'max'=>10),
 			array('status', 'length', 'max'=>7),
-			array('file_name', 'length', 'max'=>100),
-			array('file_name', 'unique', 'message'=>'این برنامه قبلا بارگذاری شده است.'),
-			array('version', 'length', 'max'=>20),
 			array('download, install', 'length', 'max'=>12),
 			array('price, size', 'numerical'),
 			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, developer_id, category_id, status, price, file_name, icon, description, change_log, permissions, size, version, confirm, platform_id, developer_team, seen, download, install, deleted', 'safe', 'on'=>'search'),
+			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted', 'safe', 'on'=>'search'),
+			array('description, change_log','filter','filter'=>array($obj=new CHtmlPurifier(),'purify')),
 		);
 	}
 
@@ -100,6 +99,7 @@ class Apps extends CActiveRecord
 			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
 			'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
 			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
+			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
 		);
 	}
 
@@ -115,13 +115,11 @@ class Apps extends CActiveRecord
             'category_id' => 'دسته',
             'status' => 'وضعیت',
             'price' => 'قیمت',
-            'file_name' => 'فایل',
             'icon' => 'آیکون',
             'description' => 'توضیحات',
             'change_log' => 'لیست تغییرات',
             'permissions' => 'دسترسی ها',
             'size' => 'حجم',
-            'version' => 'نسخه',
 			'confirm' => 'وضعیت انتشار',
 			'platform_id' => 'پلتفرم',
             'developer_team' => 'تیم توسعه دهنده',
@@ -156,13 +154,11 @@ class Apps extends CActiveRecord
 		$criteria->compare('category_id',$this->category_id,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('price',$this->price);
-		$criteria->compare('file_name',$this->file_name,true);
 		$criteria->compare('icon',$this->icon,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('change_log',$this->change_log,true);
 		$criteria->compare('permissions',$this->permissions,true);
 		$criteria->compare('size',$this->size);
-		$criteria->compare('version',$this->version,true);
 		$criteria->compare('confirm',$this->confirm,true);
 		$criteria->compare('platform_id',$this->platform_id,true);
 		$criteria->compare('developer_team',$this->developer_team,true);
@@ -200,5 +196,20 @@ class Apps extends CActiveRecord
 		$tax = ($price * $tax) / 100;
 		$commission = ($price * $commission) / 100;
 		return $price - $tax - $commission;
+	}
+
+	/**
+	 * Return url of app file
+	 */
+	public function getAppFileUrl()
+	{
+		if(!empty($this->packages))
+			return Yii::app()->createUrl("/uploads/apps/files/".strtolower($this->platformsID[$this->platform_id])."/".$this->lastPackage->file_name);
+		return '';
+	}
+
+	public function afterFind()
+	{
+		$this->lastPackage=$this->packages[count($this->packages)-1];
 	}
 }

@@ -137,7 +137,7 @@ class AppsController extends Controller
     {
         $model=$this->loadModel($id);
         $platformFolder='';
-        switch(pathinfo($model->file_name, PATHINFO_EXTENSION))
+        switch(pathinfo($model->lastPackage->file_name, PATHINFO_EXTENSION))
         {
             case 'apk':
                 $platformFolder='android';
@@ -154,7 +154,7 @@ class AppsController extends Controller
         if($model->price==0) {
             $model->install=$model->install+1;
             $model->save();
-            $this->download($model->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
+            $this->download($model->lastPackage->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
         }
         else
         {
@@ -162,7 +162,7 @@ class AppsController extends Controller
             if($buy) {
                 $model->install=$model->install+1;
                 $model->save();
-                $this->download($model->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
+                $this->download($model->lastPackage->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
             }
             else
                 $this->redirect(array('/apps/buy/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));

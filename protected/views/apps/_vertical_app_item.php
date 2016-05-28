@@ -37,7 +37,7 @@
                 for($i = 1; $i <= 20; $i++)
                     echo CHtml::encode($words[$i]);
             else
-                echo CHtml::encode($data->description);
+                echo $data->description;
             ?>
             <span class="paragraph-end"></span>
         </div>

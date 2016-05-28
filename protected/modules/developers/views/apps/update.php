@@ -3,41 +3,57 @@
 /* @var $model Apps */
 /* @var $imageModel AppImages */
 /* @var $images [] */
-
-
-if(isset($_GET['step']) && !empty($_GET['step']))
-    $step = (int)$_GET['step'];
+/* @var $step integer */
+/* @var $packagesDataProvider CActiveDataProvider */
 ?>
 
 <div class="container">
     <h3>ویرایش برنامه <?= $model->title; ?></h3>
     <ul class="nav nav-tabs">
-        <li <?= !isset($step) || $step == 1 ?'class="active"':''; ?> >
-            <a data-toggle="tab" href="#info">اطلاعات برنامه</a>
+        <li>
+            <a data-toggle="tab" href="#platform">پلتفرم</a>
         </li>
-        <li <?= $step == 2?'class="active"':''; ?>>
-            <a data-toggle="tab" href="#images">تصاویر برنامه</a>
+        <li <?= !isset($step) || $step == 1 ?'class="active"':''; ?>>
+            <a data-toggle="tab" href="#packages">بسته</a>
+        </li>
+        <li class="<? if($step == 2)echo 'active';elseif($step<2)echo 'disabled';?>">
+            <a data-toggle="<?= ($step == 2)?'tab':''?>" href="#info">اطلاعات برنامه</a>
+        </li>
+        <li class="<? if($step == 3)echo 'active';elseif($step<3)echo 'disabled';?>">
+            <a data-toggle="<?= ($step == 3)?'tab':''?>" href="#images">تصاویر برنامه</a>
         </li>
     </ul>
 
     <div class="tab-content">
-        <div id="info" class="tab-pane fade <?= !isset($step) || $step == 1?'in active':''; ?>">
-            <?php $this->renderPartial('_form', array(
-                'model'=>$model,
-                'icon' => $icon,
-                'app' => $app,
-                'tax'=>$tax,
-                'commission'=>$commission,
-            ));
-            ?>
+        <?php $this->renderPartial('//layouts/_flashMessage');?>
+        <div id="platform" class="tab-pane fade">
+            <p>پلتفرم انتخاب شده دیگر قابل ویرایش نمی باشد.</p>
+            <h4>پلتفرم: <small><?php echo $model->platform->platformsLabel[$model->platform->name];?></small></h4>
         </div>
-        <div id="images" class="tab-pane fade <?= $step == 2?'in active':''; ?>">
-            <?php $this->renderPartial('_images_form', array(
+        <div id="packages" class="tab-pane fade <?= !isset($step) || $step == 1?'in active':''; ?>">
+            <?php $this->renderPartial('_package', array(
                 'model'=>$model,
-                'imageModel'=>$imageModel,
-                'images' => $images
-            ));
-            ?>
+                'dataProvider'=>$packagesDataProvider,
+            ));?>
+        </div>
+        <div id="info" class="tab-pane fade <?= $step == 2?'in active':''; ?>">
+            <?php if($step>=2):?>
+                <?php $this->renderPartial('_form', array(
+                    'model'=>$model,
+                    'icon' => $icon,
+                    'tax'=>$tax,
+                    'commission'=>$commission,
+                ));?>
+            <?php endif;?>
+        </div>
+        <div id="images" class="tab-pane fade <?= $step == 3?'in active':''; ?>">
+            <?php if($step>=3):?>
+                <?php $this->renderPartial('_images_form', array(
+                    'model'=>$model,
+                    'imageModel'=>$imageModel,
+                    'images' => $images
+                ));?>
+            <?php endif;?>
         </div>
     </div>
 </div>

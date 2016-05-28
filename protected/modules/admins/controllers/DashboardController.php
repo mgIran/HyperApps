@@ -35,13 +35,16 @@ class DashboardController extends Controller
 	public function actionIndex()
     {
         Yii::app()->getModule('users');
+
         $criteria=new CDbCriteria();
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('title!=""');
         $criteria->params=array(':confirm'=>'pending',':deleted'=>'0');
         $newestPrograms=new CActiveDataProvider('Apps', array(
             'criteria'=>$criteria,
         ));
+
         $criteria=new CDbCriteria();
         $criteria->with='user';
         $criteria->addCondition('user.role_id=2');
@@ -59,9 +62,20 @@ class DashboardController extends Controller
         $newestDevIdRequests=new CActiveDataProvider('UserDevIdRequests', array(
             'criteria'=>$criteria,
         ));
+
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('status=:packageStatus');
+        $criteria->params=array(
+            ':packageStatus'=>'pending',
+        );
+        $newestPackages=new CActiveDataProvider('AppPackages', array(
+            'criteria'=>$criteria,
+        ));
+
 		$this->render('index', array(
-            'devIDRequests'=>$newestDevIdRequests,
+            'newestPackages'=>$newestPackages,
             'newestPrograms'=>$newestPrograms,
+            'devIDRequests'=>$newestDevIdRequests,
             'newestDevelopers'=>$newestDevelopers,
         ));
 	}

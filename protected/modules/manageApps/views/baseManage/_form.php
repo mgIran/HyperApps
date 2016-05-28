@@ -28,12 +28,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'version'); ?>
-		<?php echo $form->textField($model,'version',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'version'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'developer_team'); ?>
 		<?php echo $form->textField($model,'developer_team',array('size'=>50,'maxlength'=>500)); ?>
 		<?php echo $form->error($model,'developer_team'); ?>
@@ -60,33 +54,6 @@
 		<?php echo $form->labelEx($model,'price'); ?>
 		<?php echo $form->textField($model,'price'); ?>
 		<?php echo $form->error($model,'price'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'file_name'); ?>
-        <?php
-        $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
-            'id' => 'uploaderFile',
-            'model' => $model,
-            'name' => 'file_name',
-            'maxFileSize' => 100,
-            'maxFiles' => 1,
-            'url' => Yii::app()->createUrl('/manageApps/'.$this->controller.'/uploadFile'),
-            'deleteUrl' => Yii::app()->createUrl('/manageApps/'.$this->controller.'/deleteUploadFile'),
-            'acceptedFiles' => $this->formats,
-            'serverFiles' => $app,
-            'onSuccess' => '
-                var responseObj = JSON.parse(res);
-                if(responseObj.state == "ok")
-                {
-                    {serverName} = responseObj.fileName;
-                }else if(responseObj.state == "error"){
-                    console.log(responseObj.msg);
-                }
-            ',
-        ));
-        ?>
-		<?php echo $form->error($model,'file_name'); ?>
 	</div>
 
 	<div class="row">

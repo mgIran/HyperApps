@@ -179,7 +179,6 @@ class dropZoneUploader extends CWidget
                 ';
             }else
             {
-                //var_dump($data);exit;
                 $filesAddScript = '
                 var value = '.$data.';
                 var mockFile = { name: value.name, size: value.size ,serverName : value.name ,accepted : true};
