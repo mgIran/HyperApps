@@ -68,9 +68,10 @@
                         dataType:'JSON',
                         data:{app_id:$(this).data('id'), value:$(this).val()},
                         success:function(data){
-                            if(data.status)
+                            if(data.status){
                                 $.fn.yiiGridView.update('newest-apps-grid');
-                            else
+                                $.fn.yiiGridView.update('newest-packages-grid');
+                            }else
                                 alert('در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
                         }
                     });

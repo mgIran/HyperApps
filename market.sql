@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-05-04 10:47:05
+Date: 2016-05-28 14:42:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,13 +64,11 @@ CREATE TABLE `ym_apps` (
   `category_id` int(10) unsigned DEFAULT NULL,
   `status` enum('disable','enable') CHARACTER SET utf8 COLLATE utf8_persian_ci DEFAULT 'enable',
   `price` double DEFAULT NULL,
-  `file_name` varchar(100) DEFAULT NULL,
   `icon` varchar(50) DEFAULT NULL,
   `description` longtext,
   `change_log` longtext,
   `permissions` longtext,
   `size` float DEFAULT NULL,
-  `version` varchar(20) CHARACTER SET utf8 COLLATE utf8_persian_ci DEFAULT NULL,
   `confirm` enum('pending','refused','accepted','change_required') DEFAULT 'pending',
   `platform_id` int(10) unsigned DEFAULT NULL,
   `developer_team` varchar(50) DEFAULT NULL,
@@ -85,14 +83,13 @@ CREATE TABLE `ym_apps` (
   CONSTRAINT `ym_apps_ibfk_1` FOREIGN KEY (`developer_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_3` FOREIGN KEY (`platform_id`) REFERENCES `ym_app_platforms` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_apps
 -- ----------------------------
-INSERT INTO `ym_apps` VALUES ('18', 'کشکول', '43', '4', 'enable', '1000', 'sh88h1460630479.apk', 'ksmvp1460630489.png', '<p><strong>با کشکول، مطالب مورد علاقه تون رو دنبال کنید</strong></p>\r\n\r\n<p> </p>\r\n\r\n<p>‎بیشتر پیگیر چه مطالبی هستی ؟؟ <br />\r\n‎دوست داری اخبار جدید رو در مورد یه موضوع مشخص پیگیری کنی؟؟  دوست داری بدونی دوستات یا افراد مهم چه مطالبی میخونن و چه موضوعاتی رو پیگیری می کنن؟؟ دوست داری سایتهایی که برات مهم اند رو پیگیری کنی و هیچ کدوم از مطالب و اخبارشو از دست ندی؟<br />\r\n‎ کشکول یه سرویس جدیده که در اون میتونی به مطالبی که علاقه داری خیلی راحت دسترسی پیدا کنی و اون ها رو پیگیری کنی.</p>\r\n\r\n<p> </p>\r\n\r\n<p>‎اگر شما از اون دسته آدمهایی هستید که توی اینترنت دنبال مطالب و اخبار مورد علاقه ی خودشون میگردند، باید بهتون یه مژده بدم چون با کشکول دیگه لازم نیست دنبال اخبار و مطالب مورد علاقه تون بگردید. کشکول تمام آن چیزی که بهش علاقمندید رو در اختیارتون قرار میده.شما فقط کافیه به ما بگید به چه چیزی علاقه دارید. اینطوری خیلی توی وقتتون و ترافیک مصرفی اینترنتتون صرفه جویی میشه. <br />\r\n‎چون لازم نیست به سایتهای مختلف سر بزنید و همه ی مطالبشونرو بصورت یکجا توی کشکول ملاحظه خواهید کرد. </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎شما حتی میتونید مطالبی که علاقه دارید را توی پروفایل شخصی خودتون بازنشر کنید تا بتونید این مطالب و سایتها رو به اونها هم معرفی کنید. برای معرفی صفحه شخصی به دوستاتون، فقط لازمه در قسمت تنظیمات، یک شناسه کاربری برای خودتون تعیین کنید. <br />\r\n‎ازین پس شما دارای لینک شخصی در کشکول میشید. </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎اگر سایت مورد علاقه تون توی کشکول ثبت نشده بود، خودتون میتونید وارد سایت کشکول بشید و اون رو در قسمت \"افزودن سایت\"  ثبت کنید.</p>\r\n\r\n<p> </p>\r\n\r\n<p>‎نکته خیلی مهم: <br />\r\n‎تمامی امکانات فوق، در سایت کشکول به آدرس https://kashkol.ir قابل دسترسی هست<br />\r\n‎اپلیکیشن کشکول هنوز در مرحله ی تکمیل قرار داره و به شما قول میدیم در کوتاهترین زمان، تمامی این امکانات رو در اپلیکیشن هم قرار بدیم. </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎درخواست:<br />\r\n‎پس از نصب و استفاده از کشکول، یک نکته یا نظر برای بهبود کشکول به ما بگید. ممنونم. </p>\r\n\r\n<p> </p>\r\n\r\n<p> </p>\r\n\r\n<p> </p>\r\n\r\n<p>‎برای استفاده از تمامی امکانات به آدرس https://kashkol.ir مراجعه کنید.</p>\r\n', '<p>- اضافه شدن صفحه تنظیمات</p>\r\n\r\n<p>- بهبود ثبت نام</p>\r\n\r\n<p>- رفع باگ</p>\r\n', '[\" \\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u062a\\u0646\\u0638\\u06cc\\u0645\\u0627\\u062a \",\" \\u06a9\\u0646\\u062a\\u0631\\u0644 \\u0644\\u0631\\u0632\\u0634 \",\" \\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647 \",\" \\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647 \",\" \\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u06a9\\u0627\\u0645\\u0644 \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a \"]', '2127', ' 0.4 ', 'accepted', '1', 'کشکول', '55', '0', '5', '0');
-INSERT INTO `ym_apps` VALUES ('19', ' آواز (شانس خوانندگی)', '43', '5', 'enable', '0', 'GCeJf1460630634.apk', 'F22F91460630643.png', '<p><strong>آواز شانس شما برای شنیده شدن</strong></p>\r\n\r\n<p> </p>\r\n\r\n<h4><strong>بیش از 50 ترانه ی محبوب در سبک های مختلف پاپ، سنتی، رپ و برخی ترانه های پر طرفدار لاتین را در آکادمی آواز ارائه کردیم که بیشتر آن ها بدون پرداخت هیچ هزینه ای در اختیار شما هستند.</strong></h4>\r\n\r\n<p> </p>\r\n\r\n<p>امکان استفاده از این اپلیکیشن را برای نسخه های قدیمی و جدید اندروید فراهم ساختیم.</p>\r\n\r\n<p> </p>\r\n\r\n<p>با کمک گرافیست های مجرب محیطی جذاب جهت جلب نطر کاربران عزیز این برنامه طراحی کردیم.</p>\r\n\r\n<p> </p>\r\n\r\n<p>قابلیت جدید و منحصر به فردی را با عنوان <strong>avas beats</strong> طراحی کردیم که از طریق تب بیتس در داخل اپلیکیشن قابل دسترسی است و با استفاده از آن می توانید در سبک پاپ یا رپ روی سمپل های آماده هر چه می خواهید بخوانید و اثری منحصر به خودتان بسازید.</p>\r\n\r\n<p> </p>\r\n\r\n<p>امکان برگزاری مسابقه خوانندگی را نیز مهیا کردیم که به طور مداوم برگزار خواهد شد و میتوانید علاوه بر سرگرمی استعداد خوانندگی خود را به چالش کشیده و جایزه ببرید.</p>\r\n\r\n<p> </p>\r\n\r\n<p>در قدم های بعدی نیز علاوه بر بهبود کیفی بخش های مختلف برنامه، بهترین ها رو برای شما در نظر گرفتیم که در حال حاضر در حال بررسی و اجرا می باشند.</p>\r\n\r\n<p> </p>\r\n\r\n<p>قرن هاست که آواز ابزاری تأثیرگذار برای بیان احساسات انسان به شمار می رود و همواره از محبوبیت خاصی در عموم فرهنگ های دنیا برخوردار بوده. با توجه به اینکه همه ی ما بنا به طبع و سلیقه ی خود با سبکی از هنر موسیقی ارتباط برقرار میکنیم، تیم آکادمی آواز با بهره گیری از اساتید متخصص در حوزه های برنامه نویسی و موسیقی مفتخر است این محصول را با امکانات جدید و منحصر به فرد که برخی از آن ها برای اولین بار به واسطه ی این اپلیکیشن ارائه میشود، به تمام علاقه مندان به خوانندگی در سبک ها و سطوح متفاوت تقدیم کند.</p>\r\n\r\n<p> </p>\r\n\r\n<p>طی چند ماه تلاش پی در پی و با استفاده از تجربیات اساتید موسیقی در رشته ی آهنگسازی و آواز، همچنین متخصصین برنامه نویس که جزئی از تیم آکادمی آواز هستند مقدمات یک اتفاق بزرگ را فراهم کردیم.</p>\r\n\r\n<p> </p>\r\n\r\n<p>آواز به معنی جمع آواهای شماست پس با پشتیبانی و حمایت شما کاربران گرامی هر روز با ترانه ها و قابلیت های جدید در جهت نزدیک کردن این برنامه به خواسته های شما قدم برمی داریم.</p>\r\n\r\n<p> </p>\r\n\r\n<p>هدف اصلی ما جلب رضایت شماست</p>\r\n\r\n<p> </p>\r\n\r\n<p>بخوانید، لذت ببرید و ستاره شوید...</p>\r\n\r\n<p> </p>\r\n\r\n<p><strong>توجه:</strong></p>\r\n\r\n<p> </p>\r\n\r\n<p><strong>هنگام ضبط حتماً از هدفون با کیفیت استفاده کنید و نیز بهتر است درمقدار فاصله میکروفون با دهان خود دقت فرمایید.</strong></p>\r\n\r\n<p> </p>\r\n\r\n<p><strong>هر هفته بدون نیاز به آپدیت از ترانه های جدید و به روز تهیه شده توسط تیم آکادمی آواز بهره مند شوید.</strong></p>\r\n', '', '[\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u062a\\u0646\\u0638\\u06cc\\u0645\\u0627\\u062a\",\"\\u06a9\\u0646\\u062a\\u0631\\u0644 \\u0644\\u0631\\u0632\\u0634\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u06a9\\u0627\\u0645\\u0644 \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\" \\u062a\\u063a\\u06cc\\u06cc\\u0631 \\u06cc\\u0627 \\u062d\\u0630\\u0641 \\u0645\\u062d\\u062a\\u0648\\u06cc\\u0627\\u062a \\u06a9\\u0627\\u0631\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \"]', '2127', '1.0', 'accepted', '1', 'mass music box', '21', '0', '3', '0');
-INSERT INTO `ym_apps` VALUES ('20', ' برنامه لیدکامب - لکنت کودکان', '43', '8', 'enable', '8000', '3vTXT1460814161.apk', 'ktQO11460814173.png', '<p>برنامه ی لیدکامب یک درمان رفتاری است که لکنت کودکان را مد نظر قرار می ­دهد. در طول برنامه ی لیدکامب، به هیچ عنوان از کودکان تحت درمان خواسته نمی ­شود الگوی صحبت کردن عادی خود را تغییر دهند. والدین تحت هیچ شرایطی نه عادات گفتاری معمولی خود را تغییر می دهند، نه سبک زندگی خود را. والدین، یا گاهی اوقات پرستاران، برنامه ی درمانی لیدکامب را با آموزش و نظارت یک درمانگر متخصص اجرا می کنند.</p>\r\n\r\n<p> </p>\r\n\r\n<p>«مراجعه ی هفتگی والدین به کلینیک» - «اهداف درمانی» - «اندازه گیری لکنت» - «هدف SR» - «اهداف درمانی مشخص شده توسط SR» - «بازخورد کلامی والدین» از آیتم های برنامه لیدکامب می باشد.</p>\r\n\r\n<p> </p>\r\n\r\n<p>......</p>\r\n\r\n<p> </p>\r\n\r\n<p>این برنامه با همکاری گروه نرم افزاری هورماه و کلینیک گفتاردرمانی آیران ارايه و آماده سازی شده است.</p>\r\n\r\n<p> </p>\r\n\r\n<p>مشاوران درمانی :</p>\r\n\r\n<p> </p>\r\n\r\n<p>عاطفه موذنی - کارشناس ارشد گفتاردرمانی</p>\r\n\r\n<p> </p>\r\n\r\n<p>میثم شفیعی - کارشناس ارشد گفتاردرمانی</p>\r\n\r\n<p> </p>\r\n\r\n<p>توسعه دهنده اپلیکیشن :</p>\r\n\r\n<p> </p>\r\n\r\n<p>سید محمد حسین سجادی منش</p>\r\n\r\n<p> </p>\r\n\r\n<p>وبسایت:</p>\r\n\r\n<p> </p>\r\n\r\n<p><a href=\"http://www.stutteringapk.ir\">stutteringapk.ir</a></p>\r\n', '', '[\"\\u062e\\u0648\\u0627\\u0646\\u062f\\u0646 \\u06a9\\u0627\\u0631\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647\",\"\\u06cc\\u0627\\u0641\\u062a\\u0646 \\u062d\\u0633\\u0627\\u0628\\u200c\\u0647\\u0627 \\u062f\\u0631 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0627\\u0632 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\"]', '2127', '1.3', 'accepted', '2', null, '2', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('25', 'برنامه آزمایشی', '43', '5', 'enable', '0', 's8kEb1464260978.png', '<p>sadf</p>\r\n', '<p>asdfsadf</p>\r\n', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '1', null, '1', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('35', 'برنامه آزمایشیasd', null, '5', 'enable', '0', 'eOwhE1464420916.png', '<p>asdf</p>\r\n', '<p>sdafsdf</p>\r\n', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '1', 'masoud', '37', '0', '2', '0');
 
 -- ----------------------------
 -- Table structure for ym_app_buys
@@ -113,8 +110,6 @@ CREATE TABLE `ym_app_buys` (
 -- ----------------------------
 -- Records of ym_app_buys
 -- ----------------------------
-INSERT INTO `ym_app_buys` VALUES ('2', '18', '43', '1461845059');
-INSERT INTO `ym_app_buys` VALUES ('3', '18', '39', '1462249022');
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -156,20 +151,38 @@ CREATE TABLE `ym_app_images` (
   PRIMARY KEY (`id`),
   KEY `app_id` (`app_id`),
   CONSTRAINT `ym_app_images_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_app_images
 -- ----------------------------
-INSERT INTO `ym_app_images` VALUES ('7', '18', '7i1hq1460630601.jpg');
-INSERT INTO `ym_app_images` VALUES ('8', '18', 'TwYEo1460630602.jpg');
-INSERT INTO `ym_app_images` VALUES ('9', '18', 'b5Ueb1460630604.jpg');
-INSERT INTO `ym_app_images` VALUES ('10', '19', 'N9QpK1460630672.jpg');
-INSERT INTO `ym_app_images` VALUES ('11', '19', 'AFD1r1460630679.jpg');
-INSERT INTO `ym_app_images` VALUES ('12', '19', 'daS8E1460630684.jpg');
-INSERT INTO `ym_app_images` VALUES ('13', '20', 'lV7Hb1460814214lV7Hb1460814214.jpg');
-INSERT INTO `ym_app_images` VALUES ('14', '20', 'AYGcM1460814245AYGcM1460814245.jpg');
-INSERT INTO `ym_app_images` VALUES ('15', '20', 'wCnw21460814247wCnw21460814247.jpg');
+INSERT INTO `ym_app_images` VALUES ('16', '25', 'KH7E81464261037.png');
+
+-- ----------------------------
+-- Table structure for ym_app_packages
+-- ----------------------------
+DROP TABLE IF EXISTS `ym_app_packages`;
+CREATE TABLE `ym_app_packages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه',
+  `app_id` int(10) unsigned DEFAULT NULL COMMENT 'برنامه',
+  `version` varchar(20) DEFAULT NULL COMMENT 'نسخه',
+  `package_name` varchar(100) CHARACTER SET utf8 DEFAULT NULL COMMENT 'نام بسته',
+  `file_name` varchar(255) DEFAULT NULL COMMENT 'فایل',
+  `create_date` varchar(20) DEFAULT NULL COMMENT 'تاریخ بارگذاری',
+  `publish_date` varchar(20) DEFAULT NULL COMMENT 'تاریخ انتشار',
+  `status` enum('pending','accepted','refused','change_required') DEFAULT 'pending' COMMENT 'وضعیت',
+  PRIMARY KEY (`id`),
+  KEY `app_id` (`app_id`),
+  CONSTRAINT `ym_app_packages_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of ym_app_packages
+-- ----------------------------
+INSERT INTO `ym_app_packages` VALUES ('24', '25', '2.1.4', 'ir.tgbs.android.iranapp2', '2.1.4-ir.tgbs.android.iranapp.apk', '1464260466', '1464356833', 'accepted');
+INSERT INTO `ym_app_packages` VALUES ('25', '25', '1.0.1', 'ir.tgbs.android.iranapp3', '1.0.1-ir.tgbs.android.iranapp.ipa', '1464260572', '1464353232', 'accepted');
+INSERT INTO `ym_app_packages` VALUES ('33', '35', '2.1.4', 'ir.tgbs.android.iranapp', '2.1.4-ir.tgbs.android.iranapp.apk', '1464419435', '1464421114', 'accepted');
+INSERT INTO `ym_app_packages` VALUES ('36', '35', '1.0.1', 'ir.tgbs.android.iranapp', '2.1.4-ir.tgbs.android.iranapp.apk', '1464421114', '1464421114', 'accepted');
 
 -- ----------------------------
 -- Table structure for ym_app_platforms
@@ -203,8 +216,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '72');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457512');
+INSERT INTO `ym_counter_save` VALUES ('counter', '86');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457537');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '5');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1457598600');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -222,7 +235,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1462259973');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1464425505');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -331,9 +344,6 @@ CREATE TABLE `ym_user_app_bookmark` (
 -- ----------------------------
 -- Records of ym_user_app_bookmark
 -- ----------------------------
-INSERT INTO `ym_user_app_bookmark` VALUES ('43', '18');
-INSERT INTO `ym_user_app_bookmark` VALUES ('43', '19');
-INSERT INTO `ym_user_app_bookmark` VALUES ('43', '20');
 
 -- ----------------------------
 -- Table structure for ym_user_details
@@ -364,7 +374,7 @@ CREATE TABLE `ym_user_details` (
 -- Records of ym_user_details
 -- ----------------------------
 INSERT INTO `ym_user_details` VALUES ('39', 'یوسف مبشری', 'yusef', null, null, '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1000', 'Yusef', 'accepted', '1', '23423');
-INSERT INTO `ym_user_details` VALUES ('43', 'مسعود قراگوزلو', 'masoud', '', '', '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1760', 'Masoud', 'accepted', '1', '123456789123456789123456');
+INSERT INTO `ym_user_details` VALUES ('43', 'مسعود قراگوزلو', 'masoud', '', '', '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1760', 'masouud', 'accepted', '1', '123456789123456789123456');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
@@ -380,6 +390,35 @@ CREATE TABLE `ym_user_dev_id_requests` (
 -- ----------------------------
 -- Records of ym_user_dev_id_requests
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for ym_user_notifications
+-- ----------------------------
+DROP TABLE IF EXISTS `ym_user_notifications`;
+CREATE TABLE `ym_user_notifications` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'شناسه',
+  `user_id` int(10) unsigned DEFAULT NULL COMMENT 'کاربر',
+  `message` varchar(500) CHARACTER SET utf8 COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'متن پیام',
+  `seen` tinyint(4) NOT NULL COMMENT 'مشاهده شده',
+  `date` varchar(30) NOT NULL COMMENT 'زمان',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `ym_user_notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of ym_user_notifications
+-- ----------------------------
+INSERT INTO `ym_user_notifications` VALUES ('2', '43', 'اطلاعات شما توسط مدیر سیستم تایید شد.', '1', '1461845059');
+INSERT INTO `ym_user_notifications` VALUES ('3', '43', 'شناسه شما توسط مدیر سیستم تایید شد.', '1', '1461845059');
+INSERT INTO `ym_user_notifications` VALUES ('4', '43', 'برنامه  برنامه لیدکامب - لکنت کودکان تایید شده است.', '1', '1461845059');
+INSERT INTO `ym_user_notifications` VALUES ('6', '43', 'برنامه برنامه آزمایشی تایید شده است.', '0', '1464262310');
+INSERT INTO `ym_user_notifications` VALUES ('7', '43', 'برنامه برنامه آزمایشی تایید شده است.', '0', '1464262422');
+INSERT INTO `ym_user_notifications` VALUES ('8', '43', 'برنامه برنامه آزمایشی تایید شده است.', '0', '1464353232');
+INSERT INTO `ym_user_notifications` VALUES ('9', '43', 'بسته asdfsdf توسط مدیر سیستم حذف شد.', '0', '1464358109');
+INSERT INTO `ym_user_notifications` VALUES ('10', '43', 'بسته ir.tgbs.android.iranappasd توسط مدیر سیستم حذف شد.', '0', '1464358330');
+INSERT INTO `ym_user_notifications` VALUES ('11', null, 'بسته ir.tgbs.android.iranapp توسط مدیر سیستم حذف شد.', '0', '1464421049');
+INSERT INTO `ym_user_notifications` VALUES ('12', null, 'بسته ir.tgbs.android.iranapp توسط مدیر سیستم حذف شد.', '0', '1464421103');
 
 -- ----------------------------
 -- Table structure for ym_user_roles

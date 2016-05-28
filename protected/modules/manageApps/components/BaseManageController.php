@@ -209,7 +209,7 @@ class BaseManageController extends Controller
                     $thumbnail->createThumbnail($tmpDIR . $model->icon, 150, 150, false, $appIconsDIR . $model->icon);
                     unlink($tmpDIR . $model->icon);
                 }
-                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت وایریش شد.');
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ویرایش شد.');
                 $this->refresh();
             } else {
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
