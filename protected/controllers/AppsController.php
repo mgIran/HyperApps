@@ -197,7 +197,7 @@ class AppsController extends Controller
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Transfer-Encoding: binary');
-        header('Content-Type: text/html');
+        header('Content-Type: '.$mimeType);
         header('Content-Disposition: attachment; filename='.$fakeFileName);
 
         echo stream_get_contents($fp,-1,0);

@@ -58,7 +58,7 @@ Yii::app()->clientScript->registerCss('inline',"
                                             if(responseObj.status)
                                                 {serverName} = responseObj.fileName;
                                             else
-                                                $(".uploader-message").text(responseObj.message);
+                                                $(".uploader-message").text(responseObj.message).addClass("error");
                                         ',
                                     ));?>
                                     <div class="row">
@@ -72,10 +72,10 @@ Yii::app()->clientScript->registerCss('inline',"
                                                 'data'=>'js:$("#package-info-form").serialize()',
                                                 'beforeSend'=>"js:function(){
                                                     if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
-                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.');
+                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
                                                         return false;
                                                     }else
-                                                        $('.uploader-message').text('');
+                                                        $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
                                                 }",
                                                 'success'=>"js:function(data){
                                                     if(data.status){
@@ -86,9 +86,10 @@ Yii::app()->clientScript->registerCss('inline',"
                                                         $('.dropzone').removeClass('dz-started');
                                                     }
                                                     else
-                                                        $('.uploader-message').text(data.message);
+                                                        $('.uploader-message').text(data.message).addClass('error');
                                                 }"
                                             ), array('class'=>'btn btn-success pull-left'));?>
+                                            <h5 class="uploader-message error pull-right"></h5>
                                         </div>
                                     </div>
                                 <?php echo CHtml::endForm();?>
@@ -109,7 +110,7 @@ Yii::app()->clientScript->registerCss('inline',"
                                             if(responseObj.status)
                                                 {serverName} = responseObj.fileName;
                                             else
-                                                $(".uploader-message").text(responseObj.message);
+                                                $(".uploader-message").text(responseObj.message).addClass("error");
                                         ',
                                     ));?>
                                     <div class="row">
@@ -131,13 +132,13 @@ Yii::app()->clientScript->registerCss('inline',"
                                                 'data'=>'js:$("#package-info-form").serialize()',
                                                 'beforeSend'=>"js:function(){
                                                     if($('#package-info-form #version').val()=='' || $('#package-info-form #package_name').val()==''){
-                                                        $('.uploader-message').text('لطفا فیلد های ستاره دار را پر کنید.');
+                                                        $('.uploader-message').text('لطفا فیلد های ستاره دار را پر کنید.').addClass('error');
                                                         return false;
                                                     }else if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
-                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.');
+                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
                                                         return false;
                                                     }else
-                                                        $('.uploader-message').text('');
+                                                        $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
                                                 }",
                                                 'success'=>"js:function(data){
                                                     if(data.status){
@@ -146,18 +147,18 @@ Yii::app()->clientScript->registerCss('inline',"
                                                         $('#package-modal').modal('hide');
                                                     }
                                                     else
-                                                        $('.uploader-message').text(data.message);
+                                                        $('.uploader-message').text(data.message).addClass('error');
                                                     $('.dz-preview').remove();
                                                     $('.dropzone').removeClass('dz-started');
                                                     $('#package-info-form #version').val('');
                                                     $('#package-info-form #package_name').val('');
                                                 }"
                                             ), array('class'=>'btn btn-success pull-left'));?>
+                                            <h5 class="uploader-message error pull-right"></h5>
                                         </div>
                                     </div>
                                 <?php echo CHtml::endForm();?>
                             <?php endif;?>
-                            <h5 class="uploader-message error"></h5>
                         </div>
                     </div>
                 </div>
@@ -167,5 +168,6 @@ Yii::app()->clientScript->registerCss('inline',"
 </div>
 <?php Yii::app()->clientScript->registerCss('package-form','
 #package-info-form input[type="text"]{margin-top:20px;}
-#package-info-form input[type="submit"]{margin-top:20px;}
+#package-info-form input[type="submit"], .uploader-message{margin-top:20px;}
+.uploader-message{line-height:32px;}
 ');?>

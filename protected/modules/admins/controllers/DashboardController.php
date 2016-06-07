@@ -64,7 +64,10 @@ class DashboardController extends Controller
         ));
 
         $criteria=new CDbCriteria();
-        $criteria->addCondition('status=:packageStatus');
+        $criteria->with='app';
+        $criteria->alias='package';
+        $criteria->addCondition('package.status=:packageStatus');
+        $criteria->addCondition('app.title!=""');
         $criteria->params=array(
             ':packageStatus'=>'pending',
         );

@@ -210,6 +210,7 @@ class Apps extends CActiveRecord
 
 	public function afterFind()
 	{
-		$this->lastPackage=$this->packages[count($this->packages)-1];
+		if(!empty($this->packages))
+			$this->lastPackage=$this->packages[count($this->packages)-1];
 	}
 }
