@@ -75,7 +75,7 @@ class AppsController extends Controller
 				$model->developer_id=Yii::app()->user->getId();
                 if ($model->save()) {
                     Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
-                    $this->redirect('update/' . $model->id);
+                    $this->redirect('update/' . $model->id.'?new=1');
                 } else
                     Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 
@@ -458,6 +458,7 @@ class AppsController extends Controller
 			$model = new AppPackages();
 			$model->app_id = $_POST['app_id'];
 			$model->create_date = time();
+			$model->for = $_POST['for'];
 			if ($_POST['platform'] == 'android') {
 				$apkInfo = $this->apkParser($tempDir . DIRECTORY_SEPARATOR . $_POST['Apps']['file_name']);
 				$model->version = $apkInfo['version'];

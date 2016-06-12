@@ -330,7 +330,13 @@ class PublicController extends Controller
      */
     public function actionNotifications()
     {
-        $model=UserNotifications::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->getId()));
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('user_id=:user_id');
+        $criteria->order='id DESC';
+        $criteria->params=array(
+            ':user_id'=>Yii::app()->user->getId()
+        );
+        $model=UserNotifications::model()->findAll($criteria);
         UserNotifications::model()->updateAll(array('seen'=>'1'),'user_id=:user_id',array(':user_id'=>Yii::app()->user->getId()));
         $this->layout='//layouts/panel';
         Yii::app()->theme='market';

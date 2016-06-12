@@ -38,6 +38,17 @@
     }
 }
 @media all and (max-width: 767px) {
+    .tab-content{
+        padding: 30px 0;
+    }
+    .packages-list-container{
+        padding:0;
+    }
+    #packages-list .btn-info{
+        margin-top: 15px;
+        padding: 5px;
+        display: block;
+    }
     .os-menu{
         top: 60px;
     }

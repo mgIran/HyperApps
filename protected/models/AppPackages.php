@@ -12,6 +12,8 @@
  * @property string $create_date
  * @property string $publish_date
  * @property string $status
+ * @property string $reason
+ * @property string $for
  *
  * The followings are the available model relations:
  * @property Apps $app
@@ -23,6 +25,11 @@ class AppPackages extends CActiveRecord
         'accepted' => 'تایید شده',
         'refused' => 'رد شده',
         'change_required' => 'نیاز به تغییر',
+    );
+
+    public $forLabels = array(
+        'new_app'=>'<span class="label label-success">بسته جدید</span>',
+        'old_app'=>'<span class="label label-warning">بسته تغییر داده شده</span>',
     );
 
     /**
@@ -47,9 +54,11 @@ class AppPackages extends CActiveRecord
             array('package_name', 'length', 'max' => 100),
             array('file_name', 'length', 'max' => 255),
             array('status', 'length', 'max' => 15),
+            array('reason', 'safe'),
+            array('for', 'length', 'max'=>7),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, app_id, version, package_name, file_name, create_date, publish_date, status', 'safe', 'on' => 'search'),
+            array('id, app_id, version, package_name, file_name, create_date, publish_date, status, reason, for', 'safe', 'on' => 'search'),
         );
     }
 
@@ -79,6 +88,8 @@ class AppPackages extends CActiveRecord
             'create_date' => 'تاریخ بارگذاری',
             'publish_date' => 'تاریخ انتشار',
             'status' => 'وضعیت',
+            'reason' => 'دلیل',
+            'for' => 'نوع بسته',
         );
     }
 
@@ -108,6 +119,8 @@ class AppPackages extends CActiveRecord
         $criteria->compare('create_date', $this->create_date, true);
         $criteria->compare('publish_date', $this->publish_date, true);
         $criteria->compare('status', $this->status, true);
+        $criteria->compare('reason',$this->reason,true);
+        $criteria->compare('for',$this->for,true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

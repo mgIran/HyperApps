@@ -424,6 +424,8 @@ class BaseManageController extends Controller
             $model->setScenario('publish');
             if ($_POST['value'] == 'accepted')
                 $model->publish_date = time();
+            if ($_POST['value'] == 'refused' or $_POST['value'] == 'change_required')
+                $model->reason = $_POST['reason'];
             if ($model->save()) {
                 if ($_POST['value'] == 'accepted')
                     $this->createLog('بسته ' . $model->package_name . ' توسط مدیر سیستم تایید شد.', $model->app->developer_id);

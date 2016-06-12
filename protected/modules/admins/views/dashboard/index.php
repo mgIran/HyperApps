@@ -91,6 +91,11 @@
                         'value'=>'CHtml::link($data->app->title, Yii::app()->createUrl("/apps/".$data->app_id."/".$data->app->title))',
                         'type'=>'raw'
                     ),
+                    'for'=>array(
+                        'name'=>'for',
+                        'value'=>'$data->forLabels[$data->for]',
+                        'type'=>'raw'
+                    ),
                     'version',
                     'package_name',
                     'status'=>array(
@@ -115,19 +120,52 @@
                 ),
             ));?>
             <?php Yii::app()->clientScript->registerScript('changePackageStatus', "
-                $('.change-package-status').on('change', function(){
-                    $.ajax({
-                        url:'".$this->createUrl('/manageApps/android/changePackageStatus')."',
-                        type:'POST',
-                        dataType:'JSON',
-                        data:{package_id:$(this).data('id'), value:$(this).val()},
-                        success:function(data){
-                            if(data.status)
-                                $.fn.yiiGridView.update('newest-packages-grid');
-                            else
-                                alert('در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
-                        }
-                    });
+                $('body').on('change', '.change-package-status', function(){
+                    if($(this).val()=='refused' || $(this).val()=='change_required'){
+                        $('#reason-modal').modal('show');
+                        $('input#package-id').val($(this).data('id'));
+                        $('input#package-status').val($(this).val());
+                    }else{
+                        $.ajax({
+                            url:'".$this->createUrl('/manageApps/android/changePackageStatus')."',
+                            type:'POST',
+                            dataType:'JSON',
+                            data:{package_id:$(this).data('id'), value:$(this).val()},
+                            success:function(data){
+                                if(data.status)
+                                    $.fn.yiiGridView.update('newest-packages-grid');
+                                else
+                                    alert('در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+                            }
+                        });
+                    }
+                });
+                $('.close-reason-modal').click(function(){
+                    $.fn.yiiGridView.update('newest-packages-grid');
+                    $('#reason-text').val('');
+                });
+                $('.save-reason-modal').click(function(){
+                    if($('#reason-text').val()==''){
+                        $('.reason-modal-message').addClass('error').text('لطفا دلیل را ذکر کنید.');
+                        return false;
+                    }else{
+                        $('.reason-modal-message').removeClass('error').text('در حال ثبت...');
+                        $.ajax({
+                            url:'".$this->createUrl('/manageApps/android/changePackageStatus')."',
+                            type:'POST',
+                            dataType:'JSON',
+                            data:{package_id:$('#package-id').val(), value:$('#package-status').val(), reason:$('#reason-text').val()},
+                            success:function(data){
+                                if(data.status){
+                                    $.fn.yiiGridView.update('newest-packages-grid');
+                                    $('#reason-modal').modal('hide');
+                                    $('#reason-text').val('');
+                                    $('.reason-modal-message').text('');
+                                } else
+                                    alert('در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+                            }
+                        });
+                    }
                 });
             ");?>
         </div>
@@ -219,6 +257,25 @@
                 تعداد کل بازدید ها : <?php echo Yii::app()->userCounter->getTotal(); ?><br />
                 بیشترین بازدید : <?php echo Yii::app()->userCounter->getMaximal(); ?><br />
             </p>
+        </div>
+    </div>
+</div>
+
+
+<div id="reason-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <?php echo CHtml::hiddenField('package_id', '', array('id'=>'package-id'));?>
+                <?php echo CHtml::hiddenField('package_status', '', array('id'=>'package-status'));?>
+                <?php echo CHtml::label('لطفا دلیل این انتخاب را بنویسید:', 'reason-text')?>
+                <?php echo CHtml::textArea('reason', '', array('placeholder'=>'دلیل', 'class'=>'form-control', 'id'=>'reason-text'));?>
+                <div class="reason-modal-message error"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default close-reason-modal" data-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-success save-reason-modal">ثبت</button>
+            </div>
         </div>
     </div>
 </div>

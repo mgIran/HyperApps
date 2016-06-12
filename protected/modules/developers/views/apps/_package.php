@@ -2,20 +2,22 @@
 /* @var $this AppsController */
 /* @var $model Apps */
 /* @var $dataProvider CActiveDataProvider */
+/* @var $for string */
 Yii::app()->clientScript->registerCss('inline',"
 .dropzone.single{width:100%;}
 ");
 ?>
 
-<div class="container-fluid">
+<div class="container-fluid packages-list-container">
     <a class="btn btn-success" href="#package-modal" data-toggle="modal"><i class="icon icon-plus"></i> ثبت بسته</a>
     <div class="table text-center">
         <div class="thead">
-            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">نسخه</div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-8">نام بسته</div>
+            <div class="col-lg-1 col-md-1 col-sm-4 hidden-xs">نسخه</div>
             <div class="col-lg-2 col-md-2 hidden-sm hidden-xs">حجم</div>
-            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">تاریخ بارگذاری</div>
-            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">تاریخ انتشار</div>
-            <div class="col-lg-2 col-md-2 col-sm-4 hidden-xs">وضعیت</div>
+            <div class="col-lg-2 col-md-3 hidden-sm hidden-xs">تاریخ بارگذاری</div>
+            <div class="col-lg-2 col-md-3 hidden-sm hidden-xs">تاریخ انتشار</div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">وضعیت</div>
         </div>
         <div class="tbody">
             <?php $this->widget('zii.widgets.CListView', array(
@@ -63,6 +65,7 @@ Yii::app()->clientScript->registerCss('inline',"
                                     ));?>
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <?php echo CHtml::hiddenField('for', $for);?>
                                             <?php echo CHtml::hiddenField('app_id', $model->id);?>
                                             <?php echo CHtml::hiddenField('filesFolder', $model->platform->name);?>
                                             <?php echo CHtml::hiddenField('platform', $model->platform->name);?>
@@ -123,6 +126,7 @@ Yii::app()->clientScript->registerCss('inline',"
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <?php echo CHtml::hiddenField('for', $for);?>
                                             <?php echo CHtml::hiddenField('app_id', $model->id);?>
                                             <?php echo CHtml::hiddenField('filesFolder', $model->platform->name);?>
                                             <?php echo CHtml::hiddenField('platform', $model->platform->name);?>

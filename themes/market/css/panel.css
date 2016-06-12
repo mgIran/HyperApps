@@ -268,3 +268,9 @@ input[type='checkbox']{
     display: inline-block;
     width: auto;
 }
+.reason-collapse{
+    background: #eee;
+    padding:15px;
+    text-align: right;
+    margin-top: 15px;
+}
