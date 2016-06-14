@@ -18,7 +18,7 @@ RewriteRule ^/?$ "http\:\/\/tablo\.ws\/" [R=301,L]
 RewriteCond %{HTTP_HOST} ^5\.144\.130\.40
 RewriteRule (.*) http://tablo.ws/$1 [R=301,L]
 
-RewriteCond %{HTTP_USER_AGENT} libwww-perl.* 
+RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
 RewriteRule .* ? [F,L]
 
 <IfModule mod_expires.c>
@@ -29,3 +29,7 @@ RewriteRule .* ? [F,L]
     ExpiresByType image/gif "access plus 1 month"
     ExpiresByType image/png "access plus 1 month"
 </IfModule>
+
+<FilesMatch .*\.(zip|doc|docx|pdf|rar|apk)>
+Deny from all
+</FilesMatch>
