@@ -1,5 +1,5 @@
 <?php
-namespace ApkParser;
+
 
 /**
  * This file is part of the Apk Parser package.

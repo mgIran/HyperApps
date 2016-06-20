@@ -46,8 +46,8 @@ if($model->platform)
         <div class="app-heading">
             <h2><?= $model->title ?></h2>
             <div class="row-fluid">
-                <span ><?= $model->developer?$model->developer->userDetails->fa_name:$model->developer_team; ?></span>
-                <span ><?= $model->category?$model->category->title:''; ?></span>
+                <span ><a href="<?php echo $this->createUrl('apps/developer?title='.($model->developer?urlencode($model->developer->userDetails->developer_id).'&id='.$model->developer_id:urlencode($model->developer_team).'&t=1'));?>"><?= $model->developer?$model->developer->userDetails->developer_id:$model->developer_team; ?></a></span>
+                <span ><a href="<?php echo $this->createUrl('apps/'.((strpos($model->category->path,'2-')!==false)?'games':'programs').'/'.$model->category->id.'/'.urlencode($model->category->title));?>"><?= $model->category?$model->category->title:''; ?></a></span>
                 <span class="app-rate">
                     <? ?>
                 </span>

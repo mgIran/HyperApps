@@ -1,6 +1,4 @@
 <?php
-namespace ApkParser;
-use ApkParser\AndroidPlatform;
 
 /**
  * This file is part of the Apk Parser package.
@@ -11,7 +9,7 @@ use ApkParser\AndroidPlatform;
  * file that was distributed with this source code.
  */
 
-class Manifest extends \ApkParser\Xml
+class Manifest extends Xml
 {
 
     private $xmlParser;
@@ -126,7 +124,7 @@ class Manifest extends \ApkParser\Xml
      * @param mixed $className
      * @return \ApkParser\ManifestXmlElement
      */
-    public function getXmlObject($className = '\ApkParser\ManifestXmlElement')
+    public function getXmlObject($className = 'ManifestXmlElement')
     {
         return $this->xmlParser->getXmlObject($className);
     }

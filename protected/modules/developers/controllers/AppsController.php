@@ -433,7 +433,8 @@ class AppsController extends Controller
 	 */
 	public function apkParser($filename)
 	{
-		$apk = new \ApkParser\Parser($filename);
+		Yii::import('application.modules.manageApps.components.ApkParser.*');
+		$apk = new Parser($filename);
 		$manifest = $apk->getManifest();
 
 		return array(

@@ -22,6 +22,10 @@ $this->menu=array(
 
 <div class="tab-content">
     <div id="info" class="tab-pane fade in active">
-        <?php $this->renderPartial('manageApps.views.baseManage._form', array('model'=>$model,'icon'=>$icon)); ?>
+        <?php $this->renderPartial('manageApps.views.baseManage._form', array(
+            'model'=>$model,'icon'=>$icon,
+            'tax'=>$tax,
+            'commission'=>$commission,
+        )); ?>
     </div>
 </div>

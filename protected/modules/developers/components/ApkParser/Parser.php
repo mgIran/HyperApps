@@ -1,5 +1,5 @@
 <?php
-namespace ApkParser;
+
 
 /**
  * This file is part of the Apk Parser package.
@@ -96,7 +96,7 @@ class Parser
         if (!$returns) //TODO : check if it not contains any error. $returns will always contain some output.
             throw new \Exception("Couldn't decompile .dex file");
 
-        $file_list = \ApkParser\Utils::globRecursive($cache_folder . '*.ddx');
+        $file_list = Utils::globRecursive($cache_folder . '*.ddx');
 
         //Make classnames more readable.
         foreach ($file_list as &$file) {

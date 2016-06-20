@@ -53,7 +53,8 @@ a[href='#package-modal']{margin-top:20px;}
                     }
                     else
                         $('.uploader-message').text(data.message);
-                }"
+                }",
+                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
             ), array('class'=>'btn btn-success pull-left'));?>
         </div>
     </div>
@@ -116,7 +117,8 @@ a[href='#package-modal']{margin-top:20px;}
                     $('.dropzone').removeClass('dz-started');
                     $('#package-info-form #version').val('');
                     $('#package-info-form #package_name').val('');
-                }"
+                }",
+                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
             ), array('class'=>'btn btn-success pull-left'));?>
         </div>
     </div>

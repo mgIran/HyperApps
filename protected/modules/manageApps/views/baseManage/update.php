@@ -27,7 +27,11 @@ if(isset($_GET['step']))
 
     <div class="tab-content">
     <div id="general" class="tab-pane fade <?= ($step == 1?'in active':''); ?>">
-        <?php $this->renderPartial('manageApps.views.baseManage._form', array('model'=>$model,'icon'=>$icon)); ?>
+        <?php $this->renderPartial('manageApps.views.baseManage._form', array(
+            'model'=>$model,'icon'=>$icon,
+            'tax'=>$tax,
+            'commission'=>$commission,
+        )); ?>
     </div>
         <? if(!$model->getIsNewRecord()):?>
             <div id="packages" class="tab-pane fade <?= ($step == 2?'in active':''); ?>">

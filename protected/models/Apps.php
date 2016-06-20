@@ -167,6 +167,8 @@ class Apps extends CActiveRecord
 		$criteria->compare('install',$this->install,true);
 		$criteria->compare('deleted',$this->deleted);
 
+		$criteria->addCondition('title != ""');
+
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

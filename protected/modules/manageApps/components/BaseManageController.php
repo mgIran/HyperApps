@@ -113,6 +113,17 @@ class BaseManageController extends Controller
             if ($this->platform_id)
                 $model->platform_id = $this->platform_id;
             $model->confirm='accepted';
+            $pt = $_POST['priceType'];
+            switch($pt){
+                case 'free':
+                    $model->price = 0;
+                    break;
+                case 'online-payment':
+                    break;
+                case 'in-app-payment':
+                    $model->price = -1;
+                    break;
+            }
             if ($model->save()) {
                 if ($model->icon) {
                     $thumbnail = new Imager();
@@ -125,9 +136,12 @@ class BaseManageController extends Controller
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
 
+        Yii::app()->getModule('setting');
         $this->render('manageApps.views.baseManage.create', array(
             'model' => $model,
             'icon' => $icon,
+            'tax'=>SiteSetting::model()->findByAttributes(array('name'=>'tax'))->value,
+            'commission'=>SiteSetting::model()->findByAttributes(array('name'=>'commission'))->value,
         ));
     }
 
@@ -200,6 +214,17 @@ class BaseManageController extends Controller
                 $model->permissions = CJSON::encode($_POST['Apps']['permissions']);
             } else
                 $model->permissions = null;
+            $pt = $_POST['priceType'];
+            switch($pt){
+                case 'free':
+                    $model->price = 0;
+                    break;
+                case 'online-payment':
+                    break;
+                case 'in-app-payment':
+                    $model->price = -1;
+                    break;
+            }
             if($model->save()) {
                 if($fileFlag) {
                     rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);
@@ -223,12 +248,15 @@ class BaseManageController extends Controller
         );
         $packageDataProvider=new CActiveDataProvider('AppPackages', array('criteria'=>$criteria));
 
+        Yii::app()->getModule('setting');
         $this->render('manageApps.views.baseManage.update', array(
             'model' => $model,
             'icon' => $icon,
             'images' => $images,
             'step' => 1,
             'packageDataProvider'=>$packageDataProvider,
+            'tax'=>SiteSetting::model()->findByAttributes(array('name'=>'tax'))->value,
+            'commission'=>SiteSetting::model()->findByAttributes(array('name'=>'commission'))->value,
         ));
     }
 
@@ -459,7 +487,8 @@ class BaseManageController extends Controller
      */
     public function apkParser($filename)
     {
-        $apk = new \ApkParser\Parser($filename);
+        Yii::import('application.modules.manageApps.components.ApkParser.*');
+        $apk = new Parser($filename);
         $manifest = $apk->getManifest();
 
         return array(

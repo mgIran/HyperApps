@@ -51,9 +51,86 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'price'); ?>
-		<?php echo $form->textField($model,'price'); ?>
+		<?php
+		if($model->price == 0)
+		{
+			$r = 'free';
+			$p = null;
+		}
+		else if($model->price == -1)
+		{
+			$r = 'in-app-payment';
+			$p = null;
+		}else
+		{
+			$r = 'online-payment';
+			$p = $model->price;
+		}
+		echo CHtml::radioButtonList('priceType',$r,array('online-payment'=>'پرداخت آنلاین','in-app-payment'=>'پرداخت درون برنامه ای','free'=>'رایگان'),
+			array(
+				'class'=>'priceType',
+			)
+		);
+		Yii::app()->clientScript->registerScript('priceType', '
+                $("body").on("change",".priceType",function(){
+                    var priceType = $(this).val();
+                    var priceInput = $("#price-input");
+                    $(\'.portion\').addClass(\'hidden\');
+                    $(\'#tax-tag\').text("");
+                    $(\'#market-portion\').text("");
+                    $(\'#developer-portion\').text("");
+                    switch(priceType){
+                        case \'free\':
+                            priceInput.val("").attr("disabled",true).attr("readonly",true);
+                            break;
+                        case \'in-app-payment\':
+                            priceInput.val("").attr("disabled",true).attr("readonly",true);
+                            break;
+                        case \'online-payment\':
+                            priceInput.val("").attr("disabled",false).attr("readonly",false);
+                            break;
+                    }
+                });
+            ');
+		?>
+		<?php echo CHtml::textField('Apps[price]',$p,array(
+			'placeholder'=>$model->getAttributeLabel('price').' (تومان) *',
+			'class'=>'form-control price',
+			'id'=>'price-input',
+			'disabled' => $model->price>0?false:true,
+			'readonly' => $model->price>0?false:true
+		)); ?>
 		<?php echo $form->error($model,'price'); ?>
+		<?php echo CHtml::hiddenField('tax', $tax);?>
+		<?php echo CHtml::hiddenField('commission', $commission);?>
+		<?php Yii::app()->clientScript->registerScript('portion', "
+			$('#price-input').on('keydown', function(e){
+				if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 8)
+					return true;
+				else
+					return false;
+			});
+			if($('#price-input').val()!='') {
+				$('.portion').removeClass('hidden');
+				var price=$(this).val();
+				$('#tax-tag').text((price*parseInt($('#tax').val()))/100);
+				$('#market-portion').text((price*parseInt($('#commission').val()))/100);
+				$('#developer-portion').text(price-parseInt($('#tax-tag').text())-parseInt($('#market-portion').text()));
+			}
+			else
+				$('.portion').addClass('hidden');
+			$('#price-input').on('keyup', function(e){
+				if($(this).val()!='') {
+					$('.portion').removeClass('hidden');
+					var price=$(this).val();
+					$('#tax-tag').text((price*parseInt($('#tax').val()))/100);
+					$('#market-portion').text((price*parseInt($('#commission').val()))/100);
+					$('#developer-portion').text(price-parseInt($('#tax-tag').text())-parseInt($('#market-portion').text()));
+				}
+				else
+					$('.portion').addClass('hidden');
+			});
+		");?>
 	</div>
 
 	<div class="row">

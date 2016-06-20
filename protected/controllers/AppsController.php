@@ -28,7 +28,7 @@ class AppsController extends Controller
                 'roles'=>array('admin'),
             ),
             array('allow',
-                'actions'=>array('view','download','programs','games','educations'),
+                'actions'=>array('view','download','programs','games','educations','developer'),
                 'users'=>array('*'),
             ),
             array('allow',
@@ -208,7 +208,6 @@ class AppsController extends Controller
      */
     public function actionPrograms($id=null, $title=null)
     {
-
         if(is_null($id))
             $id=1;
         $this->showCategory($id, $title, 'برنامه ها');
@@ -232,6 +231,45 @@ class AppsController extends Controller
         if(is_null($id))
             $id=3;
         $this->showCategory($id, $title, 'آموزش ها');
+    }
+
+    /**
+     * Show programs list
+     */
+    public function actionDeveloper($title, $id=null)
+    {
+        Yii::app()->theme='market';
+        $this->layout='public';
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('platform_id=:platform');
+        $developer_id='';
+        if(isset($_GET['t']) and $_GET['t']==1) {
+            $criteria->addCondition('developer_team=:dev');
+            $developer_id=$title;
+        }else {
+            $criteria->addCondition('developer_id=:dev');
+            $developer_id=$id;
+        }
+        $criteria->params=array(
+            ':confirm'=>'accepted',
+            ':deleted'=>0,
+            ':status'=>'enable',
+            ':platform'=>$this->platform,
+            ':dev'=>$developer_id,
+        );
+
+        $dataProvider=new CActiveDataProvider('Apps', array(
+            'criteria'=>$criteria,
+        ));
+
+        $this->render('apps_list', array(
+            'dataProvider'=>$dataProvider,
+            'title'=>(!is_null($title))?$title:null,
+            'pageTitle'=>'برنامه ها'
+        ));
     }
 
     /**

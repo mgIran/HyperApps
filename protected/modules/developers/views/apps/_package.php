@@ -90,7 +90,8 @@ Yii::app()->clientScript->registerCss('inline',"
                                                     }
                                                     else
                                                         $('.uploader-message').text(data.message).addClass('error');
-                                                }"
+                                                }",
+                                                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
                                             ), array('class'=>'btn btn-success pull-left'));?>
                                             <h5 class="uploader-message error pull-right"></h5>
                                         </div>
@@ -156,7 +157,8 @@ Yii::app()->clientScript->registerCss('inline',"
                                                     $('.dropzone').removeClass('dz-started');
                                                     $('#package-info-form #version').val('');
                                                     $('#package-info-form #package_name').val('');
-                                                }"
+                                                }",
+                                                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
                                             ), array('class'=>'btn btn-success pull-left'));?>
                                             <h5 class="uploader-message error pull-right"></h5>
                                         </div>
