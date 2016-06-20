@@ -200,7 +200,7 @@ class AppsController extends Controller
         header('Content-Type: '.$mimeType);
         header('Content-Disposition: attachment; filename='.$fakeFileName);
 
-        echo stream_get_contents($fp,-1,0);
+        echo stream_get_contents($fp);
     }
 
     /**
