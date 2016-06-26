@@ -31,7 +31,7 @@ class PanelController extends Controller
                 'roles'=>array('admin')
             ),
             array('allow',
-                'actions'=>array('uploadNationalCardImage'),
+                'actions'=>array('uploadNationalCardImage', 'uploadRegistrationCertificateImage'),
                 'users'=>array('@'),
             ),
             array('allow',
@@ -78,7 +78,7 @@ class PanelController extends Controller
         if($detailsModel->developer_id=='' && is_null($devIdRequestModel))
             $devIdRequestModel=new UserDevIdRequests;
 
-        $detailsModel->scenario='update_profile';
+        $detailsModel->scenario='update_'.$detailsModel->type.'_profile';
 
         if(isset($_POST['ajax']) && $_POST['ajax']==='change-developer-id-form')
             $this->performAjaxValidation($devIdRequestModel);
@@ -127,10 +127,22 @@ class PanelController extends Controller
                 'serverName' => $detailsModel->national_card_image,
             );
 
+        $registrationCertificateImageUrl=$this->createUrl('/uploads/users/registration_certificate');
+        $registrationCertificateImagePath=Yii::getPathOfAlias('webroot').'/uploads/users/registration_certificate';
+        $registrationCertificateImage=array();
+        if($detailsModel->registration_certificate_image!='')
+            $registrationCertificateImage=array(
+                'name' => $detailsModel->registration_certificate_image,
+                'src' => $registrationCertificateImageUrl.'/'.$detailsModel->registration_certificate_image,
+                'size' => (file_exists($registrationCertificateImagePath.'/'.$detailsModel->registration_certificate_image))?filesize($registrationCertificateImagePath.'/'.$detailsModel->registration_certificate_image):0,
+                'serverName' => $detailsModel->registration_certificate_image,
+            );
+
         $this->render('account', array(
             'detailsModel'=>$detailsModel,
             'devIdRequestModel'=>$devIdRequestModel,
             'nationalCardImage'=>$nationalCardImage,
+            'registrationCertificateImage'=>$registrationCertificateImage,
         ));
     }
 
@@ -179,6 +191,50 @@ class PanelController extends Controller
     }
 
     /**
+     * Upload registration certificate image
+     */
+    public function actionUploadRegistrationCertificateImage()
+    {
+        $uploadDir = Yii::getPathOfAlias("webroot").'/uploads/users/registration_certificate/';
+        if (!is_dir(Yii::getPathOfAlias("webroot").'/uploads/users/'))
+            mkdir(Yii::getPathOfAlias("webroot").'/uploads/users/');
+        if (!is_dir($uploadDir))
+            mkdir($uploadDir);
+        if (isset($_FILES)) {
+            Yii::import('application.modules.users.models.*');
+            $model = UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+
+            $file = $_FILES['registration_certificate_image'];
+            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $file['name'] = Controller::generateRandomString(5) . time();
+            $file['name'] = $file['name'].'.'.$ext;
+            if(move_uploaded_file($file['tmp_name'], $uploadDir.CHtml::encode($file['name'])))
+            {
+                $response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
+
+                // Delete old image
+                if(!empty($model->registration_certificate_image))
+                    @unlink($uploadDir.$model->registration_certificate_image);
+
+                $model->registration_certificate_image=$file['name'];
+                $model->scenario='upload_photo';
+                $model->save();
+
+                // Resize image
+                $imager = new Imager();
+                $imageInfo=$imager->getImageInfo($uploadDir.$model->registration_certificate_image);
+                if($imageInfo['width']>500 || $imageInfo['height']>500)
+                    $imager->resize($uploadDir.$model->registration_certificate_image, $uploadDir.$model->registration_certificate_image, 500, 500);
+            }
+            else
+                $response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
+        } else
+            $response = ['state' => 'error', 'msg' => 'فایلی ارسال نشده است.'];
+        echo CJSON::encode($response);
+        Yii::app()->end();
+    }
+
+    /**
      * Convert user account to developer
      */
     public function actionSignup()
@@ -197,7 +253,6 @@ class PanelController extends Controller
                 Yii::import('application.modules.users.models.*');
                 Yii::import('application.modules.setting.models.*');
                 $data['detailsModel']=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
-                $data['detailsModel']->scenario='update_profile';
                 $minCredit=SiteSetting::model()->find('name=:name', array(':name'=>'min_credit'));
 
                 if(is_null($data['detailsModel']->credit))
@@ -209,12 +264,15 @@ class PanelController extends Controller
                     $this->redirect($this->createUrl('/users/credit/buy'));
                 }
 
-                if(isset($_POST['ajax']) && $_POST['ajax']==='update-profile-form')
+                if(isset($_POST['ajax']) && ($_POST['ajax']==='update-real-profile-form' || $_POST['ajax']==='update-legal-profile-form')) {
+                    $data['detailsModel']->scenario='update_'.$_POST['UserDetails']['type'].'_profile';
                     $this->performAjaxValidation($data['detailsModel']);
+                }
 
                 // Save developer profile
                 if(isset($_POST['UserDetails']))
                 {
+                    $data['detailsModel']->scenario='update_'.$_POST['UserDetails']['type'].'_profile';
                     unset($_POST['UserDetails']['credit']);
                     unset($_POST['UserDetails']['developer_id']);
                     unset($_POST['UserDetails']['details_status']);
@@ -240,6 +298,16 @@ class PanelController extends Controller
                         'src' => $nationalCardImageUrl.'/'.$data['detailsModel']->national_card_image,
                         'size' => (file_exists($nationalCardImagePath.'/'.$data['detailsModel']->national_card_image))?filesize($nationalCardImagePath.'/'.$data['detailsModel']->national_card_image):0,
                         'serverName' => $data['detailsModel']->national_card_image,
+                    );
+                $registrationCertificateImageUrl=$this->createUrl('/uploads/users/registration_certificate');
+                $registrationCertificateImagePath=Yii::getPathOfAlias('webroot').'/uploads/users/registration_certificate';
+                $data['registrationCertificateImage']=array();
+                if($data['detailsModel']->registration_certificate_image!='')
+                    $data['registrationCertificateImage']=array(
+                        'name' => $data['detailsModel']->registration_certificate_image,
+                        'src' => $registrationCertificateImageUrl.'/'.$data['detailsModel']->registration_certificate_image,
+                        'size' => (file_exists($registrationCertificateImagePath.'/'.$data['detailsModel']->registration_certificate_image))?filesize($registrationCertificateImagePath.'/'.$data['detailsModel']->registration_certificate_image):0,
+                        'serverName' => $data['detailsModel']->registration_certificate_image,
                     );
                 break;
 
@@ -314,6 +382,7 @@ class PanelController extends Controller
         // user's apps
         $criteria=new CDbCriteria();
         $criteria->addCondition('developer_id=:dev_id');
+        $criteria->addCondition('title!=""');
         $criteria->params=array(':dev_id'=>Yii::app()->user->getId());
         $apps=new CActiveDataProvider('Apps', array(
             'criteria'=>$criteria,
@@ -358,6 +427,24 @@ class PanelController extends Controller
                     }
                     $values[] = $count;
                 }
+            }
+        }else{
+            $userApps=Apps::model()->findAllByAttributes(array('developer_id'=>Yii::app()->user->getId()));
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('date > :from_date');
+            $criteria->addCondition('date < :to_date');
+            $criteria->addInCondition('app_id',CHtml::listData($userApps,'id','id'));
+            $criteria->params[':from_date'] = strtotime(date('Y/m/d 00:00:01'));
+            $criteria->params[':to_date'] = strtotime(date('Y/m/d 23:59:59'));
+            $report = AppBuys::model()->findAll($criteria);
+            for ($i = 0; $i < count($userApps); $i++) {
+                $labels[] = CHtml::encode($userApps[$i]->title);
+                $count = 0;
+                foreach ($report as $model) {
+                    if ($model->app_id == $userApps[$i]->id)
+                        $count++;
+                }
+                $values[] = $count;
             }
         }
 

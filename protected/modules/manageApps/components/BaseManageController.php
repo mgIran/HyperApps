@@ -102,14 +102,16 @@ class BaseManageController extends Controller
                     'serverName' => $file,
                 );
             }
-            if (count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
-                foreach ($_POST['Apps']['permissions'] as $key => $permission) {
-                    if (empty($permission))
-                        unset($_POST['Apps']['permissions'][$key]);
-                }
-                $model->permissions = CJSON::encode($_POST['Apps']['permissions']);
-            } else
-                $model->permissions = null;
+            if(isset($_POST['Apps']['permissions'])) {
+                if (count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
+                    foreach ($_POST['Apps']['permissions'] as $key => $permission) {
+                        if (empty($permission))
+                            unset($_POST['Apps']['permissions'][$key]);
+                    }
+                    $model->permissions = CJSON::encode($_POST['Apps']['permissions']);
+                } else
+                    $model->permissions = null;
+            }
             if ($this->platform_id)
                 $model->platform_id = $this->platform_id;
             $model->confirm='accepted';
@@ -207,13 +209,15 @@ class BaseManageController extends Controller
             }
             $model->attributes = $_POST['Apps'];
             $model->size = $newFileSize;
-            if(count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
-                foreach($_POST['Apps']['permissions'] as $key => $permission) {
-                    if(empty($permission)) unset($_POST['Apps']['permissions'][$key]);
-                }
-                $model->permissions = CJSON::encode($_POST['Apps']['permissions']);
-            } else
-                $model->permissions = null;
+            if(isset($_POST['Apps']['permissions'])) {
+                if (count($_POST['Apps']['permissions']) > 0 && !empty($_POST['Apps']['permissions'][0])) {
+                    foreach ($_POST['Apps']['permissions'] as $key => $permission) {
+                        if (empty($permission)) unset($_POST['Apps']['permissions'][$key]);
+                    }
+                    $model->permissions = CJSON::encode($_POST['Apps']['permissions']);
+                } else
+                    $model->permissions = null;
+            }
             $pt = $_POST['priceType'];
             switch($pt){
                 case 'free':
@@ -269,6 +273,7 @@ class BaseManageController extends Controller
     {
         $model = $this->loadModel($id);
         $model->deleted=1;
+        $model->setScenario('delete');
         if($model->save())
             $this->createLog('برنامه '.$model->title.' توسط مدیر سیستم حذف شد.', $model->developer_id);
 
@@ -344,9 +349,15 @@ class BaseManageController extends Controller
             while (file_exists($tempDir . DIRECTORY_SEPARATOR . $file['name']))
                 $file['name'] = Controller::generateRandomString(5) . time();
             $file['name'] = $file['name'] . '.' . $ext;
-            if (move_uploaded_file($file['tmp_name'], $tempDir . DIRECTORY_SEPARATOR . CHtml::encode($file['name'])))
-                $response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
-            else
+            if (move_uploaded_file($file['tmp_name'], $tempDir . DIRECTORY_SEPARATOR . CHtml::encode($file['name']))) {
+                $imager = new Imager();
+                $imageInfo = $imager->getImageInfo($tempDir . DIRECTORY_SEPARATOR . $file['name']);
+                if($imageInfo['width'] < 512 or $imageInfo['height'] < 512) {
+                    $response = ['state' => 'error', 'msg' => 'اندازه آیکون نباید کوچکتر از 512x512 پیکسل باشد.'];
+                    unlink($tempDir . DIRECTORY_SEPARATOR . $file['name']);
+                }else
+                    $response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
+            }else
                 $response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
         } else
             $response = ['state' => 'error', 'msg' => 'فایلی ارسال نشده است.'];

@@ -157,26 +157,28 @@
             <?php echo $form->error($model,'change_log'); ?>
         </div>
 
-        <div class="form-group multipliable-input-container">
-            <?php if($model->isNewRecord):?>
-                <?php echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input')); ?>
-            <?php else:?>
-                <?php
-                if($model->permissions) {
-                    foreach(CJSON::decode($model->permissions) as $key => $permission):?>
-                        <?php echo CHtml::textField('Apps[permissions]['.$key.']', $permission, array('placeholder' => 'دسترسی', 'class' => 'form-control multipliable-input')); ?>
-                        <?php
-                    endforeach;
-                }
-                else {
-                    echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input'));
-                }
-                ?>
-            <?php endif;?>
-            <a href="#add-permission" class="add-multipliable-input"><i class="icon icon-plus"></i></a>
-            <a href="#remove-permission" class="remove-multipliable-input"><i class="icon icon-trash"></i></a>
-            <?php echo $form->error($model,'permissions'); ?>
-        </div>
+        <?php if($model->platform->name != 'android'):?>
+            <div class="form-group multipliable-input-container">
+                <?php if($model->isNewRecord):?>
+                    <?php echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input')); ?>
+                <?php else:?>
+                    <?php
+                    if($model->permissions) {
+                        foreach(CJSON::decode($model->permissions) as $key => $permission):?>
+                            <?php echo CHtml::textField('Apps[permissions]['.$key.']', $permission, array('placeholder' => 'دسترسی', 'class' => 'form-control multipliable-input')); ?>
+                            <?php
+                        endforeach;
+                    }
+                    else {
+                        echo CHtml::textField('Apps[permissions][0]','',array('placeholder'=>'دسترسی','class'=>'form-control multipliable-input'));
+                    }
+                    ?>
+                <?php endif;?>
+                <a href="#add-permission" class="add-multipliable-input"><i class="icon icon-plus"></i></a>
+                <a href="#remove-permission" class="remove-multipliable-input"><i class="icon icon-trash"></i></a>
+                <?php echo $form->error($model,'permissions'); ?>
+            </div>
+        <?php endif;?>
 
         <div class="form-group col-md-12">
             <?php echo $form->labelEx($model,'icon',array('class'=> 'block')); ?>
@@ -185,10 +187,10 @@
                 'model' => $model,
                 'name' => 'icon',
                 'maxFiles' => 1,
-                'maxFileSize' => 0.2, //MB
+                'maxFileSize' => 0.3, //MB
                 'url' => Yii::app()->createUrl('/developers/apps/upload'),
                 'deleteUrl' => Yii::app()->createUrl('/developers/apps/deleteUpload'),
-                'acceptedFiles' => 'image/jpeg , image/png',
+                'acceptedFiles' => 'image/png',
                 'serverFiles' => $icon,
                 'data' => array(
                     'filesFolder' => $model->platform->name
@@ -197,8 +199,10 @@
                     var responseObj = JSON.parse(res);
                     if(responseObj.state == "ok")
                         {serverName} = responseObj.fileName;
-                    else if(responseObj.state == "error")
-                        console.log(responseObj.msg);
+                    else if(responseObj.state == "error"){
+                        alert(responseObj.msg);
+                        this.removeFile(file);
+                    }
                 ',
             )); ?>
             <?php echo $form->error($model,'icon'); ?>

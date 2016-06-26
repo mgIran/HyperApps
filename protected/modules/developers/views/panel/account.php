@@ -2,7 +2,8 @@
 /* @var $this PanelController */
 /* @var $detailsModel UserDetails */
 /* @var $devIdRequestModel UserDevIdRequests */
-/* @var $nationalCardImage Array */
+/* @var $nationalCardImage array */
+/* @var $registrationCertificateImage array */
 ?>
 
 <div class="container">
@@ -33,7 +34,8 @@
 
             <?php $this->renderPartial('_update_profile_form', array(
                 'model'=>$detailsModel,
-                'nationalCardImage'=>$nationalCardImage
+                'nationalCardImage'=>$nationalCardImage,
+                'registrationCertificateImage'=>$registrationCertificateImage,
             ));?>
 
             <?php if(empty($detailsModel->developer_id)):?>

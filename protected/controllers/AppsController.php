@@ -24,35 +24,35 @@ class AppsController extends Controller
     {
         return array(
             array('allow',
-                'actions'=>array('reportSales'),
-                'roles'=>array('admin'),
+                'actions' => array('reportSales'),
+                'roles' => array('admin'),
             ),
             array('allow',
-                'actions'=>array('view','download','programs','games','educations','developer'),
-                'users'=>array('*'),
+                'actions' => array('view', 'download', 'programs', 'games', 'educations', 'developer'),
+                'users' => array('*'),
             ),
             array('allow',
-                'actions'=>array('buy','bookmark'),
-                'users'=>array('@'),
+                'actions' => array('buy', 'bookmark'),
+                'users' => array('@'),
             ),
             array('deny',  // deny all users
-                'users'=>array('*'),
+                'users' => array('*'),
             ),
         );
     }
 
-	public function actionView($id)
+    public function actionView($id)
     {
         Yii::import('users.models.*');
         Yii::app()->theme = "market";
         $model = $this->loadModel($id);
-        $model->seen=$model->seen+1;
+        $model->seen = $model->seen + 1;
         $model->save();
         $this->saveInCookie($model->category_id);
         $this->platform = $model->platform_id;
         // Has bookmarked this apps by user
-        $bookmarked=false;
-        if(!Yii::app()->user->isGuest) {
+        $bookmarked = false;
+        if (!Yii::app()->user->isGuest) {
             $hasRecord = UserAppBookmark::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $id));
             if ($hasRecord)
                 $bookmarked = true;
@@ -65,68 +65,86 @@ class AppsController extends Controller
         $criteria->addCondition('status=:status');
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
-        $criteria->order='install DESC, seen DESC';
-        $criteria->params[':id']=$model->id;
-        $criteria->params[':cat_id']=$model->category_id;
-        $criteria->params[':platform_id']=$model->platform_id;
-        $criteria->params[':status']='enable';
-        $criteria->params[':confirm']='accepted';
-        $criteria->params[':deleted']=0;
-        $criteria->limit=20;
-        $similar=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
-		$this->render('view',array(
+        $criteria->order = 'install DESC, seen DESC';
+        $criteria->params[':id'] = $model->id;
+        $criteria->params[':cat_id'] = $model->category_id;
+        $criteria->params[':platform_id'] = $model->platform_id;
+        $criteria->params[':status'] = 'enable';
+        $criteria->params[':confirm'] = 'accepted';
+        $criteria->params[':deleted'] = 0;
+        $criteria->limit = 20;
+        $similar = new CActiveDataProvider('Apps', array('criteria' => $criteria));
+        $this->render('view', array(
             'model' => $model,
             'similar' => $similar,
             'bookmarked' => $bookmarked,
         ));
-	}
+    }
 
     /**
      * Buy app
      */
     public function actionBuy($id, $title)
     {
-        Yii::app()->theme='market';
-        $this->layout='panel';
+        Yii::app()->theme = 'market';
+        $this->layout = 'panel';
 
-        $model=$this->loadModel($id);
+        $model = $this->loadModel($id);
 
-        $buy=AppBuys::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'app_id'=>$id));
-        if($buy)
-            $this->redirect(array('/apps/download/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));
+        $buy = AppBuys::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $id));
+        if ($buy)
+            $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
 
         Yii::app()->getModule('users');
-        $user=Users::model()->findByPk(Yii::app()->user->getId());
+        $user = Users::model()->findByPk(Yii::app()->user->getId());
 
-        if(isset($_POST['buy']))
-        {
-            if($user->userDetails->credit<$model->price)
-            {
-                Yii::app()->user->setFlash('failed' , 'اعتبار فعلی شما کافی نیست!');
-                Yii::app()->user->setFlash('failReason' , 'min_credit');
+        if (isset($_POST['buy'])) {
+            if ($user->userDetails->credit < $model->price) {
+                Yii::app()->user->setFlash('failed', 'اعتبار فعلی شما کافی نیست!');
+                Yii::app()->user->setFlash('failReason', 'min_credit');
                 $this->refresh();
             }
 
-            $buy=new AppBuys();
-            $buy->app_id=$model->id;
-            $buy->user_id=$user->id;
-            if($buy->save())
-            {
-                $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+            $buy = new AppBuys();
+            $buy->app_id = $model->id;
+            $buy->user_id = $user->id;
+            if ($buy->save()) {
+                $userDetails = UserDetails::model()->findByAttributes(array('user_id' => Yii::app()->user->getId()));
                 $userDetails->setScenario('update-credit');
-                $userDetails->credit=$userDetails->credit-$model->price;
-                if($model->developer)
-                    $model->developer->userDetails->credit=$model->developer->userDetails->credit+$model->getDeveloperPortion();
+                $userDetails->credit = $userDetails->credit - $model->price;
+                if ($model->developer)
+                    $model->developer->userDetails->credit = $model->developer->userDetails->credit + $model->getDeveloperPortion();
                 $model->developer->userDetails->save();
-                if($userDetails->save())
-                    $this->redirect(array('/apps/download/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));
+                if ($userDetails->save()) {
+
+                    $message =
+                        '<p style="text-align: right;">با سلام<br>کاربر گرامی، جزئیات خرید شما به شرح ذیل می باشد:</p>
+                        <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
+                        <table style="font-size: 9pt;text-align: right;">
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">عنوان برنامه</td>
+                                <td>'.CHtml::encode($model->title).'</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">قیمت</td>
+                                <td>'.number_format($model->price, 0).' تومان</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">تاریخ</td>
+                                <td>'.JalaliDate::date('d F Y - H:i', $buy->date).'</td>
+                            </tr>
+                        </table>';
+                    Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+
+                    $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
+                }
             }
         }
 
         $this->render('buy', array(
-            'model'=>$model,
-            'user'=>$user,
-            'bought'=>($buy)?true:false,
+            'model' => $model,
+            'user' => $user,
+            'bought' => ($buy) ? true : false,
         ));
     }
 
@@ -135,61 +153,58 @@ class AppsController extends Controller
      */
     public function actionDownload($id, $title)
     {
-        $model=$this->loadModel($id);
-        $platformFolder='';
-        switch(pathinfo($model->lastPackage->file_name, PATHINFO_EXTENSION))
-        {
+        $model = $this->loadModel($id);
+        $platformFolder = '';
+        switch (pathinfo($model->lastPackage->file_name, PATHINFO_EXTENSION)) {
             case 'apk':
-                $platformFolder='android';
+                $platformFolder = 'android';
                 break;
 
             case 'ipa':
-                $platformFolder='ios';
+                $platformFolder = 'ios';
                 break;
 
             case 'xap':
-                $platformFolder='windowsphone';
+                $platformFolder = 'windowsphone';
                 break;
         }
-        if($model->price==0) {
-            $model->install=$model->install+1;
+        if ($model->price == 0) {
+            $model->install += 1;
+            $model->setScenario('update-install');
             $model->save();
             $this->download($model->lastPackage->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
-        }
-        else
-        {
-            $buy=AppBuys::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'app_id'=>$id));
-            if($buy) {
-                $model->install=$model->install+1;
+        } else {
+            $buy = AppBuys::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $id));
+            if ($buy) {
+                $model->install += 1;
+                $model->setScenario('update-install');
                 $model->save();
                 $this->download($model->lastPackage->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
-            }
-            else
-                $this->redirect(array('/apps/buy/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title)));
+            } else
+                $this->redirect(array('/apps/buy/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
         }
     }
 
     protected function download($fileName, $filePath)
     {
-        $fakeFileName=$fileName;
-        $realFileName=$fileName;
+        $fakeFileName = $fileName;
+        $realFileName = $fileName;
 
-        $file = $filePath.DIRECTORY_SEPARATOR.$realFileName;
+        $file = $filePath . DIRECTORY_SEPARATOR . $realFileName;
         $fp = fopen($file, 'rb');
 
-        $mimeType='';
-        switch(pathinfo($fileName, PATHINFO_EXTENSION))
-        {
+        $mimeType = '';
+        switch (pathinfo($fileName, PATHINFO_EXTENSION)) {
             case 'apk':
-                $mimeType='application/vnd.android.package-archive';
+                $mimeType = 'application/vnd.android.package-archive';
                 break;
 
             case 'xap':
-                $mimeType='application/x-silverlight-app';
+                $mimeType = 'application/x-silverlight-app';
                 break;
 
             case 'ipa':
-                $mimeType='application/octet-stream';
+                $mimeType = 'application/octet-stream';
                 break;
         }
 
@@ -197,8 +212,8 @@ class AppsController extends Controller
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Transfer-Encoding: binary');
-        header('Content-Type: '.$mimeType);
-        header('Content-Disposition: attachment; filename='.$fakeFileName);
+        header('Content-Type: ' . $mimeType);
+        header('Content-Disposition: attachment; filename=' . $fakeFileName);
 
         echo stream_get_contents($fp);
     }
@@ -206,69 +221,71 @@ class AppsController extends Controller
     /**
      * Show programs list
      */
-    public function actionPrograms($id=null, $title=null)
+    public function actionPrograms($id = null, $title = null)
     {
-        if(is_null($id))
-            $id=1;
+        if (is_null($id))
+            $id = 1;
         $this->showCategory($id, $title, 'برنامه ها');
     }
 
     /**
      * Show games list
      */
-    public function actionGames($id=null, $title=null)
+    public function actionGames($id = null, $title = null)
     {
-        if(is_null($id))
-            $id=2;
+        if (is_null($id))
+            $id = 2;
         $this->showCategory($id, $title, 'بازی ها');
     }
 
     /**
      * Show educations list
      */
-    public function actionEducations($id=null, $title=null)
+    public function actionEducations($id = null, $title = null)
     {
-        if(is_null($id))
-            $id=3;
+        if (is_null($id))
+            $id = 3;
         $this->showCategory($id, $title, 'آموزش ها');
     }
 
     /**
      * Show programs list
      */
-    public function actionDeveloper($title, $id=null)
+    public function actionDeveloper($title, $id = null)
     {
-        Yii::app()->theme='market';
-        $this->layout='public';
-        $criteria=new CDbCriteria();
+        Yii::app()->theme = 'market';
+        $this->layout = 'public';
+        $criteria = new CDbCriteria();
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
         $criteria->addCondition('status=:status');
         $criteria->addCondition('platform_id=:platform');
-        $developer_id='';
-        if(isset($_GET['t']) and $_GET['t']==1) {
+        $developer_id = '';
+        if (isset($_GET['t']) and $_GET['t'] == 1) {
             $criteria->addCondition('developer_team=:dev');
-            $developer_id=$title;
-        }else {
+            $developer_id = $title;
+        } else {
             $criteria->addCondition('developer_id=:dev');
-            $developer_id=$id;
+            $developer_id = $id;
         }
-        $criteria->params=array(
-            ':confirm'=>'accepted',
-            ':deleted'=>0,
-            ':status'=>'enable',
-            ':platform'=>$this->platform,
-            ':dev'=>$developer_id,
+        $criteria->params = array(
+            ':confirm' => 'accepted',
+            ':deleted' => 0,
+            ':status' => 'enable',
+            ':platform' => $this->platform,
+            ':dev' => $developer_id,
         );
 
-        $dataProvider=new CActiveDataProvider('Apps', array(
-            'criteria'=>$criteria,
+        $dataProvider = new CActiveDataProvider('Apps', array(
+            'criteria' => $criteria,
         ));
 
+        $pageTitle = UserDetails::model()->findByAttributes(array('user_id' => $id));
+
         $this->render('apps_list', array(
-            'dataProvider'=>$dataProvider,
-            'title'=>(!is_null($title))?$title:null,
-            'pageTitle'=>'برنامه ها'
+            'dataProvider' => $dataProvider,
+            'title' => $pageTitle->nickname,
+            'pageTitle' => 'برنامه ها'
         ));
     }
 
@@ -277,31 +294,31 @@ class AppsController extends Controller
      */
     public function showCategory($id, $title, $pageTitle)
     {
-        Yii::app()->theme='market';
-        $this->layout='public';
-        $criteria=new CDbCriteria();
+        Yii::app()->theme = 'market';
+        $this->layout = 'public';
+        $criteria = new CDbCriteria();
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
         $criteria->addCondition('status=:status');
         $criteria->addCondition('platform_id=:platform');
-        $criteria->params=array(
-            ':confirm'=>'accepted',
-            ':deleted'=>0,
-            ':status'=>'enable',
-            ':platform'=>$this->platform,
+        $criteria->params = array(
+            ':confirm' => 'accepted',
+            ':deleted' => 0,
+            ':status' => 'enable',
+            ':platform' => $this->platform,
         );
 
-        $categories=AppCategories::model()->getCategoryChilds($id);
+        $categories = AppCategories::model()->getCategoryChilds($id);
         $criteria->addInCondition('category_id', $categories);
 
-        $dataProvider=new CActiveDataProvider('Apps', array(
-            'criteria'=>$criteria,
+        $dataProvider = new CActiveDataProvider('Apps', array(
+            'criteria' => $criteria,
         ));
 
         $this->render('apps_list', array(
-            'dataProvider'=>$dataProvider,
-            'title'=>(!is_null($title))?$title:null,
-            'pageTitle'=>$pageTitle
+            'dataProvider' => $dataProvider,
+            'title' => (!is_null($title)) ? $title : null,
+            'pageTitle' => $pageTitle
         ));
     }
 
@@ -311,8 +328,8 @@ class AppsController extends Controller
     public function actionBookmark()
     {
         Yii::app()->getModule('users');
-        $model=UserAppBookmark::model()->find('user_id=:user_id AND app_id=:app_id', array(':user_id'=>Yii::app()->user->getId(),':app_id'=>$_POST['appId']));
-        if(!$model) {
+        $model = UserAppBookmark::model()->find('user_id=:user_id AND app_id=:app_id', array(':user_id' => Yii::app()->user->getId(), ':app_id' => $_POST['appId']));
+        if (!$model) {
             $model = new UserAppBookmark();
             $model->app_id = $_POST['appId'];
             $model->user_id = Yii::app()->user->getId();
@@ -324,8 +341,8 @@ class AppsController extends Controller
                 echo CJSON::encode(array(
                     'status' => false
                 ));
-        }else {
-            if (UserAppBookmark::model()->deleteAllByAttributes(array('user_id'=>Yii::app()->user->getId(),'app_id'=>$_POST['appId'])))
+        } else {
+            if (UserAppBookmark::model()->deleteAllByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $_POST['appId'])))
                 echo CJSON::encode(array(
                     'status' => true
                 ));
@@ -341,13 +358,13 @@ class AppsController extends Controller
      */
     public function actionReportSales()
     {
-        Yii::app()->theme='abound';
-        $this->layout='//layouts/column2';
+        Yii::app()->theme = 'abound';
+        $this->layout = '//layouts/column2';
 
         $labels = $values = array();
-        $showChart=false;
-        $activeTab='monthly';
-        if(isset($_POST['show-chart-monthly'])) {
+        $showChart = false;
+        $activeTab = 'monthly';
+        if (isset($_POST['show-chart-monthly'])) {
             $activeTab = 'monthly';
             $startDate = JalaliDate::toGregorian(JalaliDate::date('Y', $_POST['month_altField'], false), JalaliDate::date('m', $_POST['month_altField'], false), 1);
             $startTime = strtotime($startDate[0] . '/' . $startDate[1] . '/' . $startDate[2]);
@@ -376,8 +393,7 @@ class AppsController extends Controller
                 }
                 $values[] = $count;
             }
-        }
-        elseif(isset($_POST['show-chart-yearly'])) {
+        } elseif (isset($_POST['show-chart-yearly'])) {
             $activeTab = 'yearly';
             $startDate = JalaliDate::toGregorian(JalaliDate::date('Y', $_POST['year_altField'], false), 1, 1);
             $startTime = strtotime($startDate[0] . '/' . $startDate[1] . '/' . $startDate[2]);
@@ -392,7 +408,7 @@ class AppsController extends Controller
             );
             $report = AppBuys::model()->findAll($criteria);
             // show monthly report
-            $tempDate=$startTime;
+            $tempDate = $startTime;
             for ($i = 0; $i < 12; $i++) {
                 if ($i < 6)
                     $monthDaysCount = 31;
@@ -407,10 +423,9 @@ class AppsController extends Controller
                 }
                 $values[] = $count;
             }
-        }
-        elseif(isset($_POST['show-chart-by-program'])) {
-            $activeTab='by-program';
-            $showChart=true;
+        } elseif (isset($_POST['show-chart-by-program'])) {
+            $activeTab = 'by-program';
+            $showChart = true;
             $criteria = new CDbCriteria();
             $criteria->addCondition('date > :from_date');
             $criteria->addCondition('date < :to_date');
@@ -434,13 +449,12 @@ class AppsController extends Controller
                     }
                     $values[] = $count;
                 }
-            }
-            else {
+            } else {
                 // show monthly report
                 $datesDiff = $_POST['to_date_altField'] - $_POST['from_date_altField'];
                 $monthCount = ceil($datesDiff / (60 * 60 * 24 * 30));
                 for ($i = 0; $i < $monthCount; $i++) {
-                    $labels[] = JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * $i))).' الی '.JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * ($i+1))));
+                    $labels[] = JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * $i))) . ' الی ' . JalaliDate::date('d F', $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * ($i + 1))));
                     $count = 0;
                     foreach ($report as $model) {
                         if ($model->date >= $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * $i)) and $model->date < $_POST['from_date_altField'] + (60 * 60 * 24 * (30 * ($i + 1))))
@@ -449,14 +463,13 @@ class AppsController extends Controller
                     $values[] = $count;
                 }
             }
-        }
-        elseif(isset($_POST['show-chart-by-developer'])) {
-            $activeTab='by-developer';
-            $showChart=true;
+        } elseif (isset($_POST['show-chart-by-developer'])) {
+            $activeTab = 'by-developer';
+            $showChart = true;
             $criteria = new CDbCriteria();
             $criteria->addCondition('date > :from_date');
             $criteria->addCondition('date < :to_date');
-            $criteria->addInCondition('app_id',CHtml::listData(Apps::model()->findAllByAttributes(array('developer_id'=>$_POST['developer'])), 'id', 'id'));
+            $criteria->addInCondition('app_id', CHtml::listData(Apps::model()->findAllByAttributes(array('developer_id' => $_POST['developer'])), 'id', 'id'));
             $criteria->params[':from_date'] = $_POST['from_date_developer_altField'];
             $criteria->params[':to_date'] = $_POST['to_date_developer_altField'];
             $report = AppBuys::model()->findAll($criteria);
@@ -473,13 +486,12 @@ class AppsController extends Controller
                     }
                     $values[] = $count;
                 }
-            }
-            else {
+            } else {
                 // show monthly report
                 $datesDiff = $_POST['to_date_developer_altField'] - $_POST['from_date_developer_altField'];
                 $monthCount = ceil($datesDiff / (60 * 60 * 24 * 30));
                 for ($i = 0; $i < $monthCount; $i++) {
-                    $labels[] = JalaliDate::date('d F', $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * $i))).' الی '.JalaliDate::date('d F', $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * ($i+1))));
+                    $labels[] = JalaliDate::date('d F', $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * $i))) . ' الی ' . JalaliDate::date('d F', $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * ($i + 1))));
                     $count = 0;
                     foreach ($report as $model) {
                         if ($model->date >= $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * $i)) and $model->date < $_POST['from_date_developer_altField'] + (60 * 60 * 24 * (30 * ($i + 1))))
@@ -491,10 +503,10 @@ class AppsController extends Controller
         }
 
         $this->render('report_sales', array(
-            'labels'=>$labels,
-            'values'=>$values,
-            'showChart'=>$showChart,
-            'activeTab'=>$activeTab,
+            'labels' => $labels,
+            'values' => $values,
+            'showChart' => $showChart,
+            'activeTab' => $activeTab,
         ));
     }
 

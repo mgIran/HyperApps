@@ -46,7 +46,7 @@ if($model->platform)
         <div class="app-heading">
             <h2><?= $model->title ?></h2>
             <div class="row-fluid">
-                <span ><a href="<?php echo $this->createUrl('apps/developer?title='.($model->developer?urlencode($model->developer->userDetails->developer_id).'&id='.$model->developer_id:urlencode($model->developer_team).'&t=1'));?>"><?= $model->developer?$model->developer->userDetails->developer_id:$model->developer_team; ?></a></span>
+                <span ><a href="<?php echo $this->createUrl('apps/developer?title='.($model->developer?urlencode($model->developer->userDetails->developer_id).'&id='.$model->developer_id:urlencode($model->developer_team).'&t=1'));?>"><?= $model->getDeveloperName(); ?></a></span>
                 <span ><a href="<?php echo $this->createUrl('apps/'.((strpos($model->category->path,'2-')!==false)?'games':'programs').'/'.$model->category->id.'/'.urlencode($model->category->title));?>"><?= $model->category?$model->category->title:''; ?></a></span>
                 <span class="app-rate">
                     <? ?>
@@ -127,7 +127,7 @@ if($model->platform)
                         $imageInfo=$imager->getImageInfo(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image);
                         $ratio=$imageInfo['width']/$imageInfo['height'];
                 ?>
-                        <div class="image-item" style="width: <?php echo 318*$ratio;?>px;" data-toggle="modal" data-index="<?= $key ?>" data-target="#carousesl-modal">
+                        <div class="image-item" style="width: <?php echo ceil(318*$ratio);?>px;" data-toggle="modal" data-index="<?= $key ?>" data-target="#carousesl-modal">
                             <a href="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>"><img src="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>" alt="<?= $model->title ?>" ></a>
                         </div>
                 <?
@@ -137,6 +137,7 @@ if($model->platform)
             </div>
             <section>
                 <div class="app-description">
+                    <h4>توضیحات برنامه</h4>
                     <?= $model->description; ?>
                 </div>
                 <a class="more-text" href="#">
@@ -250,6 +251,8 @@ if($model->platform)
         autoWidth:true,
         margin:10,
         rtl:true,
-        dots:false
+        dots:false,
+        items:3,
+        loop:true
     });
 "); ?>

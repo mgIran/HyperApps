@@ -24,6 +24,7 @@
     $cs->registerCssFile($baseUrl.'/css/responsive-theme.css');
 
     $cs->registerScriptFile($baseUrl.'/js/bootstrap.min.js');
+    $cs->registerScriptFile($baseUrl.'/js/jquery.nicescroll.min.js');
     $cs->registerScriptFile($baseUrl.'/js/scripts.js');
     ?>
 </head>
@@ -54,3 +55,7 @@
 </div>
 </body>
 </html>
+<?php Yii::app()->clientScript->registerScript('set-height-to-main', "
+    if($('.main').height() < $(window).height())
+        $('.main').height($(window).height()-130);
+", CClientScript::POS_LOAD);?>

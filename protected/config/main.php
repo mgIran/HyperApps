@@ -125,6 +125,13 @@ return array(
 		// @todo change webmail of emails
 		'adminEmail'=>'webmaster@hyperapps.ir',
         'noReplyEmail' => 'no-reply@hyperapps.ir',
+		'SMTP' => array(
+            'Host' => 'mail.hyperapps.ir',
+            'Secure' => 'ssl',
+            'Port' => '465',
+            'Username' => 'no-reply@hyperapps.ir',
+            'Password' => 'hyperapps.ir',
+        ),
         'mailTheme'=>
             '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">هایپر اپس<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
              <div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">
@@ -132,7 +139,7 @@ return array(
              </div>
              <div style="font-size: 8pt;color: #bbb;text-align: right;font-family: tahoma;padding: 15px;">
                 <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/about">درباره</a> | <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/help">راهنما</a>
-                <span style="float: left;"> همهٔ حقوق برای هایپر اپس محفوظ است. ©‏ 1395 </span>
+                <span style="float: left;"> همهٔ حقوق برای هایپر اپس محفوظ است. ©‏ {CurrentYear} </span>
              </div>',
 	),
 );

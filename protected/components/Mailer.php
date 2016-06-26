@@ -6,8 +6,9 @@ class Mailer {
      */
     public static function mail($to, $subject, $message, $from ,$SMTP = array() ,$attachment=NULL)
     {
-        $mail_theme=Yii::app()->params['mailTheme'];
-        $message=str_replace('{MessageBody}', $message, $mail_theme);
+        $mailTheme=Yii::app()->params['mailTheme'];
+        $mailTheme=str_replace('{CurrentYear}', JalaliDate::date('Y'), $mailTheme);
+        $message=str_replace('{MessageBody}', $message, $mailTheme);
         Yii::import('application.extensions.phpmailer.JPhpMailer');
         $mail=new JPhpMailer;
         $mail->SetFrom($from, Yii::app()->name);

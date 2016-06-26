@@ -44,16 +44,16 @@ class Apps extends CActiveRecord
 	}
 
 	private $_purifier;
-	public $platformsID=array(
-		'1'=>'android',
-		'2'=>'iOS',
-		'3'=>'windowsPhone',
+	public $platformsID = array(
+		'1' => 'android',
+		'2' => 'iOS',
+		'3' => 'windowsPhone',
 	);
-	public $confirmLabels=array(
-		'pending'=>'در حال بررسی',
-		'refused'=>'رد شده',
-		'accepted'=>'تایید شده',
-		'change_required'=>'نیاز به تغییر',
+	public $confirmLabels = array(
+		'pending' => 'در حال بررسی',
+		'refused' => 'رد شده',
+		'accepted' => 'تایید شده',
+		'change_required' => 'نیاز به تغییر',
 	);
 	public $lastPackage;
 
@@ -67,21 +67,21 @@ class Apps extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('platform_id', 'required', 'on'=>'insert'),
-            array('title, category_id, price ,platform_id ,icon', 'required', 'on'=>'update'),
-            array('price, size, platform_id', 'numerical'),
-            array('seen, install, deleted', 'numerical', 'integerOnly'=>true),
-			array('description, change_log','filter','filter'=>array($this->_purifier,'purify')),
-			array('title, icon, developer_team', 'length', 'max'=>50),
-			array('developer_id, category_id, platform_id', 'length', 'max'=>10),
-			array('status', 'length', 'max'=>7),
-			array('download, install', 'length', 'max'=>12),
+			array('platform_id', 'required', 'on' => 'insert'),
+			array('title, category_id, price ,platform_id ,icon', 'required', 'on' => 'update'),
+			array('price, size, platform_id', 'numerical'),
+			array('seen, install, deleted', 'numerical', 'integerOnly' => true),
+			array('description, change_log', 'filter', 'filter' => array($this->_purifier, 'purify')),
+			array('title, icon, developer_team', 'length', 'max' => 50),
+			array('developer_id, category_id, platform_id', 'length', 'max' => 10),
+			array('status', 'length', 'max' => 7),
+			array('download, install', 'length', 'max' => 12),
 			array('price, size', 'numerical'),
 			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted', 'safe', 'on'=>'search'),
-			array('description, change_log','filter','filter'=>array($obj=new CHtmlPurifier(),'purify')),
+			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted', 'safe', 'on' => 'search'),
+			array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
 		);
 	}
 
@@ -109,20 +109,20 @@ class Apps extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-            'id' => 'شناسه',
-            'title' => 'عنوان',
-            'developer_id' => 'توسعه دهنده',
-            'category_id' => 'دسته',
-            'status' => 'وضعیت',
-            'price' => 'قیمت',
-            'icon' => 'آیکون',
-            'description' => 'توضیحات',
-            'change_log' => 'لیست تغییرات',
-            'permissions' => 'دسترسی ها',
-            'size' => 'حجم',
+			'id' => 'شناسه',
+			'title' => 'عنوان',
+			'developer_id' => 'توسعه دهنده',
+			'category_id' => 'دسته',
+			'status' => 'وضعیت',
+			'price' => 'قیمت',
+			'icon' => 'آیکون',
+			'description' => 'توضیحات',
+			'change_log' => 'لیست تغییرات',
+			'permissions' => 'دسترسی ها',
+			'size' => 'حجم',
 			'confirm' => 'وضعیت انتشار',
 			'platform_id' => 'پلتفرم',
-            'developer_team' => 'تیم توسعه دهنده',
+			'developer_team' => 'تیم توسعه دهنده',
 			'seen' => 'دیده شده',
 			'download' => 'تعداد دریافت',
 			'install' => 'تعداد نصب فعال',
@@ -146,32 +146,34 @@ class Apps extends CActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('title',$this->title,true);
-		$criteria->compare('developer_id',$this->developer_id,true);
-		$criteria->compare('category_id',$this->category_id,true);
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('price',$this->price);
-		$criteria->compare('icon',$this->icon,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('change_log',$this->change_log,true);
-		$criteria->compare('permissions',$this->permissions,true);
-		$criteria->compare('size',$this->size);
-		$criteria->compare('confirm',$this->confirm,true);
-		$criteria->compare('platform_id',$this->platform_id,true);
-		$criteria->compare('developer_team',$this->developer_team,true);
-		$criteria->compare('seen',$this->seen);
-		$criteria->compare('download',$this->download,true);
-		$criteria->compare('install',$this->install,true);
-		$criteria->compare('deleted',$this->deleted);
+		$criteria->compare('id', $this->id, true);
+		$criteria->compare('title', $this->title, true);
+		$criteria->compare('developer_id', $this->developer_id, true);
+		$criteria->compare('category_id', $this->category_id, true);
+		$criteria->compare('status', $this->status, true);
+		$criteria->compare('price', $this->price);
+		$criteria->compare('icon', $this->icon, true);
+		$criteria->compare('description', $this->description, true);
+		$criteria->compare('change_log', $this->change_log, true);
+		$criteria->compare('permissions', $this->permissions, true);
+		$criteria->compare('size', $this->size);
+		$criteria->compare('confirm', $this->confirm, true);
+		$criteria->compare('platform_id', $this->platform_id, true);
+		$criteria->compare('developer_team', $this->developer_team, true);
+		$criteria->compare('seen', $this->seen);
+		$criteria->compare('download', $this->download, true);
+		$criteria->compare('install', $this->install, true);
+		$criteria->compare('deleted', $this->deleted);
+
+		$criteria->addCondition('deleted=0');
 
 		$criteria->addCondition('title != ""');
 
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 
@@ -181,7 +183,7 @@ class Apps extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return Apps the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -205,14 +207,22 @@ class Apps extends CActiveRecord
 	 */
 	public function getAppFileUrl()
 	{
-		if(!empty($this->packages))
-			return Yii::app()->createUrl("/uploads/apps/files/".strtolower($this->platformsID[$this->platform_id])."/".$this->lastPackage->file_name);
+		if (!empty($this->packages))
+			return Yii::app()->createUrl("/uploads/apps/files/" . strtolower($this->platformsID[$this->platform_id]) . "/" . $this->lastPackage->file_name);
 		return '';
 	}
 
 	public function afterFind()
 	{
-		if(!empty($this->packages))
-			$this->lastPackage=$this->packages[count($this->packages)-1];
+		if (!empty($this->packages))
+			$this->lastPackage = $this->packages[count($this->packages) - 1];
+	}
+
+	public function getDeveloperName()
+	{
+		if ($this->developer)
+			return $this->developer->userDetails->nickname;
+		else
+			return $this->developer_team;
 	}
 }

@@ -86,4 +86,6 @@ $(function() {
             $(".open").removeClass('open');
         }
     });
+
+    $('.cat-menu-container').niceScroll({cursorcolor:"#ccc"});
 });

@@ -31,7 +31,8 @@
                     case 'profile':
                         $this->renderPartial('_profile', array(
                             'model'=>$data['detailsModel'],
-                            'nationalCardImage'=>$data['nationalCardImage']
+                            'nationalCardImage'=>$data['nationalCardImage'],
+                            'registrationCertificateImage'=>$data['registrationCertificateImage'],
                         ));
                         break;
                     case 'finish':

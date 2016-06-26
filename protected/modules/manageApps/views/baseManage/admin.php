@@ -45,7 +45,10 @@ $this->menu=array(
                     'url' => 'Yii::app()->createUrl("/manageApps/'.$this->controller.'/delete", array("id"=>$data->id))'
                 ),
                 'view' => array(
-                    'url' => 'Yii::app()->createUrl("/manageApps/'.$this->controller.'/view", array("id"=>$data->id))'
+					'url'=>'Yii::app()->createUrl("/apps/".$data->id."/".urlencode($data->title))',
+					'options'=>array(
+						'target'=>'_blank'
+					),
                 )
             )
 		),

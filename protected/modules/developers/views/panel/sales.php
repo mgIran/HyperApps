@@ -104,6 +104,31 @@
                             );?>
                         </div>
                     </div>
+                <?php else:?>
+                    <div class="panel panel-default chart-container">
+                        <div class="panel-body">
+                            <h4>فروش امروز</h4>
+                            <?php $this->widget(
+                                'chartjs.widgets.ChBars',
+                                array(
+                                    'width' => 700,
+                                    'height' => 400,
+                                    'htmlOptions' => array(
+                                        'class'=>'center-block report-canvas'
+                                    ),
+                                    'labels' => $labels,
+                                    'datasets' => array(
+                                        array(
+                                            "fillColor" => "rgba(54, 162, 235, 0.5)",
+                                            "strokeColor" => "rgba(54, 162, 235, 1)",
+                                            "data" => $values
+                                        )
+                                    ),
+                                    'options' => array()
+                                )
+                            );?>
+                        </div>
+                    </div>
                 <?php endif;?>
             <?php echo CHtml::endForm();?>
         </div>

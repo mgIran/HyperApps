@@ -113,9 +113,6 @@
   -ms-user-select: none;
   user-select: none;
 }
-.owl-carousel .owl-item:last-of-type {
-  margin: 0 !important;
-}
 .owl-carousel .owl-item img {
   display: block;
   width: 100%;
