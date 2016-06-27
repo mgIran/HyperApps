@@ -24,6 +24,7 @@
     $cs->registerCssFile($baseUrl.'/css/responsive-theme.css');
 
     $cs->registerScriptFile($baseUrl.'/js/bootstrap.min.js');
+    $cs->registerScriptFile($baseUrl.'/js/jquery.nicescroll.min.js');
     $cs->registerScriptFile($baseUrl.'/js/scripts.js');
     ?>
 </head>

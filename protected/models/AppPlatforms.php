@@ -18,7 +18,7 @@ class AppPlatforms extends CActiveRecord
 	public $platformsLabel=array(
 		'android'=>'Android',
 		'ios'=>'iOS',
-		'windowsPhone'=>'Windows Phone',
+		'windowsphone'=>'Windows Phone',
 	);
 
 	/**

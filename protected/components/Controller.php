@@ -98,8 +98,8 @@ class Controller extends CController
                     'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
                     'items' => array(
                         array('label' => 'بخش اندروید' ,'url' => Yii::app()->createUrl('/manageApps/android/admin/')) ,
-                        array('label' => 'بخش آی او اس' ,'url' => Yii::app()->createUrl('/manageApps/iOS/admin/')) ,
-                        array('label' => 'بخش ویندوز فون' ,'url' => Yii::app()->createUrl('/manageApps/windowsPhone/admin/')) ,
+                        array('label' => 'بخش آی او اس' ,'url' => Yii::app()->createUrl('/manageApps/ios/admin/')) ,
+                        array('label' => 'بخش ویندوز فون' ,'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')) ,
                     )
                 ) ,
                 array(

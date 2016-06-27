@@ -2,6 +2,8 @@
 /* @var $this BaseManageController */
 /* @var $model Apps */
 /* @var $icon array */
+/* @var $tax string */
+/* @var $commission string */
 
 $this->breadcrumbs=array(
 	'مدیریت'=>array('admin'),

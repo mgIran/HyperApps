@@ -183,7 +183,7 @@
 		<?php echo $form->error($model,'change_log'); ?>
 	</div>
 
-	<?php if($model->platform->name != 'android'):?>
+	<?php if($this->platform_id != 1):?>
 		<div class="form-group multipliable-input-container">
 			<?php echo CHtml::label('لیست دسترسی های برنامه',''); ?>
 			<?php if($model->isNewRecord):?>

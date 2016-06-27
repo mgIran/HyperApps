@@ -73,10 +73,9 @@ class AppsController extends Controller
             if (isset($_POST['platform_id']) && !empty($_POST['platform_id'])) {
                 $model->platform_id = $_POST['platform_id'];
                 $model->developer_id = Yii::app()->user->getId();
-                if ($model->save()) {
-                    Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                if ($model->save())
                     $this->redirect('update/' . $model->id . '?new=1');
-                } else
+                else
                     Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 
             } elseif (isset($_POST['platform_id']) && empty($_POST['platform_id']))

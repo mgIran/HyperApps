@@ -46,8 +46,8 @@ class Apps extends CActiveRecord
 	private $_purifier;
 	public $platformsID = array(
 		'1' => 'android',
-		'2' => 'iOS',
-		'3' => 'windowsPhone',
+		'2' => 'ios',
+		'3' => 'windowsphone',
 	);
 	public $confirmLabels = array(
 		'pending' => 'در حال بررسی',

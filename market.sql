@@ -201,7 +201,7 @@ CREATE TABLE `ym_app_platforms` (
 -- ----------------------------
 INSERT INTO `ym_app_platforms` VALUES ('1', 'android', 'اندروید', 'apk');
 INSERT INTO `ym_app_platforms` VALUES ('2', 'ios', 'آی او اس', 'ipa');
-INSERT INTO `ym_app_platforms` VALUES ('3', 'windowsPhone', 'ویندوزفون', 'xap');
+INSERT INTO `ym_app_platforms` VALUES ('3', 'windowsphone', 'ویندوزفون', 'xap');
 
 -- ----------------------------
 -- Table structure for ym_counter_save

@@ -252,7 +252,7 @@ if($model->platform)
         margin:10,
         rtl:true,
         dots:false,
-        items:3,
+        items:1,
         loop:true
     });
 "); ?>
