@@ -41,24 +41,24 @@ class ImagesManageController extends Controller
 	 */
 	public function actionUpload()
 	{
-		$uploadDir = Yii::getPathOfAlias("webroot") . '/uploads/apps/images';
-		if (!is_dir($uploadDir))
-			mkdir($uploadDir);
+		$tempDir = Yii::getPathOfAlias("webroot") . '/uploads/temp';
+		if (!is_dir($tempDir))
+			mkdir($tempDir);
 		if (isset($_FILES)) {
 			$file = $_FILES['image'];
 			$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
 			$file['name'] = Controller::generateRandomString(5) . time();
-			while (file_exists($uploadDir . DIRECTORY_SEPARATOR . $file['name']))
+			while (file_exists($tempDir . DIRECTORY_SEPARATOR . $file['name']))
 				$file['name'] = Controller::generateRandomString(5) . time();
 			$file['name'] = $file['name'] . '.' . $ext;
-			if (move_uploaded_file($file['tmp_name'], $uploadDir . DIRECTORY_SEPARATOR . CHtml::encode($file['name']))) {
+			if (move_uploaded_file($file['tmp_name'], $tempDir . DIRECTORY_SEPARATOR . CHtml::encode($file['name']))) {
 				$response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
 				// Save image into db
-				$model = new AppImages();
+				/*$model = new AppImages();
 				$data = CJSON::decode($_POST['data']);
 				$model->app_id = $data['app_id'];
 				$model->image = $file['name'];
-				$model->save();
+				$model->save();*/
 			} else
 				$response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
 		} else

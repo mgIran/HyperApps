@@ -1,4 +1,20 @@
+<?php /* @var $model Apps */?>
 <div class="form">
+    <?php $form=$this->beginWidget('CActiveForm', array(
+        'id'=>'app-images-form',
+        // Please note: When you enable ajax validation, make sure the corresponding
+        // controller action is handling ajax validation correctly.
+        // There is a call to performAjaxValidation() commented in generated controller code.
+        // See class documentation of CActiveForm for details on this.
+        'enableAjaxValidation'=>false,
+        'action' => array('/manageApps/'.$model->platform->name.'/images?id='.$model->id),
+        'enableClientValidation'=>true,
+        'clientOptions' => array(
+            'validateOnSubmit' => true
+        )
+    ));
+    ?>
+    <?= $this->renderPartial('//layouts/_flashMessage' ,array('prefix' => 'images-')); ?>
     <div class="row">
         <?= CHtml::label('تصاویر' ,'uploaderImages' ,array('class' => 'control-label')); ?>
         <?php
@@ -22,10 +38,13 @@
                 }
             ',
         ));
-
         ?>
+        <?php echo $form->error($model,'image'); ?>
     </div>
-    <p>
-        تصاویر آپلود شده ی فوق به طور خودکار در سیستم ثبت میگردند و نیازی به تایید ندارند .
-    </p>
+    <div class="form-group">
+        <div class="input-group buttons">
+            <?php echo CHtml::submitButton('تایید نهایی',array('class'=>'btn btn-success')); ?>
+        </div>
+    </div>
+    <? $this->endWidget();?>
 </div>

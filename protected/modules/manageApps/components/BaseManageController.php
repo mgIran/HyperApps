@@ -55,7 +55,7 @@ class BaseManageController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm', 'changePackageStatus', 'deletePackage', 'savePackage'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm', 'changePackageStatus', 'deletePackage', 'savePackage', 'images'),
                 'roles' => array('admin'),
             ),
             array('deny',  // deny all users
@@ -548,5 +548,30 @@ class BaseManageController extends Controller
             echo CJSON::encode($response);
             Yii::app()->end();
         }
+    }
+
+    public function actionImages($id)
+    {
+        $tempDir = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+        $uploadDir = Yii::getPathOfAlias("webroot") . '/uploads/apps/images/';
+        if (isset($_POST['image'])) {
+            $flag = true;
+            foreach ($_POST['image'] as $image) {
+                if (file_exists($tempDir . $image)) {
+                    $model = new AppImages();
+                    $model->app_id = (int)$id;
+                    $model->image = $image;
+                    rename($tempDir . $image, $uploadDir . $image);
+                    if (!$model->save(false))
+                        $flag = false;
+                }
+            }
+            if ($flag)
+                Yii::app()->user->setFlash('images-success', 'اطلاعات با موفقیت ثبت شد.');
+            else
+                Yii::app()->user->setFlash('images-failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+        } else
+            Yii::app()->user->setFlash('images-failed', 'تصاویر برنامه را آپلود کنید.');
+        $this->redirect('update/' . $id . '/?step=3');
     }
 }
