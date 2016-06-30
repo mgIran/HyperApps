@@ -16,6 +16,9 @@
     ?>
     <?= $this->renderPartial('//layouts/_flashMessage' ,array('prefix' => 'images-')); ?>
     <div class="row">
+        <?php if(empty($model->images)):?>
+            <div class="alert alert-warning submit-image-warning">لطفا تصاویر برنامه را ثبت کنید. برنامه های بدون تصویر نمایش داده نمی شوند.</div>
+        <?php endif;?>
         <?= CHtml::label('تصاویر' ,'uploaderImages' ,array('class' => 'control-label')); ?>
         <?php
         $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
@@ -33,6 +36,7 @@
                 if(responseObj.state == "ok")
                 {
                     {serverName} = responseObj.fileName;
+                    $(".submit-image-warning").addClass("hidden");
                 }else if(responseObj.state == "error"){
                     console.log(responseObj.msg);
                 }

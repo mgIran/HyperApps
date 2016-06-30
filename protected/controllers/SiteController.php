@@ -33,11 +33,13 @@ class SiteController extends Controller
         // get newest programs
         $catIds=AppCategories::model()->getCategoryChilds(1);
         $criteria = new CDbCriteria();
+        $criteria->with='images';
         $criteria->addInCondition('category_id',$catIds);
         $criteria->addCondition('platform_id=:platform_id');
         $criteria->addCondition('status=:status');
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
         $criteria->params[':platform_id']=$this->platform;
         $criteria->params[':status']='enable';
         $criteria->params[':confirm']='accepted';
@@ -53,6 +55,8 @@ class SiteController extends Controller
         $criteria->addCondition('status=:status');
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
         $criteria->params[':platform_id']=$this->platform;
         $criteria->params[':status']='enable';
         $criteria->params[':confirm']='accepted';
@@ -68,6 +72,8 @@ class SiteController extends Controller
         $criteria->addCondition('status=:status');
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
         $criteria->params[':platform_id']=$this->platform;
         $criteria->params[':status']='enable';
         $criteria->params[':confirm']='accepted';
@@ -83,6 +89,8 @@ class SiteController extends Controller
         $criteria->addCondition('status=:status');
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
         $criteria->order='install DESC, seen DESC';
         $criteria->params[':platform_id']=$this->platform;
         $criteria->params[':status']='enable';
@@ -90,7 +98,6 @@ class SiteController extends Controller
         $criteria->params[':deleted']=0;
         $criteria->limit=20;
         $suggestedDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
-
 
         $this->render('index', array(
             'newestProgramDataProvider'=>$newestProgramDataProvider,
