@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-05-28 14:42:34
+Date: 2016-07-21 09:49:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -83,13 +83,21 @@ CREATE TABLE `ym_apps` (
   CONSTRAINT `ym_apps_ibfk_1` FOREIGN KEY (`developer_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_apps_ibfk_3` FOREIGN KEY (`platform_id`) REFERENCES `ym_app_platforms` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_apps
 -- ----------------------------
-INSERT INTO `ym_apps` VALUES ('25', 'برنامه آزمایشی', '43', '5', 'enable', '0', 's8kEb1464260978.png', '<p>sadf</p>\r\n', '<p>asdfsadf</p>\r\n', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '1', null, '1', '0', '0', '0');
-INSERT INTO `ym_apps` VALUES ('35', 'برنامه آزمایشیasd', null, '5', 'enable', '0', 'eOwhE1464420916.png', '<p>asdf</p>\r\n', '<p>sdafsdf</p>\r\n', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '1', 'masoud', '37', '0', '2', '0');
+INSERT INTO `ym_apps` VALUES ('25', 'موبوگرام', '43', '5', 'enable', '0', 's8kEb1464260978.png', '<p>sadf</p>\r\n', '<p>asdfsadf</p>\r\n', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '1', null, '73', '0', '1', '0');
+INSERT INTO `ym_apps` VALUES ('35', 'برنامه آزمایشیasd', null, '5', 'enable', '0', 'eOwhE1464420916.png', '<p>asdf</p>\r\n', 'sdf', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '1', 'masoud', '42', '0', '2', '0');
+INSERT INTO `ym_apps` VALUES ('36', 'تلگرام', '43', '2', 'enable', '0', 'eOwhE1464420916.png', 'sdfs', 'sdf', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'pending', '1', null, '1', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('37', 'فیسبوک', '43', '2', 'enable', '0', 'eOwhE1464420916.png', 'sdfs', 'd', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'pending', '1', null, '0', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('38', 'شطرنج', '43', '2', 'enable', '0', 'eOwhE1464420916.png', 'sdf', 's', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'pending', '1', null, '1', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('39', 'آسفالت', '43', '2', 'enable', '0', 'eOwhE1464420916.png', 'fsd', 'f', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '1', null, '3', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('44', null, '43', null, 'enable', null, null, '', '', null, null, 'pending', '1', null, '0', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('45', null, '43', null, 'enable', null, null, '', '', null, null, 'pending', '1', null, '0', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('46', 'برنامه آزمایشی', null, '5', 'enable', '0', 'L1zfC1467039935.png', '<p>sfsdffs</p>\r\n', '<p>asdfsadfasf</p>\r\n', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '3', 'masoud', '0', '0', '0', '0');
+INSERT INTO `ym_apps` VALUES ('47', 'برنامه جدید', null, '5', 'enable', '0', 'mn1eA1467092788.png', '<p>dfggfsdf</p>\r\n', '<p>asfsfsf</p>\r\n', '[\"\\u0645\\u0634\\u0627\\u0647\\u062f\\u0647\\u0654 \\u0627\\u062a\\u0635\\u0627\\u0644\\u0627\\u062a Wi-Fi\"]', null, 'accepted', '3', 'masoud', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for ym_app_buys
@@ -110,6 +118,9 @@ CREATE TABLE `ym_app_buys` (
 -- ----------------------------
 -- Records of ym_app_buys
 -- ----------------------------
+INSERT INTO `ym_app_buys` VALUES ('1', '25', '43', '1366491579');
+INSERT INTO `ym_app_buys` VALUES ('2', '25', '39', '1466491579');
+INSERT INTO `ym_app_buys` VALUES ('3', '25', '39', '1466491579');
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -123,7 +134,7 @@ CREATE TABLE `ym_app_categories` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `ym_app_categories_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `ym_app_categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_app_categories
@@ -139,6 +150,46 @@ INSERT INTO `ym_app_categories` VALUES ('8', 'پزشکی', '1', '1-');
 INSERT INTO `ym_app_categories` VALUES ('9', 'استراتژی', '2', '2-');
 INSERT INTO `ym_app_categories` VALUES ('10', 'خانوادگی', '2', '2-');
 INSERT INTO `ym_app_categories` VALUES ('11', 'تفننی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('12', 'مذهبی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('13', 'آموزش', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('14', 'ابزار‌ها', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('15', 'اجتماعی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('16', 'اخبار و مجلات', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('17', 'پزشکی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('18', 'پس‌زمینهٔ زنده', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('19', 'حمل و نقل', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('20', 'خرید', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('21', 'سبک زندگی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('22', 'سرگرمی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('23', 'سلامت و تناسب اندام', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('24', 'سیر و سفر', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('25', 'شخصی‌سازی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('26', 'صوت و موسیقی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('27', 'عکاسی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('28', 'کاربردی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('29', 'کتابخانه و دمو', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('30', 'کتاب‌ها و مراجع', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('31', 'کسب و کار', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('32', 'کمیک', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('33', 'مالی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('34', 'ورزشی', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('35', 'ویجت‌ها', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('36', 'ویدیو و رسانه', '1', '1-');
+INSERT INTO `ym_app_categories` VALUES ('37', 'آموزشی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('38', 'استراتژی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('39', 'تخته‌ای', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('40', 'خانوادگی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('41', 'دانستنی‌ها', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('42', 'رقابتی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('43', 'شبیه‌سازی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('44', 'کلمات', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('45', 'ماجراجویی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('46', 'مسابقه و سرعت', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('47', 'معمایی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('48', 'موسیقایی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('49', 'نقش‌آفرینی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('50', 'ورزشی', '2', '2-');
+INSERT INTO `ym_app_categories` VALUES ('51', 'هیجان‌‌انگیز', '2', '2-');
 
 -- ----------------------------
 -- Table structure for ym_app_images
@@ -151,12 +202,17 @@ CREATE TABLE `ym_app_images` (
   PRIMARY KEY (`id`),
   KEY `app_id` (`app_id`),
   CONSTRAINT `ym_app_images_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_app_images
 -- ----------------------------
-INSERT INTO `ym_app_images` VALUES ('16', '25', 'KH7E81464261037.png');
+INSERT INTO `ym_app_images` VALUES ('17', '25', 'Ir6JG1466496966.jpg');
+INSERT INTO `ym_app_images` VALUES ('18', '25', 'IFOCV1466496970.jpg');
+INSERT INTO `ym_app_images` VALUES ('19', '25', 'qdAqu1466498205.jpg');
+INSERT INTO `ym_app_images` VALUES ('21', '47', 'FgxzH1467095159.jpg');
+INSERT INTO `ym_app_images` VALUES ('22', '47', 'wRrpn1467095159.jpg');
+INSERT INTO `ym_app_images` VALUES ('23', '47', 'd8UxO1467096044.jpg');
 
 -- ----------------------------
 -- Table structure for ym_app_packages
@@ -171,18 +227,23 @@ CREATE TABLE `ym_app_packages` (
   `create_date` varchar(20) DEFAULT NULL COMMENT 'تاریخ بارگذاری',
   `publish_date` varchar(20) DEFAULT NULL COMMENT 'تاریخ انتشار',
   `status` enum('pending','accepted','refused','change_required') DEFAULT 'pending' COMMENT 'وضعیت',
+  `reason` text CHARACTER SET utf8 COLLATE utf8_persian_ci COMMENT 'دلیل',
+  `for` enum('new_app','old_app') CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `app_id` (`app_id`),
   CONSTRAINT `ym_app_packages_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_app_packages
 -- ----------------------------
-INSERT INTO `ym_app_packages` VALUES ('24', '25', '2.1.4', 'ir.tgbs.android.iranapp2', '2.1.4-ir.tgbs.android.iranapp.apk', '1464260466', '1464356833', 'accepted');
-INSERT INTO `ym_app_packages` VALUES ('25', '25', '1.0.1', 'ir.tgbs.android.iranapp3', '1.0.1-ir.tgbs.android.iranapp.ipa', '1464260572', '1464353232', 'accepted');
-INSERT INTO `ym_app_packages` VALUES ('33', '35', '2.1.4', 'ir.tgbs.android.iranapp', '2.1.4-ir.tgbs.android.iranapp.apk', '1464419435', '1464421114', 'accepted');
-INSERT INTO `ym_app_packages` VALUES ('36', '35', '1.0.1', 'ir.tgbs.android.iranapp', '2.1.4-ir.tgbs.android.iranapp.apk', '1464421114', '1464421114', 'accepted');
+INSERT INTO `ym_app_packages` VALUES ('24', '25', '2.1.4', 'ir.tgbs.android.iranapp2', '2.1.4-ir.tgbs.android.iranapp.apk', '1464260466', '1464356833', 'pending', 'تعویض نام', 'new_app');
+INSERT INTO `ym_app_packages` VALUES ('25', '35', '1.0.1', 'ir.tgbs.android.iranapp3', '1.0.1-ir.tgbs.android.iranapp.ipa', '1464260572', '1464353232', 'pending', 'به این دلیل', 'old_app');
+INSERT INTO `ym_app_packages` VALUES ('33', '36', '2.1.4', 'ir.tgbs.android.iranapp123', '2.1.4-ir.tgbs.android.iranapp.apk', '1464419435', '1464421114', 'pending', '', 'old_app');
+INSERT INTO `ym_app_packages` VALUES ('36', '37', '1.0.1', 'ir.tgbs.android.iranapp321', '2.1.4-ir.tgbs.android.iranapp.apk', '1464421114', '1464421114', 'pending', '', 'new_app');
+INSERT INTO `ym_app_packages` VALUES ('37', '38', '2.1.4', 'ir.tgbs.android.iranapp1232', '2.1.4-ir.tgbs.android.iranapp.apk', '1464774674', null, 'pending', '', 'new_app');
+INSERT INTO `ym_app_packages` VALUES ('38', '39', '2.1.4', 'ir.tgbs.android.iranapp', '2.1.4-ir.tgbs.android.iranapp.apk', '1466587235', null, 'pending', null, 'new_app');
+INSERT INTO `ym_app_packages` VALUES ('40', '47', '1.0.2', 'asdfghj', '1.0.2-asdfghj.xap', '1467092821', '1467092821', 'accepted', null, null);
 
 -- ----------------------------
 -- Table structure for ym_app_platforms
@@ -201,7 +262,7 @@ CREATE TABLE `ym_app_platforms` (
 -- ----------------------------
 INSERT INTO `ym_app_platforms` VALUES ('1', 'android', 'اندروید', 'apk');
 INSERT INTO `ym_app_platforms` VALUES ('2', 'ios', 'آی او اس', 'ipa');
-INSERT INTO `ym_app_platforms` VALUES ('3', 'windowsphone', 'ویندوزفون', 'xap');
+INSERT INTO `ym_app_platforms` VALUES ('3', 'windowsphone', 'ویندوزفون', 'xap,appx');
 
 -- ----------------------------
 -- Table structure for ym_counter_save
@@ -216,11 +277,11 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '86');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457537');
+INSERT INTO `ym_counter_save` VALUES ('counter', '103');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457582');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '5');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1457598600');
-INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
+INSERT INTO `ym_counter_save` VALUES ('yesterday', '0');
 
 -- ----------------------------
 -- Table structure for ym_counter_users
@@ -235,7 +296,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1464425505');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1468308880');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -320,13 +381,14 @@ CREATE TABLE `ym_users` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `ym_users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `ym_user_roles` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ym_users
 -- ----------------------------
 INSERT INTO `ym_users` VALUES ('39', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'm@gmail.com', '2', '1460625263', 'active', '23aa8793179b679912142a701e3a9632', '0');
 INSERT INTO `ym_users` VALUES ('43', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'gharagozlu.masoud@gmail.com', '2', '1460634664', 'active', 'ec0bfa4e54eed8afb0d7fb0305d52759', '1');
+INSERT INTO `ym_users` VALUES ('44', '', '$2a$12$s8yAVo/JZ3Z86w5iFQV/7OIOGEwhyBCWj1Jw5DrlIqHERUF2otno2', 'mr.m.gharagozlu@gmail.com', '2', '1460634664', 'deleted', 'ec0bfa4e54eed8afb0d7fb0305d52759', '0');
 
 -- ----------------------------
 -- Table structure for ym_user_app_bookmark
@@ -365,6 +427,12 @@ CREATE TABLE `ym_user_details` (
   `details_status` enum('refused','pending','accepted') CHARACTER SET utf8 DEFAULT 'pending' COMMENT 'وضعیت اطلاعات کاربر',
   `monthly_settlement` tinyint(4) DEFAULT '0' COMMENT 'تسویه حساب ماهانه',
   `iban` varchar(24) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شماره شبا',
+  `nickname` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام نمایشی',
+  `type` enum('real','legal') CHARACTER SET utf8 DEFAULT 'real' COMMENT 'نوع حساب',
+  `post` enum('ceo','board') CHARACTER SET utf8 DEFAULT NULL COMMENT 'سمت',
+  `company_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام شرکت',
+  `registration_number` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شماره ثبت',
+  `registration_certificate_image` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT 'تصویر گواهی ثبت شرکت',
   PRIMARY KEY (`user_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -373,8 +441,9 @@ CREATE TABLE `ym_user_details` (
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('39', 'یوسف مبشری', 'yusef', null, null, '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1000', 'Yusef', 'accepted', '1', '23423');
-INSERT INTO `ym_user_details` VALUES ('43', 'مسعود قراگوزلو', 'masoud', '', '', '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1760', 'masouud', 'accepted', '1', '123456789123456789123456');
+INSERT INTO `ym_user_details` VALUES ('39', 'یوسف مبشری', 'yusef', null, null, '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1000', 'Yusef', 'accepted', '1', '23423', null, 'real', null, null, null, null);
+INSERT INTO `ym_user_details` VALUES ('43', 'مسعود قراگوزلو', 'masoud', '', '', '0370518926', 'ULcy91460814012.jpg', '09373252746', '3718895691', 'بلوار سوم خرداد', '1760', 'masouud', 'accepted', '1', '123456789123456789123456', 'Masoud', 'real', null, null, null, null);
+INSERT INTO `ym_user_details` VALUES ('44', 'مسعود قراگوزلو', null, '', null, null, null, '38888888', '3718958691', 'قم - همونجا', '2000', null, 'pending', '0', null, 'وای ام', 'legal', 'ceo', 'وب ایران', '134644535', 'OPxRK1466844466.jpg');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
@@ -404,7 +473,7 @@ CREATE TABLE `ym_user_notifications` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_user_notifications
@@ -412,13 +481,14 @@ CREATE TABLE `ym_user_notifications` (
 INSERT INTO `ym_user_notifications` VALUES ('2', '43', 'اطلاعات شما توسط مدیر سیستم تایید شد.', '1', '1461845059');
 INSERT INTO `ym_user_notifications` VALUES ('3', '43', 'شناسه شما توسط مدیر سیستم تایید شد.', '1', '1461845059');
 INSERT INTO `ym_user_notifications` VALUES ('4', '43', 'برنامه  برنامه لیدکامب - لکنت کودکان تایید شده است.', '1', '1461845059');
-INSERT INTO `ym_user_notifications` VALUES ('6', '43', 'برنامه برنامه آزمایشی تایید شده است.', '0', '1464262310');
-INSERT INTO `ym_user_notifications` VALUES ('7', '43', 'برنامه برنامه آزمایشی تایید شده است.', '0', '1464262422');
-INSERT INTO `ym_user_notifications` VALUES ('8', '43', 'برنامه برنامه آزمایشی تایید شده است.', '0', '1464353232');
-INSERT INTO `ym_user_notifications` VALUES ('9', '43', 'بسته asdfsdf توسط مدیر سیستم حذف شد.', '0', '1464358109');
-INSERT INTO `ym_user_notifications` VALUES ('10', '43', 'بسته ir.tgbs.android.iranappasd توسط مدیر سیستم حذف شد.', '0', '1464358330');
-INSERT INTO `ym_user_notifications` VALUES ('11', null, 'بسته ir.tgbs.android.iranapp توسط مدیر سیستم حذف شد.', '0', '1464421049');
-INSERT INTO `ym_user_notifications` VALUES ('12', null, 'بسته ir.tgbs.android.iranapp توسط مدیر سیستم حذف شد.', '0', '1464421103');
+INSERT INTO `ym_user_notifications` VALUES ('6', '43', 'برنامه برنامه آزمایشی تایید شده است.', '1', '1464262310');
+INSERT INTO `ym_user_notifications` VALUES ('7', '43', 'برنامه برنامه آزمایشی تایید شده است.', '1', '1464262422');
+INSERT INTO `ym_user_notifications` VALUES ('8', '43', 'برنامه برنامه آزمایشی تایید شده است.', '1', '1464353232');
+INSERT INTO `ym_user_notifications` VALUES ('9', '43', 'بسته asdfsdf توسط مدیر سیستم حذف شد.', '1', '1464358109');
+INSERT INTO `ym_user_notifications` VALUES ('10', '43', 'بسته ir.tgbs.android.iranappasd توسط مدیر سیستم حذف شد.', '1', '1464358330');
+INSERT INTO `ym_user_notifications` VALUES ('13', '43', 'بسته ir.tgbs.android.iranapp3 توسط مدیر سیستم رد شد.', '1', '1465459197');
+INSERT INTO `ym_user_notifications` VALUES ('14', '43', 'بسته ir.tgbs.android.iranapp2 نیاز به تغییر دارد.', '1', '1465459228');
+INSERT INTO `ym_user_notifications` VALUES ('15', null, 'بسته ir.tgbs.android.iranapp توسط مدیر سیستم حذف شد.', '0', '1467040015');
 
 -- ----------------------------
 -- Table structure for ym_user_roles

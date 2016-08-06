@@ -40,6 +40,7 @@ class SiteController extends Controller
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
         $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
         $criteria->params[':platform_id']=$this->platform;
         $criteria->params[':status']='enable';
         $criteria->params[':confirm']='accepted';
