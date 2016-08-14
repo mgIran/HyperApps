@@ -3,6 +3,7 @@
 /* @var $model Apps */
 /* @var $user Users */
 /* @var $bought boolean */
+/* @var $price string */
 ?>
 
 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 buy-box">
@@ -26,7 +27,7 @@
                 )); ?>
                     <h4>اطلاعات برنامه</h4>
                     <p><span class="buy-label">برنامه </span><span class="buy-value"><a><?php echo CHtml::encode($model->title);?></a></span></p>
-                    <p><span class="buy-label">مبلغ</span><span class="buy-value"><?php echo CHtml::encode(number_format($model->price, 0));?> تومان</span></p>
+                    <p><span class="buy-label">مبلغ</span><span class="buy-value"><?php echo CHtml::encode(number_format($price, 0));?> تومان</span></p>
                     <h4>اطلاعات کاربری</h4>
                     <p><span class="buy-label">اعتبار فعلی</span><span class="buy-value"><?php echo CHtml::encode(number_format($user->userDetails->credit, 0));?> تومان</span></p>
                     <?php if($bought):?>

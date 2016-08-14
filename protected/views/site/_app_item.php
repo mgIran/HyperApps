@@ -2,7 +2,7 @@
 /* @var $data Apps */
 ?>
 
-<div class="app-item">
+<div class="app-item <?=$data->hasDiscount()?'discount':''?>">
     <div class="app-item-content">
         <div class="pic">
             <div>
@@ -23,7 +23,18 @@
                     <?php if($data->price==0):?>
                         <a href="<?php echo Yii::app()->createUrl('/apps/free')?>">رایگان</a>
                     <?php else:?>
-                        <a><?php echo number_format(CHtml::encode($data->price), 0).' تومان';?></a>
+                        <?
+                        if($data->hasDiscount()):
+                            ?>
+                            <span class="text-danger text-line-through center-block"><?= Controller::parseNumbers(number_format($data->price, 0)).' تومان'; ?></span>
+                            <span ><?= Controller::parseNumbers(number_format($data->offPrice, 0)).' تومان' ; ?></span>
+                            <?
+                        else:
+                            ?>
+                            <span ><?= $data->price?Controller::parseNumbers(number_format($data->price, 0)).' تومان':'رایگان'; ?></span>
+                            <?
+                        endif;
+                        ?>
                     <?php endif;?>
                 </span>
                 <span class="app-rate">

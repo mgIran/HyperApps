@@ -65,6 +65,8 @@ class UserIdentity extends CUserIdentity
                 $this->setState('type','user');
                 $this->setState('email',$record->email);
                 $this->setState('username',$record->username);
+                $this->setState('fa_name',$record->userDetails->fa_name);
+                $this->setState('en_name',$record->userDetails->fa_name);
                 $this->errorCode=self::ERROR_NONE;
             }
         }

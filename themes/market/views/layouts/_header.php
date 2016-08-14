@@ -10,14 +10,15 @@
             <?
             $form = $this->beginWidget('CActiveForm',array(
                 'id' => 'header-serach-form',
-                'action' => array('/site/search'),
+                'action' => array('/apps/search'),
+                'method' => 'get',
                 'htmlOptions' => array(
                     'class' => 'col-lg-9 col-md-9 col-sm-9 col-xs-6'
                 )
             ));
             ?>
                 <div class="form-group pull-left col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                    <?= CHtml::textField('searchText','',array('placeholder' => 'جستجو کنید ...')); ?>
+                    <?= CHtml::textField('term',isset($_GET['term'])?trim($_GET['term']):'',array('placeholder' => 'جستجو کنید ...')); ?>
                     <span class="add-in svg svg-search"></span>
                 </div>
             <?

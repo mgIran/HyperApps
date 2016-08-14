@@ -22,9 +22,11 @@
  * @property string $download
  * @property string $install
  * @property integer $deleted
- * @property AppPackages $lastPackage
+ * @property integer $offPrice
+ *
  *
  * The followings are the available model relations:
+ * @property AppPackages $lastPackage
  * @property AppBuys[] $appBuys
  * @property AppImages[] $images
  * @property AppPlatforms $platform
@@ -32,6 +34,7 @@
  * @property AppCategories $category
  * @property Users[] $bookmarker
  * @property AppPackages[] $packages
+ * @property AppDiscounts $discount
  */
 class Apps extends CActiveRecord
 {
@@ -98,6 +101,7 @@ class Apps extends CActiveRecord
 			'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
 			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
 			'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
+			'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
 			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
 			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
 		);
@@ -224,5 +228,19 @@ class Apps extends CActiveRecord
 			return $this->developer->userDetails->nickname;
 		else
 			return $this->developer_team;
+	}
+
+	public function getOffPrice(){
+		if($this->discount)
+			return $this->price - $this->price * $this->discount->percent /100;
+		else
+			return $this->price;
+	}
+
+	public function hasDiscount(){
+		if($this->discount && $this->discount->percent && $this->discount->start_date < time() && $this->discount->end_date > time())
+			return true;
+		else
+			return false;
 	}
 }

@@ -6,6 +6,7 @@ return array(
 	// uncomment the following lines to use a MySQL database
 
 	'connectionString' => 'mysql:host=localhost;dbname=market',
+	'tablePrefix'=>'ym_',
 	'emulatePrepare' => true,
 	'username' => 'root',
 	'password' => '',

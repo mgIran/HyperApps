@@ -34,7 +34,51 @@ return array(
         'pages',
         'developers',
         'manageApps',
-        //'ticketing',
+		'tickets',
+		'comments'=>array(
+			//you may override default config for all connecting models
+			'defaultModelConfig' => array(
+				//only registered users can post comments
+				'registeredOnly' => true,
+				'useCaptcha' => true,
+				//allow comment tree
+				'allowSubcommenting' => true,
+				//display comments after moderation
+				'premoderate' => true,
+				//action for postig comment
+				'postCommentAction' => '/comments/comment/postComment',
+				//super user condition(display comment list in admin view and automoderate comments)
+				'isSuperuser'=>'Yii::app()->user->checkAccess("moderate")',
+				//order direction for comments
+				'orderComments'=>'DESC',
+				'showEmail' => false
+			),
+			//the models for commenting
+			'commentableModels'=>array(
+				//model with individual settings
+				'Apps'=>array(
+					'registeredOnly'=>true,
+					'useCaptcha'=> false,
+					'premoderate' => false,
+					'allowSubcommenting'=>false,
+					'orderComments'=>'DESC',
+					//config for create link to view model page(page with comments)
+					'pageUrl'=>array(
+						'route'=>'apps/',
+						'data'=>array('id'=>'id'),
+					),
+					// change translation file path
+//					'translationCategory' => 'offlineChat',
+					// for labels translation ,this name should be lower case string
+//					'moduleObjectName' => 'message'
+				),
+			),
+			'userConfig'=>array(
+				'class'=>'Users',
+				'nameProperty'=>'userDetails.fa_name',
+				'emailProperty'=>'email',
+			),
+		)
 	),
 
 	// application components

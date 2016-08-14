@@ -28,7 +28,7 @@ class AppsController extends Controller
                 'roles' => array('admin'),
             ),
             array('allow',
-                'actions' => array('view', 'download', 'programs', 'games', 'educations', 'developer'),
+                'actions' => array('discount','search','view', 'download', 'programs', 'games', 'educations', 'developer'),
                 'users' => array('*'),
             ),
             array('allow',
@@ -65,6 +65,8 @@ class AppsController extends Controller
         $criteria->addCondition('status=:status');
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
         $criteria->order = 'install DESC, seen DESC';
         $criteria->params[':id'] = $model->id;
         $criteria->params[':cat_id'] = $model->category_id;
@@ -90,7 +92,7 @@ class AppsController extends Controller
         $this->layout = 'panel';
 
         $model = $this->loadModel($id);
-
+        $price = $model->hasDiscount()?$model->offPrice:$model->price;
         $buy = AppBuys::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $id));
         if ($buy)
             $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
@@ -111,7 +113,7 @@ class AppsController extends Controller
             if ($buy->save()) {
                 $userDetails = UserDetails::model()->findByAttributes(array('user_id' => Yii::app()->user->getId()));
                 $userDetails->setScenario('update-credit');
-                $userDetails->credit = $userDetails->credit - $model->price;
+                $userDetails->credit = $userDetails->credit - $price;
                 if ($model->developer)
                     $model->developer->userDetails->credit = $model->developer->userDetails->credit + $model->getDeveloperPortion();
                 $model->developer->userDetails->save();
@@ -127,7 +129,7 @@ class AppsController extends Controller
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">قیمت</td>
-                                <td>'.number_format($model->price, 0).' تومان</td>
+                                <td>'.Controller::parseNumbers(number_format($price, 0)).' تومان</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">تاریخ</td>
@@ -143,6 +145,7 @@ class AppsController extends Controller
 
         $this->render('buy', array(
             'model' => $model,
+            'price' => $price,
             'user' => $user,
             'bought' => ($buy) ? true : false,
         ));
@@ -260,7 +263,6 @@ class AppsController extends Controller
         $criteria->addCondition('deleted=:deleted');
         $criteria->addCondition('status=:status');
         $criteria->addCondition('platform_id=:platform');
-        $developer_id = '';
         if (isset($_GET['t']) and $_GET['t'] == 1) {
             $criteria->addCondition('developer_team=:dev');
             $developer_id = $title;
@@ -275,7 +277,8 @@ class AppsController extends Controller
             ':platform' => $this->platform,
             ':dev' => $developer_id,
         );
-
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
         $dataProvider = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
@@ -301,6 +304,8 @@ class AppsController extends Controller
         $criteria->addCondition('deleted=:deleted');
         $criteria->addCondition('status=:status');
         $criteria->addCondition('platform_id=:platform');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
         $criteria->params = array(
             ':confirm' => 'accepted',
             ':deleted' => 0,
@@ -507,6 +512,78 @@ class AppsController extends Controller
             'values' => $values,
             'showChart' => $showChart,
             'activeTab' => $activeTab,
+        ));
+    }
+
+    /**
+     * This is the default 'index' action that is invoked
+     * when an action is not explicitly requested by users.
+     */
+    public function actionSearch()
+    {
+        Yii::app()->theme = 'market';
+        $this->layout = '//layouts/public';
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('platform_id=:platform_id AND status=:status AND confirm=:confirm AND deleted=:deleted AND (SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->params[':platform_id'] = $this->platform;
+        $criteria->params[':status'] = 'enable';
+        $criteria->params[':confirm'] = 'accepted';
+        $criteria->params[':deleted'] = 0;
+        $criteria->limit = 20;
+        if(isset($_GET['term']) && !empty($term = $_GET['term'])) {
+            $terms = explode(' ', urldecode($term));
+            $sql = null;
+            foreach($terms as $key => $term)
+                if($term) {
+                    if(!$sql)
+                        $sql = "(";
+                    else
+                        $sql .= " OR (";
+                    $sql .= "t.title regexp :term$key OR t.description regexp :term$key OR category.title regexp :term$key)";
+                    $criteria->params[":term$key"] = $term;
+                }
+            $criteria->with[] = 'category';
+            $criteria->addCondition($sql);
+
+        }
+        $dataProvider = new CActiveDataProvider('Apps', array('criteria' => $criteria));
+
+        $this->render('search', array(
+            'dataProvider' => $dataProvider
+        ));
+    }
+
+    /**
+     * Show apps list of category
+     */
+    public function actionDiscount()
+    {
+        Yii::app()->theme = 'market';
+        $this->layout = 'public';
+        $criteria = new CDbCriteria();
+        $criteria->with[] = 'app';
+        $criteria->addCondition('app.confirm=:confirm');
+        $criteria->addCondition('app.deleted=:deleted');
+        $criteria->addCondition('app.status=:status');
+        $criteria->addCondition('app.platform_id=:platform');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=app.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=app.id) != 0');
+        $criteria->addCondition('start_date < :now AND end_date > :now');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=app.id) != 0');
+        $criteria->params = array(
+            ':confirm' => 'accepted',
+            ':deleted' => 0,
+            ':status' => 'enable',
+            ':platform' => $this->platform,
+            ':now' => time()
+        );
+        $dataProvider = new CActiveDataProvider('AppDiscounts', array(
+            'criteria' => $criteria,
+        ));
+
+        $this->render('apps_discounts_list', array(
+            'dataProvider' => $dataProvider,
+            'pageTitle' => 'تخفیفات'
         ));
     }
 

@@ -20,10 +20,14 @@ class DashboardController extends Controller
      */
     public function accessRules()
     {
+        $adminRoles = AdminRoles::model()->findAll(array(
+            'select' => 'role'
+        ));
+        $adminRoles = CHtml::listData($adminRoles,'role','role');
         return array(
             array('allow',  // allow all users to perform 'index' and 'views' actions
                 'actions'=>array('index'),
-                'roles' => array('admin'),
+                'roles' => $adminRoles,
             ),
             array('deny',  // deny all users
                 'actions'=>array('index'),
@@ -75,11 +79,19 @@ class DashboardController extends Controller
             'criteria'=>$criteria,
         ));
 
+        Yii::import("tickets.models.*");
+        $criteria = new CDbCriteria();
+        $criteria->with[]='messages';
+        $criteria->compare('messages.visit' ,0);
+        $criteria->compare('messages.sender','user');
+        $tickets['new'] = Tickets::model()->count($criteria);
+
 		$this->render('index', array(
             'newestPackages'=>$newestPackages,
             'newestPrograms'=>$newestPrograms,
             'devIDRequests'=>$newestDevIdRequests,
             'newestDevelopers'=>$newestDevelopers,
+            'tickets'=>$tickets,
         ));
 	}
 
