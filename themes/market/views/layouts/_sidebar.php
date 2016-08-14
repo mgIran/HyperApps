@@ -19,7 +19,7 @@
             </a>
         </div>
     </div>
-    <div class="panel panel-default hidden-sm hidden-xs">
+    <div class="panel panel-default enamad hidden-sm hidden-xs">
         <div class="panel-body">
             <img id='xlapsguihwlargvldrft' style='cursor:pointer' onclick='window.open("http://trustseal.enamad.ir/Verify.aspx?id=30451&p=fuixdrfsodshyncrnbpd";, "Popup","toolbar=no, location=no, statusbar=no, menubar=no, scrollbars=1, resizable=0, width=580, height=600, top=30")' alt='' src='http://trustseal.enamad.ir/logo.aspx?id=30451&p=vjymgthvaodsfujylznb'/>
         </div>
