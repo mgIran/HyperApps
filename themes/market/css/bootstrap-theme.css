@@ -1074,17 +1074,6 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
     text-align: center;
 }
 
-.enamad{
-    display: block;
-    position: fixed;
-    width: 120px;
-    height: 140px;
-    text-align: center;
-    overflow: hidden;
-    bottom: 20px;
-    right: 20px;
-}
-
 .footer{
     float: right;
     width: 100%;
@@ -1995,7 +1984,13 @@ header.mobile.search-open .mobile-search{
 .comments-list.owl-theme .owl-controls .owl-nav .owl-prev{
     right: -45px;
 }
+
 .enamad{
+    display: block;
+    position: fixed;
+    text-align: center;
+    overflow: hidden;
+    bottom: 20px;
+    right: 20px;
     width: 166px;
-    margin: 0 auto;
 }
