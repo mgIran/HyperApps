@@ -59,7 +59,7 @@ return array(
 				'Apps'=>array(
 					'registeredOnly'=>true,
 					'useCaptcha'=> false,
-					'premoderate' => false,
+					'premoderate' => true,
 					'allowSubcommenting'=>false,
 					'orderComments'=>'DESC',
 					//config for create link to view model page(page with comments)

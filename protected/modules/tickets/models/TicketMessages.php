@@ -34,7 +34,7 @@ class TicketMessages extends CActiveRecord
 		// will receive user inputs.
 		$sender = null;
 		if(!Yii::app()->user->isGuest)
-			$sender = Yii::app()->user->roles;
+			$sender = Yii::app()->user->roles == 'developer' ?'user':Yii::app()->user->roles;
 		return array(
 			array('text', 'required'),
 			array('visit', 'numerical', 'integerOnly' => true),

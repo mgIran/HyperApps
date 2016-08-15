@@ -10,8 +10,9 @@
                 $('.loading-container').fadeIn();
                 return true;
             }",
-            'afterValidate' => "js:function(form) {
+            'afterValidate' => "js:function(form,data,hasError) {
                 $('.loading-container').stop().hide();
+                $(\"#login-btn\").val(\"در حال انتقال ...\");
                 return true;
             }",
             'afterValidateAttribute' => 'js:function(form, attribute, data, hasError) {
@@ -49,7 +50,7 @@
         <span class="transition icon-key"></span>
     </div>
     <div class="row">
-        <input class="transition" type="submit" value="ورود">
+        <input id="login-btn" class="transition" type="submit" value="ورود">
     </div>
     <?php $this->endWidget(); ?>
     <p><a href="<?= Yii::app()->createUrl('/users/public/forgetPassword') ?>" class="forget-link">کلمه عبور خود را فراموش کرده اید؟</a></p>

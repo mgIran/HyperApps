@@ -19,7 +19,7 @@
             ?>
                 <div class="form-group pull-left col-lg-10 col-md-10 col-sm-12 col-xs-12">
                     <?= CHtml::textField('term',isset($_GET['term'])?trim($_GET['term']):'',array('placeholder' => 'جستجو کنید ...')); ?>
-                    <span class="add-in svg svg-search"></span>
+                    <span class="add-in svg svg-search" onclick="document.getElementById('header-serach-form').submit();"></span>
                 </div>
             <?
             $this->endWidget();
