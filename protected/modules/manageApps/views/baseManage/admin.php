@@ -23,7 +23,7 @@ $this->menu=array(
 			'value' => '$data->developer_id?$data->developer->userDetails->developer_id:$data->developer_team',
 			'filter' => CHtml::activeTextField($model,'devFilter')
 		),
-		'category_id',
+		'category.fullTitle',
 		array(
 			'name' => 'status',
 			'value' => '$data->statusLabels[$data->status]'

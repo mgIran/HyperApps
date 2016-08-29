@@ -190,7 +190,7 @@ class Apps extends CActiveRecord
 		$criteria->addCondition('deleted=0');
 
 		$criteria->addCondition('title != ""');
-
+		$criteria->order = 'id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
