@@ -165,21 +165,10 @@ class Apps extends CActiveRecord
 
 		$criteria->compare('t.id', $this->id, true);
 		$criteria->compare('t.title', $this->title, true);
-		$criteria->compare('developer_id', $this->developer_id, true);
-		$criteria->compare('category_id', $this->category_id, true);
-		$criteria->compare('t.status', $this->status, true);
+		$criteria->compare('category_id', $this->category_id);
+		$criteria->compare('t.status', $this->status);
 		$criteria->compare('price', $this->price);
-		$criteria->compare('icon', $this->icon, true);
-		$criteria->compare('description', $this->description, true);
-		$criteria->compare('change_log', $this->change_log, true);
-		$criteria->compare('permissions', $this->permissions, true);
-		$criteria->compare('size', $this->size);
-		$criteria->compare('t.confirm', $this->confirm, true);
-		$criteria->compare('platform_id', $this->platform_id, true);
-		$criteria->compare('t.seen', $this->seen);
-		$criteria->compare('download', $this->download, true);
-		$criteria->compare('install', $this->install, true);
-		$criteria->compare('t.deleted', $this->deleted);
+		$criteria->compare('platform_id', $this->platform_id);
 		$criteria->with = array('developer','developer.userDetails');
 		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
 		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';

@@ -30,7 +30,8 @@ $this->menu=array(
 		),
 		array(
 			'name' => 'status',
-			'value' => '$data->statusLabels[$data->status]'
+			'value' => '$data->statusLabels[$data->status]',
+			'filter' => CHtml::activeDropDownList($model,'status',$model->statusLabels,array('prompt' => 'همه'))
 		),
 		array(
 			'name' => 'price',
