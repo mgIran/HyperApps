@@ -59,7 +59,16 @@ class Apps extends CActiveRecord
 		'accepted' => 'تایید شده',
 		'change_required' => 'نیاز به تغییر',
 	);
+	public $statusLabels = array(
+		'enable' => 'فعال',
+		'disable' => 'غیر فعال'
+	);
 	public $lastPackage;
+
+	/**
+	 * @var string developer name filter
+	 */
+	public $devFilter;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -84,7 +93,7 @@ class Apps extends CActiveRecord
 			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted', 'safe', 'on' => 'search'),
+			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter', 'safe', 'on' => 'search'),
 			array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
 		);
 	}
@@ -148,7 +157,7 @@ class Apps extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($withFree = true)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -167,11 +176,16 @@ class Apps extends CActiveRecord
 		$criteria->compare('size', $this->size);
 		$criteria->compare('confirm', $this->confirm, true);
 		$criteria->compare('platform_id', $this->platform_id, true);
-		$criteria->compare('developer_team', $this->developer_team, true);
 		$criteria->compare('seen', $this->seen);
 		$criteria->compare('download', $this->download, true);
 		$criteria->compare('install', $this->install, true);
 		$criteria->compare('deleted', $this->deleted);
+		$criteria->with = array('developer','developer.userDetails');
+		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
+		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
+
+		if(!$withFree)
+			$criteria->addCondition('price <> 0');
 
 		$criteria->addCondition('deleted=0');
 

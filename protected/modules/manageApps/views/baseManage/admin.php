@@ -20,11 +20,18 @@ $this->menu=array(
 		'title',
 		array(
 			'header' => 'توسعه دهنده',
-			'value' => '$data->developer_id?$data->developer->userDetails->developer_id:$data->developer_team'
+			'value' => '$data->developer_id?$data->developer->userDetails->developer_id:$data->developer_team',
+			'filter' => CHtml::activeTextField($model,'devFilter')
 		),
 		'category_id',
-		'status',
-		'price',
+		array(
+			'name' => 'status',
+			'value' => '$data->statusLabels[$data->status]'
+		),
+		array(
+			'name' => 'price',
+			'value' => '$data->price != 0?$data->price:"رایگان"'
+		),
 		/*
 		'file_name',
 		'icon',

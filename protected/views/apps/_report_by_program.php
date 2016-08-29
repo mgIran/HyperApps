@@ -7,7 +7,7 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <?php $this->widget('zii.widgets.CListView', array(
-            'dataProvider'=>Apps::model()->search(),
+            'dataProvider'=>Apps::model()->search(false),
             'itemView'=>'_report_sale_app_list',
             'template'=>'{items}'
         ));?>
