@@ -23,7 +23,11 @@ $this->menu=array(
 			'value' => '$data->developer_id?$data->developer->userDetails->developer_id:$data->developer_team',
 			'filter' => CHtml::activeTextField($model,'devFilter')
 		),
-		'category.fullTitle',
+		array(
+			'name' => 'category_id',
+			'value' => '$data->category->fullTitle',
+			'filter' => CHtml::activeDropDownList($model,'category_id',AppCategories::model()->sortList(),array('prompt' => 'همه'))
+		),
 		array(
 			'name' => 'status',
 			'value' => '$data->statusLabels[$data->status]'

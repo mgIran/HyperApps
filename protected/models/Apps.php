@@ -163,23 +163,23 @@ class Apps extends CActiveRecord
 
 		$criteria = new CDbCriteria;
 
-		$criteria->compare('id', $this->id, true);
-		$criteria->compare('title', $this->title, true);
+		$criteria->compare('t.id', $this->id, true);
+		$criteria->compare('t.title', $this->title, true);
 		$criteria->compare('developer_id', $this->developer_id, true);
 		$criteria->compare('category_id', $this->category_id, true);
-		$criteria->compare('status', $this->status, true);
+		$criteria->compare('t.status', $this->status, true);
 		$criteria->compare('price', $this->price);
 		$criteria->compare('icon', $this->icon, true);
 		$criteria->compare('description', $this->description, true);
 		$criteria->compare('change_log', $this->change_log, true);
 		$criteria->compare('permissions', $this->permissions, true);
 		$criteria->compare('size', $this->size);
-		$criteria->compare('confirm', $this->confirm, true);
+		$criteria->compare('t.confirm', $this->confirm, true);
 		$criteria->compare('platform_id', $this->platform_id, true);
-		$criteria->compare('seen', $this->seen);
+		$criteria->compare('t.seen', $this->seen);
 		$criteria->compare('download', $this->download, true);
 		$criteria->compare('install', $this->install, true);
-		$criteria->compare('deleted', $this->deleted);
+		$criteria->compare('t.deleted', $this->deleted);
 		$criteria->with = array('developer','developer.userDetails');
 		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
 		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
@@ -189,8 +189,8 @@ class Apps extends CActiveRecord
 
 		$criteria->addCondition('deleted=0');
 
-		$criteria->addCondition('title != ""');
-		$criteria->order = 'id DESC';
+		$criteria->addCondition('t.title != ""');
+		$criteria->order = 't.id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
