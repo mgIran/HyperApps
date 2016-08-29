@@ -29,7 +29,7 @@
     echo '<div class="comments-list-outer">';
 echo "<button class='btn btn-default pull-left' data-toggle=\"collapse\" data-target=\"#addCommentDialog-{$this->id}\" ><span class='icon icon-pencil'></span> نظرتان را بگویید</button>";
     echo '<h4>'.Yii::t($this->_config['translationCategory'], 'Users '.ucfirst($this->_config['moduleObjectName'])).'</h4>';
-    $this->render('ECommentsWidgetComments', array('comments' => $comments));
+    $this->render('ECommentsWidgetComments', array('newComment' => $newComment ,'comments' => $comments));
     echo '</div>';
 ?>
 </div>

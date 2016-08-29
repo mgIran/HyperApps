@@ -32,7 +32,7 @@ class AppsController extends Controller
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('buy', 'bookmark'),
+                'actions' => array('buy', 'bookmark','rate'),
                 'users' => array('@'),
             ),
             array('deny',  // deny all users
@@ -75,6 +75,7 @@ class AppsController extends Controller
         $criteria->params[':confirm'] = 'accepted';
         $criteria->params[':deleted'] = 0;
         $criteria->limit = 20;
+        $criteria->order='id DESC';
         $similar = new CActiveDataProvider('Apps', array('criteria' => $criteria));
         $this->render('view', array(
             'model' => $model,
@@ -279,6 +280,7 @@ class AppsController extends Controller
         );
         $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
         $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
+        $criteria->order='id DESC';
         $dataProvider = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
@@ -315,7 +317,7 @@ class AppsController extends Controller
 
         $categories = AppCategories::model()->getCategoryChilds($id);
         $criteria->addInCondition('category_id', $categories);
-
+        $criteria->order='id DESC';
         $dataProvider = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
@@ -530,6 +532,7 @@ class AppsController extends Controller
         $criteria->params[':confirm'] = 'accepted';
         $criteria->params[':deleted'] = 0;
         $criteria->limit = 20;
+        $criteria->order='id DESC';
         if(isset($_GET['term']) && !empty($term = $_GET['term'])) {
             $terms = explode(' ', urldecode($term));
             $sql = null;
@@ -577,6 +580,7 @@ class AppsController extends Controller
             ':platform' => $this->platform,
             ':now' => time()
         );
+        $criteria->order='app.id DESC';
         $dataProvider = new CActiveDataProvider('AppDiscounts', array(
             'criteria' => $criteria,
         ));
@@ -587,6 +591,43 @@ class AppsController extends Controller
         ));
     }
 
+    /**
+     * @param $app_id
+     * @param $rate
+     * @throws CException
+     * @throws CHttpException
+     */
+    public function actionRate($app_id ,$rate)
+    {
+        $model = $this->loadModel($app_id);
+        if($model) {
+            $rateModel = new AppRatings();
+            $rateModel->rate = (int)$rate;
+            $rateModel->app_id = $model->id;
+            $rateModel->user_id = Yii::app()->user->getId();
+            if($rateModel->save()) {
+                $this->beginClip('rate-view');
+                $this->renderPartial('_rating', array(
+                    'model' => $model
+                ));
+                $this->endClip();
+                if(isset($_GET['ajax'])) {
+                    echo CJSON::encode(array('status' => true,'rate'=> $rateModel->rate , 'rate_wrapper' => $this->clips['rate-view']));
+                    Yii::app()->end();
+                }
+            } else {
+                if(isset($_GET['ajax'])) {
+                    echo CJSON::encode(array('status' => false, 'msg' => 'متاسفانه عملیات با خطا مواجه است! لطفا مجددا سعی فرمایید.'));
+                    Yii::app()->end();
+                }
+            }
+        }else {
+            if(isset($_GET['ajax'])) {
+                echo CJSON::encode(array('status' => false, 'msg' => 'مقادیر ارسالی صحیح نیست.'));
+                Yii::app()->end();
+            }
+        }
+    }
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

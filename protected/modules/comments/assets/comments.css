@@ -61,8 +61,8 @@ root {
     border-radius: 50%;
     overflow: hidden;
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1); box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -78,7 +78,7 @@ root {
     height: 100%;
 }
 .comments-list li a{
-    font-size: 16px;
+    font-size: 12px;
 }
 .comments-list li .comment-avatar .default-comment-avatar{
     background: url("user.svg") no-repeat scroll center center transparent;

@@ -40,6 +40,7 @@ return array(
     'or' => 'یا',
     'Add Your Comment' => 'نظر خود را ثبت کنید',
     'Comments List' => 'لیست نظرات',
-    'Send Comment' => 'ارسال نظر'
+    'Send Comment' => 'ارسال نظر',
+    'Rate' => 'امتیاز'
 );
 ?>

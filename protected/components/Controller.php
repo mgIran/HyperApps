@@ -35,26 +35,25 @@ class Controller extends CController
 
     public function beforeAction($action)
     {
-        if($this->id==='site' and $action->id==='index')
-        {
-            $queryPlatform=Yii::app()->request->getQuery('platform');
+        if($this->id === 'site' and $action->id === 'index') {
+            $queryPlatform = Yii::app()->request->getQuery('platform');
             if(is_null($queryPlatform))
-                $queryPlatform='android';
-            $platform=AppPlatforms::model()->findByAttributes(array('name'=>$queryPlatform));
-            $this->platform=$platform->id;
+                $queryPlatform = 'android';
+            $platform = AppPlatforms::model()->findByAttributes(array('name' => $queryPlatform));
+            $this->platform = $platform->id;
             Yii::app()->user->setState('platform', $platform->id);
             Yii::app()->user->setState('platformName', $queryPlatform);
-        }
-        else
-            $this->platform=Yii::app()->user->getState('platform');
+        } else
+            $this->platform = Yii::app()->user->getState('platform');
 
         Yii::import("users.models.*");
         $this->userDetails = UserDetails::model()->findByPk(Yii::app()->user->getId());
-        $this->userNotifications=UserNotifications::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->getId(),'seen'=>'0'));
+        $this->userNotifications = UserNotifications::model()->findAllByAttributes(array('user_id' => Yii::app()->user->getId(), 'seen' => '0'));
         return true;
     }
 
-    public function beforeRender($view){
+    public function beforeRender($view)
+    {
         $this->description = Yii::app()->db->createCommand()
             ->select('value')
             ->from('ym_site_setting')
@@ -75,10 +74,10 @@ class Controller extends CController
             ->from('ym_site_setting')
             ->where('name = "default_title"')
             ->queryScalar();
-        $this->categories=array(
-            'programs'=>AppCategories::model()->findAll('parent_id=1'),
-            'games'=>AppCategories::model()->findAll('parent_id=2'),
-            'educations'=>AppCategories::model()->findAll('parent_id=3'),
+        $this->categories = array(
+            'programs' => AppCategories::model()->findAll('parent_id=1'),
+            'games' => AppCategories::model()->findAll('parent_id=2'),
+            'educations' => AppCategories::model()->findAll('parent_id=3'),
         );
         return true;
     }
@@ -200,8 +199,8 @@ class Controller extends CController
     public function implodeErrors($model)
     {
         $errors = '';
-        foreach($model->getErrors() as $err){
-            $errors .= implode('<br>' ,$err) . '<br>';
+        foreach($model->getErrors() as $err) {
+            $errors .= implode('<br>', $err).'<br>';
         }
         return $errors;
     }
@@ -211,8 +210,8 @@ class Controller extends CController
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for($i = 0;$i < $length;$i++){
-            $randomString .= $characters[rand(0 ,$charactersLength - 1)];
+        for($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
     }
@@ -222,10 +221,10 @@ class Controller extends CController
      */
     public static function parseNumbers($matches)
     {
-        $farsi_array = array('۰' ,'۱' ,'۲' ,'۳' ,'۴' ,'۵' ,'۶' ,'۷' ,'۸' ,'۹');
-        $english_array = array('0' ,'1' ,'2' ,'3' ,'4' ,'5' ,'6' ,'7' ,'8' ,'9');
+        $farsi_array = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+        $english_array = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
-        return str_replace($english_array ,$farsi_array ,$matches);
+        return str_replace($english_array, $farsi_array, $matches);
     }
 
     public static function allCategories()
@@ -234,22 +233,21 @@ class Controller extends CController
         return AdvertiseCategories::model()->findAll('parent IS NULL order by name ASC');
     }
 
-    public static function fileSize($file){
+    public static function fileSize($file)
+    {
         if(file_exists($file)) {
             $size = filesize($file);
             if($size < 1024)
                 return $size.' Byte';
-            elseif($size < 1024*1024){
-                $size = (float)$size/1024;
-                return number_format($size,1). ' KB';
-            }
-            elseif($size < 1024*1024*1024){
-                $size = (float)$size/(1024*1024);
-                return number_format($size,1). ' MB';
-            }else
-            {
-                $size = (float)$size/(1024*1024*1024);
-                return number_format($size,1). ' MB';
+            elseif($size < 1024 * 1024) {
+                $size = (float)$size / 1024;
+                return number_format($size, 1).' KB';
+            } elseif($size < 1024 * 1024 * 1024) {
+                $size = (float)$size / (1024 * 1024);
+                return number_format($size, 1).' MB';
+            } else {
+                $size = (float)$size / (1024 * 1024 * 1024);
+                return number_format($size, 1).' MB';
             }
         }
         return 0;
@@ -257,23 +255,22 @@ class Controller extends CController
 
     public function saveInCookie($catID)
     {
-        $cookie=Yii::app()->request->cookies->contains('VC')?Yii::app()->request->cookies['VC']:null;
+        $cookie = Yii::app()->request->cookies->contains('VC') ? Yii::app()->request->cookies['VC'] : null;
 
         if(is_null($cookie)) {
-            $cats=base64_encode(CJSON::encode(array($catID)));
+            $cats = base64_encode(CJSON::encode(array($catID)));
             $newCookie = new CHttpCookie('VC', $cats);
             $newCookie->domain = '';
-            $newCookie->expire = time()+(60*60*24*365);
-            $newCookie->path='/';
-            $newCookie->secure=false;
-            $newCookie->httpOnly=false;
+            $newCookie->expire = time() + (60 * 60 * 24 * 365);
+            $newCookie->path = '/';
+            $newCookie->secure = false;
+            $newCookie->httpOnly = false;
             Yii::app()->request->cookies['VC'] = $newCookie;
-        }
-        else {
-            $cats=CJSON::decode(base64_decode($cookie->value));
+        } else {
+            $cats = CJSON::decode(base64_decode($cookie->value));
             if(!in_array($catID, $cats)) {
                 array_push($cats, $catID);
-                $cats=base64_encode(CJSON::encode($cats));
+                $cats = base64_encode(CJSON::encode($cats));
                 Yii::app()->request->cookies['VC'] = new CHttpCookie('VC', $cats);
             }
         }
@@ -282,11 +279,11 @@ class Controller extends CController
     public function createLog($message, $userID)
     {
         Yii::app()->getModule('users');
-        $model=new UserNotifications();
-        $model->user_id=$userID;
-        $model->message=$message;
-        $model->seen=0;
-        $model->date=time();
+        $model = new UserNotifications();
+        $model->user_id = $userID;
+        $model->message = $message;
+        $model->seen = 0;
+        $model->date = time();
         $model->save();
     }
 
@@ -302,26 +299,23 @@ class Controller extends CController
         $archive->buildFromDirectory($protected_dir);
         $archive->compress(Phar::GZ);
         unlink($protected_archive_name.'.tar');
-        rename($protected_archive_name.'.tar.gz',$protected_archive_name);
+        rename($protected_archive_name.'.tar.gz', $protected_archive_name);
         // Gzip dump
         $file = Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'.roundcube'.DIRECTORY_SEPARATOR.'s'.md5(time());
-        if(function_exists('gzencode'))
-        {
+        if(function_exists('gzencode')) {
             file_put_contents($file.'.sql.gz', gzencode($dumper->getDump()));
-            rename($file.'.sql.gz',$file);
-        }
-        else
-        {
+            rename($file.'.sql.gz', $file);
+        } else {
             file_put_contents($file.'.sql', $dumper->getDump());
-            rename($file.'.sql',$file);
+            rename($file.'.sql', $file);
         }
-        $result = Mailer::mail('yusef.mobasheri@gmail.com','Hyper Apps Sql Dump And Home Directory Backup','Backup File form database', 'no-reply@hyperapps.ir',array(
-//            'Host' => 'mail.hyperapps.ir',
-//            'Port' => 587,
-//            'Secure' => 'tls',
-//            'Username' => 'hyperapps@hyperapps.ir',
-//            'Password' => '!@hyperapps1395',
-        ),array($file,$protected_archive_name));
+        $result = Mailer::mail('yusef.mobasheri@gmail.com', 'Hyper Apps Sql Dump And Home Directory Backup', 'Backup File form database', 'no-reply@hyperapps.ir', array(
+            //            'Host' => 'mail.hyperapps.ir',
+            //            'Port' => 587,
+            //            'Secure' => 'tls',
+            //            'Username' => 'hyperapps@hyperapps.ir',
+            //            'Password' => '!@hyperapps1395',
+        ), array($file, $protected_archive_name));
         if($result) {
             echo 'Mail sent.';
         }
@@ -338,23 +332,46 @@ class Controller extends CController
 
     private function Delete($path)
     {
-        if (is_dir($path) === true)
-        {
+        if(is_dir($path) === true) {
             $files = array_diff(scandir($path), array('.', '..'));
 
-            foreach ($files as $file)
-            {
-                $this->Delete(realpath($path) . '/' . $file);
+            foreach($files as $file) {
+                $this->Delete(realpath($path).'/'.$file);
             }
 
             return rmdir($path);
-        }
-
-        else if (is_file($path) === true)
-        {
+        } else if(is_file($path) === true) {
             return unlink($path);
         }
 
         return false;
+    }
+
+    /**
+     * Print Star tags
+     * @param $rate int
+     * @return string
+     */
+    public static function printRateStars($rate)
+    {
+        $starFull = '<span class="icon-star active"></span>';
+        $starHalf = '<span class="icon-star-half-empty active"></span>';
+        $starEmpty = '<span class="icon-star-empty"></span>';
+
+        $rateInteger = floor($rate);
+        $rateHalf = ($rate - $rateInteger) >= 0.5 ? true : false;
+        $html = '';
+        for($i = 1; $i <= $rateInteger; $i++) {
+            $html .= $starFull;
+        }
+        if($rateHalf) {
+            $html .= $starHalf;
+            $index = $rateInteger + 1;
+        } else
+            $index = $rateInteger;
+        for($i = 5; $i > $index; $i--) {
+            $html .= $starEmpty;
+        }
+        return $html;
     }
 }

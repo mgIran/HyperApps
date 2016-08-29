@@ -159,8 +159,7 @@ if($model->platform)
                         margin:10,
                         rtl:true,
                         dots:false,
-                        items:1,
-                        loop:true
+                        items:1
                     });
                 ");
             }
@@ -175,6 +174,13 @@ if($model->platform)
                 </a>
             </section>
             <div class="app-comments">
+                <div id="rate-wrapper">
+                <?
+                $this->renderPartial('_rating',array(
+                    'model' => $model
+                ));
+                ?>
+                </div>
                 <?
                 $this->widget('comments.widgets.ECommentsListWidget', array(
                     'model' => $model,

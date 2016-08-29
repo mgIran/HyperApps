@@ -46,6 +46,7 @@ class SiteController extends Controller
         $criteria->params[':confirm']='accepted';
         $criteria->params[':deleted']=0;
         $criteria->limit=20;
+        $criteria->order='id DESC';
         $newestProgramDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
         // get newest games
@@ -63,6 +64,7 @@ class SiteController extends Controller
         $criteria->params[':confirm']='accepted';
         $criteria->params[':deleted']=0;
         $criteria->limit=20;
+        $criteria->order='id DESC';
         $newestGameDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
         // get newest educations
@@ -80,6 +82,7 @@ class SiteController extends Controller
         $criteria->params[':confirm']='accepted';
         $criteria->params[':deleted']=0;
         $criteria->limit=20;
+        $criteria->order='id DESC';
         $newestEducationDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
         // get suggested list
@@ -98,6 +101,7 @@ class SiteController extends Controller
         $criteria->params[':confirm']='accepted';
         $criteria->params[':deleted']=0;
         $criteria->limit=20;
+        $criteria->order='id DESC';
         $suggestedDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
         $this->render('index', array(

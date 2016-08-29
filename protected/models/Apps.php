@@ -23,6 +23,7 @@
  * @property string $install
  * @property integer $deleted
  * @property integer $offPrice
+ * @property integer $rate
  *
  *
  * The followings are the available model relations:
@@ -104,6 +105,7 @@ class Apps extends CActiveRecord
 			'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
 			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
 			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
+			'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
 		);
 	}
 
@@ -242,5 +244,49 @@ class Apps extends CActiveRecord
 			return true;
 		else
 			return false;
+	}
+
+	public function calculateRating()
+	{
+		$criteria = new CDbCriteria;
+		$criteria->compare('app_id', $this->id);
+		$result['totalCount'] = AppRatings::model()->count($criteria);
+		$criteria->select = array('rate', 'avg(rate) as avgRate');
+		$result['totalAvg'] = AppRatings::model()->find($criteria)->avgRate;
+
+		$criteria->addCondition('rate = :rate');
+		$criteria->params[':rate'] = 1;
+		$result['oneCount'] = AppRatings::model()->count($criteria);
+		$result['onePercent'] = $result['totalCount']?$result['oneCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 2;
+		$result['twoCount'] = AppRatings::model()->count($criteria);
+		$result['twoPercent'] = $result['totalCount']?$result['twoCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 3;
+		$result['threeCount'] = AppRatings::model()->count($criteria);
+		$result['threePercent'] = $result['totalCount']?$result['threeCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 4;
+		$result['fourCount'] = AppRatings::model()->count($criteria);
+		$result['fourPercent'] = $result['totalCount']?$result['fourCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 5;
+		$result['fiveCount'] = AppRatings::model()->count($criteria);
+		$result['fivePercent'] = $result['totalCount']?$result['fiveCount']/$result['totalCount']*100:0;
+		return $result;
+	}
+
+	public function getRate()
+	{
+		$criteria = new CDbCriteria;
+		$criteria->compare('app_id', $this->id);
+		$criteria->select = array('rate', 'avg(rate) as avgRate');
+		return AppRatings::model()->find($criteria)->avgRate;
+	}
+
+	public function userRated($user_id)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->compare('app_id', $this->id);
+		$criteria->compare('user_id', $user_id);
+		$result = AppRatings::model()->find($criteria);
+		return $result?$result->rate:false;
 	}
 }

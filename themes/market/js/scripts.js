@@ -77,17 +77,41 @@ $(function() {
         $this.parent().toggleClass('open');
     });
 
+    // enamad position
+    if ($(window).width() > 991)
+        $(".enamad").css({'right':parseInt(($(".sidebar").width() - 166)/2)});
+
+
+    if ($('.cat-menu-container').length != 0)
+        $('.cat-menu-container').niceScroll({cursorcolor: "#ccc"});
+
+    // resize changes
     $(window).resize(function () {
         if ($(window).width() > 991) {
             $(".overlay").removeClass('in');
             $(".open").removeClass('open');
+            // enamad
+            $(".enamad").css({'right':parseInt(($(".sidebar").width() - 166)/2)});
         }
     });
-
-    if ($('.cat-menu-container').length != 0)
-        $('.cat-menu-container').niceScroll({cursorcolor: "#ccc"});
 });
+function ratingAnimate(){
+    $('.bar span').hide();
+    $('#bar-five').animate({
+        width: $('#bar-five').data('percent')+'%'}, 1000);
+    $('#bar-four').animate({
+        width: $('#bar-four').data('percent')+'%'}, 1000);
+    $('#bar-three').animate({
+        width: $('#bar-three').data('percent')+'%'}, 1000);
+    $('#bar-two').animate({
+        width: $('#bar-two').data('percent')+'%'}, 1000);
+    $('#bar-one').animate({
+        width: $('#bar-one').data('percent')+'%'}, 1000);
 
+    setTimeout(function() {
+        $('.bar span').fadeIn('slow');
+    }, 1000);
+}
 function submitAjaxForm(form ,url ,loading ,callback) {
     loading = typeof loading !== 'undefined' ? loading : null;
     callback = typeof callback !== 'undefined' ? callback : null;

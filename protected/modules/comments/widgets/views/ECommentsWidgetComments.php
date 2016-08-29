@@ -56,6 +56,36 @@
             if($key % 2 == 1)
                 echo '</div>';
         endforeach;
+        Yii::app()->clientScript->registerScript('comments-carousel','
+        $(".comments-list").owlCarousel({
+            items : 2,
+            nav:true,
+            dots:false,
+            rtl:true,
+            navText:[\'<span class="icon icon-chevron-right"></span>\',\'<span class="icon icon-chevron-left"></span>\'],
+            navClass: [\'owl-prev disabled\',\'owl-next\'],
+            callbacks: true,
+            info: true,
+            onTranslated: $(this).on(\'translated.owl.carousel\', function(e) {
+                var items_per_page = e.page.size;
+                var nav_container = $(\'.comments-list .owl-nav\');
+                var item_index = e.item.index;
+                var item_count = e.item.count;
+                var last_vis_item_index = items_per_page + item_index;
+                if(last_vis_item_index === item_count){
+                    $(nav_container).find(\'div:last\').addClass(\'disabled\');
+                }
+                else{
+                    $(nav_container).find(\'div:last\').removeClass(\'disabled\');
+                }
+                if(item_index != 0){
+                    $(nav_container).find(\'div:first\').removeClass(\'disabled\');
+                }
+                else{
+                    $(nav_container).find(\'div:first\').addClass(\'disabled\');
+                }
+            })
+        });',CClientScript::POS_LOAD);
         ?>
     </ul>
 <?php else:?>
@@ -90,36 +120,5 @@ pTags.each(function(){
         $(this).removeClass("rtl").addClass("ltr");
     }
 });
-    $(function(){
-        $(".comments-list").owlCarousel({
-            items : 2,
-            nav:true,
-            dots:true,
-            rtl:true,
-            navText:['<span class="icon icon-chevron-right"></span>','<span class="icon icon-chevron-left"></span>'],
-            navClass: ['owl-prev disabled','owl-next'],
-            callbacks: true,
-            info: true,
-            onTranslated: $(this).on('translated.owl.carousel', function(e) {
-                var items_per_page = e.page.size;
-                var nav_container = $('.comments-list .owl-nav');
-                var item_index = e.item.index;
-                var item_count = e.item.count;
-                var last_vis_item_index = items_per_page + item_index;
-                if(last_vis_item_index === item_count){
-                    $(nav_container).find('div:last').addClass('disabled');
-                }
-                else{
-                    $(nav_container).find('div:last').removeClass('disabled');
-                }
-                if(item_index != 0){
-                    $(nav_container).find('div:first').removeClass('disabled');
-                }
-                else{
-                    $(nav_container).find('div:first').addClass('disabled');
-                }
-            })
-        });
-    })
 </script>
 

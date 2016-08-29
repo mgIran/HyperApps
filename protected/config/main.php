@@ -64,13 +64,9 @@ return array(
 					'orderComments'=>'DESC',
 					//config for create link to view model page(page with comments)
 					'pageUrl'=>array(
-						'route'=>'apps/',
-						'data'=>array('id'=>'id'),
+						'route'=>'apps/view/',
+						'data'=>array('id'=>'id')
 					),
-					// change translation file path
-//					'translationCategory' => 'offlineChat',
-					// for labels translation ,this name should be lower case string
-//					'moduleObjectName' => 'message'
 				),
 			),
 			'userConfig'=>array(
@@ -112,6 +108,7 @@ return array(
                 'android' => 'site/index/platform/android',
                 'ios' => 'site/index/platform/ios',
                 'windowsphone' => 'site/index/platform/windowsphone',
+				'apps/<id:\d+>'=>'apps/view',
 				'<module:\w+>/<id:\d+>'=>'<module>/manage/view',
                 '<module:\w+>/<controller:\w+>'=>'<module>/<controller>/index',
                 '<controller:\w+>/<action:\w+>/<id:\d+>/<title:(.*)>'=>'<controller>/<action>',

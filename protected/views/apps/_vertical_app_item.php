@@ -31,11 +31,7 @@
                 <?php endif;?>
             </span>
             <span class="ltr text-left app-rate col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left" >
-                <span class="icon-star"></span>
-                <span class="icon-star"></span>
-                <span class="icon-star"></span>
-                <span class="icon-star-half-empty"></span>
-                <span class="icon-star-empty"></span>
+                <?= Controller::printRateStars($data->rate); ?>
             </span>
         </div>
         <div class="app-desc">

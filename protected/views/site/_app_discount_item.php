@@ -36,11 +36,7 @@ if($app && $app->hasDiscount()) {
                         ?>
                     </span>
                     <span class="app-rate">
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star"></span>
-                        <span class="icon-star-half-empty"></span>
-                        <span class="icon-star-empty"></span>
+                        <?= Controller::printRateStars($app->rate); ?>
                     </span>
                 </div>
             </div>
