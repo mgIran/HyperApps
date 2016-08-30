@@ -39,7 +39,7 @@ class PanelController extends Controller
                 'roles'=>array('user'),
             ),
             array('allow',
-                'actions'=>array('account','index','settlement','sales'),
+                'actions'=>array('account','index', 'discount','settlement','sales'),
                 'roles'=>array('developer'),
             ),
             array('deny',  // deny all users
@@ -63,6 +63,79 @@ class PanelController extends Controller
 
 		$this->render('index', array(
             'appsDataProvider'=>$appsDataProvider,
+        ));
+	}
+
+    public function actionDiscount()
+	{
+        Yii::app()->theme='market';
+        $model = new AppDiscounts();
+
+        if(isset($_GET['ajax']) && $_GET['ajax'] === 'apps-discount-form') {
+            $model->attributes = $_POST['AppDiscounts'];
+            $errors = CActiveForm::validate($model);
+            if(CJSON::decode($errors)) {
+                echo $errors;
+                Yii::app()->end();
+            }
+        }
+
+        if(isset($_POST['AppDiscounts']))
+        {
+            $model->attributes =$_POST['AppDiscounts'];
+            if($model->save())
+            {
+                if(isset($_GET['ajax'])) {
+                    echo CJSON::encode(array('state' => 'ok','msg' => 'تخفیف با موفقیت اعمال شد.'));
+                    Yii::app()->end();
+                } else {
+                    Yii::app()->user->setFlash('discount-success','تخفیف با موفقیت اعمال شد.');
+                    $this->refresh();
+                }
+            }
+            else
+                Yii::app()->user->setFlash('discount-failed','متاسفانه در انجام درخواست مشکلی ایجاد شده است.');
+        }
+
+        $criteria=new CDbCriteria();
+        $criteria->with[] = 'app';
+        $criteria->addCondition('app.developer_id = :user_id');
+        $criteria->addCondition('app.deleted = 0');
+        $criteria->addCondition('app.title != ""');
+        $criteria->addCondition('end_date > :now');
+        $criteria->params=array(
+            ':user_id'=>Yii::app()->user->getId(),
+            ':now' => time()
+        );
+        $appsDataProvider=new CActiveDataProvider('AppDiscounts', array(
+            'criteria'=>$criteria,
+        ));
+
+        // delete expire discounts
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('end_date < :now');
+        $criteria->params=array(
+            ':now' => time()
+        );
+        AppDiscounts::model()->deleteAll($criteria);
+        //
+
+        Yii::app()->getModule('users');
+
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('developer_id = :user_id');
+        $criteria->addCondition('deleted = 0');
+        $criteria->addCondition('price != 0');
+        $criteria->addCondition('title != ""');
+        $criteria->with[] = 'discount';
+        $criteria->addCondition('discount.app_id IS NULL');
+        $criteria->params=array(':user_id'=>Yii::app()->user->getId());
+
+        $apps = CHtml::listData(Apps::model()->findAll($criteria),'id' ,'title');
+
+        $this->render('discount', array(
+            'appsDataProvider'=>$appsDataProvider,
+            'apps' => $apps
         ));
 	}
 

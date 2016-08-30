@@ -22,9 +22,12 @@
  * @property string $download
  * @property string $install
  * @property integer $deleted
- * @property AppPackages $lastPackage
+ * @property integer $offPrice
+ * @property integer $rate
+ *
  *
  * The followings are the available model relations:
+ * @property AppPackages $lastPackage
  * @property AppBuys[] $appBuys
  * @property AppImages[] $images
  * @property AppPlatforms $platform
@@ -32,6 +35,7 @@
  * @property AppCategories $category
  * @property Users[] $bookmarker
  * @property AppPackages[] $packages
+ * @property AppDiscounts $discount
  */
 class Apps extends CActiveRecord
 {
@@ -55,7 +59,16 @@ class Apps extends CActiveRecord
 		'accepted' => 'تایید شده',
 		'change_required' => 'نیاز به تغییر',
 	);
+	public $statusLabels = array(
+		'enable' => 'فعال',
+		'disable' => 'غیر فعال'
+	);
 	public $lastPackage;
+
+	/**
+	 * @var string developer name filter
+	 */
+	public $devFilter;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -80,7 +93,7 @@ class Apps extends CActiveRecord
 			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted', 'safe', 'on' => 'search'),
+			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter', 'safe', 'on' => 'search'),
 			array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
 		);
 	}
@@ -98,8 +111,10 @@ class Apps extends CActiveRecord
 			'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
 			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
 			'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
+			'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
 			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
 			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
+			'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
 		);
 	}
 
@@ -142,35 +157,29 @@ class Apps extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($withFree = true)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria = new CDbCriteria;
 
-		$criteria->compare('id', $this->id, true);
-		$criteria->compare('title', $this->title, true);
-		$criteria->compare('developer_id', $this->developer_id, true);
-		$criteria->compare('category_id', $this->category_id, true);
-		$criteria->compare('status', $this->status, true);
+		$criteria->compare('t.id', $this->id, true);
+		$criteria->compare('t.title', $this->title, true);
+		$criteria->compare('category_id', $this->category_id);
+		$criteria->compare('t.status', $this->status);
 		$criteria->compare('price', $this->price);
-		$criteria->compare('icon', $this->icon, true);
-		$criteria->compare('description', $this->description, true);
-		$criteria->compare('change_log', $this->change_log, true);
-		$criteria->compare('permissions', $this->permissions, true);
-		$criteria->compare('size', $this->size);
-		$criteria->compare('confirm', $this->confirm, true);
-		$criteria->compare('platform_id', $this->platform_id, true);
-		$criteria->compare('developer_team', $this->developer_team, true);
-		$criteria->compare('seen', $this->seen);
-		$criteria->compare('download', $this->download, true);
-		$criteria->compare('install', $this->install, true);
-		$criteria->compare('deleted', $this->deleted);
+		$criteria->compare('platform_id', $this->platform_id);
+		$criteria->with = array('developer','developer.userDetails');
+		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
+		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
+
+		if(!$withFree)
+			$criteria->addCondition('price <> 0');
 
 		$criteria->addCondition('deleted=0');
 
-		$criteria->addCondition('title != ""');
-
+		$criteria->addCondition('t.title != ""');
+		$criteria->order = 't.id DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
@@ -224,5 +233,63 @@ class Apps extends CActiveRecord
 			return $this->developer->userDetails->nickname;
 		else
 			return $this->developer_team;
+	}
+
+	public function getOffPrice(){
+		if($this->discount)
+			return $this->price - $this->price * $this->discount->percent /100;
+		else
+			return $this->price;
+	}
+
+	public function hasDiscount(){
+		if($this->discount && $this->discount->percent && $this->discount->start_date < time() && $this->discount->end_date > time())
+			return true;
+		else
+			return false;
+	}
+
+	public function calculateRating()
+	{
+		$criteria = new CDbCriteria;
+		$criteria->compare('app_id', $this->id);
+		$result['totalCount'] = AppRatings::model()->count($criteria);
+		$criteria->select = array('rate', 'avg(rate) as avgRate');
+		$result['totalAvg'] = AppRatings::model()->find($criteria)->avgRate;
+
+		$criteria->addCondition('rate = :rate');
+		$criteria->params[':rate'] = 1;
+		$result['oneCount'] = AppRatings::model()->count($criteria);
+		$result['onePercent'] = $result['totalCount']?$result['oneCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 2;
+		$result['twoCount'] = AppRatings::model()->count($criteria);
+		$result['twoPercent'] = $result['totalCount']?$result['twoCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 3;
+		$result['threeCount'] = AppRatings::model()->count($criteria);
+		$result['threePercent'] = $result['totalCount']?$result['threeCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 4;
+		$result['fourCount'] = AppRatings::model()->count($criteria);
+		$result['fourPercent'] = $result['totalCount']?$result['fourCount']/$result['totalCount']*100:0;
+		$criteria->params[':rate'] = 5;
+		$result['fiveCount'] = AppRatings::model()->count($criteria);
+		$result['fivePercent'] = $result['totalCount']?$result['fiveCount']/$result['totalCount']*100:0;
+		return $result;
+	}
+
+	public function getRate()
+	{
+		$criteria = new CDbCriteria;
+		$criteria->compare('app_id', $this->id);
+		$criteria->select = array('rate', 'avg(rate) as avgRate');
+		return AppRatings::model()->find($criteria)->avgRate;
+	}
+
+	public function userRated($user_id)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->compare('app_id', $this->id);
+		$criteria->compare('user_id', $user_id);
+		$result = AppRatings::model()->find($criteria);
+		return $result?$result->rate:false;
 	}
 }

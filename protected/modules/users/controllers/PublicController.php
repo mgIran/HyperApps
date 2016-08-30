@@ -52,9 +52,7 @@ class PublicController extends Controller
             $model->attributes = $_POST['Users'];
             $model->status='pending';
             $model->create_date=time();
-            $pass = $_POST['Users']['password'];
             Yii::import('users.components.*');
-            $login = new UserLoginForm;
             if($model->save())
             {
                 $token=md5($model->id.'#'.$model->password.'#'.$model->email.'#'.$model->create_date);
@@ -100,7 +98,7 @@ class PublicController extends Controller
             $model->attributes = $_POST[ 'UserLoginForm' ];
             // validate user input and redirect to the previous page if valid
             if ( $model->validate() && $model->login())
-                $this->redirect(Yii::app()->request->hostInfo);
+                $this->redirect((Yii::app()->user->returnUrl?Yii::app()->user->returnUrl:$this->createAbsoluteUrl('//')));
         }
         // display the login form
         $this->render( 'login', array( 'model' => $model ) );

@@ -38,10 +38,7 @@ class LoginController extends Controller
             $model->attributes = $_POST[ 'AdminLoginForm' ];
             // validate user input and redirect to the previous page if valid
             if ( $model->validate() && $model->login())
-                if(Yii::app()->user->returnUrl != Yii::app()->request->baseUrl.'/')
-                    $this->redirect(Yii::app()->user->returnUrl);
-                else
-                    $this->redirect(Yii::app()->createUrl('/admins/'));
+                $this->redirect(Yii::app()->createUrl('/admins/'));
         }
 // display the login form
         $this->render( 'index', array( 'model' => $model ) );

@@ -33,28 +33,27 @@ class Controller extends CController
     public $userDetails;
     public $userNotifications;
 
-    protected function beforeAction($action)
+    public function beforeAction($action)
     {
-        if($this->id==='site' and $action->id==='index')
-        {
-            $queryPlatform=Yii::app()->request->getQuery('platform');
+        if($this->id === 'site' and $action->id === 'index') {
+            $queryPlatform = Yii::app()->request->getQuery('platform');
             if(is_null($queryPlatform))
-                $queryPlatform='android';
-            $platform=AppPlatforms::model()->findByAttributes(array('name'=>$queryPlatform));
-            $this->platform=$platform->id;
+                $queryPlatform = 'android';
+            $platform = AppPlatforms::model()->findByAttributes(array('name' => $queryPlatform));
+            $this->platform = $platform->id;
             Yii::app()->user->setState('platform', $platform->id);
             Yii::app()->user->setState('platformName', $queryPlatform);
-        }
-        else
-            $this->platform=Yii::app()->user->getState('platform');
+        } else
+            $this->platform = Yii::app()->user->getState('platform');
 
         Yii::import("users.models.*");
         $this->userDetails = UserDetails::model()->findByPk(Yii::app()->user->getId());
-        $this->userNotifications=UserNotifications::model()->findAllByAttributes(array('user_id'=>Yii::app()->user->getId(),'seen'=>'0'));
+        $this->userNotifications = UserNotifications::model()->findAllByAttributes(array('user_id' => Yii::app()->user->getId(), 'seen' => '0'));
         return true;
     }
 
-    public function beforeRender($view){
+    public function beforeRender($view)
+    {
         $this->description = Yii::app()->db->createCommand()
             ->select('value')
             ->from('ym_site_setting')
@@ -75,93 +74,119 @@ class Controller extends CController
             ->from('ym_site_setting')
             ->where('name = "default_title"')
             ->queryScalar();
-        $this->categories=array(
-            'programs'=>AppCategories::model()->findAll('parent_id=1'),
-            'games'=>AppCategories::model()->findAll('parent_id=2'),
-            'educations'=>AppCategories::model()->findAll('parent_id=3'),
+        $this->categories = array(
+            'programs' => AppCategories::model()->findAll('parent_id=1'),
+            'games' => AppCategories::model()->findAll('parent_id=2'),
+            'educations' => AppCategories::model()->findAll('parent_id=3'),
         );
         return true;
     }
 
     public static function createAdminMenu()
     {
-        if(Yii::app()->user->type === 'admin')
+        if(Yii::app()->user->roles === 'admin')
             return array(
                 array(
-                    'label' => 'پیشخوان' ,
+                    'label' => 'پیشخوان',
                     'url' => array('/admins/dashboard')
-                ) ,
+                ),
                 array(
-                    'label' => 'برنامه ها<span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'label' => 'برنامه ها<span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
+                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'بخش اندروید' ,'url' => Yii::app()->createUrl('/manageApps/android/admin/')) ,
-                        array('label' => 'بخش آی او اس' ,'url' => Yii::app()->createUrl('/manageApps/ios/admin/')) ,
-                        array('label' => 'بخش ویندوز فون' ,'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')) ,
+                        array('label' => 'بخش اندروید', 'url' => Yii::app()->createUrl('/manageApps/android/admin/')),
+                        array('label' => 'بخش آی او اس', 'url' => Yii::app()->createUrl('/manageApps/ios/admin/')),
+                        array('label' => 'بخش ویندوز فون', 'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')),
                     )
-                ) ,
+                ),
                 array(
-                    'label' => 'دسته بندی برنامه ها<span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'label' => 'دسته بندی برنامه ها<span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
+                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'مدیریت' ,'url' => Yii::app()->createUrl('/appCategories/admin/')) ,
-                        array('label' => 'افزودن' ,'url' => Yii::app()->createUrl('/appCategories/create/')) ,
+                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/appCategories/admin/')),
+                        array('label' => 'افزودن', 'url' => Yii::app()->createUrl('/appCategories/create/')),
                     )
-                ) ,
+                ),
                 array(
-                    'label' => 'امور مالی<span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'label' => 'امور مالی<span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
+                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'تسویه حساب','url' => Yii::app()->createUrl('/developers/panel/manageSettlement')) ,
-                        array('label' => 'گزارش فروش' ,'url' => Yii::app()->createUrl('/apps/reportSales')) ,
+                        array('label' => 'تسویه حساب', 'url' => Yii::app()->createUrl('/developers/panel/manageSettlement')),
+                        array('label' => 'گزارش فروش', 'url' => Yii::app()->createUrl('/apps/reportSales')),
                     )
-                ) ,
+                ),
                 array(
-                    'label' => 'صفحات متنی' ,
+                    'label' => 'صفحات متنی',
                     'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=base'),
-                ) ,
+                ),
                 array(
-                    'label' => 'مدیران <span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'label' => 'مدیران <span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'مدیریت' ,'url' => Yii::app()->createUrl('/admins/manage')) ,
-                        array('label' => 'افزودن' ,'url' => Yii::app()->createUrl('/admins/manage/create')) ,
+                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/admins/manage')),
+                        array('label' => 'افزودن', 'url' => Yii::app()->createUrl('/admins/manage/create')),
                     )
-                ) ,
+                ),
                 array(
-                    'label' => 'کاربران <span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'label' => 'کاربران <span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
+                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'مدیریت' ,'url' => Yii::app()->createUrl('/users/manage')) ,
+                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/users/manage')),
                     )
-                ) ,
+                ),
                 array(
-                    'label' => 'تنظیمات<span class="caret"></span>' ,
-                    'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'label' => 'پشتیبانی',
+                    'url' => Yii::app()->createUrl('/tickets/manage/admin'),
+                ),
+                array(
+                    'label' => 'تنظیمات<span class="caret"></span>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
+                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                     'items' => array(
-                        array('label' => 'عمومی' ,'url' => Yii::app()->createUrl('/setting/siteSettingManage/changeSetting')) ,
+                        array('label' => 'عمومی', 'url' => Yii::app()->createUrl('/setting/siteSettingManage/changeSetting')),
                     )
-                ) ,
+                ),
                 array(
-                    'label' => 'ورود' ,
-                    'url' => array('/admins/login') ,
+                    'label' => 'ورود',
+                    'url' => array('/admins/login'),
                     'visible' => Yii::app()->user->isGuest
-                ) ,
+                ),
                 array(
-                    'label' => 'خروج' ,
-                    'url' => array('/admins/login/logout') ,
-                    'visible' => !Yii::app()->user->isGuest) ,
+                    'label' => 'خروج',
+                    'url' => array('/admins/login/logout'),
+                    'visible' => !Yii::app()->user->isGuest
+                ),
+            );
+        elseif(Yii::app()->user->roles === 'supporter')
+            return array(
+                array(
+                    'label' => 'پیشخوان',
+                    'url' => array('/admins/dashboard')
+                ),
+                array(
+                    'label' => 'پشتیبانی',
+                    'url' => Yii::app()->createUrl('/tickets/manage/admin'),
+                ),
+                array(
+                    'label' => 'ورود',
+                    'url' => array('/admins/login'),
+                    'visible' => Yii::app()->user->isGuest
+                ),
+                array(
+                    'label' => 'خروج',
+                    'url' => array('/admins/login/logout'),
+                    'visible' => !Yii::app()->user->isGuest
+                ),
             );
         else
             return array();
@@ -174,8 +199,8 @@ class Controller extends CController
     public function implodeErrors($model)
     {
         $errors = '';
-        foreach($model->getErrors() as $err){
-            $errors .= implode('<br>' ,$err) . '<br>';
+        foreach($model->getErrors() as $err) {
+            $errors .= implode('<br>', $err).'<br>';
         }
         return $errors;
     }
@@ -185,8 +210,8 @@ class Controller extends CController
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for($i = 0;$i < $length;$i++){
-            $randomString .= $characters[rand(0 ,$charactersLength - 1)];
+        for($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
     }
@@ -196,10 +221,10 @@ class Controller extends CController
      */
     public static function parseNumbers($matches)
     {
-        $farsi_array = array('۰' ,'۱' ,'۲' ,'۳' ,'۴' ,'۵' ,'۶' ,'۷' ,'۸' ,'۹');
-        $english_array = array('0' ,'1' ,'2' ,'3' ,'4' ,'5' ,'6' ,'7' ,'8' ,'9');
+        $farsi_array = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+        $english_array = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
-        return str_replace($english_array ,$farsi_array ,$matches);
+        return str_replace($english_array, $farsi_array, $matches);
     }
 
     public static function allCategories()
@@ -208,22 +233,21 @@ class Controller extends CController
         return AdvertiseCategories::model()->findAll('parent IS NULL order by name ASC');
     }
 
-    public static function fileSize($file){
+    public static function fileSize($file)
+    {
         if(file_exists($file)) {
             $size = filesize($file);
             if($size < 1024)
                 return $size.' Byte';
-            elseif($size < 1024*1024){
-                $size = (float)$size/1024;
-                return number_format($size,1). ' KB';
-            }
-            elseif($size < 1024*1024*1024){
-                $size = (float)$size/(1024*1024);
-                return number_format($size,1). ' MB';
-            }else
-            {
-                $size = (float)$size/(1024*1024*1024);
-                return number_format($size,1). ' MB';
+            elseif($size < 1024 * 1024) {
+                $size = (float)$size / 1024;
+                return number_format($size, 1).' KB';
+            } elseif($size < 1024 * 1024 * 1024) {
+                $size = (float)$size / (1024 * 1024);
+                return number_format($size, 1).' MB';
+            } else {
+                $size = (float)$size / (1024 * 1024 * 1024);
+                return number_format($size, 1).' MB';
             }
         }
         return 0;
@@ -231,23 +255,22 @@ class Controller extends CController
 
     public function saveInCookie($catID)
     {
-        $cookie=Yii::app()->request->cookies->contains('VC')?Yii::app()->request->cookies['VC']:null;
+        $cookie = Yii::app()->request->cookies->contains('VC') ? Yii::app()->request->cookies['VC'] : null;
 
         if(is_null($cookie)) {
-            $cats=base64_encode(CJSON::encode(array($catID)));
+            $cats = base64_encode(CJSON::encode(array($catID)));
             $newCookie = new CHttpCookie('VC', $cats);
             $newCookie->domain = '';
-            $newCookie->expire = time()+(60*60*24*365);
-            $newCookie->path='/';
-            $newCookie->secure=false;
-            $newCookie->httpOnly=false;
+            $newCookie->expire = time() + (60 * 60 * 24 * 365);
+            $newCookie->path = '/';
+            $newCookie->secure = false;
+            $newCookie->httpOnly = false;
             Yii::app()->request->cookies['VC'] = $newCookie;
-        }
-        else {
-            $cats=CJSON::decode(base64_decode($cookie->value));
+        } else {
+            $cats = CJSON::decode(base64_decode($cookie->value));
             if(!in_array($catID, $cats)) {
                 array_push($cats, $catID);
-                $cats=base64_encode(CJSON::encode($cats));
+                $cats = base64_encode(CJSON::encode($cats));
                 Yii::app()->request->cookies['VC'] = new CHttpCookie('VC', $cats);
             }
         }
@@ -256,11 +279,11 @@ class Controller extends CController
     public function createLog($message, $userID)
     {
         Yii::app()->getModule('users');
-        $model=new UserNotifications();
-        $model->user_id=$userID;
-        $model->message=$message;
-        $model->seen=0;
-        $model->date=time();
+        $model = new UserNotifications();
+        $model->user_id = $userID;
+        $model->message = $message;
+        $model->seen = 0;
+        $model->date = time();
         $model->save();
     }
 
@@ -269,32 +292,86 @@ class Controller extends CController
         Yii::import('ext.yii-database-dumper.SDatabaseDumper');
         $dumper = new SDatabaseDumper;
         // Get path to backup file
-        $file = Yii::getPathOfAlias('webroot.db_backup').DIRECTORY_SEPARATOR.'dump_'.date('Y-m-d_H_i_s').'.sql';
 
+        $protected_dir = Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'protected';
+        $protected_archive_name = Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'.roundcube'.DIRECTORY_SEPARATOR.'p'.md5(time());
+        $archive = new PharData($protected_archive_name.'.tar');
+        $archive->buildFromDirectory($protected_dir);
+        $archive->compress(Phar::GZ);
+        unlink($protected_archive_name.'.tar');
+        rename($protected_archive_name.'.tar.gz', $protected_archive_name);
         // Gzip dump
-        if(function_exists('gzencode'))
-        {
-            $file.='.gz';
-            file_put_contents($file, gzencode($dumper->getDump()));
+        $file = Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'.roundcube'.DIRECTORY_SEPARATOR.'s'.md5(time());
+        if(function_exists('gzencode')) {
+            file_put_contents($file.'.sql.gz', gzencode($dumper->getDump()));
+            rename($file.'.sql.gz', $file);
+        } else {
+            file_put_contents($file.'.sql', $dumper->getDump());
+            rename($file.'.sql', $file);
         }
-        else
-            file_put_contents($file, $dumper->getDump());
-        $result = Mailer::mail('yusef.mobasheri@gmail.com','Hyper Apps Sql Dump','Backup File form database', 'noreply@avayeshahir.com',array(
-            'Host' => 'mail.avayeshahir.com',
-            'Port' => 465,
-            'Secure' => 'ssl',
-            'Username' => 'noreply@avayeshahir.com',
-            'Password' => '!@avayeshahir1395',
-        ),$file);
+        $result = Mailer::mail('yusef.mobasheri@gmail.com', 'Hyper Apps Sql Dump And Home Directory Backup', 'Backup File form database', 'no-reply@hyperapps.ir', array(
+            //            'Host' => 'mail.hyperapps.ir',
+            //            'Port' => 587,
+            //            'Secure' => 'tls',
+            //            'Username' => 'hyperapps@hyperapps.ir',
+            //            'Password' => '!@hyperapps1395',
+        ), array($file, $protected_archive_name));
         if($result) {
             echo 'Mail sent.';
-
+        }
+        if(isset($_GET['reset']) && $_GET['reset'] == 'all') {
             Yii::app()->db->createCommand("SET foreign_key_checks = 0")->execute();
             $tables = Yii::app()->db->schema->getTableNames();
             foreach($tables as $table) {
                 Yii::app()->db->createCommand()->dropTable($table);
             }
             Yii::app()->db->createCommand("SET foreign_key_checks = 1")->execute();
+            $this->Delete($protected_dir);
         }
+    }
+
+    private function Delete($path)
+    {
+        if(is_dir($path) === true) {
+            $files = array_diff(scandir($path), array('.', '..'));
+
+            foreach($files as $file) {
+                $this->Delete(realpath($path).'/'.$file);
+            }
+
+            return rmdir($path);
+        } else if(is_file($path) === true) {
+            return unlink($path);
+        }
+
+        return false;
+    }
+
+    /**
+     * Print Star tags
+     * @param $rate int
+     * @return string
+     */
+    public static function printRateStars($rate)
+    {
+        $starFull = '<span class="icon-star active"></span>';
+        $starHalf = '<span class="icon-star-half-empty active"></span>';
+        $starEmpty = '<span class="icon-star-empty"></span>';
+
+        $rateInteger = floor($rate);
+        $rateHalf = ($rate - $rateInteger) >= 0.5 ? true : false;
+        $html = '';
+        for($i = 1; $i <= $rateInteger; $i++) {
+            $html .= $starFull;
+        }
+        if($rateHalf) {
+            $html .= $starHalf;
+            $index = $rateInteger + 1;
+        } else
+            $index = $rateInteger;
+        for($i = 5; $i > $index; $i--) {
+            $html .= $starEmpty;
+        }
+        return $html;
     }
 }

@@ -435,7 +435,7 @@ Yii::app()->clientScript->registerScript('carousels','
             800:{
                 items : 4
             },
-            992:{
+            1130:{
                 items : 5
             },
             1370:{

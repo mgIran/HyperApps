@@ -4,7 +4,7 @@ class Mailer {
     /**
      * Send mail
      */
-    public static function mail($to, $subject, $message, $from ,$SMTP = array() ,$attachment=NULL)
+    public static function mail($to, $subject, $message, $from ,$SMTP = array() ,$attachments=array())
     {
         $mailTheme=Yii::app()->params['mailTheme'];
         $mailTheme=str_replace('{CurrentYear}', JalaliDate::date('Y'), $mailTheme);
@@ -25,8 +25,9 @@ class Mailer {
         $mail->Subject=$subject;
         $mail->MsgHTML($message);
         $mail->AddAddress($to);
-        if($attachment)
-            $mail->AddAttachment($attachment);
+        if($attachments)
+            foreach($attachments as $attachment)
+                $mail->AddAttachment($attachment);
         return $mail->Send();
     }
 }

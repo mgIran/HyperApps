@@ -6,26 +6,7 @@
 ?>
 
 <div class="container">
-    <ul class="nav nav-tabs">
-        <li>
-            <a href="<?php echo $this->createUrl('/developers/panel');?>">برنامه ها</a>
-        </li>
-        <li>
-            <a href="<?php echo $this->createUrl('/developers/panel/account');?>">حساب توسعه دهنده</a>
-        </li>
-        <li class="active">
-            <a href="<?php echo $this->createUrl('/developers/panel/sales');?>">گزارش فروش</a>
-        </li>
-        <li>
-            <a href="<?php echo $this->createUrl('/developers/panel/settlement');?>">تسویه حساب</a>
-        </li>
-        <li>
-            <a href="/developers/panel/support/?l=fa">پشتیبانی</a>
-        </li>
-        <li>
-            <a href="/developers/panel/docs/?l=fa" target="_blank">مستندات</a>
-        </li>
-    </ul>
+    <? $this->renderPartial('_tab_links',array('active' => $this->action->id)); ?>
 
     <div class="tab-content card-container">
         <div class="tab-pane active report-sale">

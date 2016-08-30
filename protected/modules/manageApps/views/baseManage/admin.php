@@ -20,11 +20,23 @@ $this->menu=array(
 		'title',
 		array(
 			'header' => 'توسعه دهنده',
-			'value' => '$data->developer_id?$data->developer->userDetails->developer_id:$data->developer_team'
+			'value' => '$data->developer_id?$data->developer->userDetails->developer_id:$data->developer_team',
+			'filter' => CHtml::activeTextField($model,'devFilter')
 		),
-		'category_id',
-		'status',
-		'price',
+		array(
+			'name' => 'category_id',
+			'value' => '$data->category->fullTitle',
+			'filter' => CHtml::activeDropDownList($model,'category_id',AppCategories::model()->sortList(),array('prompt' => 'همه'))
+		),
+		array(
+			'name' => 'status',
+			'value' => '$data->statusLabels[$data->status]',
+			'filter' => CHtml::activeDropDownList($model,'status',$model->statusLabels,array('prompt' => 'همه'))
+		),
+		array(
+			'name' => 'price',
+			'value' => '$data->price != 0?$data->price:"رایگان"'
+		),
 		/*
 		'file_name',
 		'icon',

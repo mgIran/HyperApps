@@ -22,8 +22,11 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <h4>روش پرداخت</h4>
                 <div class="panel-body">
+                    <h4>
+                        روش پرداخت
+                        <?php echo CHtml::link('بازگشت',$this->createUrl('/dashboard'), array('class'=>'btn btn-info pull-left'));?>
+                    </h4>
                     <?php echo CHtml::beginForm($this->createUrl('/users/credit/bill'));?>
                         <?php echo CHtml::hiddenField('amount', CHtml::encode($_POST['amount']));?>
                         <h5>درگاه زرین پال</h5>

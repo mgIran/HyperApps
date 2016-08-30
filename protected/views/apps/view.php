@@ -10,25 +10,6 @@ Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.t
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl.carousel.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.magnific-popup.min.js');
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/magnific-popup.css');
-Yii::app()->clientScript->registerScript('callImageGallery',"
-    $('.images-carousel').magnificPopup({
-		delegate: 'a',
-		type: 'image',
-		tLoading: 'Loading image #%curr%...',
-		mainClass: 'mfp-img-mobile',
-		gallery: {
-			enabled: true,
-			navigateByImgClick: true,
-			preload: [0,1] // Will preload 0 - before current, and 1 after the current image
-		},
-		image: {
-			tError: '<a href=\"%url%\">The image #%curr%</a> could not be loaded.',
-			titleSrc: function(item) {
-				return '';
-			}
-		}
-	});
-");
 
 if($model->platform)
 {
@@ -54,11 +35,22 @@ if($model->platform)
             </div>
             <div class="row-fluid">
                 <svg class="svg svg-bag green"><use xlink:href="#bag"></use></svg>
-                <span ><?= $model->install ?>&nbsp;نصب فعال</span>
+                <span ><?= Controller::parseNumbers($model->install) ?>&nbsp;نصب فعال</span>
             </div>
             <div class="row-fluid">
                 <svg class="svg svg-coin green"><use xlink:href="#coin"></use></svg>
-                <span ><?= $model->price?number_format($model->price, 0).' تومان':'رایگان'; ?></span>
+                <?
+                if($model->hasDiscount()):
+                ?>
+                    <span class="text-danger text-line-through"><?= Controller::parseNumbers(number_format($model->price, 0)).' تومان'; ?></span>
+                    <span ><?= Controller::parseNumbers(number_format($model->offPrice, 0)).' تومان' ; ?></span>
+                <?
+                else:
+                ?>
+                    <span ><?= $model->price?Controller::parseNumbers(number_format($model->price, 0)).' تومان':'رایگان'; ?></span>
+                <?
+                endif;
+                ?>
             </div>
             <div class="row-fluid">
                 <span class="pull-left">
@@ -119,31 +111,82 @@ if($model->platform)
             </div>
         </div>
         <div class="app-body">
-            <div class="images-carousel">
+            <?
+            if($model->images) {
+            ?>
+                <div class="images-carousel">
                 <?
-                $imager=new Imager();
+                $imager = new Imager();
                 foreach($model->images as $key => $image):
                     if(file_exists(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image)):
-                        $imageInfo=$imager->getImageInfo(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image);
-                        $ratio=$imageInfo['width']/$imageInfo['height'];
-                ?>
-                        <div class="image-item" style="width: <?php echo ceil(318*$ratio);?>px;" data-toggle="modal" data-index="<?= $key ?>" data-target="#carousesl-modal">
-                            <a href="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>"><img src="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>" alt="<?= $model->title ?>" ></a>
+                        $imageInfo = $imager->getImageInfo(Yii::getPathOfAlias("webroot").'/uploads/apps/images/'.$image->image);
+                        $ratio = $imageInfo['width'] / $imageInfo['height'];
+                        ?>
+                        <div class="image-item" style="width: <?php echo ceil(318 * $ratio); ?>px;"
+                             data-toggle="modal" data-index="<?= $key ?>" data-target="#carousesl-modal">
+                            <a href="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>"><img
+                                    src="<?= Yii::app()->createAbsoluteUrl('/uploads/apps/images/'.$image->image) ?>"
+                                    alt="<?= $model->title ?>"></a>
                         </div>
-                <?
+                        <?
                     endif;
                 endforeach;
                 ?>
-            </div>
+                </div>
+            <?
+                Yii::app()->clientScript->registerScript('callImageGallery',"
+                    $('.images-carousel').magnificPopup({
+                        delegate: 'a',
+                        type: 'image',
+                        tLoading: 'Loading image #%curr%...',
+                        mainClass: 'mfp-img-mobile',
+                        gallery: {
+                            enabled: true,
+                            navigateByImgClick: true,
+                            preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+                        },
+                        image: {
+                            tError: '<a href=\"%url%\">The image #%curr%</a> could not be loaded.',
+                            titleSrc: function(item) {
+                                return '';
+                            }
+                        }
+                    });
+                ");
+                Yii::app()->clientScript->registerScript('app-images-carousel',"
+                    $('.images-carousel').owlCarousel({
+                        autoWidth:true,
+                        margin:10,
+                        rtl:true,
+                        dots:false,
+                        items:1
+                    });
+                ");
+            }
+            ?>
             <section>
                 <div class="app-description">
                     <h4>توضیحات برنامه</h4>
-                    <?= $model->description; ?>
+                    <p><?= strip_tags(nl2br($model->description)); ?></p>
                 </div>
                 <a class="more-text" href="#">
                     <span>توضیحات بیشتر</span>
                 </a>
             </section>
+            <div class="app-comments">
+                <div id="rate-wrapper">
+                <?
+                $this->renderPartial('_rating',array(
+                    'model' => $model
+                ));
+                ?>
+                </div>
+                <?
+                $this->widget('comments.widgets.ECommentsListWidget', array(
+                    'model' => $model,
+                ));
+                ?>
+            </div>
             <?php if(!is_null($model->change_log) or $model->change_log!=''):?>
                 <div class="change-log">
                     <h4>آخرین تغییرات</h4>
@@ -178,13 +221,7 @@ if($model->platform)
                     ?>
                 </div>
             <?php endif;?>
-            <!--<div class="app-comments">
-                <h4 class="pull-right">نظر کاربران</h4>
-                    <button class="btn btn-default pull-left">
-                        <span class="icon-pencil">  </span>
-                        نظرتان را بگویید
-                    </button>
-            </div>-->
+
         </div>
     </div>
 </div>
@@ -246,13 +283,3 @@ if($model->platform)
             </div>
         </div>
     </div>
-<?php Yii::app()->clientScript->registerScript('app-images-carousel',"
-    $('.images-carousel').owlCarousel({
-        autoWidth:true,
-        margin:10,
-        rtl:true,
-        dots:false,
-        items:1,
-        loop:true
-    });
-"); ?>

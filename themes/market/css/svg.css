@@ -45,3 +45,15 @@
     float: right;
     margin: 5px 0;
 }
+.svg-manager{
+    width: 30px;
+    height: 30px;
+    margin: 15px 0 !important;
+    background: url("../svg/manager.svg") no-repeat scroll 0 0 transparent;
+}
+.svg-supporter{
+    width: 30px;
+    height: 30px;
+    margin: 15px 0 !important;
+    background: url("../svg/supporter.svg") no-repeat scroll 0 0 transparent;
+}
