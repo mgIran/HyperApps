@@ -28,7 +28,7 @@ class ManageController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete','upload','deleteUpload'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -45,9 +45,29 @@ class ManageController extends Controller
 	{
 		$model = new Advertises;
 
+		$tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+		if (!is_dir($tmpDIR))
+			mkdir($tmpDIR);
+		$tmpUrl = $this->createAbsoluteUrl('/uploads/temp/');
+		$coverDIR = Yii::getPathOfAlias("webroot") . "/uploads/advertisesCover/";
+		if (!is_dir($coverDIR))
+			mkdir($coverDIR);
+		$cover = array();
+
 		if(isset($_POST['Advertises'])) {
 			$model->attributes = $_POST['Advertises'];
+			if(isset($_POST['Advertises']['cover'])) {
+				$file = $_POST['Advertises']['cover'];
+				$cover = array(
+						'name' => $file,
+						'src' => $tmpUrl.'/'.$file,
+						'size' => filesize($tmpDIR.$file),
+						'serverName' => $file,
+				);
+			}
 			if($model->save()) {
+				if($model->cover)
+					rename($tmpDIR.$model->cover, $coverDIR.$model->cover);
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 				$this->redirect(array('admin'));
 			} else
@@ -55,7 +75,8 @@ class ManageController extends Controller
 		}
 
 		$this->render('create', array(
-				'model' => $model,
+			'model' => $model,
+			'cover' => $cover,
 		));
 	}
 
@@ -68,10 +89,37 @@ class ManageController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+		$tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+		if (!is_dir($tmpDIR))
+			mkdir($tmpDIR);
+		$tmpUrl = $this->createAbsoluteUrl('/uploads/temp/');
+
+		$coverDIR = Yii::getPathOfAlias("webroot") . "/uploads/advertisesCover/";
+		$coverUrl = $this->createAbsoluteUrl("/uploads/advertisesCover/");
+
+		$cover = array();
+		if($model->cover && file_exists($coverDIR . $model->cover))
+			$cover = array(
+					'name' => $model->cover,
+					'src' => $coverUrl . '/' . $model->cover,
+					'size' => filesize($coverDIR . $model->cover),
+					'serverName' => $model->cover,
+			);
 		if(isset($_POST['Advertises']))
 		{
 			$model->attributes=$_POST['Advertises'];
+			if(isset($_POST['Advertises']['cover'])) {
+				$file = $_POST['Advertises']['cover'];
+				$cover = array(
+						'name' => $file,
+						'src' => $tmpUrl.'/'.$file,
+						'size' => filesize($tmpDIR.$file),
+						'serverName' => $file,
+				);
+			}
 			if($model->save()) {
+				if($model->cover)
+					rename($tmpDIR.$model->cover, $coverDIR.$model->cover);
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ویرایش شد.');
 				$this->redirect(array('admin'));
 			} else
@@ -79,6 +127,7 @@ class ManageController extends Controller
 		}
 		$this->render('update',array(
 			'model'=>$model,
+			'cover' => $cover,
 		));
 	}
 
@@ -133,4 +182,56 @@ class ManageController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+
+
+
+	public function actionUpload()
+	{
+		$tempDir = Yii::getPathOfAlias("webroot") . '/uploads/temp';
+
+		if (!is_dir($tempDir))
+			mkdir($tempDir);
+		if (isset($_FILES)) {
+			$file = $_FILES['cover'];
+			$ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+			$file['name'] = Controller::generateRandomString(5) . time();
+			while (file_exists($tempDir . DIRECTORY_SEPARATOR . $file['name']. '.' .$ext))
+				$file['name'] = Controller::generateRandomString(5) . time();
+			$file['name'] = $file['name'] . '.' . $ext;
+			if (move_uploaded_file($file['tmp_name'], $tempDir . DIRECTORY_SEPARATOR . CHtml::encode($file['name']))) {
+				$response = ['state' => 'ok', 'fileName' => CHtml::encode($file['name'])];
+			}else
+				$response = ['state' => 'error', 'msg' => 'فایل آپلود نشد.'];
+		} else
+			$response = ['state' => 'error', 'msg' => 'فایلی ارسال نشده است.'];
+		echo CJSON::encode($response);
+		Yii::app()->end();
+	}
+
+	public function actionDeleteUpload()
+	{
+		$Dir = Yii::getPathOfAlias("webroot") . '/uploads/advertisesCover/';
+
+		if (isset($_POST['fileName'])) {
+
+			$fileName = $_POST['fileName'];
+
+			$tempDir = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+
+			$model = Advertises::model()->findByAttributes(array('cover' => $fileName));
+			if ($model) {
+				if (@unlink($Dir . $model->cover)) {
+					$model->updateByPk($model->app_id, array('cover' => null));
+					$response = ['state' => 'ok', 'msg' => $this->implodeErrors($model)];
+				} else
+					$response = ['state' => 'error', 'msg' => 'مشکل ایجاد شده است'];
+			} else {
+				@unlink($tempDir . $fileName);
+				$response = ['state' => 'ok', 'msg' => 'حذف شد.'];
+			}
+			echo CJSON::encode($response);
+			Yii::app()->end();
+		}
+	}
 }
+

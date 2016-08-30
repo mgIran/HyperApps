@@ -12,7 +12,7 @@ class PagesManageController extends Controller
     public $categoryId = null;
     public $categoryMultiple = 1;
 
-    protected function beforeAction($action)
+    public function beforeAction($action)
     {
         if($action->id != 'update'){
             if(isset($_GET['slug']) && !empty($_GET['slug'])){

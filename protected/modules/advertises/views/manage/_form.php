@@ -2,6 +2,7 @@
 /* @var $this ManageController */
 /* @var $model Advertises */
 /* @var $form CActiveForm */
+/* @var $cover [] */
 ?>
 
 <div class="form">
@@ -39,7 +40,29 @@ if(!$model->isNewRecord || $apps) {
 
 	<div class="row">
 		<?php echo $form->labelEx($model, 'cover'); ?>
-		<?php echo $form->textField($model, 'cover', array('size' => 60, 'maxlength' => 200)); ?>
+		<?php
+		$this->widget('ext.dropZoneUploader.dropZoneUploader', array(
+				'id' => 'uploaderAd',
+				'model' => $model,
+				'name' => 'cover',
+				'maxFiles' => 1,
+				'maxFileSize' => 0.4, //MB
+				'url' => Yii::app()->createUrl('/advertises/manage/upload'),
+				'deleteUrl' => Yii::app()->createUrl('/advertises/manage/deleteUpload'),
+				'acceptedFiles' => 'image/png',
+				'serverFiles' => $cover,
+				'onSuccess' => '
+                var responseObj = JSON.parse(res);
+                if(responseObj.state == "ok")
+                {
+                    {serverName} = responseObj.fileName;
+                }else if(responseObj.state == "error"){
+                    alert(responseObj.msg);
+                    this.removeFile(file);
+                }
+            ',
+		));
+		?>
 		<?php echo $form->error($model, 'cover'); ?>
 	</div>
 

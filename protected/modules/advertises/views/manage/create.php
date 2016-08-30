@@ -14,4 +14,4 @@ $this->menu=array(
 
 <h1>افزودن تبلیغات</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'cover' => $cover)); ?>

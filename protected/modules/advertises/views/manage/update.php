@@ -15,4 +15,4 @@ $this->menu=array(
 
 <h1>ویرایش تبلیغ <?php echo $model->app->title ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model,'cover' => $cover)); ?>
