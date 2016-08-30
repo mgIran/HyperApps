@@ -120,6 +120,7 @@ class Controller extends CController
                     'items' => array(
                         array('label' => 'تسویه حساب', 'url' => Yii::app()->createUrl('/developers/panel/manageSettlement')),
                         array('label' => 'گزارش فروش', 'url' => Yii::app()->createUrl('/apps/reportSales')),
+                        array('label' => 'گزارش درآمد', 'url' => Yii::app()->createUrl('/apps/reportIncome')),
                     )
                 ),
                 array(

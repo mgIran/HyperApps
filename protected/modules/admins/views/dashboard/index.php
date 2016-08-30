@@ -56,7 +56,7 @@ if(Yii::app()->user->roles == 'admin'):
                             ),
                             'download'=>array(
                                 'label'=>'دانلود',
-                                'url'=>'$data->getAppFileUrl()',
+                                'url'=>'Yii::app()->createUrl("/manageApps/android/download/".$data->id)',
                                 'imageUrl'=>Yii::app()->theme->baseUrl.'/img/download.png',
                             ),
                         ),
@@ -115,7 +115,7 @@ if(Yii::app()->user->roles == 'admin'):
                             ),
                             'download'=>array(
                                 'label'=>'دانلود',
-                                'url'=>'Yii::app()->createUrl("/uploads/apps/files/".$data->app->platform->name."/".$data->file_name)',
+                                'url'=>'Yii::app()->createUrl("/manageApps/android/downloadPackage/".$data->id)',
                                 'imageUrl'=>Yii::app()->theme->baseUrl.'/img/download.png',
                             ),
                         ),

@@ -24,7 +24,7 @@ class AppsController extends Controller
     {
         return array(
             array('allow',
-                'actions' => array('reportSales'),
+                'actions' => array('reportSales', 'reportIncome'),
                 'roles' => array('admin'),
             ),
             array('allow',
@@ -115,26 +115,26 @@ class AppsController extends Controller
                 $userDetails = UserDetails::model()->findByAttributes(array('user_id' => Yii::app()->user->getId()));
                 $userDetails->setScenario('update-credit');
                 $userDetails->credit = $userDetails->credit - $price;
+                $userDetails->score = $userDetails->score + 1;
                 if ($model->developer)
                     $model->developer->userDetails->credit = $model->developer->userDetails->credit + $model->getDeveloperPortion();
                 $model->developer->userDetails->save();
                 if ($userDetails->save()) {
-
                     $message =
                         '<p style="text-align: right;">با سلام<br>کاربر گرامی، جزئیات خرید شما به شرح ذیل می باشد:</p>
                         <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
                         <table style="font-size: 9pt;text-align: right;">
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">عنوان برنامه</td>
-                                <td>'.CHtml::encode($model->title).'</td>
+                                <td>' . CHtml::encode($model->title) . '</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">قیمت</td>
-                                <td>'.Controller::parseNumbers(number_format($price, 0)).' تومان</td>
+                                <td>' . Controller::parseNumbers(number_format($price, 0)) . ' تومان</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">تاریخ</td>
-                                <td>'.JalaliDate::date('d F Y - H:i', $buy->date).'</td>
+                                <td>' . JalaliDate::date('d F Y - H:i', $buy->date) . '</td>
                             </tr>
                         </table>';
                     Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
@@ -514,6 +514,62 @@ class AppsController extends Controller
             'values' => $values,
             'showChart' => $showChart,
             'activeTab' => $activeTab,
+        ));
+    }
+
+    /**
+     * Report income
+     */
+    public function actionReportIncome()
+    {
+        Yii::app()->theme = 'abound';
+        $this->layout = '//layouts/column2';
+
+        $labels = $values = array();
+        $sumIncome = $sumCredit = 0;
+        $showChart = false;
+        $sumCredit = UserDetails::model()->find(array('select' => 'SUM(credit) AS credit'));
+        $sumCredit = $sumCredit->credit;
+        if (isset($_POST['show-chart-monthly'])) {
+            $startDate = JalaliDate::toGregorian(JalaliDate::date('Y', $_POST['month_altField'], false), JalaliDate::date('m', $_POST['month_altField'], false), 1);
+            $startTime = strtotime($startDate[0] . '/' . $startDate[1] . '/' . $startDate[2]);
+            $endTime = '';
+            if (JalaliDate::date('m', $_POST['month_altField'], false) <= 6)
+                $endTime = $startTime + (60 * 60 * 24 * 31);
+            else
+                $endTime = $startTime + (60 * 60 * 24 * 30);
+            $showChart = true;
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('date >= :start_date');
+            $criteria->addCondition('date <= :end_date');
+            $criteria->params = array(
+                ':start_date' => $startTime,
+                ':end_date' => $endTime,
+            );
+            $report = AppBuys::model()->findAll($criteria);
+            Yii::app()->getModule('setting');
+            $commission = SiteSetting::model()->findByAttributes(array('name' => 'commission'));
+            $commission = $commission->value;
+            // show daily report
+            $daysCount = (JalaliDate::date('m', $_POST['month_altField'], false) <= 6) ? 31 : 30;
+            for ($i = 0; $i < $daysCount; $i++) {
+                $labels[] = JalaliDate::date('d F Y', $startTime + (60 * 60 * (24 * $i)));
+                $amount = 0;
+                foreach ($report as $model) {
+                    if ($model->date >= $startTime + (60 * 60 * (24 * $i)) and $model->date < $startTime + (60 * 60 * (24 * ($i + 1))))
+                        $amount = $model->app->price;
+                }
+                $values[] = ($amount * $commission) / 100;
+                $sumIncome += ($amount * $commission) / 100;
+            }
+        }
+
+        $this->render('report_income', array(
+            'labels' => $labels,
+            'values' => $values,
+            'showChart' => $showChart,
+            'sumIncome' => $sumIncome,
+            'sumCredit' => $sumCredit,
         ));
     }
 
