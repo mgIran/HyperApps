@@ -540,6 +540,13 @@ class BaseManageController extends Controller
             if ($model->save()) {
                 $response = ['status' => true, 'fileName' => CHtml::encode($model->file_name)];
                 rename($tempDir . DIRECTORY_SEPARATOR . $_POST['Apps']['file_name'], $uploadDir . DIRECTORY_SEPARATOR . $model->file_name);
+                if ($_POST['platform'] == 'android') {
+                    /* @var $app Apps */
+                    $app = Apps::model()->findByPk($_POST['app_id']);
+                    $app->setScenario('set_permissions');
+                    $app->permissions = CJSON::encode($this->getPermissionsName($apkInfo['permissions']));
+                    $app->save();
+                }
             } else {
                 $response = ['status' => false, 'message' => $model->getError('package_name')];
                 unlink($tempDir . '/' . $_POST['Apps']['file_name']);
