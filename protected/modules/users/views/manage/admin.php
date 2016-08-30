@@ -32,6 +32,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'filter' => CHtml::activeDropDownList($model,'statusFilter',$model->statusLabels,array('prompt' => 'همه'))
         ),
         array(
+            'header' => 'امتیاز',
+            'value' => '$data->userDetails->score',
+            'filter' => false
+        ),
+        array(
             'class'=>'CButtonColumn',
             'template' => '{view}{update}{delete}'
         ),

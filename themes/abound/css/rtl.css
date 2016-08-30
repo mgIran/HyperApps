@@ -156,11 +156,3 @@ label{
     width: 90%;
     margin-bottom: 15px;
 }
-
-tr.unread{
-    background-color: rgba(255, 45, 0, 0.21);
-}
-
-.button-column a{
-    margin: 0 5px;
-}

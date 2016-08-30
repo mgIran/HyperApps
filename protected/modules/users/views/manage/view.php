@@ -79,6 +79,10 @@ $this->menu=array(
 				'type'=>'raw'
 			),
 			array(
+				'name'=>'امتیاز',
+				'value'=>$model->userDetails->score,
+			),
+			array(
 				'name'=>'وضعیت',
 				'value'=>$model->statusLabels[$model->status],
 			),
@@ -144,6 +148,10 @@ $this->menu=array(
 				'name'=>'تصویر گواهی ثبت',
 				'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/registration_certificate/".$model->userDetails->registration_certificate_image, '', array('class'=>'national-card-image')),
 				'type'=>'raw'
+			),
+			array(
+				'name'=>'امتیاز',
+				'value'=>$model->userDetails->score,
 			),
 			array(
 				'name'=>'وضعیت',

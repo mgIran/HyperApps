@@ -437,9 +437,11 @@ class PanelController extends Controller
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است لطفا مجددا تلاش کنید.');
         }
 
+        $purifier=new CHtmlPurifier();
+
         $this->render('settlement', array(
             'userDetailsModel'=>$userDetailsModel,
-            'helpText'=>$helpText->summary,
+            'helpText'=>$purifier->purify($helpText->summary),
             'settlementHistory'=>$settlementHistory,
             'formDisabled'=>(JalaliDate::date('d', time(), false)<20)?false:true,
         ));

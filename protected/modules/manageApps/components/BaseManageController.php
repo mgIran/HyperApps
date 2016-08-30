@@ -55,7 +55,7 @@ class BaseManageController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm', 'changePackageStatus', 'deletePackage', 'savePackage', 'images'),
+                'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm', 'changePackageStatus', 'deletePackage', 'savePackage', 'images', 'download', 'downloadPackage'),
                 'roles' => array('admin'),
             ),
             array('deny',  // deny all users
@@ -433,7 +433,7 @@ class BaseManageController extends Controller
             switch($_POST['value'])
             {
                 case 'refused':
-                    $message='برنامه '.$model->title.' رد شده است.';
+                    $message='برنامه '.$model->title.' رد شده است. جهت اطلاع از دلیل تایید نشدن بسته جدید به صفحه ویرایش برنامه مراجعه فرمایید.';
                     break;
 
                 case 'accepted':
@@ -441,7 +441,7 @@ class BaseManageController extends Controller
                     break;
 
                 case 'change_required':
-                    $message='برنامه '.$model->title.' نیاز به تغییرات دارد.';
+                    $message='برنامه '.$model->title.' نیاز به تغییرات دارد. جهت مشاهده پیام کارشناسان به صفحه ویرایش برنامه مراجعه فرمایید.';
                     break;
             }
             $this->createLog($message, $model->developer_id);
@@ -580,5 +580,84 @@ class BaseManageController extends Controller
         } else
             Yii::app()->user->setFlash('images-failed', 'تصاویر برنامه را آپلود کنید.');
         $this->redirect('update/' . $id . '/?step=3');
+    }
+
+    /**
+     * Download app
+     */
+    public function actionDownload($id)
+    {
+        $model = $this->loadModel($id);
+        $platformFolder = '';
+        switch (pathinfo($model->lastPackage->file_name, PATHINFO_EXTENSION)) {
+            case 'apk':
+                $platformFolder = 'android';
+                break;
+
+            case 'ipa':
+                $platformFolder = 'ios';
+                break;
+
+            case 'xap':
+                $platformFolder = 'windowsphone';
+                break;
+        }
+        $this->download($model->lastPackage->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
+    }
+
+    /**
+     * Download app package
+     */
+    public function actionDownloadPackage($id)
+    {
+        $model = AppPackages::model()->findByPk($id);
+        $platformFolder = '';
+        switch (pathinfo($model->file_name, PATHINFO_EXTENSION)) {
+            case 'apk':
+                $platformFolder = 'android';
+                break;
+
+            case 'ipa':
+                $platformFolder = 'ios';
+                break;
+
+            case 'xap':
+                $platformFolder = 'windowsphone';
+                break;
+        }
+        $this->download($model->file_name, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/' . $platformFolder);
+    }
+
+    protected function download($fileName, $filePath)
+    {
+        $fakeFileName = $fileName;
+        $realFileName = $fileName;
+
+        $file = $filePath . DIRECTORY_SEPARATOR . $realFileName;
+        $fp = fopen($file, 'rb');
+
+        $mimeType = '';
+        switch (pathinfo($fileName, PATHINFO_EXTENSION)) {
+            case 'apk':
+                $mimeType = 'application/vnd.android.package-archive';
+                break;
+
+            case 'xap':
+                $mimeType = 'application/x-silverlight-app';
+                break;
+
+            case 'ipa':
+                $mimeType = 'application/octet-stream';
+                break;
+        }
+
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Type: ' . $mimeType);
+        header('Content-Disposition: attachment; filename=' . $fakeFileName);
+
+        echo stream_get_contents($fp);
     }
 }
