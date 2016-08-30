@@ -104,11 +104,16 @@ class SiteController extends Controller
         $criteria->order='id DESC';
         $suggestedDataProvider=new CActiveDataProvider('Apps', array('criteria'=>$criteria));
 
+        // get advertise
+        Yii::import('advertises.models.*');
+        $advertise=Advertises::model()->findActive();
+
         $this->render('index', array(
             'newestProgramDataProvider'=>$newestProgramDataProvider,
             'newestGameDataProvider'=>$newestGameDataProvider,
             'newestEducationDataProvider'=>$newestEducationDataProvider,
             'suggestedDataProvider'=>$suggestedDataProvider,
+            'advertise'=>$advertise,
         ));
 	}
 

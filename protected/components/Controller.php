@@ -99,6 +99,7 @@ class Controller extends CController
                         array('label' => 'بخش اندروید', 'url' => Yii::app()->createUrl('/manageApps/android/admin/')),
                         array('label' => 'بخش آی او اس', 'url' => Yii::app()->createUrl('/manageApps/ios/admin/')),
                         array('label' => 'بخش ویندوز فون', 'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')),
+                        array('label' => 'تبلیغات', 'url' => Yii::app()->createUrl('/advertises/manage/admin/')),
                     )
                 ),
                 array(

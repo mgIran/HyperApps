@@ -1,10 +1,10 @@
 $(function() {
     var $body = $('body');
     var $window = $(window);
-    $(".content > .app-box").css({'min-height':$(window).height()-295});
+    $(".content").css({'min-height':$(window).height()-225});
 
     $window.resize(function(){
-        $(".content > .app-box").css({'min-height':$(window).height()-295});
+        $(".content").css({'min-height':$(window).height()-225});
     });
 
     $body.on('click', '.dropdown-toggle', function () {

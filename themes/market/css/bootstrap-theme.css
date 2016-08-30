@@ -643,6 +643,8 @@ header .right-header .user-section .user-menu .inner > footer > a:first-of-type{
     float: right;
     display: block;
     position: relative;
+    padding-bottom: 60px;
+
 }
 .navbar{
     float: right;
@@ -763,7 +765,7 @@ body.windows-phone .content .app-box .top-box .btn.more-app{
     width: 100%;
     margin: 20px -5px;
     position: relative;
-    min-height: 272px;
+    min-height: 225px;
 }
 .content .app-box .app-carousel.owl-carousel .owl-stage-outer{
     padding: 4px;
@@ -923,7 +925,7 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
     overflow: hidden;
     width: 100%;
     padding: 0 40px 0 45px;
-    margin: 80px 0;
+    margin: 30px 0 50px;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -940,8 +942,10 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
     position: relative;
     display: block;
     width: 100%;
-    height: 250px;
+    height: 300px;
     background-color: #433a35;
+    overflow: hidden;
+    border-radius: 2px;
 }
 .content .banner-box .banner-carousel .banner-item .fade-overly{
     position: absolute;
@@ -950,11 +954,6 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
     left: 50%;
     width: 30%;
     z-index: 1;
-    background: -moz-linear-gradient(left,#433a35 0%, rgba(0,0,0,0) 100%);
-    background: -webkit-linear-gradient(left, #433a35 0%, rgba(0,0,0,0) 100%);
-    background: -o-linear-gradient(left, #433a35 0%, rgba(0,0,0,0) 100%);
-    background: -ms-linear-gradient(left, #433a35 0%, rgba(0,0,0,0) 100%);
-    background: linear-gradient(to right, #433a35 0%, rgba(0,0,0,0) 100%);
 }
 
 .content .banner-box .banner-carousel .banner-item >  img{
@@ -1040,6 +1039,9 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
 .content .banner-box .banner-carousel .banner-item .app-details .app-content .title  >a{
     color: inherit;
 }
+.content .banner-box .banner-carousel .banner-item .app-details .app-content .title > a:hover{
+    text-decoration: underline !important;
+}
 .content .banner-box .banner-carousel .banner-item .app-details .app-content span{
     font-size: 12px;
 }
@@ -1050,7 +1052,7 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
 .content .banner-box .banner-carousel .banner-item .app-details .app-content .app-desc{
     font-size: 12px;
     margin-top: 10px;
-    height: 85px;
+    height: 140px;
     position: relative;
     color: #888;
     display: block;
@@ -1058,6 +1060,7 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
     width: 100%;
     padding-left: 15px;
     text-align: justify;
+    line-height: 20px;
 }
 .content .banner-box .banner-carousel .banner-item .app-details .app-footer{
     display: block;
@@ -1074,11 +1077,12 @@ body.windows-phone .content .app-box .app-item .detail .app-any .app-price{
 }
 
 .footer{
-    float: right;
     width: 100%;
     display: block;
     line-height: 50px;
     margin-bottom: 10px;
+    position: absolute;
+    bottom: 0;
 }
 .footer .nav{
     padding-right: 20px;

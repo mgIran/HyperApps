@@ -49,19 +49,19 @@ class Apps extends CActiveRecord
 
 	private $_purifier;
 	public $platformsID = array(
-		'1' => 'android',
-		'2' => 'ios',
-		'3' => 'windowsphone',
+			'1' => 'android',
+			'2' => 'ios',
+			'3' => 'windowsphone',
 	);
 	public $confirmLabels = array(
-		'pending' => 'در حال بررسی',
-		'refused' => 'رد شده',
-		'accepted' => 'تایید شده',
-		'change_required' => 'نیاز به تغییر',
+			'pending' => 'در حال بررسی',
+			'refused' => 'رد شده',
+			'accepted' => 'تایید شده',
+			'change_required' => 'نیاز به تغییر',
 	);
 	public $statusLabels = array(
-		'enable' => 'فعال',
-		'disable' => 'غیر فعال'
+			'enable' => 'فعال',
+			'disable' => 'غیر فعال'
 	);
 	public $lastPackage;
 
@@ -80,21 +80,21 @@ class Apps extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('platform_id', 'required', 'on' => 'insert'),
-			array('title, category_id, price ,platform_id ,icon', 'required', 'on' => 'update'),
-			array('price, size, platform_id', 'numerical'),
-			array('seen, install, deleted', 'numerical', 'integerOnly' => true),
-			array('description, change_log', 'filter', 'filter' => array($this->_purifier, 'purify')),
-			array('title, icon, developer_team', 'length', 'max' => 50),
-			array('developer_id, category_id, platform_id', 'length', 'max' => 10),
-			array('status', 'length', 'max' => 7),
-			array('download, install', 'length', 'max' => 12),
-			array('price, size', 'numerical'),
-			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter', 'safe', 'on' => 'search'),
-			array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
+				array('platform_id', 'required', 'on' => 'insert'),
+				array('title, category_id, price ,platform_id ,icon', 'required', 'on' => 'update'),
+				array('price, size, platform_id', 'numerical'),
+				array('seen, install, deleted', 'numerical', 'integerOnly' => true),
+				array('description, change_log', 'filter', 'filter' => array($this->_purifier, 'purify')),
+				array('title, icon, developer_team', 'length', 'max' => 50),
+				array('developer_id, category_id, platform_id', 'length', 'max' => 10),
+				array('status', 'length', 'max' => 7),
+				array('download, install', 'length', 'max' => 12),
+				array('price, size', 'numerical'),
+				array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
+				// The following rule is used by search().
+				// @todo Please remove those attributes that should not be searched.
+				array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter', 'safe', 'on' => 'search'),
+				array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
 		);
 	}
 
@@ -106,15 +106,16 @@ class Apps extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'appBuys' => array(self::HAS_MANY, 'AppBuys', 'app_id'),
-			'images' => array(self::HAS_MANY, 'AppImages', 'app_id'),
-			'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
-			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
-			'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
-			'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
-			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
-			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
-			'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
+				'appBuys' => array(self::HAS_MANY, 'AppBuys', 'app_id'),
+				'images' => array(self::HAS_MANY, 'AppImages', 'app_id'),
+				'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
+				'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
+				'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
+				'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
+				'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
+				'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
+				'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
+				'advertise' => array(self::BELONGS_TO, 'Advertises', 'id'),
 		);
 	}
 
@@ -124,24 +125,24 @@ class Apps extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'شناسه',
-			'title' => 'عنوان',
-			'developer_id' => 'توسعه دهنده',
-			'category_id' => 'دسته',
-			'status' => 'وضعیت',
-			'price' => 'قیمت',
-			'icon' => 'آیکون',
-			'description' => 'توضیحات',
-			'change_log' => 'لیست تغییرات',
-			'permissions' => 'دسترسی ها',
-			'size' => 'حجم',
-			'confirm' => 'وضعیت انتشار',
-			'platform_id' => 'پلتفرم',
-			'developer_team' => 'تیم توسعه دهنده',
-			'seen' => 'دیده شده',
-			'download' => 'تعداد دریافت',
-			'install' => 'تعداد نصب فعال',
-			'deleted' => 'حذف شده',
+				'id' => 'شناسه',
+				'title' => 'عنوان',
+				'developer_id' => 'توسعه دهنده',
+				'category_id' => 'دسته',
+				'status' => 'وضعیت',
+				'price' => 'قیمت',
+				'icon' => 'آیکون',
+				'description' => 'توضیحات',
+				'change_log' => 'لیست تغییرات',
+				'permissions' => 'دسترسی ها',
+				'size' => 'حجم',
+				'confirm' => 'وضعیت انتشار',
+				'platform_id' => 'پلتفرم',
+				'developer_team' => 'تیم توسعه دهنده',
+				'seen' => 'دیده شده',
+				'download' => 'تعداد دریافت',
+				'install' => 'تعداد نصب فعال',
+				'deleted' => 'حذف شده',
 		);
 	}
 
@@ -169,7 +170,7 @@ class Apps extends CActiveRecord
 		$criteria->compare('t.status', $this->status);
 		$criteria->compare('price', $this->price);
 		$criteria->compare('platform_id', $this->platform_id);
-		$criteria->with = array('developer','developer.userDetails');
+		$criteria->with = array('developer', 'developer.userDetails');
 		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
 		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
 
@@ -182,7 +183,7 @@ class Apps extends CActiveRecord
 		$criteria->order = 't.id DESC';
 
 		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
+				'criteria' => $criteria,
 		));
 	}
 
@@ -216,33 +217,35 @@ class Apps extends CActiveRecord
 	 */
 	public function getAppFileUrl()
 	{
-		if (!empty($this->packages))
-			return Yii::app()->createUrl("/uploads/apps/files/" . strtolower($this->platformsID[$this->platform_id]) . "/" . $this->lastPackage->file_name);
+		if(!empty($this->packages))
+			return Yii::app()->createUrl("/uploads/apps/files/".strtolower($this->platformsID[$this->platform_id])."/".$this->lastPackage->file_name);
 		return '';
 	}
 
 	public function afterFind()
 	{
-		if (!empty($this->packages))
+		if(!empty($this->packages))
 			$this->lastPackage = $this->packages[count($this->packages) - 1];
 	}
 
 	public function getDeveloperName()
 	{
-		if ($this->developer)
+		if($this->developer)
 			return $this->developer->userDetails->nickname;
 		else
 			return $this->developer_team;
 	}
 
-	public function getOffPrice(){
+	public function getOffPrice()
+	{
 		if($this->discount)
-			return $this->price - $this->price * $this->discount->percent /100;
+			return $this->price - $this->price * $this->discount->percent / 100;
 		else
 			return $this->price;
 	}
 
-	public function hasDiscount(){
+	public function hasDiscount()
+	{
 		if($this->discount && $this->discount->percent && $this->discount->start_date < time() && $this->discount->end_date > time())
 			return true;
 		else
@@ -260,19 +263,19 @@ class Apps extends CActiveRecord
 		$criteria->addCondition('rate = :rate');
 		$criteria->params[':rate'] = 1;
 		$result['oneCount'] = AppRatings::model()->count($criteria);
-		$result['onePercent'] = $result['totalCount']?$result['oneCount']/$result['totalCount']*100:0;
+		$result['onePercent'] = $result['totalCount'] ? $result['oneCount'] / $result['totalCount'] * 100 : 0;
 		$criteria->params[':rate'] = 2;
 		$result['twoCount'] = AppRatings::model()->count($criteria);
-		$result['twoPercent'] = $result['totalCount']?$result['twoCount']/$result['totalCount']*100:0;
+		$result['twoPercent'] = $result['totalCount'] ? $result['twoCount'] / $result['totalCount'] * 100 : 0;
 		$criteria->params[':rate'] = 3;
 		$result['threeCount'] = AppRatings::model()->count($criteria);
-		$result['threePercent'] = $result['totalCount']?$result['threeCount']/$result['totalCount']*100:0;
+		$result['threePercent'] = $result['totalCount'] ? $result['threeCount'] / $result['totalCount'] * 100 : 0;
 		$criteria->params[':rate'] = 4;
 		$result['fourCount'] = AppRatings::model()->count($criteria);
-		$result['fourPercent'] = $result['totalCount']?$result['fourCount']/$result['totalCount']*100:0;
+		$result['fourPercent'] = $result['totalCount'] ? $result['fourCount'] / $result['totalCount'] * 100 : 0;
 		$criteria->params[':rate'] = 5;
 		$result['fiveCount'] = AppRatings::model()->count($criteria);
-		$result['fivePercent'] = $result['totalCount']?$result['fiveCount']/$result['totalCount']*100:0;
+		$result['fivePercent'] = $result['totalCount'] ? $result['fiveCount'] / $result['totalCount'] * 100 : 0;
 		return $result;
 	}
 
@@ -290,6 +293,36 @@ class Apps extends CActiveRecord
 		$criteria->compare('app_id', $this->id);
 		$criteria->compare('user_id', $user_id);
 		$result = AppRatings::model()->find($criteria);
-		return $result?$result->rate:false;
+		return $result ? $result->rate : false;
+	}
+
+	/**
+	 *
+	 * Get criteria for valid apps
+	 *
+	 * @param null $platform
+	 * @param array $visitedCats
+	 * @return CDbCriteria
+	 */
+	public function getValidApps($platform = null, $visitedCats = array())
+	{
+		$criteria = new CDbCriteria();
+		$criteria->addCondition('t.status=:status');
+		$criteria->addCondition('confirm=:confirm');
+		$criteria->addCondition('deleted=:deleted');
+		$criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+		$criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
+		$criteria->params[':status'] = 'enable';
+		$criteria->params[':confirm'] = 'accepted';
+		$criteria->params[':deleted'] = 0;
+		if($visitedCats)
+			$criteria->addInCondition('category_id', $visitedCats);
+		if($platform) {
+			$criteria->addCondition('platform_id=:platform_id');
+			$criteria->params[':platform_id'] = $this->platform;
+		}
+
+		$criteria->order = 'id DESC';
+		return $criteria;
 	}
 }

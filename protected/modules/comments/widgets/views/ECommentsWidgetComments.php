@@ -26,11 +26,11 @@
                         <?php if($this->_config['premoderate'] === true && ($comment->status === null || $comment->status == Comment::STATUS_NOT_APPROWED)) {
                             echo CHtml::link(Yii::t($this->_config['translationCategory'], 'approve'), Yii::app()->urlManager->createUrl(
                                 CommentsModule::APPROVE_ACTION_ROUTE, array('id'=>$comment->comment_id)
-                            ), array('class'=>'btn btn-success approve'));
+                            ), array('class'=>'text-success approve'));
                         }?>
                         <?php echo CHtml::link(Yii::t($this->_config['translationCategory'], 'delete'), Yii::app()->urlManager->createUrl(
                             CommentsModule::DELETE_ACTION_ROUTE, array('id'=>$comment->comment_id)
-                        ), array('class'=>'btn btn-danger delete'));?>
+                        ), array('class'=>'text-danger delete'));?>
                     </div>
                 <?php endif; ?>
                 <?php

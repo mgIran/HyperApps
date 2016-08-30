@@ -4,6 +4,7 @@
 /* @var $newestGameDataProvider CActiveDataProvider */
 /* @var $newestEducationDataProvider CActiveDataProvider */
 /* @var $suggestedDataProvider CActiveDataProvider */
+/* @var $advertise Advertises */
 
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
@@ -40,61 +41,42 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
             'itemsCssClass'=>'app-carousel'
         ));?>
     </div>
-<!--    <div class="banner-box">-->
-<!--        <div class="banner-carousel">-->
-<!--            <div class="banner-item">-->
-<!--                <div class="fade-overly"></div>-->
-<!--                <div class="app-details">-->
-<!--                    <div class="pic">-->
-<!--                        <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                    </div>-->
-<!--                    <div class="app-content">-->
-<!--                        <div class="title">-->
-<!--                            <a href="#">-->
-<!--                                خشم سرعت-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="title" >-->
-<!--                                    <span class="text-right green col-lg-6 col-md-6 col-sm-6 col-xs-6" >-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="ltr text-left app-rate col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-left" >-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                        <div class="app-desc">-->
-<!--                            جـاده هـای ایـران شـما را بـه-->
-<!--                            چـالـشی تـازه فـرا می خوانند؛-->
-<!--                            رانـنـده خـود را انتـخاب کنید،-->
-<!--                            از یـک رانـنـده تـاکـسی عـادی-->
-<!--                            گرفته تا قـهرمـان مـسابـقاتید،-->
-<!--                            از یـک رانـنـده تـاکـسی عـادی-->
-<!--                            گرفته تا قـهرمـان مـسابـقاتید،-->
-<!--                            از یـک رانـنـده تـاکـسی عـادی-->
-<!--                            گرفته تا قـهرمـان مـسابـقات-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="app-footer">-->
-<!--                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">-->
-<!--                                    20,0000+ دانلود-->
-<!--                                </span>-->
-<!--                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs">-->
-<!--                                    3.7 مگابایت-->
-<!--                                </span>-->
-<!--                                <span class="col-lg-4 col-md-4 col-sm-4 hidden-xs green">-->
-<!--                                    گروه پولاد-->
-<!--                                </span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+
+<?
+if($advertise) {
+    ?>
+    <div class="banner-box">
+        <div class="banner-carousel">
+            <div class="banner-item">
+                <div class="fade-overly"></div>
+                <?
+                Yii::app()->clientScript->registerCss('fade-overly', "
+                    .content .banner-box .banner-carousel .banner-item{
+                        background-color: #{$advertise->fade_color};
+                    }
+                    .content .banner-box .banner-carousel .banner-item .fade-overly{
+                        background: -moz-linear-gradient(left,#{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -webkit-linear-gradient(left, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -o-linear-gradient(left, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -ms-linear-gradient(left, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: linear-gradient(to right, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                    }
+                ");
+                ?>
+                <?= $this->renderPartial('/apps/_vertical_app_item', array('data' => $advertise->app)) ?>
+                <?
+                if($advertise->cover && file_exists(Yii::getPathOfAlias('webroot').'/uploads/advertisesCover/'.$advertise->cover)) {
+                    ?>
+                    <img src="<?= $this->createAbsoluteUrl('/uploads/advertisesCover/'.$advertise->cover) ?>">
+                    <?
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <?
+}
+?>
 <!--    <div class="app-box">-->
 <!--        <div class="top-box">-->
 <!--            <div class="title pull-right">-->

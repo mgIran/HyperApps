@@ -23,6 +23,10 @@ root {
     display: inline-block;
 }
 
+.comments-list .admin-panel a:hover {
+    text-decoration: underline !important;
+}
+
 .comments-list .comments-list{
     padding-right: 45px;
 }
