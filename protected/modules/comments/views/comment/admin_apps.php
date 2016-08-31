@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'comment-grid',
-	'dataProvider'=>$model->search(),
+	'dataProvider'=>$model->searchApps(),
 	'filter'=>$model,
 	'columns'=>array(
 		array(

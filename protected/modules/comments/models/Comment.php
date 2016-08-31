@@ -192,9 +192,6 @@ class Comment extends CActiveRecord
         if(isset($relations['user']))
             $criteria->with[] = 'user';
 
-        $criteria->with[] = 'apps.platform';
-        $criteria->compare('platform.id', $this->platformFilter);
-
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'pagination' => array(
@@ -218,10 +215,10 @@ class Comment extends CActiveRecord
         //if User model has been configured
         if(isset($relations['user']))
             $criteria->with[] = 'user';
-
+        $criteria->addCondition('t.status <> 2');
         $criteria->with[] = 'apps.platform';
         $criteria->compare('platform.id', $this->platformFilter);
-
+        $criteria->order = 't.status';
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'pagination' => array(
