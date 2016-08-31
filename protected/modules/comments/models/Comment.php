@@ -58,6 +58,8 @@ class Comment extends CActiveRecord
      */
     private $_ownerModel = false;
 
+    public $platformFilter;
+
     private $_statuses = array(
         self::STATUS_NOT_APPROWED => 'New',
         self::STATUS_APPROWED => 'Approved',
@@ -97,7 +99,7 @@ class Comment extends CActiveRecord
             array('owner_name, creator_id, creator_name, user_name, user_email, verifyCode', 'checkConfig'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('owner_name, owner_id, comment_id, parent_comment_id, creator_id, user_name, user_email, comment_text, create_time, update_time, status', 'safe', 'on' => 'search'),
+            array('platformFilter, owner_name, owner_id, comment_id, parent_comment_id, creator_id, user_name, user_email, comment_text, create_time, update_time, status', 'safe', 'on' => 'search'),
         );
 
         return $rules;
@@ -118,6 +120,17 @@ class Comment extends CActiveRecord
             $relations = array_merge($relations, array(
                 'user' => array(self::BELONGS_TO, $userConfig['class'], 'creator_id'),
             ));
+        }
+
+        $commentableModels = Yii::app()->getModule('comments')->commentableModels;
+        foreach($commentableModels as $owner => $config)
+        {
+            //if defined in config class exists
+            if(class_exists($owner)) {
+                $relations = array_merge($relations, array(
+                    strtolower($owner) => array(self::BELONGS_TO, $owner, 'owner_id'),
+                ));
+            }
         }
         return $relations;
     }
@@ -177,7 +190,37 @@ class Comment extends CActiveRecord
         $relations = $this->relations();
         //if User model has been configured
         if(isset($relations['user']))
-            $criteria->with = 'user';
+            $criteria->with[] = 'user';
+
+        $criteria->with[] = 'apps.platform';
+        $criteria->compare('platform.id', $this->platformFilter);
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 30,
+            ),
+        ));
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     */
+    public function searchApps()
+    {
+        $criteria = new CDbCriteria;
+        $criteria->compare('owner_name', $this->owner_name, true);
+        $criteria->compare('comment_id', $this->comment_id);
+        $criteria->compare('comment_text', $this->comment_text, true);
+        $criteria->compare('t.status', $this->status);
+        $relations = $this->relations();
+        //if User model has been configured
+        if(isset($relations['user']))
+            $criteria->with[] = 'user';
+
+        $criteria->with[] = 'apps.platform';
+        $criteria->compare('platform.id', $this->platformFilter);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

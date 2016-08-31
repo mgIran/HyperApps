@@ -710,6 +710,7 @@ ul.nav li{
 .content{
     margin-top:35px;
     padding-top: 15px;
+    padding-bottom: 15px;
     display: block;
     overflow: hidden;
 }
@@ -1160,6 +1161,7 @@ body.ios .footer .nav li.active{
 }
 .main-inner{
     padding: 0;
+    padding-bottom: 60px;
 }
 .app{
     padding:0 25px;

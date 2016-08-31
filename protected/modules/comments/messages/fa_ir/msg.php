@@ -25,6 +25,7 @@ return array(
     'Approve this comment?'=>'این نظر تایید شود؟',
     'Cancel'=>'انصراف',
     'Manage Comments'=>'مدیریت نظرات',
+    'Manage Messages'=>'مدیریت نظرات',
     'Manage'=>'مدیریت',
     'Model'=>'ماژول',
     'Model\'s ID'=>'شناسه ماژول',

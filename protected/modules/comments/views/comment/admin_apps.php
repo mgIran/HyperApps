@@ -13,14 +13,10 @@ $this->breadcrumbs=array(
 	'filter'=>$model,
 	'columns'=>array(
 		array(
-			'header'=>Yii::t('commentsModule.msg', 'Model'),
-			'name'=>'owner_name',
+			'header'=>'پلتفرم',
+			'value'=>'$data->apps->platform->title',
 			'htmlOptions'=>array('width'=>50),
-		),
-		array(
-			'header'=>Yii::t('commentsModule.msg', 'Model\'s ID'),
-			'name'=>'owner_id',
-			'htmlOptions'=>array('width'=>50),
+			'filter' => CHtml::activeDropDownList($model,'platformFilter',CHtml::listData(AppPlatforms::model()->findAll(),'id','title'),array('prompt'=>'همه'))
 		),
 		array(
 			'header'=>Yii::t('commentsModule.msg', 'User Name'),
@@ -28,8 +24,8 @@ $this->breadcrumbs=array(
 			'htmlOptions'=>array('width'=>80),
 		),
 		array(
-			'header'=>Yii::t('commentsModule.msg', 'Link'),
-			'value'=>'CHtml::link(CHtml::link(Yii::t("CommentsModule.msg", "Link"), $data->pageUrl, array("target"=>"_blank")))',
+			'header'=>'نام برنامه',
+			'value'=>'CHtml::link($data->apps->title, $data->pageUrl, array("target"=>"_blank"))',
 			'type'=>'raw',
 			'htmlOptions'=>array('width'=>50),
 		),

@@ -588,7 +588,7 @@ class AppsController extends Controller
         $criteria->params[':confirm'] = 'accepted';
         $criteria->params[':deleted'] = 0;
         $criteria->limit = 20;
-        $criteria->order='id DESC';
+        $criteria->order='t.id DESC';
         if(isset($_GET['term']) && !empty($term = $_GET['term'])) {
             $terms = explode(' ', urldecode($term));
             $sql = null;

@@ -55,7 +55,7 @@ class CommentController extends Controller
 				'users' => array('*') ,
 			) ,
 			array('allow' ,
-				'actions' => array('admin' ,'delete' ,'approve') ,
+				'actions' => array('admin' ,'adminApps' ,'delete' ,'approve') ,
 				'roles' => array('admin') ,
 			) ,
 			array('deny' ,  // deny all users
@@ -105,6 +105,21 @@ class CommentController extends Controller
 			$model->attributes = $_GET['Comment'];
 
 		$this->render('admin' ,array(
+			'model' => $model ,
+		));
+	}
+
+	/**
+	 * Manages all models.
+	 */
+	public function actionAdminApps()
+	{
+		$model = new Comment('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Comment']))
+			$model->attributes = $_GET['Comment'];
+		$model->owner_name = 'Apps';
+		$this->render('admin_apps' ,array(
 			'model' => $model ,
 		));
 	}
