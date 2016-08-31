@@ -66,6 +66,11 @@ class Comment extends CActiveRecord
         self::STATUS_DELETED => 'Deleted'
     );
 
+    public $statusLabels = array(
+        self::STATUS_NOT_APPROWED => 'جدید',
+        self::STATUS_APPROWED => 'تایید شده',
+    );
+
     /**
      * Returns the static model of the specified AR class.
      * @return Comments the static model class

@@ -46,7 +46,7 @@ $this->breadcrumbs=array(
 			'name'=>'status',
 			'value'=>'$data->textStatus',
 			'htmlOptions'=>array('width'=>50),
-			'filter'=>Comment::model()->getStatuses(),
+			'filter'=>Comment::model()->statusLabels,
 		),
 		array(
 			'class'=>'CButtonColumn',

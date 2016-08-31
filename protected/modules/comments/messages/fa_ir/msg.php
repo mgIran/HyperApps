@@ -6,6 +6,7 @@
  */
 return array(
     'Comments'=>'نظرات',
+    'Messages'=>'نظرات',
     'Users Comment'=>'نظر کاربران',
     'delete'=>'حذف',
     'approve'=>'تایید',
