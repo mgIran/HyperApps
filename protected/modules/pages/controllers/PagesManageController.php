@@ -76,7 +76,15 @@ class PagesManageController extends Controller
         $model = $this->loadModel($id);
         $this->categorySlug = $model->category->slug;
         $this->categoryId = $model->category->id;
-		$this->render('view',array(
+		if($this->categorySlug == 'document')
+		{
+			$this->layout='//layouts/panel';
+			$this->render('developers.views.panel.document_view',array(
+				'model'=>$model,
+			));
+		}
+		else
+			$this->render('view',array(
 			'model'=>$model,
 		));
 	}

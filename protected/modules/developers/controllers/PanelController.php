@@ -7,7 +7,7 @@ class PanelController extends Controller
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
     public $layout='//layouts/panel';
-
+    
     /**
      * @return array action filters
      */
@@ -39,7 +39,7 @@ class PanelController extends Controller
                 'roles'=>array('user'),
             ),
             array('allow',
-                'actions'=>array('account','index', 'discount','settlement','sales'),
+                'actions'=>array('account','index', 'discount','settlement','sales','documents'),
                 'roles'=>array('developer'),
             ),
             array('deny',  // deny all users
@@ -63,6 +63,21 @@ class PanelController extends Controller
 
 		$this->render('index', array(
             'appsDataProvider'=>$appsDataProvider,
+        ));
+	}
+
+
+	public function actionDocuments()
+	{
+        Yii::app()->theme='market';
+        Yii::app()->getModule("pages");
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('category_id = 2');
+        $documentsProvider=new CActiveDataProvider('Pages', array(
+            'criteria'=>$criteria,
+        ));
+		$this->render('documents', array(
+            'documentsProvider'=>$documentsProvider,
         ));
 	}
 

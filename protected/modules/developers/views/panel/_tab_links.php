@@ -21,7 +21,7 @@ if(!isset($active))
     <li <?= $active == 'settlement'?'class="active"':'' ?> >
         <a href="<?php echo $this->createUrl('/developers/panel/settlement');?>">تسویه حساب</a>
     </li>
-    <li>
-        <a href="/developers/panel/docs/?l=fa" target="_blank">مستندات</a>
+    <li  <?= $active == 'documents'?'class="active"':'' ?> >
+        <a href="<?php echo $this->createUrl('/developers/panel/documents');?>">مستندات</a>
     </li>
 </ul>
