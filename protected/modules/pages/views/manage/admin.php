@@ -6,9 +6,9 @@ $this->breadcrumbs=array(
 	'مدیریت',
 );
 $template = '{update}{delete}';
-if($this->categorySlug == 'guide')
+if($this->categorySlug == 'document')
     $this->menu=array(
-	    array('label'=>'افزودن راهنمای جدید', 'url'=>array('manage/create/?slug=guide')),
+	    array('label'=>'افزودن مستندات جدید', 'url'=>array('manage/create/slug/document')),
     );
 if($this->categorySlug == 'base')
 {
@@ -21,8 +21,8 @@ if($this->categorySlug == 'free')
 
 ?>
 
-<h1>مدیریت</h1>
-
+<h1>مدیریت <?= $this->categoryName ?></h1>
+<? $this->renderPartial('//layouts/_flashMessage'); ?>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'pages-grid',

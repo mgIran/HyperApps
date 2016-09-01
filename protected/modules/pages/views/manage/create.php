@@ -6,13 +6,13 @@ $this->breadcrumbs=array(
 	'مدیریت'=>array('admin'),
 	'افزودن',
 );
-if($this->categorySlug == 'guide')
+if($this->categorySlug == 'document')
 {
 
     $this->menu=array(
-        array('label'=>'مدیریت', 'url'=>array('manage/admin/?slug=guide')),
+        array('label'=>'مدیریت', 'url'=>array('manage/admin/slug/document')),
     );
-    $pageType = 'راهنما';
+    $pageType = 'مستندات';
 }
 if($this->categorySlug == 'free')
 {

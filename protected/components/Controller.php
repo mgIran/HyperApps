@@ -125,9 +125,15 @@ class Controller extends CController
                     )
                 ),
                 array(
-                    'label' => 'صفحات متنی',
-                    'url' => Yii::app()->createUrl('/pages/manage/admin/?slug=base'),
-                ),
+                    'label' => 'صفحات متنی<span class="caret"></span>' ,
+                    'url' => '#' ,
+                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
+                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'items' => array(
+                        array('label' => 'صفحات استاتیک' ,'url' => Yii::app()->createUrl('/pages/manage/admin/slug/base')) ,
+                        array('label' => 'مستندات' ,'url' => Yii::app()->createUrl('/pages/manage/admin/slug/document')) ,
+                    )
+                ) ,
                 array(
                     'label' => 'مدیران <span class="caret"></span>',
                     'url' => '#',

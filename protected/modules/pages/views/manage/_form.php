@@ -15,14 +15,10 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">
-
-    </p>
-
-	<?php echo $form->errorSummary($model); ?>
+	<? $this->renderPartial('//layouts/_flashMessage'); ?>
 
     <?
-    if($this->categorySlug == 'free' || $this->categorySlug == 'guide'):
+    if($this->categorySlug == 'free' || $this->categorySlug == 'document'):
     ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>

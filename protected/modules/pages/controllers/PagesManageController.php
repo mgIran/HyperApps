@@ -10,6 +10,7 @@ class PagesManageController extends Controller
 
     public $categorySlug = null;
     public $categoryId = null;
+    public $categoryName = null;
     public $categoryMultiple = 1;
 
     public function beforeAction($action)
@@ -18,10 +19,11 @@ class PagesManageController extends Controller
             if(isset($_GET['slug']) && !empty($_GET['slug'])){
                 $this->categorySlug = CHtml::encode($_GET['slug']);
                 $category = PageCategories::model()->find('slug = :slug' ,array(':slug' => $this->categorySlug));
+                $this->categoryName = $category->name;
                 $this->categoryId = $category->id;
                 $this->categoryMultiple = $category->multiple;
             }else{
-                $this->categorySlug = 'free';
+                $this->categorySlug = 'document';
                 $category = PageCategories::model()->find('slug = :slug' ,array(':slug' => $this->categorySlug));
                 $this->categoryId = $category->id;
             }
@@ -85,20 +87,22 @@ class PagesManageController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Pages;
+		$model = new Pages;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Pages']))
-		{
-			$model->attributes=$_POST['Pages'];
-            $model->category_id = $this->categoryId;
-			if($model->save())
-				$this->redirect(array('manage/admin/?slug='.$this->categorySlug));
+		if(isset($_POST['Pages'])){
+			$model->attributes = $_POST['Pages'];
+			$model->category_id = $this->categoryId;
+			if($model->save()){
+				Yii::app()->user->setFlash('success' ,'اطلاعات با موفقیت ثبت شد.');
+				$this->redirect(array('manage/admin/slug/' . $this->categorySlug));
+			}else
+				Yii::app()->user->setFlash('failed' ,'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
+		$this->render('create' ,array(
+			'model' => $model ,
 		));
 	}
 
@@ -118,8 +122,11 @@ class PagesManageController extends Controller
         if(isset($_POST['Pages'])){
             $model->attributes = $_POST['Pages'];
             $model->category_id = $this->categoryId;
-            if($model->save())
-                $this->refresh();
+			if($model->save()){
+				Yii::app()->user->setFlash('success' ,'اطلاعات با ویرایش شد.');
+				$this->refresh();
+			}else
+				Yii::app()->user->setFlash('failed' ,'در ویرایش اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
         }
 
         $this->render('update' ,array(
