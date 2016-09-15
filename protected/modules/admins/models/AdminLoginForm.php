@@ -10,6 +10,7 @@ class AdminLoginForm extends CFormModel
 	public $username;
 	public $password;
 	public $rememberMe;
+	public $verifyCode;
 
 	private $_identity;
 
@@ -27,6 +28,8 @@ class AdminLoginForm extends CFormModel
 			array('rememberMe', 'boolean'),
 			// password needs to be authenticated
 			array('password', 'authenticate'),
+			//only on withCaptcha scenario
+			array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements(), 'on' => 'withCaptcha'),
 		);
 	}
 
@@ -39,6 +42,7 @@ class AdminLoginForm extends CFormModel
             'username' => 'نام کاربری',
             'password' => 'کلمه عبور',
 			'rememberMe'=>'مرا بخاطر بسپار',
+			'verifyCode' => 'کد امنیتی'
 		);
 	}
 
