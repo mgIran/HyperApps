@@ -2,7 +2,7 @@
     <?php
     $form=$this->beginWidget('CActiveForm', array(
         'id'=>'login-form',
-        'enableAjaxValidation'=>true,
+        'enableAjaxValidation'=>false,
         'enableClientValidation'=>true,
     )); ?>
     <div class="row">
@@ -23,11 +23,6 @@
             <?php echo $form->error($model, 'verifyCode'); ?>
         </div>
     <?php endif; ?>
-    <script>
-        $(function () {
-            $("#yw0_button").click();
-        });
-    </script>
     <div class="row">
         <input class="btn btn-success form-control" type="submit" value="ورود">
     </div>
