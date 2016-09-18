@@ -301,6 +301,7 @@ class AppsController extends Controller
     {
         Yii::app()->theme = 'market';
         $this->layout = 'public';
+
         $criteria = new CDbCriteria();
         $criteria->addCondition('confirm=:confirm');
         $criteria->addCondition('deleted=:deleted');
@@ -318,12 +319,53 @@ class AppsController extends Controller
         $categories = AppCategories::model()->getCategoryChilds($id);
         $criteria->addInCondition('category_id', $categories);
         $criteria->order='id DESC';
-        $dataProvider = new CActiveDataProvider('Apps', array(
+        $criteria->limit='40';
+        $latest = new CActiveDataProvider('Apps', array(
+            'criteria' => $criteria,
+        ));
+
+
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('platform_id=:platform');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
+        $criteria->params = array(
+            ':confirm' => 'accepted',
+            ':deleted' => 0,
+            ':status' => 'enable',
+            ':platform' => $this->platform,
+        );
+
+        $categories = AppCategories::model()->getCategoryChilds($id);
+        $criteria->addInCondition('category_id', $categories);
+        $criteria->addCondition('ratings.rate IS NOT NULL');
+        $criteria->select=array('t.*','AVG(ratings.rate) AS avgRate');
+        $criteria->with[]='ratings';
+        $criteria->together = true;
+        $criteria->order='avgRate DESC';
+        $criteria->limit='40';
+        $criteria->group='t.id';
+        $topRates = new CActiveDataProvider('Apps', array(
+            'criteria' => $criteria,
+        ));
+
+        $categories = AppCategories::model()->getCategoryChilds($id);
+        $criteria->addInCondition('category_id', $categories);
+        $criteria->addCondition('price = 0');
+        $criteria->order='id DESC';
+        $criteria->limit='40';
+        $free = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
 
         $this->render('apps_list', array(
-            'dataProvider' => $dataProvider,
+            'latest' => $latest,
+            'topRates' => $topRates,
+            'free' => $free,
             'title' => (!is_null($title)) ? $title : null,
             'pageTitle' => $pageTitle
         ));

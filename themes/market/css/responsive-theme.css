@@ -38,6 +38,13 @@
     }
 }
 @media all and (max-width: 767px) {
+    .footer{
+        position: relative;
+    }
+    .main,
+    .main-inner{
+        padding-bottom: 0;
+    }
     .tab-content{
         padding: 30px 0;
     }

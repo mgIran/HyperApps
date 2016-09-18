@@ -1,7 +1,7 @@
 <?php
 /* @var $this PublicController */
 /* @var $model Users */
-$tab ='credit-tab';
+$tab ='';
 if(isset($_GET['tab']))
     $tab = $_GET['tab'];
 ?>

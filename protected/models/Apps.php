@@ -106,16 +106,16 @@ class Apps extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-				'appBuys' => array(self::HAS_MANY, 'AppBuys', 'app_id'),
-				'images' => array(self::HAS_MANY, 'AppImages', 'app_id'),
-				'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
-				'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
-				'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
-				'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
-				'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
-				'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
-				'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
-				'advertise' => array(self::BELONGS_TO, 'Advertises', 'id'),
+			'appBuys' => array(self::HAS_MANY, 'AppBuys', 'app_id'),
+			'images' => array(self::HAS_MANY, 'AppImages', 'app_id'),
+			'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
+			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
+			'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
+			'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
+			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
+			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
+			'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
+			'advertise' => array(self::BELONGS_TO, 'Advertises', 'id'),
 		);
 	}
 
@@ -164,16 +164,10 @@ class Apps extends CActiveRecord
 
 		$criteria = new CDbCriteria;
 
-		$criteria->compare('t.id', $this->id, true);
-		$criteria->compare('t.title', $this->title, true);
-		$criteria->compare('category_id', $this->category_id);
-		$criteria->compare('t.status', $this->status);
-		$criteria->compare('price', $this->price);
-		$criteria->compare('platform_id', $this->platform_id);
-		$criteria->with = array('developer', 'developer.userDetails');
-		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
-		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
-
+		$criteria->with = array('developer', 'developer.userDetails', 'ratings');
+//		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
+//		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
+		$criteria->addCondition('ratings.rate > 1');
 		if(!$withFree)
 			$criteria->addCondition('price <> 0');
 
@@ -182,6 +176,8 @@ class Apps extends CActiveRecord
 		$criteria->addCondition('t.title != ""');
 		$criteria->order = 't.id DESC';
 
+		var_dump(self::model()->find($criteria)->rate);
+exit;
 		return new CActiveDataProvider($this, array(
 				'criteria' => $criteria,
 		));

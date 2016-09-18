@@ -31,7 +31,7 @@
                     </h4>
                 </div>
                 <div id="help-box" class="panel-collapse collapse">
-                    <div class="panel-body"><?php echo $helpText;?></div>
+                    <div class="panel-body"><?php echo CHtml::encode($helpText);?></div>
                 </div>
             </div>
 
