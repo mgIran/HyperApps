@@ -164,7 +164,8 @@ class Apps extends CActiveRecord
 
 		$criteria = new CDbCriteria;
 
-		$criteria->with = array('developer', 'developer.userDetails', 'ratings');
+		$criteria->with = array('developer', 'developer.userDetails');
+		$criteria->join='LEFT OUTER JOIN ym_app_ratings ratings ON ratings.app_id = t.id';
 //		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
 //		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
 		$criteria->addCondition('ratings.rate > 1');
@@ -176,8 +177,6 @@ class Apps extends CActiveRecord
 		$criteria->addCondition('t.title != ""');
 		$criteria->order = 't.id DESC';
 
-		var_dump(self::model()->find($criteria)->rate);
-exit;
 		return new CActiveDataProvider($this, array(
 				'criteria' => $criteria,
 		));
