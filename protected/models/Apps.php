@@ -322,4 +322,11 @@ class Apps extends CActiveRecord
 		$criteria->order = 'id DESC';
 		return $criteria;
 	}
+	
+	public function getCountNewComment(){
+		$criteria = new CDbCriteria();
+		$criteria->addCondition('owner_name = "Apps" AND owner_id = :id AND status = 0');
+		$criteria->params = array(":id" => $this->id);
+		return Comment::model()->count($criteria);
+	}
 }

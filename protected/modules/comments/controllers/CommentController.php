@@ -56,7 +56,7 @@ class CommentController extends Controller
 			) ,
 			array('allow' ,
 				'actions' => array('admin' ,'adminApps' ,'delete' ,'approve') ,
-				'roles' => array('admin') ,
+				'roles' => array('admin','developer') ,
 			) ,
 			array('deny' ,  // deny all users
 				'users' => array('*') ,
