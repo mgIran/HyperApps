@@ -1,7 +1,6 @@
 <?php if(count($comments) > 0):?>
     <ul class="comments-list">
         <?php foreach($comments as $key => $comment):
-            $user = Users::model()->findByPk($comment->creator_id);
             ?>
             <li id="comment-<?php echo $comment->comment_id; ?>">
                 <div class="comment-avatar">
@@ -79,7 +78,7 @@ function checkChar( character ) {
 }
 var pTags = $(".comments-list").find("p");
 pTags.each(function(){
-    var firstChar = $(this).text().trim().substr(2,1);
+    var firstChar = $(this).text().trim().substr(1,1);
     var $i=3;
     while(checkChar(firstChar) && $i < $(this).text().trim().length)
     {
