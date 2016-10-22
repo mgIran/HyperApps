@@ -106,16 +106,16 @@ class Apps extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-				'appBuys' => array(self::HAS_MANY, 'AppBuys', 'app_id'),
-				'images' => array(self::HAS_MANY, 'AppImages', 'app_id'),
-				'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
-				'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
-				'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
-				'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
-				'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
-				'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
-				'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
-				'advertise' => array(self::BELONGS_TO, 'Advertises', 'id'),
+			'appBuys' => array(self::HAS_MANY, 'AppBuys', 'app_id'),
+			'images' => array(self::HAS_MANY, 'AppImages', 'app_id'),
+			'platform' => array(self::BELONGS_TO, 'AppPlatforms', 'platform_id'),
+			'developer' => array(self::BELONGS_TO, 'Users', 'developer_id'),
+			'category' => array(self::BELONGS_TO, 'AppCategories', 'category_id'),
+			'discount' => array(self::BELONGS_TO, 'AppDiscounts', 'id'),
+			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
+			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
+			'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
+			'advertise' => array(self::BELONGS_TO, 'Advertises', 'id'),
 		);
 	}
 
@@ -164,20 +164,17 @@ class Apps extends CActiveRecord
 
 		$criteria = new CDbCriteria;
 
-		$criteria->compare('t.id', $this->id, true);
-		$criteria->compare('t.title', $this->title, true);
-		$criteria->compare('category_id', $this->category_id);
-		$criteria->compare('t.status', $this->status);
-		$criteria->compare('price', $this->price);
-		$criteria->compare('platform_id', $this->platform_id);
 		$criteria->with = array('developer', 'developer.userDetails');
-		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
-		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
-
+		$criteria->join='LEFT OUTER JOIN ym_app_ratings ratings ON ratings.app_id = t.id';
+//		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
+//		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
+		//$criteria->addCondition('ratings.rate > 1');
 		if(!$withFree)
 			$criteria->addCondition('price <> 0');
 
 		$criteria->addCondition('deleted=0');
+		$criteria->addCondition('platform_id=:platform');
+		$criteria->params[':platform']=$this->platform_id;
 
 		$criteria->addCondition('t.title != ""');
 		$criteria->order = 't.id DESC';
@@ -324,5 +321,12 @@ class Apps extends CActiveRecord
 
 		$criteria->order = 'id DESC';
 		return $criteria;
+	}
+	
+	public function getCountNewComment(){
+		$criteria = new CDbCriteria();
+		$criteria->addCondition('owner_name = "Apps" AND owner_id = :id AND status = 0');
+		$criteria->params = array(":id" => $this->id);
+		return Comment::model()->count($criteria);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+$purifier=new CHtmlPurifier();
 /* @var $this PagesManageController*/
 /* @var $model Pages */
 ?>
@@ -8,11 +9,15 @@
 
     <a class="btn btn-success developer-signup-link" href="<?php echo Yii::app()->createUrl('/dashboard')?>">پنل کاربری</a>
     <div class="tab-content card-container">
-        <a href="<?php echo $this->createUrl('/developers/panel/documents');?>" class="btn btn-info pull-left">بازگشت</a>
-        <h3><?= $model->title ?></h3>
-        <br>
-        <div class="center-block">
-            <p><?= strip_tags(nl2br($model->summary)) ?></p>
+        <p class="text-left"><a href="<?php echo $this->createUrl('/developers/panel/documents');?>" class="btn btn-info">بازگشت</a></p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <?= $model->title ?>
+            </div>
+            <div class="panel-body">
+                <p><?= $purifier->purify($model->summary) ?></p>
+            </div>
         </div>
+        <p class="text-left"><a href="<?php echo $this->createUrl('/developers/panel/documents');?>" class="btn btn-info">بازگشت</a></p>
     </div>
 </div>

@@ -173,20 +173,6 @@ if($model->platform)
                     <span>توضیحات بیشتر</span>
                 </a>
             </section>
-            <div class="app-comments">
-                <div id="rate-wrapper">
-                <?
-                $this->renderPartial('_rating',array(
-                    'model' => $model
-                ));
-                ?>
-                </div>
-                <?
-                $this->widget('comments.widgets.ECommentsListWidget', array(
-                    'model' => $model,
-                ));
-                ?>
-            </div>
             <?php if(!is_null($model->change_log) or $model->change_log!=''):?>
                 <div class="change-log">
                     <h4>آخرین تغییرات</h4>
@@ -207,7 +193,7 @@ if($model->platform)
                 </div>
             </div>
             <?php if(!is_null($model->permissions) or $model->permissions!=''):?>
-                <div class="app-details border-none">
+                <div class="app-details">
                     <?
                     if($model->permissions):
                         echo '<h4>دسترسی ها</h4>';
@@ -221,7 +207,22 @@ if($model->platform)
                     ?>
                 </div>
             <?php endif;?>
-
+            <div class="app-comments border-none">
+                <div id="rate-wrapper">
+                    <?
+                    $this->renderPartial('_rating',array(
+                        'model' => $model
+                    ));
+                    ?>
+                </div>
+                <div id="comments">
+                <?
+                $this->widget('comments.widgets.ECommentsListWidget', array(
+                    'model' => $model,
+                ));
+                ?>
+                </div>
+            </div>
         </div>
     </div>
 </div>

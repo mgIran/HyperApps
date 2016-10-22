@@ -31,7 +31,7 @@ class Parser
 
     /**
      * Get Manifest Object
-     * @return \ApkParser\Manifest
+     * @return Manifest
      */
     public function getManifest()
     {
@@ -45,7 +45,7 @@ class Parser
      * - recompress
      * - and other ZipArchive features.
      *
-     * @return \ApkParser\Archive
+     * @return Archive
      */
     public function getApkArchive()
     {

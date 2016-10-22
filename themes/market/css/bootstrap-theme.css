@@ -1964,7 +1964,7 @@ header.mobile.search-open .mobile-search{
 /*****************************************************/
 .comments-list{
     width: auto !important;
-    margin: 25px 40px;
+    margin: 0;
 }
 .comments-form h4{
     display: inline-block !important;
