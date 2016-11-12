@@ -182,17 +182,20 @@ class AppsController extends Controller
 
             $model->confirm = 'pending';
 
-            $pt = $_POST['priceType'];
-            switch ($pt) {
-                case 'free':
-                    $model->price = 0;
-                    break;
-                case 'online-payment':
-                    break;
-                case 'in-app-payment':
-                    $model->price = -1;
-                    break;
+            if(isset($_POST['priceType'])) {
+                $pt = $_POST['priceType'];
+                switch ($pt) {
+                    case 'free':
+                        $model->price = 0;
+                        break;
+                    case 'online-payment':
+                        break;
+                    case 'in-app-payment':
+                        $model->price = -1;
+                        break;
+                }
             }
+
             if ($model->save()) {
                 if ($iconFlag) {
                     $thumbnail = new Imager();
@@ -426,6 +429,7 @@ class AppsController extends Controller
             }
             if ($flag) {
                 Yii::app()->user->setFlash('images-success', 'اطلاعات با موفقیت ثبت شد.');
+                Apps::model()->updateByPk($id, array('confirm'=>'pending'));
                 $this->redirect($this->createUrl('/developers/panel'));
             } else
                 Yii::app()->user->setFlash('images-failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');

@@ -21,6 +21,9 @@ if(!isset($active))
     <li <?= $active == 'settlement'?'class="active"':'' ?> >
         <a href="<?php echo $this->createUrl('/developers/panel/settlement');?>">تسویه حساب</a>
     </li>
+    <li  <?= $active == 'support'?'class="active"':'' ?> >
+        <a href="<?php echo $this->createUrl('/tickets/manage?dev=1');?>">پشتیبانی</a>
+    </li>
     <li  <?= $active == 'documents'?'class="active"':'' ?> >
         <a href="<?php echo $this->createUrl('/developers/panel/documents');?>">مستندات</a>
     </li>

@@ -13,7 +13,7 @@
 		if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user'):
 		?>
 			<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-				<a class="btn btn-info pull-left" href="<?= $this->createUrl('/tickets/manage/') ?>" >بازگشت</a>
+				<a class="btn btn-info pull-left" href="#" onclick="window.history.back();" >بازگشت</a>
 			</div>
 		<?
 		endif;

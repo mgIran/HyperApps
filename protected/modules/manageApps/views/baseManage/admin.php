@@ -37,6 +37,11 @@ $this->menu=array(
 			'name' => 'price',
 			'value' => '$data->price != 0?$data->price:"رایگان"'
 		),
+		array(
+			'header' => 'بسته',
+			'value' => 'is_null($data->lastPackage)?"ندارد":$data->lastPackage->package_name',
+			'filter' => CHtml::activeTextField($model,'packageFilter'),
+		),
 		/*
 		'file_name',
 		'icon',

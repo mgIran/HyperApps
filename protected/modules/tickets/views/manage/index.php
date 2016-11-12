@@ -4,26 +4,52 @@
 
 ?>
 <div class="container dashboard-container ticket-box">
-	<ul class="nav nav-tabs">
-		<li>
-			<a href="<?= $this->createUrl('/dashboard?tab=credit-tab') ?>">اعتبار</a>
-		</li>
-		<li>
-			<a href="<?= $this->createUrl('/dashboard?tab=transactions-tab') ?>">تراکنش ها</a>
-		</li>
-		<li>
-			<a href="<?= $this->createUrl('/dashboard?tab=buys-tab') ?>">خریدها</a>
-		</li>
-		<li>
-			<a href="<?= $this->createUrl('/dashboard?tab=bookmarks-tab') ?>">نشان شده ها</a>
-		</li>
-		<li  class="active">
-			<a href="<?= $this->createUrl('/tickets/manage/') ?>">پشتیبانی</a>
-		</li>
-		<li>
-			<a href="<?= $this->createUrl('/dashboard?tab=setting-tab') ?>">تنظیمات</a>
-		</li>
-	</ul>
+	<?php if(isset($_GET['dev']) and $_GET['dev']==1):?>
+		<ul class="nav nav-tabs">
+			<li>
+				<a href="<?php echo $this->createUrl('/developers/panel');?>">برنامه ها</a>
+			</li>
+			<li>
+				<a href="<?php echo $this->createUrl('/developers/panel/discount');?>">تخفیفات</a>
+			</li>
+			<li>
+				<a href="<?php echo $this->createUrl('/developers/panel/account');?>">حساب توسعه دهنده</a>
+			</li>
+			<li>
+				<a href="<?php echo $this->createUrl('/developers/panel/sales');?>">گزارش فروش</a>
+			</li>
+			<li>
+				<a href="<?php echo $this->createUrl('/developers/panel/settlement');?>">تسویه حساب</a>
+			</li>
+			<li class="active">
+				<a href="<?php echo $this->createUrl('/tickets/manage?dev=1');?>">پشتیبانی</a>
+			</li>
+			<li>
+				<a href="<?php echo $this->createUrl('/developers/panel/documents');?>">مستندات</a>
+			</li>
+		</ul>
+	<?php else:?>
+		<ul class="nav nav-tabs">
+			<li>
+				<a href="<?= $this->createUrl('/dashboard?tab=credit-tab') ?>">اعتبار</a>
+			</li>
+			<li>
+				<a href="<?= $this->createUrl('/dashboard?tab=transactions-tab') ?>">تراکنش ها</a>
+			</li>
+			<li>
+				<a href="<?= $this->createUrl('/dashboard?tab=buys-tab') ?>">خریدها</a>
+			</li>
+			<li>
+				<a href="<?= $this->createUrl('/dashboard?tab=bookmarks-tab') ?>">نشان شده ها</a>
+			</li>
+			<li class="active">
+				<a href="<?= $this->createUrl('/tickets/manage/') ?>">پشتیبانی</a>
+			</li>
+			<li>
+				<a href="<?= $this->createUrl('/dashboard?tab=setting-tab') ?>">تنظیمات</a>
+			</li>
+		</ul>
+	<?php endif;?>
 	<div class="container-fluid tab-content">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
 			<div class="form-group text-left">

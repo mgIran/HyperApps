@@ -119,6 +119,18 @@ class AppsController extends Controller
                 if ($model->developer)
                     $model->developer->userDetails->credit = $model->developer->userDetails->credit + $model->getDeveloperPortion();
                 $model->developer->userDetails->save();
+
+
+
+
+
+                // smtp
+                // hotel info in pay page
+
+
+
+
+
                 if ($userDetails->save()) {
                     $message =
                         '<p style="text-align: right;">با سلام<br>کاربر گرامی، جزئیات خرید شما به شرح ذیل می باشد:</p>

@@ -54,6 +54,7 @@ class Apps extends CActiveRecord
 			'3' => 'windowsphone',
 	);
 	public $confirmLabels = array(
+			'incomplete' => 'اطلاعات ناقص',
 			'pending' => 'در حال بررسی',
 			'refused' => 'رد شده',
 			'accepted' => 'تایید شده',
@@ -69,6 +70,11 @@ class Apps extends CActiveRecord
 	 * @var string developer name filter
 	 */
 	public $devFilter;
+
+	/**
+	 * @var string package name filter
+	 */
+	public $packageFilter;
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -93,7 +99,7 @@ class Apps extends CActiveRecord
 				array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
 				// The following rule is used by search().
 				// @todo Please remove those attributes that should not be searched.
-				array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter', 'safe', 'on' => 'search'),
+				array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter,packageFilter', 'safe', 'on' => 'search'),
 				array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
 		);
 	}
@@ -166,8 +172,13 @@ class Apps extends CActiveRecord
 
 		$criteria->with = array('developer', 'developer.userDetails');
 		$criteria->join='LEFT OUTER JOIN ym_app_ratings ratings ON ratings.app_id = t.id';
-//		$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
-//		$criteria->params[':dev_filter'] = '%'.$this->devFilter.'%';
+		if(isset($_GET['ajax']) and $_GET['ajax']=='apps-grid') {
+			$criteria->addCondition('developer_team Like :dev_filter OR  userDetails.fa_name Like :dev_filter OR userDetails.en_name Like :dev_filter OR userDetails.developer_id Like :dev_filter');
+			$criteria->params[':dev_filter'] = '%' . $this->devFilter . '%';
+			$criteria->join.=' LEFT OUTER JOIN ym_app_packages package ON package.app_id = t.id';
+			$criteria->addCondition('package.package_name Like :package_filter');
+			$criteria->params[':package_filter'] = '%' . $this->packageFilter . '%';
+		}
 		//$criteria->addCondition('ratings.rate > 1');
 		if(!$withFree)
 			$criteria->addCondition('price <> 0');
@@ -221,8 +232,16 @@ class Apps extends CActiveRecord
 
 	public function afterFind()
 	{
-		if(!empty($this->packages))
-			$this->lastPackage = $this->packages[count($this->packages) - 1];
+		if (!empty($this->packages)) {
+			$packages = $this->packages;
+			foreach ($packages as $key => $package)
+				if ($package->status != 'accepted')
+					unset($packages[$key]);
+			$this->lastPackage = $packages[0];
+			foreach ($packages as $package)
+				if ($package->id > $this->lastPackage->id)
+					$this->lastPackage = $package;
+		}
 	}
 
 	public function getDeveloperName()

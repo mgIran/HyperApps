@@ -17,7 +17,7 @@
             <a data-toggle="tab" href="#packages">بسته</a>
         </li>
         <li class="<? if($step == 2)echo 'active';elseif($step<2)echo 'disabled';?>">
-            <a data-toggle="<?= ($step == 2)?'tab':''?>" href="#info">اطلاعات برنامه</a>
+            <a data-toggle="<?= !isset($step)?'':'tab'?>" href="#info">اطلاعات برنامه</a>
         </li>
         <li class="<? if($step == 3)echo 'active';elseif($step<3)echo 'disabled';?>">
             <a data-toggle="<?= ($step == 3)?'tab':''?>" href="#images">تصاویر برنامه</a>

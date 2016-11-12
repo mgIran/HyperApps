@@ -142,6 +142,30 @@ class CreditController extends Controller
                 $userDetails->credit = $userDetails->credit + $model->amount;
                 $userDetails->save();
                 Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
+
+                // Send email
+                $message =
+                    '<p style="text-align: right;">با سلام<br>کاربر گرامی، تراکنش شما با موفقیت انجام شد. جزئیات تراکنش به شرح ذیل می باشد:</p>
+                        <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
+                        <table style="font-size: 9pt;text-align: right;">
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">زمان</td>
+                                <td>' . JalaliDate::date('d F Y - H:i', $transaction->date) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">مبلغ</td>
+                                <td>' . Controller::parseNumbers(number_format($this->getFixedPrice($transaction->amount), 0)) . ' ریال</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">شناسه خرید</td>
+                                <td>' . $transaction->order_id . '</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">کد رهگیری</td>
+                                <td>' . $transaction->tracking_code . '</td>
+                            </tr>
+                        </table>';
+                Mailer::mail($order->buyer_email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
             } else {
                 $errors = array(
                     '-1' => 'اطلاعات ارسال شده ناقص است.',

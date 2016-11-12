@@ -15,5 +15,5 @@
             <a class="icon-trash text-danger" href="<?php echo $this->createUrl('/developers/apps/delete/'.$data->id);?>"></a>
         </span>
     </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4"><span class="label <?php if($data->confirm=='accepted')echo 'label-success';elseif($data->confirm=='refused' or $data->confirm=='change_required')echo 'label-danger';else echo 'label-info';?>"><?php echo $data->confirmLabels[$data->confirm];?></span></div>
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4"><span class="label <?php if($data->confirm=='accepted')echo 'label-success';elseif($data->confirm=='refused' or $data->confirm=='change_required')echo 'label-danger';elseif($data->confirm=='incomplete')echo 'label-warning';else echo 'label-info';?>"><?php echo $data->confirmLabels[$data->confirm];?></span></div>
 </div>
