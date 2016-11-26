@@ -5,6 +5,7 @@
 /* @var $newestDevelopers CActiveDataProvider*/
 /* @var $newestPackages CActiveDataProvider*/
 /* @var $tickets []*/
+/* @var $statistics []*/
 ?>
 <?php if(Yii::app()->user->hasFlash('success')):?>
     <div class="alert alert-success fade in">
@@ -20,6 +21,36 @@
 <?
 if(Yii::app()->user->roles == 'admin'):
 ?>
+<div class="row boxed-statistics">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+        <div class="green">
+            <a href="<?php echo $this->createUrl('/manageApps/android/admin');?>"></a>
+            <h1><?php echo $statistics['apps'];?></h1>
+            <h4>اپلیکیشن ها</h4>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+        <div class="red">
+            <a href="<?php echo $this->createUrl('/users/manage');?>"></a>
+            <h1><?php echo $statistics['developers'];?></h1>
+            <h4>توسعه دهندگان</h4>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+        <div class="blue">
+            <a href="<?php echo $this->createUrl('/apps/reportSales');?>"></a>
+            <h1><?php echo $statistics['transactions'];?></h1>
+            <h4>پرداخت ها</h4>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-center">
+        <div class="gold">
+            <a href="<?php echo $this->createUrl('/tickets/manage/admin');?>"></a>
+            <h1><?php echo $statistics['tickets'];?></h1>
+            <h4>پشتیبانی</h4>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="panel-heading">

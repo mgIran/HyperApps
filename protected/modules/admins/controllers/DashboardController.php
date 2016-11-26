@@ -86,12 +86,20 @@ class DashboardController extends Controller
         $criteria->compare('messages.sender','user');
         $tickets['new'] = Tickets::model()->count($criteria);
 
+        $statistics=array(
+            'tickets'=>$tickets['new'],
+            'apps'=>Apps::model()->count('title IS NOT NULL'),
+            'developers'=>Users::model()->count('role_id = 2'),
+            'transactions'=>UserTransactions::model()->count(),
+        );
+
 		$this->render('index', array(
             'newestPackages'=>$newestPackages,
             'newestPrograms'=>$newestPrograms,
             'devIDRequests'=>$newestDevIdRequests,
             'newestDevelopers'=>$newestDevelopers,
             'tickets'=>$tickets,
+            'statistics'=>$statistics,
         ));
 	}
 

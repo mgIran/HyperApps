@@ -5,6 +5,8 @@
 /* @var $newestEducationDataProvider CActiveDataProvider */
 /* @var $suggestedDataProvider CActiveDataProvider */
 /* @var $advertise Advertises */
+/* @var $topProgramDataProvider CActiveDataProvider */
+/* @var $bestsellingProgramDataProvider CActiveDataProvider */
 
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
@@ -77,300 +79,36 @@ if($advertise) {
     <?
 }
 ?>
-<!--    <div class="app-box">-->
-<!--        <div class="top-box">-->
-<!--            <div class="title pull-right">-->
-<!--                <h2>برترین ها</h2>-->
-<!--            </div>-->
-<!--            <button type="button" class="pull-left btn btn-success more-app" >-->
-<!--                بیشتر-->
-<!--            </button>-->
-<!--        </div>-->
-<!--        <div class="app-carousel">-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="app-box">-->
-<!--        <div class="top-box">-->
-<!--            <div class="title pull-right">-->
-<!--                <h2>پر فروش های هفته</h2>-->
-<!--            </div>-->
-<!--            <button type="button" class="pull-left btn btn-success more-app" >-->
-<!--                بیشتر-->
-<!--            </button>-->
-<!--        </div>-->
-<!--        <div class="app-carousel">-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="app-item">-->
-<!--                <div class="app-item-content">-->
-<!--                    <div class="pic">-->
-<!--                        <div>-->
-<!--                            <img src="--><?//= Yii::app()->theme->baseUrl; ?><!--/images/login-back.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="detail">-->
-<!--                        <div class="app-title">-->
-<!--                            تی وی پلاستی وی پلاستی وی پلاستی وی پلاس-->
-<!--                            <span class="paragraph-end"></span>-->
-<!--                        </div>-->
-<!--                        <div class="app-any">-->
-<!--                                    <span class="app-price">-->
-<!--                                        رایگان-->
-<!--                                    </span>-->
-<!--                                    <span class="app-rate">-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star"></span>-->
-<!--                                        <span class="icon-star-half-empty"></span>-->
-<!--                                        <span class="icon-star-empty"></span>-->
-<!--                                    </span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div class="app-box">
+        <div class="top-box">
+            <div class="title pull-right">
+                <h2>برترین ها</h2>
+            </div>
+            <a class="pull-left btn btn-success more-app" href="<?php echo $this->createUrl('/apps/top');?>">بیشتر</a>
+        </div>
+        <?php $this->widget('zii.widgets.CListView', array(
+            'dataProvider'=>$topProgramDataProvider,
+            'id'=>'top-programs',
+            'itemView'=>'_app_item',
+            'template'=>'{items}',
+            'itemsCssClass'=>'app-carousel'
+        ));?>
+    </div>
+    <div class="app-box">
+        <div class="top-box">
+            <div class="title pull-right">
+                <h2>پرفروش ترین ها</h2>
+            </div>
+            <a class="pull-left btn btn-success more-app" href="<?php echo $this->createUrl('/apps/bestselling');?>">بیشتر</a>
+        </div>
+        <?php $this->widget('zii.widgets.CListView', array(
+            'dataProvider'=>$bestsellingProgramDataProvider,
+            'id'=>'bestselling-programs',
+            'itemView'=>'_app_item',
+            'template'=>'{items}',
+            'itemsCssClass'=>'app-carousel'
+        ));?>
+    </div>
     <div class="app-box">
         <div class="top-box">
             <div class="title pull-right">

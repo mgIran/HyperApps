@@ -5,6 +5,7 @@
 /* @var $helpText string */
 /* @var $settlementHistory CActiveDataProvider */
 /* @var $formDisabled boolean */
+$purifier=new CHtmlPurifier();
 ?>
 
 <div class="container">
@@ -31,7 +32,7 @@
                     </h4>
                 </div>
                 <div id="help-box" class="panel-collapse collapse">
-                    <div class="panel-body"><?php echo CHtml::encode($helpText);?></div>
+                    <div class="panel-body"><?php echo $purifier->purify($helpText);?></div>
                 </div>
             </div>
 

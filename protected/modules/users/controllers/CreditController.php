@@ -115,6 +115,7 @@ class CreditController extends Controller
         $this->layout='//layouts/panel';
         $model=UserTransactions::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'status'=>'unpaid'));
         $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+        /* @var $userDetails UserDetails */
         $MerchantID = '6194e8aa-0589-11e6-9b18-005056a205be';
         $Amount = $model->amount; //Amount will be based on Toman
         $Authority = $_GET['Authority'];
@@ -150,22 +151,22 @@ class CreditController extends Controller
                         <table style="font-size: 9pt;text-align: right;">
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">زمان</td>
-                                <td>' . JalaliDate::date('d F Y - H:i', $transaction->date) . '</td>
+                                <td>' . JalaliDate::date('d F Y - H:i', $model->date) . '</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">مبلغ</td>
-                                <td>' . Controller::parseNumbers(number_format($this->getFixedPrice($transaction->amount), 0)) . ' ریال</td>
+                                <td>' . Controller::parseNumbers(number_format($this->getFixedPrice($model->amount), 0)) . ' ریال</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">شناسه خرید</td>
-                                <td>' . $transaction->order_id . '</td>
+                                <td>' . $model->order_id . '</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">کد رهگیری</td>
-                                <td>' . $transaction->tracking_code . '</td>
+                                <td>' . $model->tracking_code . '</td>
                             </tr>
                         </table>';
-                Mailer::mail($order->buyer_email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+                Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
             } else {
                 $errors = array(
                     '-1' => 'اطلاعات ارسال شده ناقص است.',

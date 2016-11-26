@@ -28,11 +28,11 @@ class AppsController extends Controller
                 'roles' => array('admin'),
             ),
             array('allow',
-                'actions' => array('discount','search','view', 'download', 'programs', 'games', 'educations', 'developer'),
+                'actions' => array('discount', 'search', 'view', 'download', 'programs', 'games', 'educations', 'developer', 'top', 'bestselling'),
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('buy', 'bookmark','rate'),
+                'actions' => array('buy', 'bookmark', 'rate'),
                 'users' => array('@'),
             ),
             array('deny',  // deny all users
@@ -75,7 +75,7 @@ class AppsController extends Controller
         $criteria->params[':confirm'] = 'accepted';
         $criteria->params[':deleted'] = 0;
         $criteria->limit = 20;
-        $criteria->order='id DESC';
+        $criteria->order = 'id DESC';
         $similar = new CActiveDataProvider('Apps', array('criteria' => $criteria));
         $this->render('view', array(
             'model' => $model,
@@ -93,7 +93,7 @@ class AppsController extends Controller
         $this->layout = 'panel';
 
         $model = $this->loadModel($id);
-        $price = $model->hasDiscount()?$model->offPrice:$model->price;
+        $price = $model->hasDiscount() ? $model->offPrice : $model->price;
         $buy = AppBuys::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $id));
         if ($buy)
             $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
@@ -119,17 +119,6 @@ class AppsController extends Controller
                 if ($model->developer)
                     $model->developer->userDetails->credit = $model->developer->userDetails->credit + $model->getDeveloperPortion();
                 $model->developer->userDetails->save();
-
-
-
-
-
-                // smtp
-                // hotel info in pay page
-
-
-
-
 
                 if ($userDetails->save()) {
                     $message =
@@ -292,7 +281,7 @@ class AppsController extends Controller
         );
         $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
         $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
-        $criteria->order='id DESC';
+        $criteria->order = 'id DESC';
         $dataProvider = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
@@ -330,12 +319,11 @@ class AppsController extends Controller
 
         $categories = AppCategories::model()->getCategoryChilds($id);
         $criteria->addInCondition('category_id', $categories);
-        $criteria->order='id DESC';
-        $criteria->limit='40';
+        $criteria->order = 'id DESC';
+        $criteria->limit = '40';
         $latest = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
-
 
 
         $criteria = new CDbCriteria();
@@ -355,12 +343,12 @@ class AppsController extends Controller
         $categories = AppCategories::model()->getCategoryChilds($id);
         $criteria->addInCondition('category_id', $categories);
         $criteria->addCondition('ratings.rate IS NOT NULL');
-        $criteria->select=array('t.*','AVG(ratings.rate) AS avgRate');
-        $criteria->with[]='ratings';
+        $criteria->select = array('t.*', 'AVG(ratings.rate) AS avgRate');
+        $criteria->with[] = 'ratings';
         $criteria->together = true;
-        $criteria->order='avgRate DESC';
-        $criteria->limit='40';
-        $criteria->group='t.id';
+        $criteria->order = 'avgRate DESC';
+        $criteria->limit = '40';
+        $criteria->group = 't.id';
         $topRates = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
@@ -368,8 +356,8 @@ class AppsController extends Controller
         $categories = AppCategories::model()->getCategoryChilds($id);
         $criteria->addInCondition('category_id', $categories);
         $criteria->addCondition('price = 0');
-        $criteria->order='id DESC';
-        $criteria->limit='40';
+        $criteria->order = 'id DESC';
+        $criteria->limit = '40';
         $free = new CActiveDataProvider('Apps', array(
             'criteria' => $criteria,
         ));
@@ -642,13 +630,13 @@ class AppsController extends Controller
         $criteria->params[':confirm'] = 'accepted';
         $criteria->params[':deleted'] = 0;
         $criteria->limit = 20;
-        $criteria->order='t.id DESC';
-        if(isset($_GET['term']) && !empty($term = $_GET['term'])) {
+        $criteria->order = 't.id DESC';
+        if (isset($_GET['term']) && !empty($term = $_GET['term'])) {
             $terms = explode(' ', urldecode($term));
             $sql = null;
-            foreach($terms as $key => $term)
-                if($term) {
-                    if(!$sql)
+            foreach ($terms as $key => $term)
+                if ($term) {
+                    if (!$sql)
                         $sql = "(";
                     else
                         $sql .= " OR (";
@@ -690,7 +678,7 @@ class AppsController extends Controller
             ':platform' => $this->platform,
             ':now' => time()
         );
-        $criteria->order='app.id DESC';
+        $criteria->order = 'app.id DESC';
         $dataProvider = new CActiveDataProvider('AppDiscounts', array(
             'criteria' => $criteria,
         ));
@@ -707,37 +695,104 @@ class AppsController extends Controller
      * @throws CException
      * @throws CHttpException
      */
-    public function actionRate($app_id ,$rate)
+    public function actionRate($app_id, $rate)
     {
         $model = $this->loadModel($app_id);
-        if($model) {
+        if ($model) {
             $rateModel = new AppRatings();
             $rateModel->rate = (int)$rate;
             $rateModel->app_id = $model->id;
             $rateModel->user_id = Yii::app()->user->getId();
-            if($rateModel->save()) {
+            if ($rateModel->save()) {
                 $this->beginClip('rate-view');
                 $this->renderPartial('_rating', array(
                     'model' => $model
                 ));
                 $this->endClip();
-                if(isset($_GET['ajax'])) {
-                    echo CJSON::encode(array('status' => true,'rate'=> $rateModel->rate , 'rate_wrapper' => $this->clips['rate-view']));
+                if (isset($_GET['ajax'])) {
+                    echo CJSON::encode(array('status' => true, 'rate' => $rateModel->rate, 'rate_wrapper' => $this->clips['rate-view']));
                     Yii::app()->end();
                 }
             } else {
-                if(isset($_GET['ajax'])) {
+                if (isset($_GET['ajax'])) {
                     echo CJSON::encode(array('status' => false, 'msg' => 'متاسفانه عملیات با خطا مواجه است! لطفا مجددا سعی فرمایید.'));
                     Yii::app()->end();
                 }
             }
-        }else {
-            if(isset($_GET['ajax'])) {
+        } else {
+            if (isset($_GET['ajax'])) {
                 echo CJSON::encode(array('status' => false, 'msg' => 'مقادیر ارسالی صحیح نیست.'));
                 Yii::app()->end();
             }
         }
     }
+
+    public function actionTop()
+    {
+        Yii::app()->theme = 'market';
+        $this->layout = 'public';
+
+        $catIds = AppCategories::model()->getCategoryChilds(1);
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*, AVG(ratings.rate) as avgRate';
+        $criteria->with = array('images', 'ratings');
+        $criteria->together = true;
+        $criteria->addInCondition('category_id', $catIds);
+        $criteria->addCondition('platform_id=:platform_id');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
+        $criteria->addCondition('ratings.rate IS NOT NULL');
+        $criteria->params[':platform_id'] = $this->platform;
+        $criteria->params[':status'] = 'enable';
+        $criteria->params[':confirm'] = 'accepted';
+        $criteria->params[':deleted'] = 0;
+        $criteria->limit = 20;
+        $criteria->order = 'avgRate DESC, t.id DESC';
+        $criteria->group = 't.id';
+        $dataProvider = new CActiveDataProvider('Apps', array('criteria' => $criteria));
+
+        $this->render('_app_list_manual', array(
+            'dataProvider' => $dataProvider,
+            'title' => null,
+            'pageTitle' => 'برترین ها'
+        ));
+    }
+
+    public function actionBestselling()
+    {
+        Yii::app()->theme = 'market';
+        $this->layout = 'public';
+
+        $catIds = AppCategories::model()->getCategoryChilds(1);
+        $criteria = new CDbCriteria();
+        $criteria->with = array('images', 'appBuys' => array('joinType' => 'RIGHT OUTER JOIN'));
+        $criteria->together = true;
+        $criteria->addInCondition('category_id', $catIds);
+        $criteria->addCondition('platform_id=:platform_id');
+        $criteria->addCondition('status=:status');
+        $criteria->addCondition('confirm=:confirm');
+        $criteria->addCondition('deleted=:deleted');
+        $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
+        $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=t.id) != 0');
+        $criteria->params[':platform_id'] = $this->platform;
+        $criteria->params[':status'] = 'enable';
+        $criteria->params[':confirm'] = 'accepted';
+        $criteria->params[':deleted'] = 0;
+        $criteria->limit = 20;
+        $criteria->order = 'COUNT(appBuys.id) DESC';
+        $criteria->group = 'appBuys.app_id';
+        $dataProvider = new CActiveDataProvider('Apps', array('criteria' => $criteria));
+
+        $this->render('_app_list_manual', array(
+            'dataProvider' => $dataProvider,
+            'title' => null,
+            'pageTitle' => 'پرفروش ترین ها'
+        ));
+    }
+
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.

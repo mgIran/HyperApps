@@ -580,6 +580,27 @@ class PanelController extends Controller
             if($model->save()) {
                 $userDetails->credit=$userDetails->credit-$userDetails->getSettlementAmount();
                 $userDetails->save();
+
+                // Send email
+                $message =
+                    '<p style="text-align: right;">با سلام<br>کاربر گرامی، حساب شما تسویه شد.</p>
+                        <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
+                        <table style="font-size: 9pt;text-align: right;">
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">زمان</td>
+                                <td>' . JalaliDate::date('d F Y - H:i', $model->date) . '</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">مبلغ</td>
+                                <td>' . Controller::parseNumbers(number_format($model->amount, 0)) . ' تومان</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;width: 120px;">شماره شبا</td>
+                                <td>' . $model->iban . '</td>
+                            </tr>
+                        </table>';
+                Mailer::mail($userDetails->user->email, 'رسید تسویه حساب', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+
                 echo CJSON::encode(array(
                     'status' => true
                 ));

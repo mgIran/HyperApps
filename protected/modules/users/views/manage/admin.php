@@ -32,6 +32,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'filter' => CHtml::activeDropDownList($model,'statusFilter',$model->statusLabels,array('prompt' => 'همه'))
         ),
         array(
+            'header' => 'نوع کاربری',
+            'value' => '$data->role->name',
+            'filter' => CHtml::activeDropDownList($model,'roleId',array('1'=>'کاربر معمولی', '2'=>'توسعه دهنده'),array('prompt' => 'همه'))
+        ),
+        array(
             'class'=>'CButtonColumn',
             'template' => '{view}{update}{delete}'
         ),
