@@ -32,6 +32,7 @@ class Controller extends CController
     public $platform;
     public $userDetails;
     public $userNotifications;
+    public $app = NULL;
 
     public function beforeAction($action)
     {

@@ -49,7 +49,7 @@ return array(
 				//action for postig comment
 				'postCommentAction' => '/comments/comment/postComment',
 				//super user condition(display comment list in admin view and automoderate comments)
-				'isSuperuser'=>'Yii::app()->user->checkAccess("moderate")',
+				'isSuperuser'=>'',
 				//order direction for comments
 				'orderComments'=>'DESC',
 				'showEmail' => false
@@ -61,7 +61,8 @@ return array(
 					'registeredOnly'=>true,
 					'useCaptcha'=> false,
 					'premoderate' => true,
-					'allowSubcommenting'=>false,
+					'allowSubcommenting'=>true,
+					'isSuperuser'=>'!Yii::app()->user->isGuest && (Yii::app()->user->type == \'admin\' || Yii::app()->user->roles == "developer")',
 					'orderComments'=>'DESC',
 					//config for create link to view model page(page with comments)
 					'pageUrl'=>array(
