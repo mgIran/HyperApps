@@ -4,6 +4,7 @@
 /* @var $newestPrograms CActiveDataProvider*/
 /* @var $newestDevelopers CActiveDataProvider*/
 /* @var $newestPackages CActiveDataProvider*/
+/* @var $updatedPackages CActiveDataProvider*/
 /* @var $tickets []*/
 /* @var $statistics []*/
 ?>
@@ -52,7 +53,7 @@ if(Yii::app()->user->roles == 'admin'):
     </div>
 </div>
 <div class="row">
-    <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="panel panel-default col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel-heading">
             جدیدترین نرم افزار ها
         </div>
@@ -65,6 +66,22 @@ if(Yii::app()->user->roles == 'admin'):
                     'developer_id'=>array(
                         'name'=>'developer_id',
                         'value'=>'(is_null($data->developer_id) or empty($data->developer_id))?$data->developer_team:$data->developer->userDetails->developer_id'
+                    ),
+                    'platform_id'=>array(
+                        'name'=>'platform_id',
+                        'value'=>'$data->platform->title'
+                    ),
+                    'price'=>array(
+                        'name'=>'price',
+                        'value'=>'($data->price==0)?"رایگان":number_format($data->price, 0)." تومان"'
+                    ),
+                    'category_id'=>array(
+                        'name'=>'category_id',
+                        'value'=>'$data->category->title'
+                    ),
+                    'status'=>array(
+                        'name'=>'status',
+                        'value'=>'$data->statusLabels[$data->status]'
                     ),
                     'confirm'=>array(
                         'name'=>'confirm',
@@ -105,6 +122,7 @@ if(Yii::app()->user->roles == 'admin'):
                             if(data.status){
                                 $.fn.yiiGridView.update('newest-apps-grid');
                                 $.fn.yiiGridView.update('newest-packages-grid');
+                                $.fn.yiiGridView.update('updated-packages-grid');
                             }else
                                 alert('در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
                         }
@@ -125,9 +143,41 @@ if(Yii::app()->user->roles == 'admin'):
                         'value'=>'CHtml::link($data->app->title, Yii::app()->createUrl("/apps/".$data->app_id."/".$data->app->title))',
                         'type'=>'raw'
                     ),
-                    'for'=>array(
-                        'name'=>'for',
-                        'value'=>'$data->forLabels[$data->for]',
+                    'version',
+                    'package_name',
+                    'status'=>array(
+                        'name'=>'status',
+                        'value'=>'CHtml::dropDownList("confirm", "pending", $data->statusLabels, array("class"=>"change-package-status", "data-id"=>$data->id))',
+                        'type'=>'raw'
+                    ),
+                    array(
+                        'class'=>'CButtonColumn',
+                        'template' => '{delete}{download}',
+                        'buttons'=>array(
+                            'delete'=>array(
+                                'url'=>'Yii::app()->createUrl("/manageApps/android/deletePackage/".$data->id)',
+                            ),
+                            'download'=>array(
+                                'label'=>'دانلود',
+                                'url'=>'Yii::app()->createUrl("/manageApps/android/downloadPackage/".$data->id)',
+                                'imageUrl'=>Yii::app()->theme->baseUrl.'/img/download.png',
+                            ),
+                        ),
+                    ),
+                ),
+            ));?>
+        </div>
+    </div>
+    <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="panel-heading">بسته های به روز شده</div>
+        <div class="panel-body">
+            <?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'updated-packages-grid',
+                'dataProvider'=>$updatedPackages,
+                'columns'=>array(
+                    'app_id'=>array(
+                        'name'=>'app_id',
+                        'value'=>'CHtml::link($data->app->title, Yii::app()->createUrl("/apps/".$data->app_id."/".$data->app->title))',
                         'type'=>'raw'
                     ),
                     'version',
@@ -166,9 +216,10 @@ if(Yii::app()->user->roles == 'admin'):
                             dataType:'JSON',
                             data:{package_id:$(this).data('id'), value:$(this).val()},
                             success:function(data){
-                                if(data.status)
+                                if(data.status){
                                     $.fn.yiiGridView.update('newest-packages-grid');
-                                else
+                                    $.fn.yiiGridView.update('updated-packages-grid');
+                                }else
                                     alert('در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
                             }
                         });
@@ -176,6 +227,7 @@ if(Yii::app()->user->roles == 'admin'):
                 });
                 $('.close-reason-modal').click(function(){
                     $.fn.yiiGridView.update('newest-packages-grid');
+                    $.fn.yiiGridView.update('updated-packages-grid');
                     $('#reason-text').val('');
                 });
                 $('.save-reason-modal').click(function(){
@@ -192,6 +244,7 @@ if(Yii::app()->user->roles == 'admin'):
                             success:function(data){
                                 if(data.status){
                                     $.fn.yiiGridView.update('newest-packages-grid');
+                                    $.fn.yiiGridView.update('updated-packages-grid');
                                     $('#reason-modal').modal('hide');
                                     $('#reason-text').val('');
                                     $('.reason-modal-message').text('');

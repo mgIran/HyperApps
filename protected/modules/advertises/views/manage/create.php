@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'لیست تبلیغات'=>array('admin'),
-	'افزودن تبلیغات',
+	'افزودن تبلیغ',
 );
 
 $this->menu=array(
@@ -12,6 +12,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>افزودن تبلیغات</h1>
+<h1>افزودن تبلیغ</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model,'cover' => $cover)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model)); ?>

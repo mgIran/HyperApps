@@ -256,6 +256,9 @@ class AppsController extends Controller
 
     /**
      * Show programs list
+     *
+     * @param $title string
+     * @param $id integer
      */
     public function actionDeveloper($title, $id = null)
     {
@@ -268,10 +271,12 @@ class AppsController extends Controller
         $criteria->addCondition('platform_id=:platform');
         if (isset($_GET['t']) and $_GET['t'] == 1) {
             $criteria->addCondition('developer_team=:dev');
-            $developer_id = $title;
+            $developer_id=$pageTitle = $title;
         } else {
             $criteria->addCondition('developer_id=:dev');
             $developer_id = $id;
+            $pageTitle = UserDetails::model()->findByAttributes(array('user_id' => $id));
+            $pageTitle=$pageTitle->nickname;
         }
         $criteria->params = array(
             ':confirm' => 'accepted',
@@ -287,11 +292,9 @@ class AppsController extends Controller
             'criteria' => $criteria,
         ));
 
-        $pageTitle = UserDetails::model()->findByAttributes(array('user_id' => $id));
-
-        $this->render('apps_list', array(
+        $this->render('_app_list_manual', array(
             'dataProvider' => $dataProvider,
-            'title' => $pageTitle->nickname,
+            'title' => $pageTitle,
             'pageTitle' => 'برنامه ها'
         ));
     }

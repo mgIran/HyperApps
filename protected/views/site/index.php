@@ -4,7 +4,7 @@
 /* @var $newestGameDataProvider CActiveDataProvider */
 /* @var $newestEducationDataProvider CActiveDataProvider */
 /* @var $suggestedDataProvider CActiveDataProvider */
-/* @var $advertise Advertises */
+/* @var $specialAdvertise SpecialAdvertises */
 /* @var $topProgramDataProvider CActiveDataProvider */
 /* @var $bestsellingProgramDataProvider CActiveDataProvider */
 
@@ -45,31 +45,32 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
     </div>
 
 <?
-if($advertise) {
+if($specialAdvertise) {
     ?>
     <div class="banner-box">
         <div class="banner-carousel">
             <div class="banner-item">
+                <a class="absolute-link" href="<?php echo $this->createUrl('/apps/'.CHtml::encode($specialAdvertise->app->id).'/'.CHtml::encode($specialAdvertise->app->lastPackage->package_name));?>"></a>
                 <div class="fade-overly"></div>
                 <?
                 Yii::app()->clientScript->registerCss('fade-overly', "
                     .content .banner-box .banner-carousel .banner-item{
-                        background-color: #{$advertise->fade_color};
+                        background-color: {$specialAdvertise->fade_color};
                     }
                     .content .banner-box .banner-carousel .banner-item .fade-overly{
-                        background: -moz-linear-gradient(left,#{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: -webkit-linear-gradient(left, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: -o-linear-gradient(left, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: -ms-linear-gradient(left, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: linear-gradient(to right, #{$advertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -moz-linear-gradient(left,{$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -webkit-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -o-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -ms-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: linear-gradient(to right, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
                     }
                 ");
                 ?>
-                <?= $this->renderPartial('/apps/_vertical_app_item', array('data' => $advertise->app)) ?>
+                <?= $this->renderPartial('/apps/_vertical_app_item', array('data' => $specialAdvertise->app)) ?>
                 <?
-                if($advertise->cover && file_exists(Yii::getPathOfAlias('webroot').'/uploads/advertisesCover/'.$advertise->cover)) {
+                if($specialAdvertise->cover && file_exists(Yii::getPathOfAlias('webroot').'/uploads/advertisesCover/'.$specialAdvertise->cover)) {
                     ?>
-                    <img src="<?= $this->createAbsoluteUrl('/uploads/advertisesCover/'.$advertise->cover) ?>">
+                    <img src="<?= $this->createAbsoluteUrl('/uploads/advertisesCover/'.$specialAdvertise->cover) ?>">
                     <?
                 }
                 ?>

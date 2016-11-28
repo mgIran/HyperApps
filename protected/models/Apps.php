@@ -24,7 +24,10 @@
  * @property integer $deleted
  * @property integer $offPrice
  * @property integer $rate
- *
+ * @property string $support_phone
+ * @property string $support_email
+ * @property string $support_fa_web
+ * @property string $support_en_web
  *
  * The followings are the available model relations:
  * @property AppPackages $lastPackage
@@ -86,21 +89,24 @@ class Apps extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-				array('platform_id', 'required', 'on' => 'insert'),
-				array('title, category_id, price ,platform_id ,icon', 'required', 'on' => 'update'),
-				array('price, size, platform_id', 'numerical'),
-				array('seen, install, deleted', 'numerical', 'integerOnly' => true),
-				array('description, change_log', 'filter', 'filter' => array($this->_purifier, 'purify')),
-				array('title, icon, developer_team', 'length', 'max' => 50),
-				array('developer_id, category_id, platform_id', 'length', 'max' => 10),
-				array('status', 'length', 'max' => 7),
-				array('download, install', 'length', 'max' => 12),
-				array('price, size', 'numerical'),
-				array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
-				// The following rule is used by search().
-				// @todo Please remove those attributes that should not be searched.
-				array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter,packageFilter', 'safe', 'on' => 'search'),
-				array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
+			array('platform_id', 'required', 'on' => 'insert'),
+			array('title, category_id, price ,platform_id ,icon, support_email', 'required', 'on' => 'update'),
+            array('support_email', 'email'),
+			array('price, size, platform_id', 'numerical'),
+			array('seen, install, deleted', 'numerical', 'integerOnly' => true),
+			array('description, change_log', 'filter', 'filter' => array($this->_purifier, 'purify')),
+			array('title, icon, developer_team', 'length', 'max' => 50),
+			array('developer_id, category_id, platform_id', 'length', 'max' => 10),
+			array('status', 'length', 'max' => 7),
+			array('download, install', 'length', 'max' => 12),
+			array('price, size', 'numerical'),
+			array('description, change_log, permissions ,developer_team ,_purifier', 'safe'),
+			array('support_phone', 'length', 'max'=>11),
+			array('support_email, support_fa_web, support_en_web', 'length', 'max'=>255),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('id, title, developer_id, category_id, status, price, icon, description, change_log, permissions, size, confirm, platform_id, developer_team, seen, download, install, deleted ,devFilter,packageFilter, support_phone, support_email, support_fa_web, support_en_web', 'safe', 'on' => 'search'),
+			array('description, change_log', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
 		);
 	}
 
@@ -121,6 +127,7 @@ class Apps extends CActiveRecord
 			'bookmarker' => array(self::MANY_MANY, 'Users', 'ym_user_app_bookmark(app_id,user_id)'),
 			'packages' => array(self::HAS_MANY, 'AppPackages', 'app_id'),
 			'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
+			'specialAdvertise' => array(self::BELONGS_TO, 'SpecialAdvertises', 'id'),
 			'advertise' => array(self::BELONGS_TO, 'Advertises', 'id'),
 		);
 	}
@@ -149,6 +156,10 @@ class Apps extends CActiveRecord
 			'download' => 'تعداد دریافت',
 			'install' => 'تعداد نصب فعال',
 			'deleted' => 'حذف شده',
+            'support_phone' => 'تلفن',
+            'support_email' => 'ایمیل',
+            'support_fa_web' => 'وب سایت فارسی',
+            'support_en_web' => 'وب سایت انگلیسی',
 		);
 	}
 
@@ -189,6 +200,11 @@ class Apps extends CActiveRecord
 
 		$criteria->addCondition('t.title != ""');
 		$criteria->order = 't.id DESC';
+
+        $criteria->compare('support_phone',$this->support_phone,true);
+        $criteria->compare('support_email',$this->support_email,true);
+        $criteria->compare('support_fa_web',$this->support_fa_web,true);
+        $criteria->compare('support_en_web',$this->support_en_web,true);
 
 		return new CActiveDataProvider($this, array(
 				'criteria' => $criteria,

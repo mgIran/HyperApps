@@ -15,7 +15,7 @@ class ManageController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
+			'postOnly + delete, deleteSpecial', // we only allow deletion via POST request
 		);
 	}
 
@@ -28,7 +28,7 @@ class ManageController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','upload','deleteUpload'),
+				'actions'=>array('create','update','createSpecial','updateSpecial','admin','delete','deleteSpecial','upload','deleteUpload'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -41,9 +41,9 @@ class ManageController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreateSpecial()
 	{
-		$model = new Advertises;
+		$model = new SpecialAdvertises();
 
 		$tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
 		if (!is_dir($tmpDIR))
@@ -54,15 +54,15 @@ class ManageController extends Controller
 			mkdir($coverDIR);
 		$cover = array();
 
-		if(isset($_POST['Advertises'])) {
-			$model->attributes = $_POST['Advertises'];
-			if(isset($_POST['Advertises']['cover'])) {
-				$file = $_POST['Advertises']['cover'];
+		if(isset($_POST['SpecialAdvertises'])) {
+			$model->attributes = $_POST['SpecialAdvertises'];
+			if(isset($_POST['SpecialAdvertises']['cover'])) {
+				$file = $_POST['SpecialAdvertises']['cover'];
 				$cover = array(
-						'name' => $file,
-						'src' => $tmpUrl.'/'.$file,
-						'size' => filesize($tmpDIR.$file),
-						'serverName' => $file,
+                    'name' => $file,
+                    'src' => $tmpUrl.'/'.$file,
+                    'size' => filesize($tmpDIR.$file),
+                    'serverName' => $file,
 				);
 			}
 			if($model->save()) {
@@ -74,9 +74,32 @@ class ManageController extends Controller
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
 
-		$this->render('create', array(
+		$this->render('create_special', array(
 			'model' => $model,
 			'cover' => $cover,
+		));
+	}
+
+    /**
+	 * Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionCreate()
+	{
+		$model = new Advertises();
+
+		if(isset($_POST['Advertises'])) {
+			$model->attributes = $_POST['Advertises'];
+
+			if($model->save()) {
+				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+				$this->redirect(array('admin'));
+			} else
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+		}
+
+		$this->render('create', array(
+			'model' => $model,
 		));
 	}
 
@@ -85,9 +108,10 @@ class ManageController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdateSpecial($id)
 	{
-		$model=$this->loadModel($id);
+		$model=$this->loadModel($id, 'SpecialAdvertises');
+		/* @var $model SpecialAdvertises */
 
 		$tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
 		if (!is_dir($tmpDIR))
@@ -105,11 +129,11 @@ class ManageController extends Controller
 					'size' => filesize($coverDIR . $model->cover),
 					'serverName' => $model->cover,
 			);
-		if(isset($_POST['Advertises']))
+		if(isset($_POST['SpecialAdvertises']))
 		{
-			$model->attributes=$_POST['Advertises'];
-			if(isset($_POST['Advertises']['cover'])) {
-				$file = $_POST['Advertises']['cover'];
+			$model->attributes=$_POST['SpecialAdvertises'];
+			if(isset($_POST['SpecialAdvertises']['cover'])) {
+				$file = $_POST['SpecialAdvertises']['cover'];
 				$cover = array(
 						'name' => $file,
 						'src' => $tmpUrl.'/'.$file,
@@ -125,7 +149,7 @@ class ManageController extends Controller
 			} else
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
-		$this->render('update',array(
+		$this->render('update_special',array(
 			'model'=>$model,
 			'cover' => $cover,
 		));
@@ -136,9 +160,9 @@ class ManageController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDeleteSpecial($id)
 	{
-		$this->loadModel($id)->delete();
+		$this->loadModel($id, 'SpecialAdvertises')->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
@@ -158,12 +182,20 @@ class ManageController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Advertises('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Advertises']))
-			$model->attributes=$_GET['Advertises'];
+		$specialModel=new SpecialAdvertises('search');
+        $specialModel->unsetAttributes();
+
+        $model=new Advertises('search');
+        $model->unsetAttributes();
+
+        if(isset($_GET['SpecialAdvertises']))
+            $specialModel->attributes=$_GET['SpecialAdvertises'];
+
+        if(isset($_GET['Advertises']))
+            $model->attributes=$_GET['Advertises'];
 
 		$this->render('admin',array(
+			'specialModel'=>$specialModel,
 			'model'=>$model,
 		));
 	}
@@ -172,12 +204,13 @@ class ManageController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Advertises the loaded model
+	 * @param string $modelName name of the model to be loaded
+	 * @return SpecialAdvertises the loaded model
 	 * @throws CHttpException
 	 */
-	public function loadModel($id)
+	public function loadModel($id, $modelName)
 	{
-		$model=Advertises::model()->findByPk($id);
+		$model=$modelName::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -218,7 +251,7 @@ class ManageController extends Controller
 
 			$tempDir = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
 
-			$model = Advertises::model()->findByAttributes(array('cover' => $fileName));
+			$model = SpecialAdvertises::model()->findByAttributes(array('cover' => $fileName));
 			if ($model) {
 				if (@unlink($Dir . $model->cover)) {
 					$model->updateByPk($model->app_id, array('cover' => null));

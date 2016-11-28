@@ -6,10 +6,6 @@ $this->breadcrumbs=array(
     'کاربران'=>array('manage'),
     'مدیریت',
 );
-
-$this->menu=array(
-    array('label'=>'افزودن', 'url'=>array('create')),
-);
 ?>
 <? $this->renderPartial('//layouts/_flashMessage'); ?>
 <h1>مدیریت کاربران</h1>

@@ -1,10 +1,11 @@
 <?php
 /* @var $this ManageController */
-/* @var $model Advertises */
+/* @var $model SpecialAdvertises */
+/* @var $cover array */
 
 $this->breadcrumbs=array(
-	'لیست تبلیغات'=>array('admin'),
-	'ویرایش',
+		'لیست تبلیغات'=>array('admin'),
+		'ویرایش',
 );
 
 $this->menu=array(
@@ -14,6 +15,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>ویرایش تبلیغ <?php echo $model->app->title ?></h1>
+<h1>ویرایش تبلیغ ویژه <?php echo $model->app->title ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model,'cover' => $cover)); ?>
+<?php $this->renderPartial('_form_special', array('model'=>$model,'cover' => $cover)); ?>

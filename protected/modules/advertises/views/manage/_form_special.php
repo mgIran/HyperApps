@@ -1,13 +1,14 @@
 <?php
 /* @var $this ManageController */
-/* @var $model Advertises */
+/* @var $model SpecialAdvertises */
 /* @var $form CActiveForm */
+/* @var $cover [] */
 ?>
 
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'advertises-form',
+	'id'=>'special-advertises-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
@@ -18,10 +19,10 @@ $apps = array();
 if($model->isNewRecord) {
 	// get valid apps for advertising
 	$criteria = Apps::model()->getValidApps();
-	$criteria->with[] = 'advertise';
-    $criteria->together=true;
-	$criteria->addCondition('advertise.app_id IS NULL');
-    $apps = Apps::model()->findAll($criteria);
+	$criteria->with[] = 'specialAdvertise';
+	$criteria->addCondition('specialAdvertise.app_id IS NULL');
+	$apps = Apps::model()->findAll($criteria);
+	//
 }
 if(!$model->isNewRecord || $apps) {
 	?>
@@ -35,6 +36,40 @@ if(!$model->isNewRecord || $apps) {
 			echo $form->dropDownList($model, 'app_id', CHtml::listData($apps, 'id', 'title'));
 		?>
 		<?php echo $form->error($model, 'app_id'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model, 'cover'); ?>
+		<?php
+		$this->widget('ext.dropZoneUploader.dropZoneUploader', array(
+				'id' => 'uploaderAd',
+				'model' => $model,
+				'name' => 'cover',
+				'maxFiles' => 1,
+				'maxFileSize' => 0.4, //MB
+				'url' => Yii::app()->createUrl('/advertises/manage/upload'),
+				'deleteUrl' => Yii::app()->createUrl('/advertises/manage/deleteUpload'),
+				'acceptedFiles' => 'image/png',
+				'serverFiles' => $cover,
+				'onSuccess' => '
+                var responseObj = JSON.parse(res);
+                if(responseObj.state == "ok")
+                {
+                    {serverName} = responseObj.fileName;
+                }else if(responseObj.state == "error"){
+                    alert(responseObj.msg);
+                    this.removeFile(file);
+                }
+            ',
+		));
+		?>
+		<?php echo $form->error($model, 'cover'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model, 'fade_color'); ?>
+		<?php echo $form->colorField($model, 'fade_color', array('class' => 'btn', 'style'=>'width:100px;height:35px;')); ?>
+		<?php echo $form->error($model, 'fade_color'); ?>
 	</div>
 
 	<div class="row">

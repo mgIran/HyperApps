@@ -71,11 +71,27 @@ class DashboardController extends Controller
         $criteria->with='app';
         $criteria->alias='package';
         $criteria->addCondition('package.status=:packageStatus');
+        $criteria->addCondition('package.for=:for');
         $criteria->addCondition('app.title!=""');
         $criteria->params=array(
             ':packageStatus'=>'pending',
+            ':for'=>'new_app',
         );
         $newestPackages=new CActiveDataProvider('AppPackages', array(
+            'criteria'=>$criteria,
+        ));
+
+        $criteria=new CDbCriteria();
+        $criteria->with='app';
+        $criteria->alias='package';
+        $criteria->addCondition('package.status=:packageStatus');
+        $criteria->addCondition('package.for=:for');
+        $criteria->addCondition('app.title!=""');
+        $criteria->params=array(
+            ':packageStatus'=>'pending',
+            ':for'=>'old_app',
+        );
+        $updatedPackages=new CActiveDataProvider('AppPackages', array(
             'criteria'=>$criteria,
         ));
 
@@ -95,6 +111,7 @@ class DashboardController extends Controller
 
 		$this->render('index', array(
             'newestPackages'=>$newestPackages,
+            'updatedPackages'=>$updatedPackages,
             'newestPrograms'=>$newestPrograms,
             'devIDRequests'=>$newestDevIdRequests,
             'newestDevelopers'=>$newestDevelopers,
