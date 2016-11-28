@@ -18,10 +18,11 @@ $apps = array();
 if($model->isNewRecord) {
 	// get valid apps for advertising
 	$criteria = Apps::model()->getValidApps();
+	$criteria->together = true;
 	$criteria->with[] = 'advertise';
-    $criteria->together=true;
 	$criteria->addCondition('advertise.app_id IS NULL');
     $apps = Apps::model()->findAll($criteria);
+
 }
 if(!$model->isNewRecord || $apps) {
 	?>

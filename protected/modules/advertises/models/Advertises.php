@@ -42,6 +42,7 @@ class Advertises extends CActiveRecord
             array('status', 'numerical', 'integerOnly' => true),
             array('app_id', 'length', 'max' => 10),
             array('create_date', 'length', 'max' => 20),
+            array('create_date', 'default', 'value' => time()),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('appFilter, app_id, status, create_date', 'safe', 'on' => 'search'),

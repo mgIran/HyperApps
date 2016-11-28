@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50617
+Source Server         : local
+Source Server Version : 50616
 Source Host           : localhost:3306
 Source Database       : market
 
 Target Server Type    : MYSQL
-Target Server Version : 50617
+Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2016-11-28 21:25:11
+Date: 2016-11-28 21:39:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -116,16 +116,18 @@ INSERT INTO `ym_apps` VALUES ('76', null, '46', null, 'enable', null, null, '', 
 -- ----------------------------
 DROP TABLE IF EXISTS `ym_app_advertises`;
 CREATE TABLE `ym_app_advertises` (
-  `app_id` int(10) unsigned DEFAULT NULL COMMENT 'برنامه',
-  `status` tinyint(4) DEFAULT '1' COMMENT 'وضعیت',
-  `create_date` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT 'تاریخ ایجاد',
-  KEY `app_id` (`app_id`),
+  `app_id` int(10) unsigned NOT NULL,
+  `status` tinyint(4) DEFAULT NULL,
+  `create_date` varchar(20) COLLATE utf8_persian_ci DEFAULT NULL,
+  PRIMARY KEY (`app_id`),
   CONSTRAINT `ym_app_advertises_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_app_advertises
 -- ----------------------------
+INSERT INTO `ym_app_advertises` VALUES ('66', '1', '1480335566');
+INSERT INTO `ym_app_advertises` VALUES ('67', '1', '1480356526');
 
 -- ----------------------------
 -- Table structure for ym_app_buys
@@ -446,7 +448,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1480355519');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1480356534');
 
 -- ----------------------------
 -- Table structure for ym_pages
