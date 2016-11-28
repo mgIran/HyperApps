@@ -104,10 +104,6 @@ class SiteController extends Controller
         $criteria->order = 'id DESC';
         $suggestedDataProvider = new CActiveDataProvider('Apps', array('criteria' => $criteria));
 
-        // get special advertise
-        Yii::import('advertises.models.*');
-        $specialAdvertise = SpecialAdvertises::model()->findActive();
-
         // get top programs
         $catIds = AppCategories::model()->getCategoryChilds(1);
         $criteria = new CDbCriteria();
@@ -152,12 +148,21 @@ class SiteController extends Controller
         $criteria->group = 'appBuys.app_id';
         $bestsellingProgramDataProvider = new CActiveDataProvider('Apps', array('criteria' => $criteria));
 
+        // get special advertise
+        Yii::import('advertises.models.*');
+        $specialAdvertise = SpecialAdvertises::model()->findActive();
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('status = 1');
+        $criteria->order = 'create_date DESC';
+        $advertises=new CActiveDataProvider('Advertises', array('criteria'=>$criteria));
+
         $this->render('index', array(
             'newestProgramDataProvider' => $newestProgramDataProvider,
             'newestGameDataProvider' => $newestGameDataProvider,
             'newestEducationDataProvider' => $newestEducationDataProvider,
             'suggestedDataProvider' => $suggestedDataProvider,
             'specialAdvertise' => $specialAdvertise,
+            'advertise' => $advertises,
             'topProgramDataProvider' => $topProgramDataProvider,
             'bestsellingProgramDataProvider' => $bestsellingProgramDataProvider,
         ));

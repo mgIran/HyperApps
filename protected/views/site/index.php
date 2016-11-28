@@ -5,10 +5,12 @@
 /* @var $newestEducationDataProvider CActiveDataProvider */
 /* @var $suggestedDataProvider CActiveDataProvider */
 /* @var $specialAdvertise SpecialAdvertises */
+/* @var $advertise CActiveDataProvider */
 /* @var $topProgramDataProvider CActiveDataProvider */
 /* @var $bestsellingProgramDataProvider CActiveDataProvider */
 
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.carousel.css');
+Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/owl.theme.default.min.css');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.mousewheel.min.js');
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl.carousel.min.js');
 ?>
@@ -43,43 +45,15 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
             'itemsCssClass'=>'app-carousel'
         ));?>
     </div>
-
-<?
-if($specialAdvertise) {
-    ?>
-    <div class="banner-box">
-        <div class="banner-carousel">
-            <div class="banner-item">
-                <a class="absolute-link" href="<?php echo $this->createUrl('/apps/'.CHtml::encode($specialAdvertise->app->id).'/'.CHtml::encode($specialAdvertise->app->lastPackage->package_name));?>"></a>
-                <div class="fade-overly"></div>
-                <?
-                Yii::app()->clientScript->registerCss('fade-overly', "
-                    .content .banner-box .banner-carousel .banner-item{
-                        background-color: {$specialAdvertise->fade_color};
-                    }
-                    .content .banner-box .banner-carousel .banner-item .fade-overly{
-                        background: -moz-linear-gradient(left,{$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: -webkit-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: -o-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: -ms-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                        background: linear-gradient(to right, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
-                    }
-                ");
-                ?>
-                <?= $this->renderPartial('/apps/_vertical_app_item', array('data' => $specialAdvertise->app)) ?>
-                <?
-                if($specialAdvertise->cover && file_exists(Yii::getPathOfAlias('webroot').'/uploads/advertisesCover/'.$specialAdvertise->cover)) {
-                    ?>
-                    <img src="<?= $this->createAbsoluteUrl('/uploads/advertisesCover/'.$specialAdvertise->cover) ?>">
-                    <?
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-    <?
-}
-?>
+    <?php if($advertise->totalItemCount):?>
+        <?php $this->widget('zii.widgets.CListView', array(
+            'dataProvider'=>$advertise,
+            'id'=>'advertises',
+            'itemView'=>'_advertise_item',
+            'template'=>'{items}',
+            'itemsCssClass'=>'advertise-carousel'
+        ));?>
+    <?php endif;?>
     <div class="app-box">
         <div class="top-box">
             <div class="title pull-right">
@@ -110,6 +84,39 @@ if($specialAdvertise) {
             'itemsCssClass'=>'app-carousel'
         ));?>
     </div>
+
+<?php if($specialAdvertise) {?>
+    <div class="banner-box">
+        <div class="banner-carousel">
+            <div class="banner-item">
+                <a class="absolute-link" href="<?php echo $this->createUrl('/apps/'.CHtml::encode($specialAdvertise->app->id).'/'.CHtml::encode($specialAdvertise->app->lastPackage->package_name));?>"></a>
+                <div class="fade-overly"></div>
+                <?
+                Yii::app()->clientScript->registerCss('fade-overly', "
+                    .content .banner-box .banner-carousel .banner-item{
+                        background-color: {$specialAdvertise->fade_color};
+                    }
+                    .content .banner-box .banner-carousel .banner-item .fade-overly{
+                        background: -moz-linear-gradient(left,{$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -webkit-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -o-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: -ms-linear-gradient(left, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                        background: linear-gradient(to right, {$specialAdvertise->fade_color} 0%, rgba(0,0,0,0) 100%);
+                    }
+                ");
+                ?>
+                <?= $this->renderPartial('/apps/_vertical_app_item', array('data' => $specialAdvertise->app)) ?>
+                <?
+                if($specialAdvertise->cover && file_exists(Yii::getPathOfAlias('webroot').'/uploads/advertisesCover/'.$specialAdvertise->cover)) {
+                    ?>
+                    <img src="<?= $this->createAbsoluteUrl('/uploads/advertisesCover/'.$specialAdvertise->cover) ?>">
+                    <?
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+<?php }?>
     <div class="app-box">
         <div class="top-box">
             <div class="title pull-right">
@@ -167,8 +174,38 @@ Yii::app()->clientScript->registerScript('carousels','
         margin :0,
         rtl:true,
         nav:true,
+        dots:false,
         navText : ["","<span class=\'icon-chevron-left\'></span>"]
     });
 
+    $(".advertise-carousel").owlCarousel({
+        responsive:{
+            0:{
+                items : 1,
+            },
+            410:{
+                items : 2,
+            },
+            580:{
+                items : 4
+            },
+            800:{
+                items : 4
+            },
+            1130:{
+                items : 4
+            },
+            1370:{
+                items : 4
+            }
+        },
+        lazyLoad :true,
+        margin :0,
+        rtl:true,
+        nav:false,
+        dots:true,
+        loop:true,
+        autoplay:true
+    });
 '
 );

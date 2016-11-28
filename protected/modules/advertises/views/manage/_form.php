@@ -2,6 +2,7 @@
 /* @var $this ManageController */
 /* @var $model Advertises */
 /* @var $form CActiveForm */
+/* @var $cover array */
 ?>
 
 <div class="form">
@@ -37,6 +38,33 @@ if(!$model->isNewRecord || $apps) {
 		?>
 		<?php echo $form->error($model, 'app_id'); ?>
 	</div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model, 'cover'); ?>
+        <?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
+            'id' => 'uploaderAd',
+            'model' => $model,
+            'name' => 'cover',
+            'maxFiles' => 1,
+            'maxFileSize' => 1, //MB
+            'url' => Yii::app()->createUrl('/advertises/manage/upload'),
+            'deleteUrl' => Yii::app()->createUrl('/advertises/manage/deleteUpload'),
+            'acceptedFiles' => 'image/*',
+            'serverFiles' => $cover,
+            'onSuccess' => '
+                var responseObj = JSON.parse(res);
+                if(responseObj.state == "ok")
+                {
+                    {serverName} = responseObj.fileName;
+                }else if(responseObj.state == "error"){
+                    alert(responseObj.msg);
+                    this.removeFile(file);
+                }
+            ',
+        )); ?>
+        <small>- اندازه تصویر باید 540 × 1080 پیکسل باشد.</small>
+        <?php echo $form->error($model, 'cover'); ?>
+    </div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model, 'status'); ?>

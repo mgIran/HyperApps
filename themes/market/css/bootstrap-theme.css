@@ -2459,3 +2459,14 @@ header.mobile.search-open .mobile-search {
     height: 100%;
     z-index: 2;
 }
+
+#advertises.list-view{
+    padding: 0 40px;
+    margin: 30px 0;
+}
+
+.app-carousel.owl-theme .owl-controls .owl-nav [class*="owl-"]{
+    background: transparent;
+    color: #666;
+    font-size: 20px;
+}

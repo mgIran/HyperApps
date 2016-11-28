@@ -88,10 +88,31 @@ class ManageController extends Controller
 	{
 		$model = new Advertises();
 
+        $tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+        if (!is_dir($tmpDIR))
+            mkdir($tmpDIR);
+        $tmpUrl = $this->createAbsoluteUrl('/uploads/temp/');
+        $coverDIR = Yii::getPathOfAlias("webroot") . "/uploads/advertisesCover/";
+        if (!is_dir($coverDIR))
+            mkdir($coverDIR);
+        $cover = array();
+
 		if(isset($_POST['Advertises'])) {
 			$model->attributes = $_POST['Advertises'];
 
+            if(isset($_POST['Advertises']['cover'])) {
+                $file = $_POST['Advertises']['cover'];
+                $cover = array(
+                    'name' => $file,
+                    'src' => $tmpUrl.'/'.$file,
+                    'size' => filesize($tmpDIR.$file),
+                    'serverName' => $file,
+                );
+            }
+
 			if($model->save()) {
+                if($model->cover)
+                    rename($tmpDIR.$model->cover, $coverDIR.$model->cover);
 				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
 				$this->redirect(array('admin'));
 			} else
@@ -100,6 +121,7 @@ class ManageController extends Controller
 
 		$this->render('create', array(
 			'model' => $model,
+            'cover' => $cover,
 		));
 	}
 
@@ -150,6 +172,58 @@ class ManageController extends Controller
 				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
 		}
 		$this->render('update_special',array(
+			'model'=>$model,
+			'cover' => $cover,
+		));
+	}
+
+    /**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate($id)
+	{
+		$model=$this->loadModel($id, 'Advertises');
+		/* @var $model Advertises */
+
+		$tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
+		if (!is_dir($tmpDIR))
+			mkdir($tmpDIR);
+		$tmpUrl = $this->createAbsoluteUrl('/uploads/temp/');
+
+		$coverDIR = Yii::getPathOfAlias("webroot") . "/uploads/advertisesCover/";
+		$coverUrl = $this->createAbsoluteUrl("/uploads/advertisesCover/");
+
+		$cover = array();
+		if($model->cover && file_exists($coverDIR . $model->cover))
+			$cover = array(
+                'name' => $model->cover,
+                'src' => $coverUrl . '/' . $model->cover,
+                'size' => filesize($coverDIR . $model->cover),
+                'serverName' => $model->cover,
+			);
+		if(isset($_POST['Advertises']))
+		{
+			$model->attributes=$_POST['Advertises'];
+			if(isset($_POST['Advertises']['cover'])) {
+				$file = $_POST['Advertises']['cover'];
+				$cover = array(
+                    'name' => $file,
+                    'src' => $tmpUrl.'/'.$file,
+                    'size' => filesize($tmpDIR.$file),
+                    'serverName' => $file,
+				);
+			}
+			if($model->save()) {
+				if($model->cover)
+					rename($tmpDIR.$model->cover, $coverDIR.$model->cover);
+				Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ویرایش شد.');
+				$this->redirect(array('admin'));
+			} else
+				Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
+		}
+		$this->render('update',array(
 			'model'=>$model,
 			'cover' => $cover,
 		));

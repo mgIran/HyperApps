@@ -1,6 +1,7 @@
 <?php
 /* @var $this ManageController */
 /* @var $model Advertises */
+/* @var $cover array */
 
 $this->breadcrumbs=array(
 	'لیست تبلیغات'=>array('admin'),
