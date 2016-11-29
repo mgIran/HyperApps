@@ -5,8 +5,8 @@
 /* @var $newestDevelopers CActiveDataProvider*/
 /* @var $newestPackages CActiveDataProvider*/
 /* @var $updatedPackages CActiveDataProvider*/
-/* @var $tickets []*/
 /* @var $statistics []*/
+/* @var $todaySales []*/
 ?>
 <?php if(Yii::app()->user->hasFlash('success')):?>
     <div class="alert alert-success fade in">
@@ -354,20 +354,7 @@ if(Yii::app()->user->roles == 'admin'):
 endif;
 ?>
 <div class="row">
-    <div class="panel <?= $tickets['new']?'panel-success':'panel-default' ?> col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="panel-heading">
-            پشتیبانی
-        </div>
-        <div class="panel-body">
-            <p>
-                تیکت های جدید: <?= $tickets['new'] ?>
-            </p>
-            <p>
-                <?= CHtml::link('لیست تیکت ها',$this->createUrl('/tickets/manage/admin'),array('class'=>'btn btn-success')) ?>
-            </p>
-        </div>
-    </div>
-    <div class="panel panel-default col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="panel panel-default col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="panel-heading">
             آمار بازدیدکنندگان
         </div>
@@ -379,6 +366,32 @@ endif;
                 تعداد کل بازدید ها : <?php echo Yii::app()->userCounter->getTotal(); ?><br />
                 بیشترین بازدید : <?php echo Yii::app()->userCounter->getMaximal(); ?><br />
             </p>
+        </div>
+    </div>
+    <div class="panel panel-default col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel-heading">فروش امروز</div>
+        <div class="panel-body">
+            <?php $this->widget('chartjs.widgets.ChBars', array(
+                'width' => 700,
+                'height' => 400,
+                'htmlOptions' => array(
+                    'class'=>'center-block report-canvas'
+                ),
+                'labels' => $todaySales['labels'],
+                'datasets' => array(
+                    array(
+                        "fillColor" => "rgba(54, 162, 235, 0.5)",
+                        "strokeColor" => "rgba(54, 162, 235, 1)",
+                        "data" => $todaySales['values']
+                    )
+                ),
+                'options' => array(
+                    'scaleOverride'=>true,
+                    'scaleSteps'=>2,
+                    'scaleStartValue'=>0,
+                    'scaleStepWidth'=>1
+                )
+            ));?>
         </div>
     </div>
 </div>

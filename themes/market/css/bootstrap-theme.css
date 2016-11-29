@@ -2470,3 +2470,17 @@ header.mobile.search-open .mobile-search {
     color: #666;
     font-size: 20px;
 }
+
+.countdown-item{
+    clear: both;
+    margin-top: 20px;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: #888;
+}
+
+.description{
+    color: #999;
+}

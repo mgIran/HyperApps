@@ -29,6 +29,10 @@
                     <?php echo CHtml::label('شناسه شما: ', '');?>
                     <?php echo $detailsModel->developer_id;?>
                     <p class="desc">این شناسه دیگر قابل تغییر نیست.</p>
+                    <h1 style="margin-top: 70px;">امتیاز</h1>
+                    <?php echo CHtml::label('امتیاز شما:', '');?>
+                    <?php echo $detailsModel->dev_score;?>
+                    <p class="desc">به ازای فروش هر برنامه یک امتیاز در نظر گرفته می شود.</p>
                 </div>
             <?php endif;?>
         </div>

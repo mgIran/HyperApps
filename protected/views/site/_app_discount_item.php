@@ -40,7 +40,17 @@ if($app && $app->hasDiscount()) {
                     </span>
                 </div>
             </div>
+            <div class="countdown-item" data-time="<?php echo date('Y/m/d H:i:s', $data->end_date);?>"></div>
         </div>
     </div>
-    <?
-}
+    <?php Yii::app()->clientScript->registerScript('countdown', "
+        $('.countdown-item').each(function(){
+            $(this).countdown($(this).data('time'), function(event) {
+                if(event.offset.days==0)
+                    $(this).html(event.strftime('%H:%M:%S باقیمانده'));
+                else
+                    $(this).html(event.strftime('%D روز و %H:%M:%S باقیمانده'));
+            });
+        });
+    ");?>
+<?php }?>

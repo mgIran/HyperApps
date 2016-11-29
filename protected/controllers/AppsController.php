@@ -117,8 +117,10 @@ class AppsController extends Controller
                 $userDetails->setScenario('update-credit');
                 $userDetails->credit = $userDetails->credit - $price;
                 $userDetails->score = $userDetails->score + 1;
-                if ($model->developer)
+                if ($model->developer) {
                     $model->developer->userDetails->credit = $model->developer->userDetails->credit + $model->getDeveloperPortion();
+                    $model->developer->userDetails->dev_score = $model->developer->userDetails->dev_score + 1;
+                }
                 $model->developer->userDetails->save();
 
                 if ($userDetails->save()) {

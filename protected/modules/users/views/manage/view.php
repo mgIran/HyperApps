@@ -74,6 +74,14 @@ $this->menu=array(
 				'value'=>$model->role->name,
 			),
 			array(
+				'name'=>'امتیاز خرید',
+				'value'=>$model->userDetails->score,
+			),
+			array(
+				'name'=>'امتیاز فروش',
+				'value'=>$model->userDetails->dev_score,
+			),
+			array(
 				'name'=>'تصویر کارت ملی',
 				'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/national_cards/".$model->userDetails->national_card_image, '', array('class'=>'national-card-image')),
 				'type'=>'raw'
@@ -140,6 +148,14 @@ $this->menu=array(
 				'name'=>'نوع کاربری',
 				'value'=>$model->role->name,
 			),
+            array(
+                'name'=>'امتیاز خرید',
+                'value'=>$model->userDetails->score,
+            ),
+            array(
+                'name'=>'امتیاز فروش',
+                'value'=>$model->userDetails->dev_score,
+            ),
 			array(
 				'name'=>'تصویر گواهی ثبت',
 				'value'=>CHtml::image(Yii::app()->baseUrl."/uploads/users/registration_certificate/".$model->userDetails->registration_certificate_image, '', array('class'=>'national-card-image')),

@@ -25,6 +25,8 @@
  * @property string $company_name
  * @property string $registration_number
  * @property string $registration_certificate_image
+ * @property integer $score
+ * @property integer $dev_score
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -71,7 +73,7 @@ class UserDetails extends CActiveRecord
             array('fa_name, en_name, national_code, phone, zip_code, address, national_card_image, nickname', 'required', 'on' => 'update_real_profile'),
             array('fa_name, nickname, post, company_name, registration_number, phone, zip_code, address, registration_certificate_image', 'required', 'on' => 'update_legal_profile'),
             array('developer_id', 'required', 'on' => 'confirmDev'),
-            array('credit, national_code, phone, zip_code', 'numerical'),
+            array('credit, national_code, phone, zip_code, score, dev_score', 'numerical'),
             array('user_id, national_code, zip_code', 'length', 'max' => 10),
             array('national_code, zip_code', 'length', 'min' => 10),
             array('phone', 'length', 'min' => 8),
@@ -87,7 +89,7 @@ class UserDetails extends CActiveRecord
             array('monthly_settlement', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id, details_status, monthly_settlement, iban, nickname', 'safe', 'on' => 'search'),
+            array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id, details_status, monthly_settlement, iban, nickname, score, dev_score', 'safe', 'on' => 'search'),
         );
     }
 
@@ -138,6 +140,8 @@ class UserDetails extends CActiveRecord
             'company_name' => 'نام شرکت',
             'registration_number' => 'شماره ثبت',
             'registration_certificate_image' => 'تصویر گواهی ثبت شرکت',
+            'score' => 'امتیاز',
+            'dev_score' => 'امتیاز توسعه دهنده',
         );
     }
 
@@ -180,6 +184,8 @@ class UserDetails extends CActiveRecord
         $criteria->compare('company_name', $this->company_name, true);
         $criteria->compare('registration_number', $this->registration_number, true);
         $criteria->compare('registration_certificate_image', $this->registration_certificate_image, true);
+        $criteria->compare('score',$this->score);
+        $criteria->compare('dev_score',$this->dev_score);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

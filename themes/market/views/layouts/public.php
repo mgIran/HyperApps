@@ -25,6 +25,7 @@
 
     $cs->registerScriptFile($baseUrl.'/js/bootstrap.min.js');
     $cs->registerScriptFile($baseUrl.'/js/jquery.nicescroll.min.js');
+    $cs->registerScriptFile($baseUrl.'/js/jquery.countdown.min.js');
     $cs->registerScriptFile($baseUrl.'/js/scripts.js');
     ?>
 </head>

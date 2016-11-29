@@ -142,8 +142,21 @@ class UsersManageController extends Controller
 		if(isset($_GET['Users']))
 			$model->attributes=$_GET['Users'];
 
+        $criteria=new CDbCriteria();
+        $criteria->with='userDetails';
+        $criteria->order='userDetails.score DESC';
+        $criteria->limit=1;
+		$topUser=new CActiveDataProvider('Users', array('criteria'=>$criteria, 'pagination'=>false));
+        $criteria=new CDbCriteria();
+        $criteria->with='userDetails';
+        $criteria->order='userDetails.dev_score DESC';
+        $criteria->limit=1;
+		$topDeveloper=new CActiveDataProvider('Users', array('criteria'=>$criteria, 'pagination'=>false));
+
 		$this->render('admin',array(
 			'model'=>$model,
+			'topUser'=>$topUser,
+			'topDeveloper'=>$topDeveloper,
 		));
 	}
 
