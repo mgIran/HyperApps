@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-11-30 15:26:32
+Date: 2016-11-30 16:36:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -457,7 +457,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1480506567');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1480510799');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -665,8 +665,8 @@ CREATE TABLE `ym_user_details` (
   `company_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام شرکت',
   `registration_number` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شماره ثبت',
   `registration_certificate_image` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT 'تصویر گواهی ثبت شرکت',
-  `score` int(10) DEFAULT '0' COMMENT 'امتیاز',
-  `dev_score` int(10) DEFAULT '0' COMMENT 'امتیاز توسعه دهنده',
+  `score` int(10) unsigned DEFAULT '0' COMMENT 'امتیاز',
+  `dev_score` int(10) unsigned DEFAULT '0' COMMENT 'امتیاز توسعه دهنده',
   PRIMARY KEY (`user_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
