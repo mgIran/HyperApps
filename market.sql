@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-11-29 12:10:56
+Date: 2016-11-30 15:26:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -153,8 +153,8 @@ CREATE TABLE `ym_app_buys` (
 -- Records of ym_app_buys
 -- ----------------------------
 INSERT INTO `ym_app_buys` VALUES ('1', '48', '48', '1466641625');
-INSERT INTO `ym_app_buys` VALUES ('2', '48', '45', '1466871224');
-INSERT INTO `ym_app_buys` VALUES ('10', '49', '46', '1467038007');
+INSERT INTO `ym_app_buys` VALUES ('2', '48', '45', '1480408146');
+INSERT INTO `ym_app_buys` VALUES ('10', '49', '46', '1480408146');
 INSERT INTO `ym_app_buys` VALUES ('11', '48', '46', '1480408146');
 
 -- ----------------------------
@@ -410,18 +410,20 @@ CREATE TABLE `ym_comments` (
   `create_time` int(11) DEFAULT NULL,
   `update_time` int(11) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
+  `is_private` tinyint(4) DEFAULT '0' COMMENT 'خصوصی',
   PRIMARY KEY (`comment_id`),
   KEY `owner_name` (`owner_name`,`owner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_comments
 -- ----------------------------
-INSERT INTO `ym_comments` VALUES ('Apps', '60', '74', null, '44', null, null, 'سلام', '1471171859', null, '0');
-INSERT INTO `ym_comments` VALUES ('Apps', '60', '75', null, '44', null, null, 'عالی', '1471245819', null, '0');
-INSERT INTO `ym_comments` VALUES ('Apps', '67', '76', null, '44', 'Admin', null, 'تست', '1471762043', '1472538715', '2');
-INSERT INTO `ym_comments` VALUES ('Apps', '65', '77', null, '44', 'Admin', null, 'خیلی نرم افزار خوبیه\r\n', '1472069470', '1472542802', '2');
-INSERT INTO `ym_comments` VALUES ('Apps', '48', '78', null, '44', null, null, 'سلام', '1473069470', null, '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '60', '74', null, '44', null, null, 'سلام', '1471171859', null, '0', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '60', '75', null, '44', null, null, 'عالی', '1471245819', null, '0', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '67', '76', null, '44', 'Admin', null, 'تست', '1471762043', '1472538715', '2', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '65', '77', null, '44', 'Admin', null, 'خیلی نرم افزار خوبیه\r\n', '1472069470', '1472542802', '2', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '48', '78', null, '44', null, null, 'سلام', '1473069470', null, '0', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '48', '79', '78', '46', null, null, 'علیک سلام', '1480504842', null, '0', '1');
 
 -- ----------------------------
 -- Table structure for ym_counter_save
@@ -436,8 +438,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '1355');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457722');
+INSERT INTO `ym_counter_save` VALUES ('counter', '1356');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457723');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '27');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1470123000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -455,7 +457,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1480408745');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1480506567');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -673,16 +675,16 @@ CREATE TABLE `ym_user_details` (
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('44', 'یوسف مبشری', 'Yusef Mobasheri', 'tarsiminc.ir', 'tarsiminc.com', '0370544651', 'NpLls1465983239.jpg', '09358389265', '3718146164', 'قم - خیابان امام خمینی', '5000000', 'yusef', 'accepted', '0', null, 'Yusef', 'real', null, null, null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('45', 'گروه برنامه نویسی هایپر ادز', 'Programming Group hyperads', '', 'http://hyperads.ir', '0830083731', 'gmdIt1466126488.jpg', '09332514128', '0831166567', 'تهران', '684', 'hyperads', 'accepted', '0', null, 'هایپر ادز', 'real', 'ceo', 'هایپر ادز', '123456', 'gmdIt1466126488.jpg', null, null);
-INSERT INTO `ym_user_details` VALUES ('46', 'مسعود قراگوزلو', 'masoud gharagozlu', '', '', '0370518926', 'jfJ9J1466406615.png', '38888888', '3718958691', 'قم...', '199100', 'Masoud', 'accepted', '1', '123456789123456789123456', null, 'real', null, null, null, null, '1', null);
-INSERT INTO `ym_user_details` VALUES ('47', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('48', null, null, null, null, null, null, null, null, null, '600', null, 'pending', '0', null, null, 'real', null, null, null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('49', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('50', 'پویا', 'Pouya', '', '', '2020202020', 'CisDP1469566398.jpg', '09368365525', '1234567890', 'jkhjf,k.hlj;kljhgfd', '500', null, 'accepted', '0', null, 'Pouya', 'real', null, null, null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('51', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('52', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('53', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, null);
+INSERT INTO `ym_user_details` VALUES ('44', 'یوسف مبشری', 'Yusef Mobasheri', 'tarsiminc.ir', 'tarsiminc.com', '0370544651', 'NpLls1465983239.jpg', '09358389265', '3718146164', 'قم - خیابان امام خمینی', '5000000', 'yusef', 'accepted', '0', null, 'Yusef', 'real', null, null, null, null, null, '0');
+INSERT INTO `ym_user_details` VALUES ('45', 'گروه برنامه نویسی هایپر ادز', 'Programming Group hyperads', '', 'http://hyperads.ir', '0830083731', 'gmdIt1466126488.jpg', '09332514128', '0831166567', 'تهران', '684', 'hyperads', 'accepted', '0', null, 'هایپر ادز', 'real', 'ceo', 'هایپر ادز', '123456', 'gmdIt1466126488.jpg', null, '0');
+INSERT INTO `ym_user_details` VALUES ('46', 'مسعود قراگوزلو', 'masoud gharagozlu', '', '', '0370518926', 'jfJ9J1466406615.png', '38888888', '3718958691', 'قم...', '199100', 'Masoud', 'accepted', '1', '123456789123456789123456', null, 'real', null, null, null, null, '1', '23');
+INSERT INTO `ym_user_details` VALUES ('47', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0');
+INSERT INTO `ym_user_details` VALUES ('48', null, null, null, null, null, null, null, null, null, '600', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0');
+INSERT INTO `ym_user_details` VALUES ('49', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, '10', '0');
+INSERT INTO `ym_user_details` VALUES ('50', 'پویا', 'Pouya', '', '', '2020202020', 'CisDP1469566398.jpg', '09368365525', '1234567890', 'jkhjf,k.hlj;kljhgfd', '500', null, 'accepted', '0', null, 'Pouya', 'real', null, null, null, null, null, '0');
+INSERT INTO `ym_user_details` VALUES ('51', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0');
+INSERT INTO `ym_user_details` VALUES ('52', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0');
+INSERT INTO `ym_user_details` VALUES ('53', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
@@ -711,7 +713,7 @@ CREATE TABLE `ym_user_notifications` (
   `date` varchar(30) NOT NULL COMMENT 'زمان',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_user_notifications
@@ -769,6 +771,7 @@ INSERT INTO `ym_user_notifications` VALUES ('64', '46', 'بسته com.farsitel.b
 INSERT INTO `ym_user_notifications` VALUES ('65', '46', 'برنامه برنامه بدون اطلاعات رد شده است. جهت اطلاع از دلیل تایید نشدن بسته جدید به صفحه ویرایش برنامه مراجعه فرمایید.', '0', '1477382718');
 INSERT INTO `ym_user_notifications` VALUES ('66', null, 'برنامه APUS Flashlight نیاز به تغییرات دارد. جهت مشاهده پیام کارشناسان به صفحه ویرایش برنامه مراجعه فرمایید.', '0', '1477382759');
 INSERT INTO `ym_user_notifications` VALUES ('67', '46', 'بسته ir.tgbs.android.iranapp2 توسط مدیر سیستم تایید شد.', '0', '1480150519');
+INSERT INTO `ym_user_notifications` VALUES ('68', '44', 'توسعه دهنده برنامه \"دعای روزانه ماه رمضان+صوت\" برای نظر شما پاسخ ارسال کرده است.', '0', '1480504842');
 
 -- ----------------------------
 -- Table structure for ym_user_roles

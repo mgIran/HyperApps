@@ -2,6 +2,7 @@
 /**
  * @var $newComment Comment
  * @var $form CActiveForm
+ * @var $isDevReply boolean
  */
 ?>
 
@@ -48,6 +49,13 @@
             <?php echo $form->error($newComment, 'verifyCode'); ?>
         </div>
     <?php endif; ?>
+
+    <?php if(isset($isDevReply) and $isDevReply):?>
+        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <?php echo $form->checkBox($newComment, 'is_private'); ?>
+            <?php echo $form->label($newComment, 'is_private'); ?>
+        </div>
+    <?php endif;?>
 
     <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <?php echo CHtml::button(Yii::t($this->_config['translationCategory'],'Add '.$this->_config['moduleObjectName']),

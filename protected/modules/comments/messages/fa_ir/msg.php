@@ -43,6 +43,7 @@ return array(
     'Add Your Comment' => 'نظر خود را ثبت کنید',
     'Comments List' => 'لیست نظرات',
     'Send Comment' => 'ارسال نظر',
-    'Rate' => 'امتیاز'
+    'Rate' => 'امتیاز',
+    'Private' => 'این نظر خصوصی باشد.'
 );
 ?>
