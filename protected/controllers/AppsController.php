@@ -141,7 +141,7 @@ class AppsController extends Controller
                                 <td>' . JalaliDate::date('d F Y - H:i', $buy->date) . '</td>
                             </tr>
                         </table>';
-                    Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+                    Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail']);
 
                     $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
                 }

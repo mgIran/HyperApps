@@ -599,7 +599,7 @@ class PanelController extends Controller
                                 <td>' . $model->iban . '</td>
                             </tr>
                         </table>';
-                Mailer::mail($userDetails->user->email, 'رسید تسویه حساب', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+                Mailer::mail($userDetails->user->email, 'رسید تسویه حساب', $message, Yii::app()->params['noReplyEmail']);
 
                 echo CJSON::encode(array(
                     'status' => true

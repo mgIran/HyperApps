@@ -166,7 +166,7 @@ class CreditController extends Controller
                                 <td>' . $model->tracking_code . '</td>
                             </tr>
                         </table>';
-                Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+                Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail']);
             } else {
                 $errors = array(
                     '-1' => 'اطلاعات ارسال شده ناقص است.',
