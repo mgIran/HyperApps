@@ -43,7 +43,8 @@
                             CommentsModule::DELETE_ACTION_ROUTE, array('id'=>$comment->comment_id)
                         ), array('class'=>'text-danger delete'));?>
                     </div>
-                <?php endif;endif; ?>
+                <?php endif;
+                endif; ?>
                 <?php
                     if($this->adminMode === true && $this->allowSubcommenting === true && ($this->registeredOnly === false || Yii::app()->user->isGuest === false))
                     {
