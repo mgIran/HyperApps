@@ -8,6 +8,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">پیش فاکتور</div>
         <div class="panel-body">
+            <?php $this->renderPartial('//layouts/_flashMessage');?>
             <div class="col-md-6">
                 <h4>اطلاعات پرداخت</h4>
                 <div class="panel-body">
@@ -29,7 +30,7 @@
                     </h4>
                     <?php echo CHtml::beginForm($this->createUrl('/users/credit/bill'));?>
                         <?php echo CHtml::hiddenField('amount', CHtml::encode($_POST['amount']));?>
-                        <h5>درگاه زرین پال</h5>
+                        <h5>درگاه بانک ملت</h5>
                         <span class="h5"><small>کلیه کارت های عضو شتاب</small></span>
                         <?php echo CHtml::submitButton('پرداخت', array(
                             'class'=>'btn btn-success pull-left',

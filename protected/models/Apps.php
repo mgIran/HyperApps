@@ -224,13 +224,16 @@ class Apps extends CActiveRecord
 
 	/**
 	 * Return developer portion
+	 *
+	 * @param $price
+	 * @return integer
 	 */
-	public function getDeveloperPortion()
+	public function getDeveloperPortion($price)
 	{
 		Yii::app()->getModule('setting');
 		$tax = SiteSetting::model()->findByAttributes(array('name' => 'tax'))->value;
 		$commission = SiteSetting::model()->findByAttributes(array('name' => 'commission'))->value;
-		$price = $this->price;
+
 		$tax = ($price * $tax) / 100;
 		$commission = ($price * $commission) / 100;
 		return $price - $tax - $commission;
@@ -253,7 +256,10 @@ class Apps extends CActiveRecord
 			foreach ($packages as $key => $package)
 				if ($package->status != 'accepted')
 					unset($packages[$key]);
-			$this->lastPackage = $packages[0];
+			if (isset($packages[0]))
+				$this->lastPackage = $packages[0];
+			else
+				$this->lastPackage = null;
 			foreach ($packages as $package)
 				if ($package->id > $this->lastPackage->id)
 					$this->lastPackage = $package;

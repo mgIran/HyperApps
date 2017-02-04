@@ -38,8 +38,21 @@
     }
 }
 @media all and (max-width: 767px) {
+    .footer .nav li.copyright{
+        display: none;
+    }
+    .footer nav{
+        overflow: hidden;
+    }
+    .rahbod{
+        float: none !important;
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+    }
     .footer{
         position: relative;
+        margin-top: 20px;
     }
     .main,
     .main-inner{

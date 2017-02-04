@@ -496,7 +496,7 @@ class AppsController extends Controller
                 }
             } else {
                 $response = ['status' => false, 'message' => $model->getError('package_name')];
-                unlink($tempDir . '/' . $_POST['Apps']['file_name']);
+                //unlink($tempDir . '/' . $_POST['Apps']['file_name']);
             }
 
             echo CJSON::encode($response);

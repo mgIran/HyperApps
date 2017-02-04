@@ -27,6 +27,7 @@
  * @property string $registration_certificate_image
  * @property integer $score
  * @property integer $dev_score
+ * @property integer $earning
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -74,7 +75,7 @@ class UserDetails extends CActiveRecord
             array('fa_name, nickname, post, company_name, registration_number, phone, zip_code, address, registration_certificate_image', 'required', 'on' => 'update_legal_profile'),
             array('developer_id', 'required', 'on' => 'confirmDev'),
             array('credit, national_code, phone, zip_code, score, dev_score', 'numerical'),
-            array('user_id, national_code, zip_code', 'length', 'max' => 10),
+            array('user_id, national_code, zip_code, earning', 'length', 'max' => 10),
             array('national_code, zip_code', 'length', 'min' => 10),
             array('phone', 'length', 'min' => 8),
             array('fa_name, en_name, national_card_image, company_name, registration_number, registration_certificate_image', 'length', 'max' => 50),
@@ -89,7 +90,7 @@ class UserDetails extends CActiveRecord
             array('monthly_settlement', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id, details_status, monthly_settlement, iban, nickname, score, dev_score', 'safe', 'on' => 'search'),
+            array('user_id, fa_name, en_name, fa_web_url, en_web_url, national_code, national_card_image, phone, zip_code, address, credit, developer_id, details_status, monthly_settlement, iban, nickname, score, dev_score, earning', 'safe', 'on' => 'search'),
         );
     }
 
@@ -142,6 +143,7 @@ class UserDetails extends CActiveRecord
             'registration_certificate_image' => 'تصویر گواهی ثبت شرکت',
             'score' => 'امتیاز',
             'dev_score' => 'امتیاز توسعه دهنده',
+            'earning' => 'درآمد',
         );
     }
 
@@ -186,6 +188,7 @@ class UserDetails extends CActiveRecord
         $criteria->compare('registration_certificate_image', $this->registration_certificate_image, true);
         $criteria->compare('score',$this->score);
         $criteria->compare('dev_score',$this->dev_score);
+        $criteria->compare('earning',$this->earning);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -210,7 +213,7 @@ class UserDetails extends CActiveRecord
     {
         Yii::app()->getModule('setting');
         $setting = SiteSetting::model()->find('name=:name', array(':name' => 'min_credit'));
-        return ($this->credit - $setting->value < 0) ? 0 : $this->credit - $setting->value;
+        return ($this->earning - $setting->value < 0) ? 0 : $this->earning - $setting->value;
     }
 
     /**

@@ -32,7 +32,7 @@ class AppsController extends Controller
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('buy', 'bookmark', 'rate'),
+                'actions' => array('buy', 'bill', 'bookmark', 'rate', 'comments'),
                 'users' => array('@'),
             ),
             array('deny',  // deny all users
@@ -85,6 +85,17 @@ class AppsController extends Controller
         ));
     }
 
+    public function actionComments($id)
+    {
+        Yii::app()->theme = "market";
+        $model = $this->loadModel($id);
+        $this->layout='panel';
+
+        $this->render('comments', array(
+            'model'=>$model,
+        ));
+    }
+
     /**
      * Buy app
      */
@@ -93,66 +104,190 @@ class AppsController extends Controller
         Yii::app()->theme = 'market';
         $this->layout = 'panel';
 
+        $userID = Yii::app()->user->getId();
         $model = $this->loadModel($id);
         $price = $model->hasDiscount() ? $model->offPrice : $model->price;
-        $buy = AppBuys::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'app_id' => $id));
+        $buy = AppBuys::model()->findByAttributes(array('user_id' => $userID, 'app_id' => $id));
+
         if ($buy)
             $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
 
         Yii::app()->getModule('users');
         $user = Users::model()->findByPk(Yii::app()->user->getId());
+        /* @var $user Users */
 
-        if (isset($_POST['buy'])) {
-            if ($user->userDetails->credit < $model->price) {
-                Yii::app()->user->setFlash('failed', 'اعتبار فعلی شما کافی نیست!');
-                Yii::app()->user->setFlash('failReason', 'min_credit');
-                $this->refresh();
-            }
+        if ($model->developer_id != $userID) {
+            if (isset($_POST['Buy'])) {
+                if (isset($_POST['Buy']['credit'])) {
+                    if ($user->userDetails->credit < $price) {
+                        Yii::app()->user->setFlash('credit-failed', 'اعتبار فعلی شما کافی نیست!');
+                        Yii::app()->user->setFlash('failReason', 'min_credit');
+                        $this->refresh();
+                    }
 
-            $buy = new AppBuys();
-            $buy->app_id = $model->id;
-            $buy->user_id = $user->id;
-            if ($buy->save()) {
-                $userDetails = UserDetails::model()->findByAttributes(array('user_id' => Yii::app()->user->getId()));
-                $userDetails->setScenario('update-credit');
-                $userDetails->credit = $userDetails->credit - $price;
-                $userDetails->score = $userDetails->score + 1;
-                if ($model->developer) {
-                    $model->developer->userDetails->credit = $model->developer->userDetails->credit + $model->getDeveloperPortion();
-                    $model->developer->userDetails->dev_score = $model->developer->userDetails->dev_score + 1;
-                }
-                $model->developer->userDetails->save();
+                    $userDetails = UserDetails::model()->findByAttributes(array('user_id' => $userID));
+                    $userDetails->setScenario('update-credit');
+                    $userDetails->credit = $userDetails->credit - $price;
+                    $userDetails->score = $userDetails->score + 1;
 
-                if ($userDetails->save()) {
-                    $message =
-                        '<p style="text-align: right;">با سلام<br>کاربر گرامی، جزئیات خرید شما به شرح ذیل می باشد:</p>
-                        <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
-                        <table style="font-size: 9pt;text-align: right;">
-                            <tr>
-                                <td style="font-weight: bold;width: 120px;">عنوان برنامه</td>
-                                <td>' . CHtml::encode($model->title) . '</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;width: 120px;">قیمت</td>
-                                <td>' . Controller::parseNumbers(number_format($price, 0)) . ' تومان</td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;width: 120px;">تاریخ</td>
-                                <td>' . JalaliDate::date('d F Y - H:i', $buy->date) . '</td>
-                            </tr>
-                        </table>';
-                    Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail']);
+                    if ($userDetails->save()) {
+                        $buy = $this->saveBuyInfo($model, $price, $user, 'credit');
+                        Yii::app()->user->setFlash('success', 'خرید شما با موفقیت انجام شد.');
+                        $this->redirect(array('/apps/bill/' . $buy->id));
+                    } else
+                        Yii::app()->user->setFlash('failed', 'در انجام عملیات خرید خطایی رخ داده است. لطفا مجددا تلاش کنید.');
+                } elseif (isset($_POST['Buy']['gateway'])) {
+                    // Save payment
+                    $transaction = new UserTransactions();
+                    $transaction->user_id = Yii::app()->user->getId();
+                    $transaction->amount = $price;
+                    $transaction->date = time();
 
-                    $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
+                    if ($transaction->save()) {
+                        $CallbackURL = Yii::app()->getBaseUrl(true) . '/apps/verify/' . $id . '/' . urlencode($title);
+                        $result = Yii::app()->mellat->PayRequest($price, $transaction->id, $CallbackURL);
+                        if (!$result['error']) {
+                            $ref_id = $result['responseCode'];
+                            $this->render('ext.MellatPayment.views._redirect', array('ReferenceId' => $result['responseCode']));
+                        } else
+                            Yii::app()->user->setFlash('failed', Yii::app()->mellat->getResponseText($result['responseCode']));
+                    }
                 }
             }
-        }
+        } else
+            Yii::app()->user->setFlash('failed', 'شما توسعه دهنده این برنامه هستید.');
 
         $this->render('buy', array(
             'model' => $model,
             'price' => $price,
             'user' => $user,
             'bought' => ($buy) ? true : false,
+        ));
+    }
+
+    public function actionVerify($id ,$title)
+    {
+        Yii::app()->theme = 'frontend';
+        $this->layout = '//layouts/panel';
+        $model = UserTransactions::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => 'unpaid'));
+        $app = Apps::model()->findByPk($id);
+        $user = Users::model()->findByPk(Yii::app()->user->getId());
+        /* @var $model UserTransactions */
+        /* @var $app Apps */
+        /* @var $user Users */
+        $transactionResult = false;
+        $result = null;
+        if ($_POST['ResCode'] == 0)
+            $result = Yii::app()->mellat->VerifyRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
+
+        if ($result != null) {
+            $RecourceCode = (!is_array($result) ? $result : $result['responseCode']);
+            if ($RecourceCode == 0) {
+                // Settle Payment
+                $settle = Yii::app()->mellat->SettleRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
+                if ($settle) {
+                    $model->scenario = 'update';
+                    $model->status = 'paid';
+                    $model->token = $_POST['SaleReferenceId'];
+                    $model->save();
+                    $transactionResult = true;
+                    $buy = $this->saveBuyInfo($app, $model->amount, $user, 'gateway');
+                    Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
+                    $this->redirect(array('/apps/bill/' . $buy->id));
+                }
+            } else {
+                Yii::app()->user->setFlash('failed', Yii::app()->mellat->getError($RecourceCode));
+                $this->redirect(array('/apps/buy/' . $id . '/' . urlencode($title)));
+            }
+        } else
+            Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
+
+        $this->render('verify', array(
+            'transaction' => $model,
+            'app' => $app,
+            'user' => $user,
+            'price' => $model->amount,
+            'transactionResult' => $transactionResult,
+        ));
+    }
+
+    /**
+     * Save buy information
+     *
+     * @param $app Apps
+     * @param $price string
+     * @param $user Users
+     * @param $method string
+     * @return AppBuys
+     */
+    private function saveBuyInfo($app , $price,$user ,$method)
+    {
+        $app->download += 1;
+        $app->setScenario('update-download');
+        $app->save();
+        $buy = new AppBuys();
+        $buy->app_id = $app->id;
+        $buy->user_id = $user->id;
+        if ($app->developer) {
+            $app->developer->userDetails->earning = $app->developer->userDetails->earning + $app->getDeveloperPortion($price);
+            $app->developer->userDetails->dev_score = $app->developer->userDetails->dev_score + 1;
+            $app->developer->userDetails->save();
+        }
+        $buy->save();
+
+        $message =
+            '<p style="text-align: right;">'.(is_null($user->userDetails->fa_name)?'کاربر':$user->userDetails->fa_name).' عزیز، سلام<br>از اینکه از هایپراپس خرید کردید متشکریم. رسید خریدتان در زیر این صفحه آمده است.</p>
+            <p style="text-align: right;">برنامه برای دریافت روی دستگاهتان آماده است. چنانچه در دریافت برنامه به مشکلی برخورد کردید، لطفا ابتدا چک کنید که روی دستگاهتان وارد حساب کاربریتان شده باشید.در صورتی که مشکل از این نبود لطفا با ما تماس بگیرید: hyperapps.ir@gmail.com</p>
+            <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
+            <h4 style="text-align: right;">صورت حساب</h4>
+            <table style="font-size: 9pt;text-align: right;">
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">تاریخ رسید</td>
+                    <td>' . JalaliDate::date('d F Y', $buy->date) . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">زمان</td>
+                    <td>' . JalaliDate::date('H:i', $buy->date) . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">به نام</td>
+                    <td>' . JalaliDate::date('H:i', $user->email) . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">نام برنامه</td>
+                    <td>' . CHtml::encode($app->title.' ('.$app->lastPackage->package_name.')') . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">قیمت (با احتساب مالیات و عوارض)</td>
+                    <td>' . Controller::parseNumbers(number_format($price, 0)) . ' تومان</td>
+                </tr>';
+        if ($method == 'gateway')
+            $message .= '<tr>
+                    <td style="font-weight: bold;width: 120px;">کد رهگیری</td>
+                    <td style="font-weight: bold;letter-spacing:4px">' . CHtml::encode($user->transaction->token) . ' </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
+                    <td style="font-weight: bold;">درگاه بانک ملت </td>
+                </tr>';
+        elseif ($message == 'credit')
+            $message .= '<tr>
+                    <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
+                    <td style="font-weight: bold;letter-spacing:4px">کسر از اعتبار</td>
+                </tr>';
+        $message .= '</table>';
+        var_dump(Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail']));exit;
+        return $buy;
+    }
+
+    public function actionBill($id)
+    {
+        Yii::app()->theme='market';
+        $this->layout='panel';
+        $buy=AppBuys::model()->findByPk($id);
+
+        $this->render('bill', array(
+            'buy'=>$buy,
         ));
     }
 

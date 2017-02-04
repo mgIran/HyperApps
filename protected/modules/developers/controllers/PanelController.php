@@ -27,7 +27,7 @@ class PanelController extends Controller
     {
         return array(
             array('allow',
-                'actions'=>array('manageSettlement'),
+                'actions'=>array('manageSettlement','excel'),
                 'roles'=>array('admin')
             ),
             array('allow',
@@ -552,35 +552,44 @@ class PanelController extends Controller
      */
     public function actionManageSettlement()
     {
-        Yii::app()->theme='abound';
-        $this->layout='//layouts/column2';
-        $criteria=new CDbCriteria();
-        $criteria->select='SUM(amount) AS amount, date';
-        $criteria->group='EXTRACT(DAY FROM FROM_UNIXTIME(date, "%Y %D %M %h:%i:%s %x"))';
-        $settlementHistory=new CActiveDataProvider('UserSettlement', array(
-            'criteria'=>$criteria,
-        ));
-        Yii::app()->getModule('setting');
-        $setting=SiteSetting::model()->find('name=:name', array(':name'=>'min_credit'));
-        $criteria=new CDbCriteria();
-        $criteria->addCondition('monthly_settlement=1');
-        $criteria->addCondition('credit>:credit');
-        $criteria->params=array(':credit'=>$setting->value);
-        $settlementRequiredUsers=new CActiveDataProvider('UserDetails', array(
-            'criteria'=>$criteria,
-        ));
+        Yii::app()->theme = 'abound';
+        $this->layout = '//layouts/column2';
 
-        if(isset($_POST['ajax']) and isset($_POST['uid'])) {
-            $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>$_POST['uid']));
+        if (isset($_POST['token'])) {
+            if (!isset($_POST['token']) or $_POST['token'] == '') {
+                Yii::app()->user->setFlash('failed', 'کد رهگیری نمی تواند خالی باشد.');
+                $this->refresh();
+            }
+            if (!isset($_POST['amount']) or $_POST['amount'] == '') {
+                Yii::app()->user->setFlash('failed', 'مبلغ تسویه نمی تواند خالی باشد.');
+                $this->refresh();
+            }
+            $amount = doubleval($_POST['amount']);
+            if (!$amount) {
+                Yii::app()->user->setFlash('failed', 'مبلغ تسویه نامعتبر است. لطفا مبلغ را با دقت وارد کنید.');
+                $this->refresh();
+            }
+            $iban = $_POST['iban'];
+            if(!$iban){
+                Yii::app()->user->setFlash('failed', 'شماره شبا نمی تواند خالی باشد.');
+                $this->refresh();
+            }
+
+            $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>$_POST['user_id']));
+            /* @var $userDetails UserDetails */
             $model=new UserSettlement();
             $model->user_id=$userDetails->user_id;
-            $model->amount=$userDetails->getSettlementAmount();
+            $model->token=$_POST['token'];
+            $model->iban=$iban;
+            $model->amount= $amount;
             $model->date=time();
-            $model->iban=$userDetails->iban;
             if($model->save()) {
-                $userDetails->credit=$userDetails->credit-$userDetails->getSettlementAmount();
+                $userDetails->earning = $userDetails->earning - $amount;
+                $userDetails->setScenario('change-earning');
                 $userDetails->save();
-
+                $this->createLog('مبلغ ' . Controller::parseNumbers(number_format($model->amount)) . ' تومان در تاریخ ' .
+                    JalaliDate::date('Y/m/d - H:i', $model->date) .
+                    ' با کد رهگیری ' . $model->token . ' به شماره شبای IR' . $model->iban . ' واریز شد.', $userDetails->user_id);
                 // Send email
                 $message =
                     '<p style="text-align: right;">با سلام<br>کاربر گرامی، حساب شما تسویه شد.</p>
@@ -600,22 +609,91 @@ class PanelController extends Controller
                             </tr>
                         </table>';
                 Mailer::mail($userDetails->user->email, 'رسید تسویه حساب', $message, Yii::app()->params['noReplyEmail']);
-
-                echo CJSON::encode(array(
-                    'status' => true
-                ));
-            }
-            else
-                echo CJSON::encode(array(
-                    'status'=>false
-                ));
-            Yii::app()->end();
+                Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ثبت شد.');
+                $this->refresh();
+            } else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است لطفا مجددا تلاش کنید.');
         }
 
-        $this->render('manage_settlement', array(
-            'settlementHistory'=>$settlementHistory,
-            'settlementRequiredUsers'=>$settlementRequiredUsers,
+        $criteria = new CDbCriteria();
+        $criteria->select = 'SUM(amount) AS amount, date';
+        $criteria->group = 'EXTRACT(DAY FROM FROM_UNIXTIME(date, "%Y %D %M %h:%i:%s %x"))';
+        $settlementHistory = new CActiveDataProvider('UserSettlement', array(
+            'criteria' => $criteria,
+            'pagination' => array('pageSize' => 20)
         ));
+
+
+        Yii::app()->getModule('setting');
+        $setting = SiteSetting::model()->find('name=:name', array(':name' => 'min_credit'));
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('iban IS NOT NULL AND iban != ""');
+        $criteria->addCondition('earning > :earning');
+        $criteria->addCondition('monthly_settlement=1');
+        $criteria->params = array(':earning' => $setting->value);
+        $settlementRequiredUsers = new CActiveDataProvider('UserDetails', array(
+            'criteria' => $criteria,
+        ));
+
+        $this->render('manage_settlement', array(
+            'settlementHistory' => $settlementHistory,
+            'settlementRequiredUsers' => $settlementRequiredUsers,
+        ));
+    }
+
+    /**
+     * export excel
+     */
+    public function actionExcel()
+    {
+        Yii::app()->getModule('setting');
+        $setting = SiteSetting::model()->find('name=:name', array(':name' => 'min_credit'));
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('iban IS NOT NULL AND iban != ""');
+        $criteria->addCondition('earning > :earning');
+        $criteria->addCondition('monthly_settlement=1');
+        $criteria->params = array(':earning' => $setting->value);
+        $settlementUsers = UserDetails::model()->findAll($criteria);
+
+        $objPHPExcel = Yii::app()->yexcel->createPHPExcel();
+        $objPHPExcel = new PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("Hyperapps Website")
+            ->setLastModifiedBy("")
+            ->setTitle("YiiExcel Test Document")
+            ->setSubject("Settlement Users Detail");
+        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', 'شماره شبا')
+            ->setCellValue('B1', 'مبلغ قابل تسویه (تومان)')
+            ->setCellValue('C1', 'نام صاحب حساب');
+
+        /* @var $settlementUser UserDetails */
+        foreach ($settlementUsers as $key => $settlementUser){
+            $row = $key+2;
+            $objPHPExcel->getActiveSheet()
+                ->setCellValue('A'.$row, "IR".$settlementUser->iban)
+                ->setCellValue('B'.$row, number_format($settlementUser->getSettlementAmount()))
+                ->setCellValue('C'.$row, $settlementUser->fa_name);
+        }
+        // Save a xls file
+        $filename = 'Settlement Developers';
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $filename . '.xls"');
+        header('Cache-Control: max-age=0');
+        $objWriter = Yii::app()->yexcel->createActiveSheet($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        unset($this->objWriter);
+        unset($this->objWorksheet);
+        unset($this->objReader);
+        unset($this->objPHPExcel);
+        exit();
     }
 
     /**

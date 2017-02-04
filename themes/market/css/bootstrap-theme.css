@@ -1298,8 +1298,16 @@ body.ios .footer .nav li.active {
     background-color: transparent;
 }
 
-.footer .copyright {
-    padding-left: 50px;
+.footer .nav li.copyright {
+    clear: both;
+    float: none;
+    font-size: 11px;
+    text-align: right;
+    width: 200px;
+    line-height:20px;
+}
+.footer .nav li.copyright:hover{
+    color: #aaa;
 }
 
 .page {
@@ -2483,4 +2491,12 @@ header.mobile.search-open .mobile-search {
 
 .description{
     color: #999;
+}
+.rahbod{
+    display: inline-block;
+    vertical-align: middle;
+    opacity:.2;
+}
+.rahbod img{
+    width: 90px;
 }

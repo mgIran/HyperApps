@@ -2,8 +2,8 @@
 return array (
   'template' => 'default',
   'connectionId' => 'db',
-  'tablePrefix' => 'ym',
-  'modelPath' => 'application.modules.users.models',
+  'tablePrefix' => 'mt',
+  'modelPath' => 'application.models',
   'baseClass' => 'CActiveRecord',
   'buildRelations' => '1',
   'commentsAsLabels' => '1',

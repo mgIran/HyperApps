@@ -17,7 +17,7 @@ Yii::import("comments.models.*");
     <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs"><?= Controller::parseNumbers(number_format($data->install)) ?></div>
     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-3">
         <span style="font-size: 16px;">
-            <a style="display: block" class="icon-comment <?= $data->getCountNewComment()?"text-success":"text-hide" ?>" href="<?= $this->createUrl('/apps/'.$data->id.'/'.urlencode($data->title).'#comments') ?>"><?= $data->getCountNewComment()?></a>
+            <a style="display: block" class="icon-comment <?= $data->getCountNewComment()?"text-success":"text-hide" ?>" href="<?= $this->createUrl('/apps/comments/'.$data->id) ?>"><?= $data->getCountNewComment()?></a>
         </span>
         <span style="margin-right: 6px;font-size: 17px;">
             <a class="icon-pencil text-info" href="<?php echo $this->createUrl('/developers/apps/update/'.$data->id);?>"></a>

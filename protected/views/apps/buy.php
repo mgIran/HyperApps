@@ -13,9 +13,10 @@
         </div>
         <div class="panel-body step-content">
             <div class="container-fluid buy-form">
-                <?php if(Yii::app()->user->hasFlash('failed')):?>
+                <?php $this->renderPartial('//layouts/_flashMessage');?>
+                <?php if(Yii::app()->user->hasFlash('credit-failed')):?>
                 <div class="alert alert-danger fade in">
-                    <?php echo Yii::app()->user->getFlash('failed');?>
+                    <?php echo Yii::app()->user->getFlash('credit-failed');?>
                     <?php if(Yii::app()->user->hasFlash('failReason') and Yii::app()->user->getFlash('failReason')=='min_credit'):?>
                         <a href="<?php echo $this->createUrl('/users/credit/buy');?>">خرید اعتبار</a>
                     <?php endif;?>
@@ -35,10 +36,17 @@
                             مبلغ این برنامه قبلا از حساب شما کسر گردیده است. شما می توانید از <a href="<?php echo $this->createUrl('/apps/download/'.CHtml::encode($model->id).'/'.CHtml::encode($model->title));?>">اینجا</a> این برنامه را دانلود کنید.
                         </div>
                     <?php else:?>
-                        <?php echo CHtml::submitButton('پرداخت', array(
-                            'class'=>'btn btn-success btn-buy pull-left',
-                            'name'=>'buy'
-                        ))?>
+                        <?php if(Yii::app()->user->getId()!=$model->developer_id):?>
+                            <?php echo CHtml::submitButton('پرداخت آنلاین', array(
+                                'class'=>'btn btn-info btn-buy pull-left',
+                                'name'=>'Buy[gateway]',
+                                'style'=>'margin-right:15px;'
+                            ))?>
+                            <?php echo CHtml::submitButton('کسر از اعتبار', array(
+                                'class'=>'btn btn-success btn-buy pull-left',
+                                'name'=>'Buy[credit]'
+                            ))?>
+                        <?php endif;?>
                     <?php endif;?>
                 <?php $this->endWidget();?>
             </div>

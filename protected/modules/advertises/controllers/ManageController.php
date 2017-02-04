@@ -243,6 +243,20 @@ class ManageController extends Controller
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
+	public function actionDelete($id)
+	{
+		$model=$this->loadModel($id, 'Advertises');
+
+		if($model->cover)
+			@unlink(Yii::getPathOfAlias("webroot") . '/uploads/advertisesCover/'.$model->cover);
+
+        $model->delete();
+
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
+
 	/**
 	 * Lists all models.
 	 */

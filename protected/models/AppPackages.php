@@ -144,10 +144,15 @@ class AppPackages extends CActiveRecord
      */
     public function uniqueDeveloper($attribute)
     {
-        $models = $this->findAllByAttributes(array('package_name' => $this->$attribute));
+        $criteria=new CDbCriteria();
+        $criteria->with='app';
+        $criteria->together=true;
+        $criteria->addCondition('package_name = :package_name');
+        $criteria->params[':package_name']=$this->$attribute;
+        $models = $this->findAll($criteria);
         if (!is_null($models))
-            foreach ($models as $model)
-                if ($model->app->platform_id == $this->app->platform_id)
+            foreach ($models as $model) {
+                if ($model->app->platform_id == $this->app->platform_id) {
                     if ($model->app->developer_id != Yii::app()->user->getId())
                         $this->addError($attribute, 'این بسته قبلا توسط کاربر دیگری ثبت شده است.');
                     else {
@@ -157,5 +162,7 @@ class AppPackages extends CActiveRecord
                         } else
                             $this->addError($attribute, 'این بسته قبلا ثبت شده است.');
                     }
+                }
+            }
     }
 }
