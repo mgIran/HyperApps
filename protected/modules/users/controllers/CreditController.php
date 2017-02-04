@@ -57,55 +57,39 @@ class CreditController extends Controller
      */
     public function actionBill()
     {
-        if(isset($_POST['pay'])) {
+        Yii::app()->theme = 'market';
+        if (isset($_POST['pay'])) {
             // Save payment
-            $model=UserTransactions::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'status'=>'unpaid'));
-            if(!$model)
-                $model=new UserTransactions();
-            $model->user_id=Yii::app()->user->getId();
-            $model->amount=$_POST['amount'];
-            $model->date=time();
-            if($model->save()) {
-                // Redirect to payment gateway
-                $MerchantID = '6194e8aa-0589-11e6-9b18-005056a205be';  //Required
-                $Amount = intval($_POST['amount']); //Amount will be based on Toman  - Required
-                $Description = 'افزایش اعتبار در هایپر اپس';  // Required
-                $Email = Yii::app()->user->email; // Optional
-                $Mobile = '0'; // Optional
+            $model = UserTransactions::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => 'unpaid'));
+            if (!$model)
+                $model = new UserTransactions();
+            $model->user_id = Yii::app()->user->getId();
+            $model->amount = $_POST['amount'];
+            $model->date = time();
+            if ($model->save()) {
+                $Amount = doubleval($model->amount) * 10;
+                $CallbackURL = Yii::app()->getBaseUrl(true) . '/users/credit/verify';
+                $result = Yii::app()->mellat->PayRequest($Amount, $model->id, $CallbackURL);
+                if (!$result['error']) {
+                    $ref_id = $result['responseCode'];
+                    $this->render('ext.MellatPayment.views._redirect', array('ReferenceId' => $result['responseCode']));
+                } else
+                    Yii::app()->user->setFlash('failed', Yii::app()->mellat->getResponseText($result['responseCode']));
+            } else
+                Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است.');
 
-                $CallbackURL = Yii::app()->getBaseUrl(true).'/users/credit/verify';  // Required
-
-                include("lib/nusoap.php");
-                $client = new NuSOAP_Client('https://ir.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
-                $client->soap_defencoding = 'UTF-8';
-                $result = $client->call('PaymentRequest', array(
-                    array(
-                        'MerchantID' => $MerchantID,
-                        'Amount' => $Amount,
-                        'Description' => $Description,
-                        'Email' => $Email,
-                        'Mobile' => $Mobile,
-                        'CallbackURL' => $CallbackURL
-                    )
-                ));
-
-                //Redirect to URL You can do it also by creating a form
-                if ($result['Status'] == 100)
-                    $this->redirect('https://www.zarinpal.com/pg/StartPay/' . $result['Authority']);
-                else
-                    echo 'ERR: ' . $result['Status'];
-            }
-        }
-        elseif(isset($_POST['amount'])) {
-            Yii::app()->theme = 'market';
+            $this->render('bill', array(
+                'model' => Users::model()->findByPk(Yii::app()->user->getId()),
+                'amount' => CHtml::encode($_POST['amount']),
+            ));
+        } elseif (isset($_POST['amount'])) {
             $amount = CHtml::encode($_POST['amount']);
             $model = Users::model()->findByPk(Yii::app()->user->getId());
             $this->render('bill', array(
                 'model' => $model,
                 'amount' => CHtml::encode($amount),
             ));
-        }
-        else
+        } else
             $this->redirect($this->createUrl('/users/credit/buy'));
     }
 
@@ -115,38 +99,32 @@ class CreditController extends Controller
         $this->layout='//layouts/panel';
         $model=UserTransactions::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId(), 'status'=>'unpaid'));
         $userDetails=UserDetails::model()->findByAttributes(array('user_id'=>Yii::app()->user->getId()));
+        /* @var $model UserTransactions */
         /* @var $userDetails UserDetails */
-        $MerchantID = '6194e8aa-0589-11e6-9b18-005056a205be';
-        $Amount = $model->amount; //Amount will be based on Toman
-        $Authority = $_GET['Authority'];
 
-        if($_GET['Status'] == 'OK') {
-            include("lib/nusoap.php");
-            $client = new NuSOAP_Client('https://ir.zarinpal.com/pg/services/WebGate/wsdl', 'wsdl');
-            $client->soap_defencoding = 'UTF-8';
-            $result = $client->call('PaymentVerification', array(
-                    array(
-                        'MerchantID' => $MerchantID,
-                        'Authority' => $Authority,
-                        'Amount' => $Amount
-                    )
-                )
-            );
+        $result=null;
+        if($_POST['ResCode'] == 0)
+            $result = Yii::app()->mellat->VerifyRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
 
-            if ($result['Status'] == 100) {
-                $model->status = 'paid';
-                $model->token = $result['RefID'];
-                $model->description = 'خرید اعتبار از طریق درگاه زرین پال';
-                $model->save();
-                // Increase credit
-                $userDetails->setScenario('update-credit');
-                $userDetails->credit = $userDetails->credit + $model->amount;
-                $userDetails->save();
-                Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
+        if($result != null) {
+            $RecourceCode = (!is_array($result) ? $result : $result['responseCode']);
+            if($RecourceCode == 0) {
+                // Settle Payment
+                $settle = Yii::app()->mellat->SettleRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
+                if($settle) {
+                    $model->status = 'paid';
+                    $model->token = $_POST['SaleReferenceId'];
+                    $model->description = 'خرید اعتبار از طریق درگاه بانک ملت';
+                    $model->save();
+                    // Increase credit
+                    $userDetails->setScenario('update-credit');
+                    $userDetails->credit = $userDetails->credit + $model->amount;
+                    $userDetails->save();
+                    Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
 
-                // Send email
-                $message =
-                    '<p style="text-align: right;">با سلام<br>کاربر گرامی، تراکنش شما با موفقیت انجام شد. جزئیات تراکنش به شرح ذیل می باشد:</p>
+                    // Send email
+                    $message =
+                        '<p style="text-align: right;">با سلام<br>کاربر گرامی، تراکنش شما با موفقیت انجام شد. جزئیات تراکنش به شرح ذیل می باشد:</p>
                         <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
                         <table style="font-size: 9pt;text-align: right;">
                             <tr>
@@ -155,41 +133,25 @@ class CreditController extends Controller
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">مبلغ</td>
-                                <td>' . Controller::parseNumbers(number_format($this->getFixedPrice($model->amount), 0)) . ' ریال</td>
+                                <td>' . Controller::parseNumbers(number_format($model->amount, 0)) . ' تومان</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">شناسه خرید</td>
-                                <td>' . $model->order_id . '</td>
+                                <td>' . $model->id . '</td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;width: 120px;">کد رهگیری</td>
-                                <td>' . $model->tracking_code . '</td>
+                                <td>' . $model->token . '</td>
                             </tr>
                         </table>';
-                Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
-            } else {
-                $errors = array(
-                    '-1' => 'اطلاعات ارسال شده ناقص است.',
-                    '-2' => 'IP یا کد پذیرنده صحیح نیست.',
-                    '-3' => 'با توجه به محدودیت ها امکان پرداخت رقم درخواست شده میسر نمی باشد.',
-                    '-4' => 'سطح تایید پذیرنده پایین تر از سطح نقره ای است.',
-                    '-11' => 'درخواست مورد نظر یافت نشد.',
-                    '-12' => 'امکان ویرایش درخواست میسر نمی باشد.',
-                    '-21' => 'هیچ نوع عملیات مالی برای این تراکنش یافت نشد.',
-                    '-22' => 'تراکنش ناموفق بود.',
-                    '-33' => 'رقم تراکنش با رقم پرداخت شده مطابقت ندارد.',
-                    '-34' => 'سقف تقسیم تراکنش از لحاظ تعداد یا رقم عبور نموده است.',
-                    '-40' => 'اجازه دسترسی به متد مربوطه وجود ندارد.',
-                    '-41' => 'اطلاعات ارسال شده مربوط به AdditionalData غیر معتبر می باشد.',
-                    '-42' => 'مدت زمان معتبر طول عمر شناسه پرداخت باید بین 30 دقیقه تا 45 روز باشد.',
-                    '-54' => 'درخواست مورد نظر آرشیو شده است.',
-                    '101' => 'عملیات پرداخت موفق بوده و قبلا بررسی تراکنش انجام شده است.',
-                );
+                    Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail']);
+                }
+            }else{
+                $error=Yii::app()->mellat->getError($RecourceCode);
                 Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بود.');
-                Yii::app()->user->setFlash('transactionFailed', isset($errors[$result['Status']]) ? $errors[$result['Status']] : 'در انجام عملیات پرداخت خطایی رخ داده است.');
+                Yii::app()->user->setFlash('transactionFailed', $error ? $error : 'در انجام عملیات پرداخت خطایی رخ داده است.');
             }
-        }
-        else
+        }else
             Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
 
         $this->render('verify', array(

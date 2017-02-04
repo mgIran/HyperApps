@@ -7,6 +7,7 @@
  * @property string $app_id
  * @property integer $status
  * @property string $create_date
+ * @property string $cover
  *
  * The followings are the available model relations:
  * @property Apps $app
@@ -39,13 +40,15 @@ class Advertises extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('app_id, cover', 'required'),
             array('status', 'numerical', 'integerOnly' => true),
             array('app_id', 'length', 'max' => 10),
             array('create_date', 'length', 'max' => 20),
             array('create_date', 'default', 'value' => time()),
+            array('cover', 'length', 'max'=>255),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('appFilter, app_id, status, create_date', 'safe', 'on' => 'search'),
+            array('appFilter, app_id, status, create_date, cover', 'safe', 'on' => 'search'),
         );
     }
 
@@ -70,6 +73,7 @@ class Advertises extends CActiveRecord
             'app_id' => 'برنامه',
             'status' => 'وضعیت',
             'create_date' => 'تاریخ ایجاد',
+            'cover' => 'تصویر',
         );
     }
 
@@ -111,14 +115,5 @@ class Advertises extends CActiveRecord
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
-    }
-
-    public static function findActive()
-    {
-        $criteria = new CDbCriteria;
-        $criteria->addCondition('status = 1');
-        $criteria->order = 'create_date DESC';
-        $criteria->limit = 1;
-        return SpecialAdvertises::model()->find($criteria);
     }
 }

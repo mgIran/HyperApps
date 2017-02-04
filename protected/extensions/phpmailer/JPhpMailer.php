@@ -26,6 +26,7 @@
  */
 
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'class.phpmailer.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'class.smtp.php';
 
 class JPhpMailer extends PHPMailer
 {

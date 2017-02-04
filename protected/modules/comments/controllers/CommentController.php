@@ -145,6 +145,12 @@ class CommentController extends Controller
 				Yii::app()->end();
 			$result = array();
 			if($comment->save()){
+				if($comment->is_private==1) {
+                    $parentComment = Comment::model()->findByPk($comment->parent_comment_id);
+                    $app = Apps::model()->findByPk($comment->owner_id);
+                    $this->createLog('توسعه دهنده برنامه "' . $app->title . '" برای نظر شما پاسخ ارسال کرده است.', $parentComment->creator_id);
+                }
+
 				$result['code'] = 'success';
 				$this->beginClip('form');
 				$this->widget('comments.widgets.ECommentsFormWidget' ,array(

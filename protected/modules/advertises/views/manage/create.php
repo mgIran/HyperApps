@@ -1,6 +1,7 @@
 <?php
 /* @var $this ManageController */
 /* @var $model Advertises */
+/* @var $cover array */
 
 $this->breadcrumbs=array(
 	'لیست تبلیغات'=>array('admin'),
@@ -14,4 +15,4 @@ $this->menu=array(
 
 <h1>افزودن تبلیغ</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model'=>$model, 'cover'=>$cover)); ?>

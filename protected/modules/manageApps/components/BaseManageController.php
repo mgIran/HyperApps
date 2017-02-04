@@ -420,6 +420,7 @@ class BaseManageController extends Controller
     public function actionChangeConfirm()
     {
         $model=$this->loadModel($_POST['app_id']);
+        $model->setScenario('change-confirm');
         $model->confirm=$_POST['value'];
         if($model->save()) {
             if($_POST['value']=='accepted') {

@@ -29,11 +29,14 @@
                 <a href="<?= Yii::app()->createUrl('/site/about');?>"></a>
                 درباره ما
             </li>
+            <li class="copyright ltr" >
+                &copy;
+                <strong><?php echo date('Y');?></strong>
+                Hyper Apps
+            </li>
         </ul>
     </nav>
-    <div class="copyright ltr pull-left" >
-        &copy;
-        <strong>2016</strong>
-        Hyper Apps
+    <div class="rahbod pull-left">
+        <a href="https://t.me/rahbod" target="_blank" title="Rahbod"><img src="<?php echo Yii::app()->theme->baseUrl.'/images/rahbod.png';?>"></a>
     </div>
 </footer>

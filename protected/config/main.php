@@ -81,6 +81,15 @@ return array(
 
 	// application components
 	'components'=>array(
+		'yexcel' => array(
+			'class' => 'ext.yexcel.Yexcel'
+		),
+		'mellat' => array(
+			'class'=> 'ext.MellatPayment.MellatPayment',
+			'terminalId' => '2080916',
+			'userName' => 'hyperapps',
+			'userPassword' => '61898942',
+		),
         'userCounter' => array(
             'class' => 'application.components.UserCounter',
             'tableUsers' => 'ym_counter_users',
@@ -171,8 +180,8 @@ return array(
         'noReplyEmail' => 'no-reply@hyperapps.ir',
 		'SMTP' => array(
             'Host' => 'mail.hyperapps.ir',
-            'Secure' => 'ssl',
-            'Port' => '465',
+            'Secure' => 'tls',
+            'Port' => 25,
             'Username' => 'no-reply@hyperapps.ir',
             'Password' => 'hyperapps.ir',
         ),

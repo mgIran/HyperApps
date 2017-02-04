@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50616
+Source Server         : localhost
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : market
 
 Target Server Type    : MYSQL
-Target Server Version : 50616
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-11-28 21:39:13
+Date: 2017-01-18 12:05:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -94,7 +94,7 @@ CREATE TABLE `ym_apps` (
 -- Records of ym_apps
 -- ----------------------------
 INSERT INTO `ym_apps` VALUES ('47', 'مرورگر اپرا مینی', null, '7', 'enable', '0', 'MHDeb1466454442.png', '<p>شما میتوانید با نصبمرورگرهای محبوبی مثل <strong>Opera</strong> در موبایل خودتان، صفحات اینترنت را سریع تر و راحت تر مشاهده کنید و از امکانات مختلف این مرورگرها استفاده نمایید.</p>\n\n<p> </p>\n\n<p><strong>مرورگر Opera</strong> پرطرفدارترین و پرکاربرد ترین مرورگر حال حاضر در بیشتر گوشی ها است. این مرورگر با قابلیت های خوب خود نیازهای هر کاربری را برطرف میکند.</p>\n', '', null, null, 'accepted', '3', 'opera', '17', '0', '8', '1', null, null, null, null);
-INSERT INTO `ym_apps` VALUES ('48', 'دعای روزانه ماه رمضان+صوت', '46', '12', 'enable', '1000', 'HWerv1466462964.png', '<p style=\"text-align:right;\">دعاهای روزانه ماه رمضان</p>\r\n\r\n<p style=\"text-align:right;\">به همراه صوت</p>\r\n', '', '[\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u0636\\u0639\\u06cc\\u062a \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0634\\u0628\\u06a9\\u0647 Wi-Fi\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u0645\\u062f\\u06cc\\u0631\\u06cc\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062d\\u0627\\u0641\\u0638\\u0647 \\u0647\\u0627\\u06cc \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0645\\u0627\\u0633 \\u062a\\u0644\\u0641\\u0646\\u06cc\",\"RECEIVE_BOOT_COMPLETED\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0627\\u0631\\u0633\\u0627\\u0644 \\u067e\\u06cc\\u0627\\u0645\\u06a9\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 NFC\",\"ACCESS_SUPERUSER\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0644\\u06cc\\u0633\\u062a \\u062d\\u0633\\u0627\\u0628 \\u0647\\u0627\\u06cc \\u06a9\\u0627\\u0631\\u0628\\u0631\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0645\\u062e\\u0627\\u0637\\u0628\\u06cc\\u0646\"]', null, 'accepted', '1', null, '214', '0', '52', '0', null, null, null, null);
+INSERT INTO `ym_apps` VALUES ('48', 'دعای روزانه ماه رمضان+صوت', '45', '12', 'enable', '1500', 'HWerv1466462964.png', '<p style=\"text-align:right;\">دعاهای روزانه ماه رمضان</p>\r\n\r\n<p style=\"text-align:right;\">به همراه صوت</p>\r\n', '', '[\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u0636\\u0639\\u06cc\\u062a \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0634\\u0628\\u06a9\\u0647 Wi-Fi\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u0645\\u062f\\u06cc\\u0631\\u06cc\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062d\\u0627\\u0641\\u0638\\u0647 \\u0647\\u0627\\u06cc \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0645\\u0627\\u0633 \\u062a\\u0644\\u0641\\u0646\\u06cc\",\"RECEIVE_BOOT_COMPLETED\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0627\\u0631\\u0633\\u0627\\u0644 \\u067e\\u06cc\\u0627\\u0645\\u06a9\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 NFC\",\"ACCESS_SUPERUSER\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0644\\u06cc\\u0633\\u062a \\u062d\\u0633\\u0627\\u0628 \\u0647\\u0627\\u06cc \\u06a9\\u0627\\u0631\\u0628\\u0631\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0645\\u062e\\u0627\\u0637\\u0628\\u06cc\\u0646\"]', null, 'accepted', '1', null, '218', '1', '59', '0', '', 'm@m.com', '', '');
 INSERT INTO `ym_apps` VALUES ('49', 'دعای روزهای ماه رمضان', '46', '12', 'enable', '0', 'AXQD81466465420.png', '<p>دعای روزهای ماه رمضان+ترجمه</p>\r\n\r\n<p> </p>\r\n\r\n<p>بدون صوت</p>\r\n', '', '[\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u0636\\u0639\\u06cc\\u062a \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0634\\u0628\\u06a9\\u0647 Wi-Fi\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u0645\\u062f\\u06cc\\u0631\\u06cc\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062d\\u0627\\u0641\\u0638\\u0647 \\u0647\\u0627\\u06cc \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0645\\u0627\\u0633 \\u062a\\u0644\\u0641\\u0646\\u06cc\",\"RECEIVE_BOOT_COMPLETED\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0627\\u0631\\u0633\\u0627\\u0644 \\u067e\\u06cc\\u0627\\u0645\\u06a9\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 NFC\",\"ACCESS_SUPERUSER\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0644\\u06cc\\u0633\\u062a \\u062d\\u0633\\u0627\\u0628 \\u0647\\u0627\\u06cc \\u06a9\\u0627\\u0631\\u0628\\u0631\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0645\\u062e\\u0627\\u0637\\u0628\\u06cc\\u0646\"]', null, 'accepted', '1', null, '150', '0', '29', '0', null, null, null, null);
 INSERT INTO `ym_apps` VALUES ('53', 'اپرا', '46', '28', 'enable', '0', 'uXWbP1467036994.png', '<p>ندارد</p>\n', '', null, null, 'accepted', '3', null, '4', '0', '1', '1', null, null, null, null);
 INSERT INTO `ym_apps` VALUES ('55', 'اپرا', null, '7', 'enable', '0', 'NpopE1467046261.png', '<p><strong>مرورگر Opera</strong> پرطرفدارترین و پرکاربرد ترین مرورگر حال حاضر در بیشتر گوشی ها است. این مرورگر با قابلیت های خوب خود نیازهای هر کاربری را برطرف میکند.</p>\n', '', null, null, 'accepted', '3', 'opera', '44', '0', '20', '0', null, null, null, null);
@@ -108,7 +108,7 @@ INSERT INTO `ym_apps` VALUES ('65', 'Call Recorder Elite', null, '14', 'enable',
 INSERT INTO `ym_apps` VALUES ('66', 'Call Recorder Pro', null, '14', 'enable', '0', 'xvTE81471685013.png', '<p> می توانید همه مکالمات و تماس های خود را ضبط کرده و درنهایت تصمیم بگیرید که کدام را بر روی گوشی خود ذخیره کرده و نگه دارید. هم چنین این برنامه این امکان را داشته تا از پیش مشخص کنید که کدام تماس ها ضبط شود و کدام یک ضبط نشود. پس از ضبط تماس ها می توانید به آن ها گوش داده و نکات و یادداشت هایی را به آن ها اضافه نمایید. . مکالمات ذخیره شده در داخل قسمت صندوق ورودی برنامه قرار می گیرند، می توانید محل ذخیره سازی مکالمه ها را عوض کرده و مثلا بر روی sd کارت خود قرار دهید. از دیگر ویژگی های مفید برنامه قابلیت قرار دادن رمز عبور برای جلوگیری از دسترسی دیگران می باشد.</p>\n', '', null, null, 'accepted', '1', 'Clever Mobile', '20', '0', '7', '0', null, null, null, null);
 INSERT INTO `ym_apps` VALUES ('67', 'ترفند و راز رمز های تلگرام،واتس آپ ،وایبر و ...', '45', '13', 'enable', '2000', '8aGf51471688205.png', '<p style=\"text-align:right;\"><strong>این برنامه ترفند و آموزش کامل  و نکات مخفی  تلگرام،واتس آپ،وایبر،لاین،اینستاگرام،جیمیل،مایکروسافت،یاهو را  به صورت تصویری و  گام به گام آموزش داده است.</strong></p>\r\n\r\n<p style=\"text-align:right;\"><strong>همه در یک برنامه</strong></p>\r\n\r\n<p style=\"text-align:right;\">آموزش کامل و نکات مخفی تلگرام</p>\r\n\r\n<p style=\"text-align:right;\">آموزش کامل و نکات مخفی اینستاگرام</p>\r\n\r\n<p style=\"text-align:right;\">آموزش کامل و نکات مخفی واتس آپ</p>\r\n\r\n<p style=\"text-align:right;\">آموزش کامل و نکات مخفی وایبر</p>\r\n\r\n<p style=\"text-align:right;\">آموزش کامل و نکات مخفی لاین</p>\r\n\r\n<p style=\"text-align:right;\">آموزش کاملو نکات مخفی جیمیل</p>\r\n\r\n<p style=\"text-align:right;\">آموزش کامل و نکات مخفی و ساخت اکانت مایکروسافت برای ویندوز 10</p>\r\n\r\n<p style=\"text-align:right;\">آموزش کامل و نکات مخفی یاهو و مسنجر یاهو</p>\r\n', '', '[\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u0645\\u062f\\u06cc\\u0631\\u06cc\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"RECEIVE\",\"RECEIVE_BOOT_COMPLETED\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u0636\\u0639\\u06cc\\u062a \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\"]', null, 'accepted', '1', null, '19', '0', '0', '0', null, null, null, null);
 INSERT INTO `ym_apps` VALUES ('68', 'APUS Flashlight', null, '14', 'enable', '0', 'nv2zl1472701034.png', '<p>این برنامه از فلش دوربین گوشی شما به عنوان چراغ قوه نیز استفاده می کند . دو ابزار عالی Talking و SOS نیز در این برنامه گنجانده شده که با مورد اولی می توانید با حرف زدن چراغ قوه را فعال کنید و از مورد دوم برای درخواست کمک در شرایط بحرانی بهره ببرید! حالت SOS را انتخاب نموده و در مصرف باطری هنگام استفاده از چراغ قوه صرفه جویی نمایید . از این پس دیگر نیاز نیست نگران تاریکی باشید ، هروقت برق رفت کافی است این برنامه را فعال نموده و سپس محیط را روشن نمایید</p>\r\n', '', '[\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u0636\\u0639\\u06cc\\u062a \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0634\\u0628\\u06a9\\u0647 Wi-Fi\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u0645\\u062f\\u06cc\\u0631\\u06cc\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062d\\u0627\\u0641\\u0638\\u0647 \\u0647\\u0627\\u06cc \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0645\\u0627\\u0633 \\u062a\\u0644\\u0641\\u0646\\u06cc\",\"RECEIVE_BOOT_COMPLETED\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0627\\u0631\\u0633\\u0627\\u0644 \\u067e\\u06cc\\u0627\\u0645\\u06a9\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 NFC\",\"ACCESS_SUPERUSER\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0644\\u06cc\\u0633\\u062a \\u062d\\u0633\\u0627\\u0628 \\u0647\\u0627\\u06cc \\u06a9\\u0627\\u0631\\u0628\\u0631\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0645\\u062e\\u0627\\u0637\\u0628\\u06cc\\u0646\"]', null, 'accepted', '1', 'APUS Group', '3', '0', '0', '0', null, null, null, null);
-INSERT INTO `ym_apps` VALUES ('75', 'برنامه بدون اطلاعات', '46', '13', 'enable', '0', 'GQJyy1477039236.png', '<p>test</p>\r\n', '', '[\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0634\\u0628\\u06a9\\u0647 Wi-Fi\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u0636\\u0639\\u06cc\\u062a \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"RECEIVE_BOOT_COMPLETED\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u06cc\\u0628\\u0631\\u0647\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0645\\u062f\\u06cc\\u0631\\u06cc\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 NFC\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0644\\u06cc\\u0633\\u062a \\u062d\\u0633\\u0627\\u0628 \\u0647\\u0627\\u06cc \\u06a9\\u0627\\u0631\\u0628\\u0631\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0645\\u0627\\u0633 \\u062a\\u0644\\u0641\\u0646\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0645\\u06a9\\u0627\\u0646 \\u062a\\u0642\\u0631\\u06cc\\u0628\\u06cc\",\"PAY_THROUGH_BAZAAR\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0627\\u0631\\u06cc\\u062e\\u0686\\u0647 \\u0641\\u0627\\u06cc\\u0644 \\u0647\\u0627\",\"ACCESS_SUPERUSER\",\"\\u0646\\u0635\\u0628 \\u0645\\u06cc\\u0627\\u0646\\u0628\\u0631 \\u062f\\u0631 Launcher\",\"RECEIVE\",\"C2D_MESSAGE\",\"READ\",\"WRITE\",\"READ_SETTINGS\",\"UPDATE_SHORTCUT\",\"BROADCAST_BADGE\",\"UPDATE_COUNT\",\"UPDATE_BADGE\"]', null, 'pending', '1', null, '7', '0', '0', '0', '12345', 'm@m.com', 'fa web', 'en web');
+INSERT INTO `ym_apps` VALUES ('75', 'برنامه بدون اطلاعات', '46', '13', 'enable', '0', 'GQJyy1477039236.png', '<p>test</p>\r\n', '', '[\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u0637\\u0644\\u0627\\u0639\\u0627\\u062a \\u0634\\u0628\\u06a9\\u0647\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0634\\u0628\\u06a9\\u0647 Wi-Fi\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0627\\u06cc\\u0646\\u062a\\u0631\\u0646\\u062a\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u0636\\u0639\\u06cc\\u062a \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"RECEIVE_BOOT_COMPLETED\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0648\\u06cc\\u0628\\u0631\\u0647\",\"\\u0645\\u0645\\u0627\\u0646\\u0639\\u062a \\u0627\\u0632 \\u0628\\u0647 \\u062e\\u0648\\u0627\\u0628 \\u0631\\u0641\\u062a\\u0646 \\u062f\\u0633\\u062a\\u06af\\u0627\\u0647\",\"\\u0645\\u062f\\u06cc\\u0631\\u06cc\\u062a \\u062d\\u0627\\u0641\\u0638\\u0647 \\u062e\\u0627\\u0631\\u062c\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 NFC\",\"\\u062f\\u0631\\u06cc\\u0627\\u0641\\u062a \\u0644\\u06cc\\u0633\\u062a \\u062d\\u0633\\u0627\\u0628 \\u0647\\u0627\\u06cc \\u06a9\\u0627\\u0631\\u0628\\u0631\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0645\\u0627\\u0633 \\u062a\\u0644\\u0641\\u0646\\u06cc\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u0645\\u06a9\\u0627\\u0646 \\u062a\\u0642\\u0631\\u06cc\\u0628\\u06cc\",\"PAY_THROUGH_BAZAAR\",\"\\u062f\\u0633\\u062a\\u0631\\u0633\\u06cc \\u0628\\u0647 \\u062a\\u0627\\u0631\\u06cc\\u062e\\u0686\\u0647 \\u0641\\u0627\\u06cc\\u0644 \\u0647\\u0627\",\"ACCESS_SUPERUSER\",\"\\u0646\\u0635\\u0628 \\u0645\\u06cc\\u0627\\u0646\\u0628\\u0631 \\u062f\\u0631 Launcher\",\"RECEIVE\",\"C2D_MESSAGE\",\"READ\",\"WRITE\",\"READ_SETTINGS\",\"UPDATE_SHORTCUT\",\"BROADCAST_BADGE\",\"UPDATE_COUNT\",\"UPDATE_BADGE\"]', null, 'accepted', '1', null, '7', '0', '0', '0', '12345', 'm@m.com', 'fa web', 'en web');
 INSERT INTO `ym_apps` VALUES ('76', null, '46', null, 'enable', null, null, '', '', null, null, 'incomplete', '1', null, '0', '0', '0', '0', null, null, null, null);
 
 -- ----------------------------
@@ -117,8 +117,9 @@ INSERT INTO `ym_apps` VALUES ('76', null, '46', null, 'enable', null, null, '', 
 DROP TABLE IF EXISTS `ym_app_advertises`;
 CREATE TABLE `ym_app_advertises` (
   `app_id` int(10) unsigned NOT NULL,
-  `status` tinyint(4) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT '1',
   `create_date` varchar(20) COLLATE utf8_persian_ci DEFAULT NULL,
+  `cover` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT 'تصویر',
   PRIMARY KEY (`app_id`),
   CONSTRAINT `ym_app_advertises_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
@@ -126,8 +127,11 @@ CREATE TABLE `ym_app_advertises` (
 -- ----------------------------
 -- Records of ym_app_advertises
 -- ----------------------------
-INSERT INTO `ym_app_advertises` VALUES ('66', '1', '1480335566');
-INSERT INTO `ym_app_advertises` VALUES ('67', '1', '1480356526');
+INSERT INTO `ym_app_advertises` VALUES ('55', '1', '1480363511', 'Y7Fkb1480363509.jpg');
+INSERT INTO `ym_app_advertises` VALUES ('58', '1', '1480361464', 'TCnrl1480363365.jpg');
+INSERT INTO `ym_app_advertises` VALUES ('61', '1', '1480357103', 'Xwnjh1480363376.jpg');
+INSERT INTO `ym_app_advertises` VALUES ('66', '1', '1480335566', 'h9LXV1480363434.jpg');
+INSERT INTO `ym_app_advertises` VALUES ('67', '1', '1480356526', 'BivV61480363403.jpg');
 
 -- ----------------------------
 -- Table structure for ym_app_buys
@@ -143,14 +147,11 @@ CREATE TABLE `ym_app_buys` (
   KEY `user_id` (`user_id`) USING BTREE,
   CONSTRAINT `ym_app_buys_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `ym_app_buys_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_app_buys
 -- ----------------------------
-INSERT INTO `ym_app_buys` VALUES ('1', '48', '48', '1466641625');
-INSERT INTO `ym_app_buys` VALUES ('2', '48', '45', '1466871224');
-INSERT INTO `ym_app_buys` VALUES ('10', '49', '46', '1467038007');
 
 -- ----------------------------
 -- Table structure for ym_app_categories
@@ -233,6 +234,7 @@ CREATE TABLE `ym_app_discounts` (
 -- ----------------------------
 -- Records of ym_app_discounts
 -- ----------------------------
+INSERT INTO `ym_app_discounts` VALUES ('48', '1480404602', '1480408200', '10');
 
 -- ----------------------------
 -- Table structure for ym_app_images
@@ -245,7 +247,7 @@ CREATE TABLE `ym_app_images` (
   PRIMARY KEY (`id`),
   KEY `app_id` (`app_id`),
   CONSTRAINT `ym_app_images_ibfk_1` FOREIGN KEY (`app_id`) REFERENCES `ym_apps` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_app_images
@@ -279,6 +281,8 @@ INSERT INTO `ym_app_images` VALUES ('51', '67', 'fFCIe1471688393.jpg');
 INSERT INTO `ym_app_images` VALUES ('52', '67', 'yv2DV1471688434.jpg');
 INSERT INTO `ym_app_images` VALUES ('53', '75', 'DlIcM1477039252.jpg');
 INSERT INTO `ym_app_images` VALUES ('54', '75', '8vW0w1477039253.jpg');
+INSERT INTO `ym_app_images` VALUES ('55', '48', 'ie5tg1484552085.jpg');
+INSERT INTO `ym_app_images` VALUES ('56', '48', 'u9CNy1484552086.jpg');
 
 -- ----------------------------
 -- Table structure for ym_app_packages
@@ -318,7 +322,7 @@ INSERT INTO `ym_app_packages` VALUES ('57', '65', '1.57', 'com.habra.example.cal
 INSERT INTO `ym_app_packages` VALUES ('58', '66', '4.9', 'polis.app.callrecorder.pro', '4.9-polis.app.callrecorder.pro.apk', '1471685147', '1471685147', 'accepted', null, null);
 INSERT INTO `ym_app_packages` VALUES ('60', '67', '2', 'ir.hyperads.shabake', '2-ir.hyperads.shabake.apk', '1471686698', '1471688672', 'accepted', null, 'new_app');
 INSERT INTO `ym_app_packages` VALUES ('63', '75', '2.1.4', 'ir.tgbs.android.iranapp2', '2.1.4-ir.tgbs.android.iranapp.apk', '1476970234', '1477039466', 'accepted', null, 'new_app');
-INSERT INTO `ym_app_packages` VALUES ('64', '75', '7.1.3', 'com.farsitel.bazaar', '7.1.3-com.farsitel.bazaar.apk', '1477041711', '1477043018', 'accepted', null, 'old_app');
+INSERT INTO `ym_app_packages` VALUES ('64', '75', '7.1.3', 'com.farsitel.bazaar', '7.1.3-com.farsitel.bazaar.apk', '1477041711', '1484724467', 'accepted', null, 'old_app');
 INSERT INTO `ym_app_packages` VALUES ('65', '48', '2.1.4', 'ir.tgbs.android.iranapp2', '2.1.4-ir.tgbs.android.iranapp.apk', '1478082719', '1480150519', 'accepted', null, 'old_app');
 INSERT INTO `ym_app_packages` VALUES ('66', '49', '2.1.4', 'ir.tgbs.android.iranapp', '2.1.4-ir.tgbs.android.iranapp.apk', '1480144992', null, 'pending', null, 'old_app');
 
@@ -404,17 +408,21 @@ CREATE TABLE `ym_comments` (
   `create_time` int(11) DEFAULT NULL,
   `update_time` int(11) DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
+  `is_private` tinyint(4) DEFAULT '0' COMMENT 'خصوصی',
   PRIMARY KEY (`comment_id`),
   KEY `owner_name` (`owner_name`,`owner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 -- ----------------------------
 -- Records of ym_comments
 -- ----------------------------
-INSERT INTO `ym_comments` VALUES ('Apps', '60', '74', null, '44', null, null, 'سلام', '1471171859', null, '0');
-INSERT INTO `ym_comments` VALUES ('Apps', '60', '75', null, '44', null, null, 'عالی', '1471245819', null, '0');
-INSERT INTO `ym_comments` VALUES ('Apps', '67', '76', null, '44', 'Admin', null, 'تست', '1471762043', '1472538715', '2');
-INSERT INTO `ym_comments` VALUES ('Apps', '65', '77', null, '44', 'Admin', null, 'خیلی نرم افزار خوبیه\r\n', '1472069470', '1472542802', '2');
+INSERT INTO `ym_comments` VALUES ('Apps', '60', '74', null, '44', null, null, 'سلام', '1471171859', null, '0', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '60', '75', null, '44', null, null, 'عالی', '1471245819', null, '0', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '67', '76', null, '44', 'Admin', null, 'تست', '1471762043', '1472538715', '2', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '65', '77', null, '44', 'Admin', null, 'خیلی نرم افزار خوبیه\r\n', '1472069470', '1472542802', '2', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '48', '78', null, '44', null, null, 'سلام', '1473069470', null, '0', '0');
+INSERT INTO `ym_comments` VALUES ('Apps', '48', '79', '78', '46', null, null, 'علیک سلام', '1480504842', null, '0', '1');
+INSERT INTO `ym_comments` VALUES ('Apps', '48', '80', '78', '46', null, null, 'تست پاسخ', '1484549747', null, '0', '0');
 
 -- ----------------------------
 -- Table structure for ym_counter_save
@@ -429,8 +437,8 @@ CREATE TABLE `ym_counter_save` (
 -- ----------------------------
 -- Records of ym_counter_save
 -- ----------------------------
-INSERT INTO `ym_counter_save` VALUES ('counter', '1354');
-INSERT INTO `ym_counter_save` VALUES ('day_time', '2457721');
+INSERT INTO `ym_counter_save` VALUES ('counter', '1362');
+INSERT INTO `ym_counter_save` VALUES ('day_time', '2457772');
 INSERT INTO `ym_counter_save` VALUES ('max_count', '27');
 INSERT INTO `ym_counter_save` VALUES ('max_time', '1470123000');
 INSERT INTO `ym_counter_save` VALUES ('yesterday', '1');
@@ -448,7 +456,7 @@ CREATE TABLE `ym_counter_users` (
 -- ----------------------------
 -- Records of ym_counter_users
 -- ----------------------------
-INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1480356534');
+INSERT INTO `ym_counter_users` VALUES ('837ec5754f503cfaaee0929fd48974e7', '1484728511');
 
 -- ----------------------------
 -- Table structure for ym_pages
@@ -656,6 +664,9 @@ CREATE TABLE `ym_user_details` (
   `company_name` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'نام شرکت',
   `registration_number` varchar(50) COLLATE utf8_persian_ci DEFAULT NULL COMMENT 'شماره ثبت',
   `registration_certificate_image` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT 'تصویر گواهی ثبت شرکت',
+  `score` int(10) unsigned DEFAULT '0' COMMENT 'امتیاز',
+  `dev_score` int(10) unsigned DEFAULT '0' COMMENT 'امتیاز توسعه دهنده',
+  `earning` decimal(10,0) unsigned DEFAULT '0' COMMENT 'درآمد',
   PRIMARY KEY (`user_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -664,16 +675,16 @@ CREATE TABLE `ym_user_details` (
 -- ----------------------------
 -- Records of ym_user_details
 -- ----------------------------
-INSERT INTO `ym_user_details` VALUES ('44', 'یوسف مبشری', 'Yusef Mobasheri', 'tarsiminc.ir', 'tarsiminc.com', '0370544651', 'NpLls1465983239.jpg', '09358389265', '3718146164', 'قم - خیابان امام خمینی', '5000000', 'yusef', 'accepted', '0', null, 'Yusef', 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('45', 'گروه برنامه نویسی هایپر ادز', 'Programming Group hyperads', '', 'http://hyperads.ir', '0830083731', 'gmdIt1466126488.jpg', '09332514128', '0831166567', 'تهران', '684', 'hyperads', 'accepted', '0', null, 'هایپر ادز', 'real', 'ceo', 'هایپر ادز', '123456', 'gmdIt1466126488.jpg');
-INSERT INTO `ym_user_details` VALUES ('46', 'مسعود قراگوزلو', 'masoud gharagozlu', '', '', '0370518926', 'jfJ9J1466406615.png', '38888888', '3718958691', 'قم...', '200000', 'Masoud', 'accepted', '1', '123456789123456789123456', null, 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('47', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('48', null, null, null, null, null, null, null, null, null, '600', null, 'pending', '0', null, null, 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('49', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('50', 'پویا', 'Pouya', '', '', '2020202020', 'CisDP1469566398.jpg', '09368365525', '1234567890', 'jkhjf,k.hlj;kljhgfd', '500', null, 'accepted', '0', null, 'Pouya', 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('51', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('52', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null);
-INSERT INTO `ym_user_details` VALUES ('53', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null);
+INSERT INTO `ym_user_details` VALUES ('44', 'یوسف مبشری', 'Yusef Mobasheri', 'tarsiminc.ir', 'tarsiminc.com', '0370544651', 'NpLls1465983239.jpg', '09358389265', '3718146164', 'قم - خیابان امام خمینی', '5000000', 'yusef', 'accepted', '0', null, 'Yusef', 'real', null, null, null, null, null, '0', '0');
+INSERT INTO `ym_user_details` VALUES ('45', 'گروه برنامه نویسی هایپر ادز', 'Programming Group hyperads', '', 'http://hyperads.ir', '0830083731', 'gmdIt1466126488.jpg', '09332514128', '0831166567', 'تهران', '684', 'hyperads', 'accepted', '0', null, 'هایپر ادز', 'real', 'ceo', 'هایپر ادز', '123456', 'gmdIt1466126488.jpg', null, '1', '1140');
+INSERT INTO `ym_user_details` VALUES ('46', 'مسعود قراگوزلو', 'masoud gharagozlu', '', '', '0370518926', 'jfJ9J1466406615.png', '38888888', '3718958691', 'قم...', '196100', 'Masoud', 'accepted', '1', '123456789123456789123456', null, 'real', null, null, null, null, '3', '23', '0');
+INSERT INTO `ym_user_details` VALUES ('47', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0', '0');
+INSERT INTO `ym_user_details` VALUES ('48', null, null, null, null, null, null, null, null, null, '600', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0', '0');
+INSERT INTO `ym_user_details` VALUES ('49', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, '10', '0', '0');
+INSERT INTO `ym_user_details` VALUES ('50', 'پویا', 'Pouya', '', '', '2020202020', 'CisDP1469566398.jpg', '09368365525', '1234567890', 'jkhjf,k.hlj;kljhgfd', '500', null, 'accepted', '0', null, 'Pouya', 'real', null, null, null, null, null, '0', '0');
+INSERT INTO `ym_user_details` VALUES ('51', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0', '0');
+INSERT INTO `ym_user_details` VALUES ('52', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0', '0');
+INSERT INTO `ym_user_details` VALUES ('53', null, null, null, null, null, null, null, null, null, '0', null, 'pending', '0', null, null, 'real', null, null, null, null, null, '0', '0');
 
 -- ----------------------------
 -- Table structure for ym_user_dev_id_requests
@@ -702,7 +713,7 @@ CREATE TABLE `ym_user_notifications` (
   `date` varchar(30) NOT NULL COMMENT 'زمان',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_user_notifications
@@ -757,9 +768,11 @@ INSERT INTO `ym_user_notifications` VALUES ('61', '46', 'اطلاعات شما �
 INSERT INTO `ym_user_notifications` VALUES ('62', '46', 'بسته ir.tgbs.android.iranapp توسط مدیر سیستم تایید شد.', '1', '1477039452');
 INSERT INTO `ym_user_notifications` VALUES ('63', '46', 'برنامه برنامه بدون اطلاعات تایید شده است.', '1', '1477039466');
 INSERT INTO `ym_user_notifications` VALUES ('64', '46', 'بسته com.farsitel.bazaar توسط مدیر سیستم تایید شد.', '1', '1477043018');
-INSERT INTO `ym_user_notifications` VALUES ('65', '46', 'برنامه برنامه بدون اطلاعات رد شده است. جهت اطلاع از دلیل تایید نشدن بسته جدید به صفحه ویرایش برنامه مراجعه فرمایید.', '0', '1477382718');
+INSERT INTO `ym_user_notifications` VALUES ('65', '46', 'برنامه برنامه بدون اطلاعات رد شده است. جهت اطلاع از دلیل تایید نشدن بسته جدید به صفحه ویرایش برنامه مراجعه فرمایید.', '1', '1477382718');
 INSERT INTO `ym_user_notifications` VALUES ('66', null, 'برنامه APUS Flashlight نیاز به تغییرات دارد. جهت مشاهده پیام کارشناسان به صفحه ویرایش برنامه مراجعه فرمایید.', '0', '1477382759');
-INSERT INTO `ym_user_notifications` VALUES ('67', '46', 'بسته ir.tgbs.android.iranapp2 توسط مدیر سیستم تایید شد.', '0', '1480150519');
+INSERT INTO `ym_user_notifications` VALUES ('67', '46', 'بسته ir.tgbs.android.iranapp2 توسط مدیر سیستم تایید شد.', '1', '1480150519');
+INSERT INTO `ym_user_notifications` VALUES ('68', '44', 'توسعه دهنده برنامه \"دعای روزانه ماه رمضان+صوت\" برای نظر شما پاسخ ارسال کرده است.', '0', '1480504842');
+INSERT INTO `ym_user_notifications` VALUES ('69', '46', 'برنامه برنامه بدون اطلاعات تایید شده است.', '0', '1484724467');
 
 -- ----------------------------
 -- Table structure for ym_user_roles
@@ -788,6 +801,7 @@ CREATE TABLE `ym_user_settlement` (
   `amount` varchar(15) DEFAULT NULL COMMENT 'مبلغ',
   `date` varchar(20) DEFAULT NULL COMMENT 'تاریخ',
   `iban` varchar(24) DEFAULT NULL COMMENT 'شماره شبا',
+  `token` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT 'کد رهگیری',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_settlement_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
@@ -812,7 +826,7 @@ CREATE TABLE `ym_user_transactions` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `ym_user_transactions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `ym_users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ym_user_transactions
@@ -822,3 +836,5 @@ INSERT INTO `ym_user_transactions` VALUES ('5', '48', '100', '1466639210', 'paid
 INSERT INTO `ym_user_transactions` VALUES ('6', '48', '100', '1467124844', 'paid', '4794704778', 'خرید اعتبار از طریق درگاه زرین پال');
 INSERT INTO `ym_user_transactions` VALUES ('7', '48', '500', '1467569943', 'paid', '4496956003', 'خرید اعتبار از طریق درگاه زرین پال');
 INSERT INTO `ym_user_transactions` VALUES ('8', '50', '500', '1469566182', 'paid', '41106820966', 'خرید اعتبار از طریق درگاه زرین پال');
+INSERT INTO `ym_user_transactions` VALUES ('9', '46', '5000', '1484559338', 'unpaid', null, null);
+INSERT INTO `ym_user_transactions` VALUES ('10', '46', '1500', '1484642187', 'unpaid', null, null);

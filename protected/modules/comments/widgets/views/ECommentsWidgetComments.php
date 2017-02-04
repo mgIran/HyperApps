@@ -1,7 +1,16 @@
+<?php
+/* @var $comments array */
+/* @var $comment Comment */
+?>
 <?php if(count($comments) > 0):?>
     <ul class="comments-list">
-        <?php foreach($comments as $key => $comment):
-            ?>
+        <?php foreach($comments as $key => $comment):?>
+            <?php $parentComment=Comment::model()->findByPk($comment->parent_comment_id);?>
+            <?php if($comment->is_private):?>
+                <?php if($parentComment->creator_id != Yii::app()->user->getId() and $comment->creator_id != Yii::app()->user->getId()):?>
+                    <?php continue;?>
+                <?php endif;?>
+            <?php endif;?>
             <li id="comment-<?php echo $comment->comment_id; ?>">
                 <div class="comment-avatar">
                     <?php
@@ -49,6 +58,7 @@
                             Yii::app()->controller->renderPartial('//layouts/_loading');
                             $this->widget('comments.widgets.ECommentsFormWidget' ,array(
                                 'model' => $this->model ,
+                                'isDevReply' => (Yii::app()->user->roles=='developer')?true:false
                             ));
                             echo "</div>";
                         }
@@ -56,9 +66,7 @@
                 ?>
                 <?php if(count($comment->childs) > 0 && $this->allowSubcommenting === true) $this->render('ECommentsWidgetComments', array('comments' => $comment->childs));?>
             </li>
-        <?php
-        endforeach;
-        ?>
+        <?php endforeach; ?>
     </ul>
 <?php else:?>
     <p><?php echo Yii::t($this->_config['translationCategory'], 'No '.$this->_config['moduleObjectName'].'s');?></p>

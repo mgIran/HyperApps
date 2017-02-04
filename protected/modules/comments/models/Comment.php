@@ -27,6 +27,7 @@
  * @property integer $create_time
  * @property integer $update_time
  * @property integer $status
+ * @property integer $is_private
  */
 class Comment extends CActiveRecord
 {
@@ -99,12 +100,12 @@ class Comment extends CActiveRecord
         $modelConfig = $commentsModule->getModelConfig($this);
         $rules = array(
             array('owner_name, owner_id, comment_text', 'required'),
-            array('owner_id, parent_comment_id, creator_id, create_time, update_time, status', 'numerical', 'integerOnly' => true),
+            array('owner_id, parent_comment_id, creator_id, create_time, update_time, status, is_private', 'numerical', 'integerOnly' => true),
             array('owner_name', 'length', 'max' => 50),
             array('owner_name, creator_id, creator_name, user_name, user_email, verifyCode', 'checkConfig'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('platformFilter, owner_name, owner_id, comment_id, parent_comment_id, creator_id, user_name, user_email, comment_text, create_time, update_time, status', 'safe', 'on' => 'search'),
+            array('platformFilter, owner_name, owner_id, comment_id, parent_comment_id, creator_id, user_name, user_email, comment_text, create_time, update_time, status, is_private', 'safe', 'on' => 'search'),
         );
 
         return $rules;
@@ -167,6 +168,7 @@ class Comment extends CActiveRecord
             'update_time' => Yii::t($this->config['translationCategory'], 'Update Time'),
             'status' => Yii::t($this->config['translationCategory'], 'Status'),
             'verifyCode' => Yii::t($this->config['translationCategory'], 'Verification Code'),
+            'is_private' => Yii::t($this->config['translationCategory'], 'Private'),
         );
     }
 
@@ -192,6 +194,7 @@ class Comment extends CActiveRecord
         $criteria->compare('create_time', $this->create_time);
         $criteria->compare('update_time', $this->update_time);
         $criteria->compare('t.status', $this->status);
+        $criteria->compare('is_private', $this->is_private);
         $relations = $this->relations();
         //if User model has been configured
         if(isset($relations['user']))

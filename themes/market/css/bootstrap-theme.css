@@ -1298,8 +1298,16 @@ body.ios .footer .nav li.active {
     background-color: transparent;
 }
 
-.footer .copyright {
-    padding-left: 50px;
+.footer .nav li.copyright {
+    clear: both;
+    float: none;
+    font-size: 11px;
+    text-align: right;
+    width: 200px;
+    line-height:20px;
+}
+.footer .nav li.copyright:hover{
+    color: #aaa;
 }
 
 .page {
@@ -2458,4 +2466,37 @@ header.mobile.search-open .mobile-search {
     width: 100%;
     height: 100%;
     z-index: 2;
+}
+
+#advertises.list-view{
+    padding: 0 40px;
+    margin: 30px 0;
+}
+
+.app-carousel.owl-theme .owl-controls .owl-nav [class*="owl-"]{
+    background: transparent;
+    color: #666;
+    font-size: 20px;
+}
+
+.countdown-item{
+    clear: both;
+    margin-top: 20px;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: #888;
+}
+
+.description{
+    color: #999;
+}
+.rahbod{
+    display: inline-block;
+    vertical-align: middle;
+    opacity:.2;
+}
+.rahbod img{
+    width: 90px;
 }

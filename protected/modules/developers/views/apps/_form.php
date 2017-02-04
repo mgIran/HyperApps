@@ -99,6 +99,7 @@
                     'readonly' => $model->price>0?false:true
                 )); ?>
                 <div class="desc portion hidden" style="margin: 15px 0;">
+                    <p class="error"><b>توجه: </b>قیمت به تومان می باشد</p>
                     <p><b>سهم توسعه دهنده:</b><span id="developer-portion">0</span> تومان</p>
                     <p><b>سهم هایپر اپس:</b><span id="market-portion">0</span> تومان</p>
                     <p><b>مالیات:</b><span id="tax-tag">0</span> تومان</p>
@@ -113,25 +114,11 @@
                         else
                             return false;
                     });
-                    if($('#price-input').val()!='') {
-                        $('.portion').removeClass('hidden');
-                        var price=$(this).val();
-                        $('#tax-tag').text((price*parseInt($('#tax').val()))/100);
-                        $('#market-portion').text((price*parseInt($('#commission').val()))/100);
-                        $('#developer-portion').text(price-parseInt($('#tax-tag').text())-parseInt($('#market-portion').text()));
-                    }
-                    else
-                        $('.portion').addClass('hidden');
+
+                    calculatePortion($('#price-input').val());
+
                     $('#price-input').on('keyup', function(e){
-                        if($(this).val()!='') {
-                            $('.portion').removeClass('hidden');
-                            var price=$(this).val();
-                            $('#tax-tag').text((price*parseInt($('#tax').val()))/100);
-                            $('#market-portion').text((price*parseInt($('#commission').val()))/100);
-                            $('#developer-portion').text(price-parseInt($('#tax-tag').text())-parseInt($('#market-portion').text()));
-                        }
-                        else
-                            $('.portion').addClass('hidden');
+                        calculatePortion($(this).val());
                     });
                     $('.priceType[value=\"free\"]').on('mousedown', function(){
                         var res = confirm('پس از رایگان کردن برنامه امکان بازگرداندن به حالت غیر رایگان وجود ندارد. \\nآیا مطمئن هستید که میخواهید برنامه را رایگان کنید؟');
@@ -147,6 +134,19 @@
                         else
                             return false;
                     });
+
+                    function calculatePortion(value)
+                    {
+                        if(value != '') {
+                            $('.portion').removeClass('hidden');
+                            var price=value;
+                            $('#tax-tag').text((price*parseInt($('#tax').val()))/100);
+                            $('#market-portion').text((price*parseInt($('#commission').val()))/100);
+                            $('#developer-portion').text(price-parseInt($('#tax-tag').text())-parseInt($('#market-portion').text()));
+                        }
+                        else
+                            $('.portion').addClass('hidden');
+                    }
                 ");?>
             </div>
         <?php endif;?>
