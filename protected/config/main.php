@@ -183,7 +183,7 @@ return array(
             'Secure' => 'tls',
             'Port' => 25,
             'Username' => 'no-reply@hyperapps.ir',
-            'Password' => 'hyperapps.ir',
+            'Password' => '^kqFZiF7lZ&9',
         ),
         'mailTheme'=>
             '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">هایپر اپس<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
