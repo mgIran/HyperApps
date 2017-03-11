@@ -227,7 +227,7 @@
 	<?php endif;?>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'افزودن' : 'ویرایش' ,array('class' => 'btn btn-success')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'افزودن' : 'ثبت و ادامه' ,array('class' => 'btn btn-success')); ?>
 	</div>
 
 <?php  $this->endWidget(); ?>

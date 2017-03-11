@@ -252,10 +252,10 @@ class Apps extends CActiveRecord
 	public function afterFind()
 	{
 		if (!empty($this->packages)) {
-			$packages = $this->packages;
-			foreach ($packages as $key => $package)
-				if ($package->status != 'accepted')
-					unset($packages[$key]);
+			$packages = array();
+			foreach ($this->packages as $key => $package)
+				if ($package->status == 'accepted')
+					$packages[]=$package;
 			if (isset($packages[0]))
 				$this->lastPackage = $packages[0];
 			else

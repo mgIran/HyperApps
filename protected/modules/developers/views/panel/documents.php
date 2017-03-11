@@ -2,13 +2,9 @@
 /* @var $this PanelController */
 /* @var $documentsProvider CActiveDataProvider */
 ?>
-<div class="container dashboard-container">
-
-    <? $this->renderPartial('_tab_links',array('active' => $this->action->id)); ?>
-
-    <a class="btn btn-success developer-signup-link" href="<?php echo Yii::app()->createUrl('/dashboard')?>">پنل کاربری</a>
-    <div class="tab-content card-container">
-        <h2>مستندات توسعه دهندگان</h2><br>
+<div class="dashboard-container">
+    <h3 class="page-name">مستندات</h3>
+    <div class="card-container">
         <h4>فهرست</h4>
         <ul>
             <?php $this->widget('zii.widgets.CListView', array(

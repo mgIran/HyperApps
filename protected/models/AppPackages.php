@@ -153,7 +153,7 @@ class AppPackages extends CActiveRecord
         if (!is_null($models))
             foreach ($models as $model) {
                 if ($model->app->platform_id == $this->app->platform_id) {
-                    if ($model->app->developer_id != Yii::app()->user->getId())
+                    if (Yii::app()->user->type != 'admin' and ($model->app->developer_id != Yii::app()->user->getId()))
                         $this->addError($attribute, 'این بسته قبلا توسط کاربر دیگری ثبت شده است.');
                     else {
                         if ($model->app_id == $this->app_id) {

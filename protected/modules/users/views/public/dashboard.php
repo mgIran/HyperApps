@@ -5,58 +5,36 @@ $tab ='credit-tab';
 if(isset($_GET['tab']))
     $tab = $_GET['tab'];
 ?>
-<div class="container dashboard-container">
-    <ul class="nav nav-tabs">
-        <li <?= ($tab && $tab=="credit-tab"?'class="active"':'') ?>>
-            <a data-toggle="tab" href="#credit-tab">اعتبار</a>
-        </li>
-        <li <?= ($tab && $tab=="transactions-tab"?'class="active"':'') ?>>
-            <a data-toggle="tab" href="#transactions-tab">تراکنش ها</a>
-        </li>
-        <li <?= ($tab && $tab=="buys-tab"?'class="active"':'') ?>>
-            <a data-toggle="tab" href="#buys-tab">خریدها</a>
-        </li>
-        <li <?= ($tab && $tab=="bookmarks-tab"?'class="active"':'') ?>>
-            <a data-toggle="tab" href="#bookmarks-tab">نشان شده ها</a>
-        </li>
-        <li>
-            <a href="<?= $this->createUrl('/tickets/manage/') ?>">پشتیبانی</a>
-        </li>
-        <li <?= ($tab && $tab=="setting-tab"?'class="active"':'') ?>>
-            <a data-toggle="tab" href="#setting-tab">تنظیمات</a>
-        </li>
-    </ul>
-    <?php if(Yii::app()->user->roles!='developer'):?>
-        <a class="btn btn-danger developer-signup-link" href="<?php echo Yii::app()->createUrl('/developers/panel/signup/step/agreement')?>">توسعه دهنده شوید</a>
-    <?php elseif(Yii::app()->user->roles=='developer'):?>
-        <a class="btn btn-success developer-signup-link" href="<?php echo Yii::app()->createUrl('/developers/panel')?>">پنل توسعه دهندگان</a>
-    <?php endif;?>
-
-    <div class="tab-content">
-        <div id="credit-tab" class="tab-pane fade <?= ($tab && $tab=="credit-tab"?'in active':'') ?>">
-            <?php $this->renderPartial('_credit',array(
-                'model'=>$model,
-            ))?>
-        </div>
-        <div id="transactions-tab" class="tab-pane fade <?= ($tab && $tab=="transactions-tab"?'in active':'') ?>">
-            <?php $this->renderPartial('_transactions',array(
-                'model'=>$model,
-            ))?>
-        </div>
-        <div id="buys-tab" class="tab-pane fade <?= ($tab && $tab=="buys-tab"?'in active':'') ?>">
-            <?php $this->renderPartial('_buys_list',array(
-                'model'=>$model,
-            ))?>
-        </div>
-        <div id="setting-tab" class="tab-pane fade <?= ($tab && $tab=="setting-tab"?'in active':'') ?>">
-            <?php $this->renderPartial('_setting',array(
-                'model'=>$model,
-            ))?>
-        </div>
-        <div id="bookmarks-tab" class="tab-pane fade <?= ($tab && $tab=="bookmarks-tab"?'in active':'') ?>">
-            <?php $this->renderPartial('_bookmarks',array(
-                'model'=>$model,
-            ))?>
-        </div>
+<div class="dashboard-container">
+    <div id="credit-tab" class="tab-pane fade <?= ($tab && $tab=="credit-tab"?'in active':'hidden') ?>">
+        <h3 class="page-name">داشبورد</h3>
+        <?php $this->renderPartial('_credit',array(
+            'model'=>$model,
+        ))?>
+    </div>
+    <div id="transactions-tab" class="tab-pane fade <?= ($tab && $tab=="transactions-tab"?'in active':'hidden') ?>">
+        <h3 class="page-name">لیست تراکنش ها</h3>
+        <?php $this->renderPartial('_transactions',array(
+            'model'=>$model,
+        ))?>
+    </div>
+    <div id="buys-tab" class="tab-pane fade <?= ($tab && $tab=="buys-tab"?'in active':'hidden') ?>">
+        <h3 class="page-name">لیست خرید ها</h3>
+        <?php $this->renderPartial('_buys_list',array(
+            'model'=>$model,
+        ))?>
+    </div>
+    <div id="setting-tab" class="tab-pane fade <?= ($tab && $tab=="setting-tab"?'in active':'hidden') ?>">
+        <h3 class="page-name">تنظیمات</h3>
+        <h4 class="col-lg-12 col-md-12 col-sm-12 col-xs-12">تغییر کلمه عبور</h4>
+        <?php $this->renderPartial('_setting',array(
+            'model'=>$model,
+        ))?>
+    </div>
+    <div id="bookmarks-tab" class="tab-pane fade <?= ($tab && $tab=="bookmarks-tab"?'in active':'hidden') ?>">
+        <h3 class="page-name">نشان شده ها</h3>
+        <?php $this->renderPartial('_bookmarks',array(
+            'model'=>$model,
+        ))?>
     </div>
 </div>

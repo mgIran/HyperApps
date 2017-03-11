@@ -24,6 +24,10 @@ $(function(){
             $('.multipliable-input-container .multipliable-input:last').remove();
         return false;
     });
+
+    $(".select-picker").each(function(){
+        $(this).selectpicker();
+    });
 });
 
 

@@ -3,14 +3,14 @@
 /* @var $appsDataProvider CActiveDataProvider */
 /* @var $apps [] */
 ?>
-<div class="container dashboard-container">
-    <? $this->renderPartial('_tab_links',array('active' => $this->action->id)); ?>
-
-    <a class="btn btn-success developer-signup-link" href="<?php echo Yii::app()->createUrl('/dashboard')?>">پنل کاربری</a>
+<div class="dashboard-container">
+    <h3 class="page-name">تخفیفات</h3>
     <div class="tab-content card-container">
         <div class="tab-pane active">
             <?php $this->renderPartial('//layouts/_flashMessage', array('prefix'=>'discount-'));?>
-            <a class="btn btn-success" data-toggle="modal" href="#discount-modal"><i class="icon icon-plus"></i> افزودن تخفیف جدید</a>
+            <div class="overflow-fix">
+                <a class="btn btn-success pull-left" data-toggle="modal" href="#discount-modal"><i class="icon icon-plus"></i> افزودن تخفیف جدید</a>
+            </div>
             <div class="table text-center">
                 <div class="thead">
                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4">عنوان برنامه</div>

@@ -2,15 +2,12 @@
 /* @var $this PanelController */
 /* @var $appsDataProvider CActiveDataProvider */
 ?>
-<div class="container dashboard-container">
-
-    <? $this->renderPartial('_tab_links',array('active' => $this->action->id)); ?>
-
-    <a class="btn btn-success developer-signup-link" href="<?php echo Yii::app()->createUrl('/dashboard')?>">پنل کاربری</a>
+<div class="dashboard-container">
+    <h3 class="page-name">برنامه ها</h3>
     <div class="tab-content card-container">
         <?php $this->renderPartial('//layouts/_flashMessage', array('prefix'=>'images-'));?>
-        <div class="tab-pane active">
-            <a class="btn btn-success" href="<?php echo $this->createUrl('/developers/apps/create');?>"><i class="icon icon-plus"></i> افزودن برنامه جدید</a>
+        <div class="overflow-fix">
+            <a class="btn btn-success pull-left" href="<?php echo $this->createUrl('/developers/apps/create');?>"><i class="icon icon-plus"></i> افزودن برنامه جدید</a>
         </div>
         <div class="table text-center">
             <div class="thead">

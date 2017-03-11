@@ -7,7 +7,7 @@
 <div class="form">
 	<div class="row">
 		<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
-		<h3>ارسال تیکت جدید</h3>
+		<h4>ارسال تیکت جدید</h4>
 		</div>
 		<?
 		if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user'):

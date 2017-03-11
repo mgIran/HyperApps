@@ -1,4 +1,5 @@
 <header class="mobile hidden-lg hidden-md col-sm-12 col-xs-12">
+    <div class="side-bar-trigger hidden-lg hidden-md hidden-sm"></div>
     <div class="logo-box pull-right">
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>"></a>
         <h1><?= $this->siteName ?></h1>

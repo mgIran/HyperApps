@@ -5,8 +5,8 @@
 
 ?>
 
-<div class="container dashboard-container ticket-box">
-	<div class="container-fluid tab-content">
+<div class="dashboard-container ticket-box">
+	<div class="container-fluid">
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-left">
 			<?
 			if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'admin'):

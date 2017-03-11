@@ -7,7 +7,7 @@
 ?>
 
 <div class="col-md-6">
-    <h1>مشخصات</h1>
+    <h4>مشخصات</h4>
 
     <div class="form update-developer-form">
 

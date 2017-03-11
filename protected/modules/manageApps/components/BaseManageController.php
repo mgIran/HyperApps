@@ -218,17 +218,17 @@ class BaseManageController extends Controller
                 } else
                     $model->permissions = null;
             }
-            $pt = $_POST['priceType'];
-            switch($pt){
-                case 'free':
-                    $model->price = 0;
-                    break;
-                case 'online-payment':
-                    break;
-                case 'in-app-payment':
-                    $model->price = -1;
-                    break;
-            }
+//            $pt = $_POST['priceType'];
+//            switch($pt){
+//                case 'free':
+//                    $model->price = 0;
+//                    break;
+//                case 'online-payment':
+//                    break;
+//                case 'in-app-payment':
+//                    $model->price = -1;
+//                    break;
+//            }
             if($model->save()) {
                 if($fileFlag) {
                     rename($tmpDIR . $model->file_name, $appFilesDIR . $model->file_name);
@@ -239,7 +239,7 @@ class BaseManageController extends Controller
                     unlink($tmpDIR . $model->icon);
                 }
                 Yii::app()->user->setFlash('success', 'اطلاعات با موفقیت ویرایش شد.');
-                $this->refresh();
+                $this->redirect(array('/manageApps/'.$model->platform->name.'/update/' . $model->id . '?step=2'));
             } else {
                 Yii::app()->user->setFlash('failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');
             }

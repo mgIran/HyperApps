@@ -70,10 +70,20 @@ $(function() {
         $overlay.toggleClass('in');
         $('body,html').toggleClass('overflow');
     });
+    $body.on('click', ".side-bar-trigger", function () {
+        var $this = $(this);
+        var $overlay = $('.overlay');
+        var $sidebar = $('.side-bar');
+        $sidebar.toggleClass('open');
+        $overlay.toggleClass('in');
+        $('body,html').toggleClass('overflow');
+    });
     $body.on('click', ".overlay", function () {
         var $overlay = $('.overlay');
         var $navbar = $('.mobile-navbar');
-        $navbar.toggleClass('open');
+        var $sidebar = $('.side-bar');
+        $navbar.removeClass('open');
+        $sidebar.removeClass('open');
         $overlay.toggleClass('in');
         $('body,html').toggleClass('overflow');
     });

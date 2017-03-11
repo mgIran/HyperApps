@@ -52,6 +52,10 @@ class TicketsManageController extends Controller
 	 */
 	public function actionView($id)
 	{
+        if(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'admin') {
+            Yii::app()->theme = 'abound';
+            $this->layout = '//layouts/column2';
+        }
 		Yii::app()->user->returnUrl = Yii::app()->request->url;
 		$model = $this->loadModel($id);
 		// seen messages
@@ -127,8 +131,13 @@ class TicketsManageController extends Controller
 		if(isset($_POST['TicketMessages']))
 		{
 			$model->attributes=$_POST['TicketMessages'];
-			if($model->save())
-				$this->redirect(array('/tickets/'.$model->ticket->code));
+			if($model->save()) {
+                if(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'admin')
+                    $model->ticket->updateByPk($model->ticket_id, array('status' => 'answered'));
+                elseif(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'developer')
+                    $model->ticket->updateByPk($model->ticket_id, array('status'=>'waiting'));
+                $this->redirect(array('/tickets/' . $model->ticket->code));
+            }
 		}
 		$this->redirect(Yii::app()->user->returnUrl);
 	}

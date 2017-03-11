@@ -38,6 +38,7 @@ class Tickets extends CActiveRecord
 
 	public $statusLabels = array(
 		'waiting' => 'در انتظار پاسخ',
+		'answered' => 'پاسخ داده شده',
 		'pending' => 'در حال بررسی توسط کارشناس',
 		'open' => 'باز',
 		'close' => 'بسته',

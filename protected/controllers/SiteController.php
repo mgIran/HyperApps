@@ -258,8 +258,4 @@ class SiteController extends Controller
         $this->layout = '//layouts/empty';
         $this->render('//site/pages/under_construction');
     }
-    public function actionTest()
-    {
-        var_dump(Mailer::mail('gharagozlu.masoud@gmail.com', 'test', 'Masoud Gharagozlu', Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']));
-    }
 }

@@ -10,6 +10,12 @@
     }
 }
 @media all and (max-width: 991px) {
+    .side-bar{
+        width: 25%;
+    }
+    .content-bar{
+        padding-right: calc(25% + 50px);
+    }
     header {
         background-color: #fff;
     }
@@ -34,10 +40,21 @@
         padding: 10px 5px;
     }
     .content{
-        margin-top: 140px;
+        margin-top: 80px;
     }
 }
 @media all and (max-width: 767px) {
+    .side-bar{
+        top: 0;
+        width: 40%;
+        right: -40%;
+        height: 100%;
+        z-index:1001;
+        visibility: hidden;
+    }
+    .content-bar{
+        padding: 30px;
+    }
     .content .app-box .app-item{
         min-width: auto;
         max-width: none;
@@ -117,7 +134,12 @@
         float: none !important;
     }
     .logo-box {
-        width: 200px;
+        position: absolute;
+        right: 25%;
+        left: 25%;
+        top: 0;
+        width: auto;
+        z-index:1;
     }
     header ,
     header .logo-box,
@@ -145,7 +167,7 @@
         padding-left: 35px;
     }
     .content{
-        margin-top:110px;
+        margin-top:60px;
         padding-bottom: 0;
     }
     .app-inner .pic{

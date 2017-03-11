@@ -143,6 +143,8 @@ a[href='#package-modal']{margin-top:20px;}
     ),
 ));?>
 
+<?php echo CHtml::button('ثبت و ادامه', array('class'=>'btn btn-success pull-left', 'onclick'=>'$(".nav a[href=\'#pics\']").trigger("click");'));?>
+
 <?php Yii::app()->clientScript->registerCss('package-form','
 #package-info-form input[type="text"]{margin-top:20px;}
 #package-info-form input[type="submit"]{margin-top:20px;}

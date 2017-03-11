@@ -11,11 +11,10 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/owl
 Yii::app()->clientScript->registerScriptFile(Yii::app()->theme->baseUrl.'/js/jquery.magnific-popup.min.js');
 Yii::app()->clientScript->registerCssFile(Yii::app()->theme->baseUrl.'/css/magnific-popup.css');
 
-if($model->platform)
-{
+if($model->platform) {
     $platform = $model->platform;
     $filesFolder = $platform->name;
-    $filePath = Yii::getPathOfAlias("webroot")."/uploads/apps/files/{$filesFolder}/";
+    $filePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$filesFolder}/";
 }
 ?>
 
@@ -264,9 +263,10 @@ if($model->platform)
                         <?php
                     }else {
                         ?>
-                        <a href="#"
-                           data-dismiss="modal"
-                           class="btn btn-default">بستن</a>
+                        <div class="text-center" style="margin-bottom: 15px;">
+                            <a href="<?php echo Yii::app()->createAbsoluteUrl('/apps/download/'.CHtml::encode($model->id).'/'.urlencode(CHtml::encode($model->title)));?>">دانلود مستقیم برنامه</a>
+                        </div>
+                        <a href="#" data-dismiss="modal" class="btn btn-default">بستن</a>
                         <?php
                     }
                     ?>
