@@ -389,6 +389,9 @@ input[type='checkbox']{
 .side-bar .user-icon{
     background: url("../svg/user.svg") no-repeat center;
 }
+.side-bar .white-user-icon{
+    background: url("../svg/white-user.svg") no-repeat center;
+}
 .side-bar .chart-icon{
     background: url("../svg/chart.svg") no-repeat center;
 }
@@ -457,4 +460,11 @@ input[type='checkbox']{
 }
 .overflow-fix{
     overflow: hidden;
+}
+.side-bar li.upgrade-link{
+    margin-top: 30px;
+}
+.side-bar li.upgrade-link a{
+    background: #d9534f;
+    color: #fff;
 }

@@ -33,7 +33,7 @@ if(!$model->isNewRecord || $apps) {
 		if(!$model->isNewRecord)
 			echo CHtml::textField('',$model->app->title,array('disabled'=>true));
 		else
-			echo $form->dropDownList($model, 'app_id', CHtml::listData($apps, 'id', 'title'));
+			echo $form->dropDownList($model, 'app_id', CHtml::listData($apps, 'id', 'title'), array('class'=>'select-picker', 'data-live-search'=>'true'));
 		?>
 		<?php echo $form->error($model, 'app_id'); ?>
 	</div>

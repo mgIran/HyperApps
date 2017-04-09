@@ -4,7 +4,7 @@
 /* @var $data Array */
 ?>
 
-<div class="container developer-signup-container">
+<div class="developer-signup-container">
     <div class="col-md-8 col-md-offset-2">
         <h2 class="text-center">توسعه دهنده شوید</h2>
         <div class="steps-container">

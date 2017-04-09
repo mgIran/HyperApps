@@ -81,6 +81,14 @@
                             <span>تنظیمات</span>
                         </a>
                     </li>
+                    <?php if(Yii::app()->user->roles!='developer'):?>
+                        <li class="upgrade-link">
+                            <a href="<?php echo Yii::app()->createUrl("/developers/panel/signup/step/agreement");?>">
+                                <i class="icon white-user-icon"></i>
+                                <span>توسعه دهنده شوید</span>
+                            </a>
+                        </li>
+                    <?php endif;?>
                 </ul>
                 <?php if(Yii::app()->user->roles == 'developer'):?>
                     <h5>توسعه دهندگان</h5>
