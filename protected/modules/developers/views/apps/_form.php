@@ -163,17 +163,17 @@
             <?php echo $form->error($model,'description'); ?>
         </div>
 
-        <div class="form-group">
-            <?= $form->labelEx($model,'change_log');?>
-            <?php
-            $this->widget('ext.ckeditor.CKEditor',array(
-                'model' => $model,
-                'attribute' => 'change_log',
-                'config' =>'basic'
-            ));
-            ?>
-            <?php echo $form->error($model,'change_log'); ?>
-        </div>
+<!--        <div class="form-group">-->
+<!--            --><?//= $form->labelEx($model,'change_log');?>
+<!--            --><?php
+//            $this->widget('ext.ckeditor.CKEditor',array(
+//                'model' => $model,
+//                'attribute' => 'change_log',
+//                'config' =>'basic'
+//            ));
+//            ?>
+<!--            --><?php //echo $form->error($model,'change_log'); ?>
+<!--        </div>-->
 
         <?php if($model->platform->name != 'android'):?>
             <div class="form-group multipliable-input-container">

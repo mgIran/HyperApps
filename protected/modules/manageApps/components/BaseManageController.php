@@ -549,6 +549,7 @@ class BaseManageController extends Controller
                     $app = Apps::model()->findByPk($_POST['app_id']);
                     $app->setScenario('set_permissions');
                     $app->permissions = CJSON::encode($this->getPermissionsName($apkInfo['permissions']));
+                    $app->change_log=$_POST['Apps']['change_log'];
                     $app->save();
                 }
             } else {

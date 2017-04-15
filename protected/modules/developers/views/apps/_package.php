@@ -45,6 +45,7 @@ Yii::app()->clientScript->registerCss('inline',"
                         <div class="form-group">
                             <?php if($model->platform_id==1):?>
                                 <?php echo CHtml::beginForm('','post',array('id'=>'package-info-form'));?>
+                                    <label style="margin: 15px 0;">فایل بسته</label>
                                     <?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
                                         'id' => 'uploaderFile',
                                         'model' => $model,
@@ -63,42 +64,83 @@ Yii::app()->clientScript->registerCss('inline',"
                                                 $(".uploader-message").text(responseObj.message).addClass("error");
                                         ',
                                     ));?>
+                                    <label style="margin: 15px 0;">تغییرات نسخه</label>
+                                    <?php $this->widget('ext.ckeditor.CKEditor',array(
+                                        'model' => $model,
+                                        'attribute' => 'change_log',
+                                        'config' =>'basic'
+                                    )); ?>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <?php echo CHtml::hiddenField('for', $for);?>
                                             <?php echo CHtml::hiddenField('app_id', $model->id);?>
                                             <?php echo CHtml::hiddenField('filesFolder', $model->platform->name);?>
                                             <?php echo CHtml::hiddenField('platform', $model->platform->name);?>
-                                            <?php echo CHtml::ajaxSubmitButton('ثبت', $this->createUrl('/developers/apps/savePackage'), array(
-                                                'type'=>'POST',
-                                                'dataType'=>'JSON',
-                                                'data'=>'js:$("#package-info-form").serialize()',
-                                                'beforeSend'=>"js:function(){
-                                                    if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
-                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
-                                                        return false;
-                                                    }else
-                                                        $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
-                                                }",
-                                                'success'=>"js:function(data){
-                                                    if(data.status){
-                                                        $.fn.yiiListView.update('packages-list',{});
-                                                        $('.uploader-message').text('');
-                                                        $('#package-modal').modal('hide');
-                                                        $('.dz-preview').remove();
-                                                        $('.dropzone').removeClass('dz-started');
-                                                    }
-                                                    else
-                                                        $('.uploader-message').text(data.message).addClass('error');
-                                                }",
-                                                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
-                                            ), array('class'=>'btn btn-success pull-left'));?>
+                                            <?php echo CHtml::button('ثبت', array('class'=>'btn btn-success pull-left', 'id'=>'submit-form', 'style'=>'margin-top:15px;'))?>
+                                            <?php Yii::app()->clientScript->registerScript('ajax-submit',"
+                                                jQuery('body').on('click','#submit-form',function(){
+                                                    for ( instance in CKEDITOR.instances )
+                                                            CKEDITOR.instances[instance].updateElement();
+                                                    jQuery.ajax({
+                                                        'type':'POST',
+                                                        'dataType':'JSON',
+                                                        'data':$(\"#package-info-form\").serialize(),
+                                                        'beforeSend':function(){
+                                                            if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
+                                                                $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
+                                                                return false;
+                                                            }else
+                                                                $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
+                                                        },
+                                                        'success':function(data){
+                                                            if(data.status){
+                                                                $.fn.yiiListView.update('packages-list',{});
+                                                                $('.uploader-message').text('');
+                                                                $('#package-modal').modal('hide');
+                                                                $('.dz-preview').remove();
+                                                                $('.dropzone').removeClass('dz-started');
+                                                            }
+                                                            else
+                                                                $('.uploader-message').text(data.message).addClass('error');
+                                                        },
+                                                        'error':function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); },
+                                                        'url':'".$this->createUrl('/developers/apps/savePackage')."',
+                                                        'cache':false
+                                                    });
+                                                    return false;
+                                                });
+                                            ");?>
+<!--                                            --><?php //echo CHtml::ajaxSubmitButton('ثبت', $this->createUrl('/developers/apps/savePackage'), array(
+//                                                'type'=>'POST',
+//                                                'dataType'=>'JSON',
+//                                                'data'=>'js:$("#package-info-form").serialize()',
+//                                                'beforeSend'=>"js:function(){
+//                                                    if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
+//                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
+//                                                        return false;
+//                                                    }else
+//                                                        $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
+//                                                }",
+//                                                'success'=>"js:function(data){
+//                                                    if(data.status){
+//                                                        $.fn.yiiListView.update('packages-list',{});
+//                                                        $('.uploader-message').text('');
+//                                                        $('#package-modal').modal('hide');
+//                                                        $('.dz-preview').remove();
+//                                                        $('.dropzone').removeClass('dz-started');
+//                                                    }
+//                                                    else
+//                                                        $('.uploader-message').text(data.message).addClass('error');
+//                                                }",
+//                                                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
+//                                            ), array('class'=>'btn btn-success pull-left'));?>
                                             <h5 class="uploader-message error pull-right"></h5>
                                         </div>
                                     </div>
                                 <?php echo CHtml::endForm();?>
                             <?php else:?>
                                 <?php echo CHtml::beginForm('','post',array('id'=>'package-info-form'));?>
+                                    <label style="margin: 15px 0;">فایل بسته</label>
                                     <?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
                                         'id' => 'uploaderFile',
                                         'model' => $model,
@@ -117,6 +159,12 @@ Yii::app()->clientScript->registerCss('inline',"
                                                 $(".uploader-message").text(responseObj.message).addClass("error");
                                         ',
                                     ));?>
+                                    <label style="margin: 15px 0;">تغییرات نسخه</label>
+                                    <?php $this->widget('ext.ckeditor.CKEditor',array(
+                                        'model' => $model,
+                                        'attribute' => 'change_log',
+                                        'config' =>'basic'
+                                    )); ?>
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                             <?php echo CHtml::textField('version', '', array('class'=>'form-control', 'placeholder'=>'ورژن *'));?>
@@ -131,35 +179,74 @@ Yii::app()->clientScript->registerCss('inline',"
                                             <?php echo CHtml::hiddenField('app_id', $model->id);?>
                                             <?php echo CHtml::hiddenField('filesFolder', $model->platform->name);?>
                                             <?php echo CHtml::hiddenField('platform', $model->platform->name);?>
-                                            <?php echo CHtml::ajaxSubmitButton('ثبت', $this->createUrl('/developers/apps/savePackage'), array(
-                                                'type'=>'POST',
-                                                'dataType'=>'JSON',
-                                                'data'=>'js:$("#package-info-form").serialize()',
-                                                'beforeSend'=>"js:function(){
-                                                    if($('#package-info-form #version').val()=='' || $('#package-info-form #package_name').val()==''){
-                                                        $('.uploader-message').text('لطفا فیلد های ستاره دار را پر کنید.').addClass('error');
-                                                        return false;
-                                                    }else if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
-                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
-                                                        return false;
-                                                    }else
-                                                        $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
-                                                }",
-                                                'success'=>"js:function(data){
-                                                    if(data.status){
-                                                        $.fn.yiiListView.update('packages-list',{});
-                                                        $('.uploader-message').text('');
-                                                        $('#package-modal').modal('hide');
-                                                    }
-                                                    else
-                                                        $('.uploader-message').text(data.message).addClass('error');
-                                                    $('.dz-preview').remove();
-                                                    $('.dropzone').removeClass('dz-started');
-                                                    $('#package-info-form #version').val('');
-                                                    $('#package-info-form #package_name').val('');
-                                                }",
-                                                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
-                                            ), array('class'=>'btn btn-success pull-left'));?>
+                                            <?php echo CHtml::button('ثبت', array('class'=>'btn btn-success pull-left', 'id'=>'submit-form', 'style'=>'margin-top:15px;'))?>
+                                            <?php Yii::app()->clientScript->registerScript('ajax-submit',"
+                                                jQuery('body').on('click','#submit-form',function(){
+                                                    for ( instance in CKEDITOR.instances )
+                                                            CKEDITOR.instances[instance].updateElement();
+                                                    jQuery.ajax({
+                                                        'type':'POST',
+                                                        'dataType':'JSON',
+                                                        'data':$(\"#package-info-form\").serialize(),
+                                                        'beforeSend':function(){
+                                                            if($('#package-info-form #version').val()=='' || $('#package-info-form #package_name').val()==''){
+                                                                $('.uploader-message').text('لطفا فیلد های ستاره دار را پر کنید.').addClass('error');
+                                                                return false;
+                                                            }else if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
+                                                                $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
+                                                                return false;
+                                                            }else
+                                                                $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
+                                                        },
+                                                        'success':function(data){
+                                                            if(data.status){
+                                                                $.fn.yiiListView.update('packages-list',{});
+                                                                $('.uploader-message').text('');
+                                                                $('#package-modal').modal('hide');
+                                                            }
+                                                            else
+                                                                $('.uploader-message').text(data.message).addClass('error');
+                                                            $('.dz-preview').remove();
+                                                            $('.dropzone').removeClass('dz-started');
+                                                            $('#package-info-form #version').val('');
+                                                            $('#package-info-form #package_name').val('');
+                                                        },
+                                                        'error':function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); },
+                                                        'url':'".$this->createUrl('/developers/apps/savePackage')."',
+                                                        'cache':false
+                                                    });
+                                                    return false;
+                                                });
+                                            ");?>
+<!--                                            --><?php //echo CHtml::ajaxSubmitButton('ثبت', $this->createUrl('/developers/apps/savePackage'), array(
+//                                                'type'=>'POST',
+//                                                'dataType'=>'JSON',
+//                                                'data'=>'js:$("#package-info-form").serialize()',
+//                                                'beforeSend'=>"js:function(){
+//                                                    if($('#package-info-form #version').val()=='' || $('#package-info-form #package_name').val()==''){
+//                                                        $('.uploader-message').text('لطفا فیلد های ستاره دار را پر کنید.').addClass('error');
+//                                                        return false;
+//                                                    }else if($('input[type=\"hidden\"][name=\"Apps[file_name]\"]').length==0){
+//                                                        $('.uploader-message').text('لطفا بسته جدید را آپلود کنید.').addClass('error');
+//                                                        return false;
+//                                                    }else
+//                                                        $('.uploader-message').text('در حال ثبت اطلاعات بسته...').removeClass('error');
+//                                                }",
+//                                                'success'=>"js:function(data){
+//                                                    if(data.status){
+//                                                        $.fn.yiiListView.update('packages-list',{});
+//                                                        $('.uploader-message').text('');
+//                                                        $('#package-modal').modal('hide');
+//                                                    }
+//                                                    else
+//                                                        $('.uploader-message').text(data.message).addClass('error');
+//                                                    $('.dz-preview').remove();
+//                                                    $('.dropzone').removeClass('dz-started');
+//                                                    $('#package-info-form #version').val('');
+//                                                    $('#package-info-form #package_name').val('');
+//                                                }",
+//                                                'error'=>"js:function(){ $('.uploader-message').text('فایل ارسالی ناقص می باشد.').addClass('error'); }",
+//                                            ), array('class'=>'btn btn-success pull-left'));?>
                                             <h5 class="uploader-message error pull-right"></h5>
                                         </div>
                                     </div>

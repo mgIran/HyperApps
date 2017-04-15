@@ -20,12 +20,13 @@ $cs->registerCssFile($baseUrl.'/css/bootstrap.min.css');
 $cs->registerCssFile($baseUrl.'/css/font-awesome.css');
 $cs->registerCssFile($baseUrl.'/css/bootstrap-theme.css');
 $cs->registerCssFile($baseUrl.'/css/login.css');
+$cs->registerCssFile($baseUrl.'/css/responsive-theme.css');
 
 $cs->registerScriptFile($baseUrl.'/js/bootstrap.min.js');
 $cs->registerScriptFile($baseUrl.'/js/scripts.js');
 ?>
 </head>
-<body>
+<body id="login-page">
 <div class="container">
     <div class="logo-box">
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>">

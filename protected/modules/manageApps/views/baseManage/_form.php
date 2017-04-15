@@ -188,16 +188,16 @@
 		<?php echo $form->error($model,'description'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'change_log'); ?>
-		<?php
-		$this->widget('ext.ckeditor.CKEditor',array(
-				'model' => $model,
-				'attribute' => 'change_log'
-		));
-		?>
-		<?php echo $form->error($model,'change_log'); ?>
-	</div>
+<!--	<div class="row">-->
+<!--		--><?php //echo $form->labelEx($model,'change_log'); ?>
+<!--		--><?php
+//		$this->widget('ext.ckeditor.CKEditor',array(
+//				'model' => $model,
+//				'attribute' => 'change_log'
+//		));
+//		?>
+<!--		--><?php //echo $form->error($model,'change_log'); ?>
+<!--	</div>-->
 
 	<?php if($this->platform_id != 1):?>
 		<div class="form-group multipliable-input-container">

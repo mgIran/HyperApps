@@ -28,8 +28,8 @@ class AppPackages extends CActiveRecord
     );
 
     public $forLabels = array(
-        'new_app'=>'<span class="label label-success">بسته جدید</span>',
-        'old_app'=>'<span class="label label-warning">بسته تغییر داده شده</span>',
+        'new_app' => '<span class="label label-success">بسته جدید</span>',
+        'old_app' => '<span class="label label-warning">بسته تغییر داده شده</span>',
     );
 
     /**
@@ -48,6 +48,7 @@ class AppPackages extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('package_name', 'checkPackageName', 'on' => 'insert, update'),
             array('package_name', 'uniqueDeveloper', 'on' => 'insert, update'),
             array('app_id', 'length', 'max' => 10),
             array('version, create_date, publish_date', 'length', 'max' => 20),
@@ -55,7 +56,7 @@ class AppPackages extends CActiveRecord
             array('file_name', 'length', 'max' => 255),
             array('status', 'length', 'max' => 15),
             array('reason', 'safe'),
-            array('for', 'length', 'max'=>7),
+            array('for', 'length', 'max' => 7),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, app_id, version, package_name, file_name, create_date, publish_date, status, reason, for', 'safe', 'on' => 'search'),
@@ -119,8 +120,8 @@ class AppPackages extends CActiveRecord
         $criteria->compare('create_date', $this->create_date, true);
         $criteria->compare('publish_date', $this->publish_date, true);
         $criteria->compare('status', $this->status, true);
-        $criteria->compare('reason',$this->reason,true);
-        $criteria->compare('for',$this->for,true);
+        $criteria->compare('reason', $this->reason, true);
+        $criteria->compare('for', $this->for, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -144,11 +145,11 @@ class AppPackages extends CActiveRecord
      */
     public function uniqueDeveloper($attribute)
     {
-        $criteria=new CDbCriteria();
-        $criteria->with='app';
-        $criteria->together=true;
+        $criteria = new CDbCriteria();
+        $criteria->with = 'app';
+        $criteria->together = true;
         $criteria->addCondition('package_name = :package_name');
-        $criteria->params[':package_name']=$this->$attribute;
+        $criteria->params[':package_name'] = $this->$attribute;
         $models = $this->findAll($criteria);
         if (!is_null($models))
             foreach ($models as $model) {
@@ -164,5 +165,22 @@ class AppPackages extends CActiveRecord
                     }
                 }
             }
+    }
+
+    /**
+     * Check package name
+     * @param string $attribute field name.
+     */
+    public function checkPackageName($attribute)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('app_id = :app_id');
+        $criteria->params[':app_id'] = $this->app_id;
+        $criteria->order = 'id DESC';
+        $model = $this->find($criteria);
+        /* @var $model AppPackages */
+        if (!is_null($model))
+            if ($model->package_name !== $this->$attribute)
+                $this->addError($attribute, 'بسته انتخاب شده اشتباه است و مربوط به این برنامه نمی باشد.');
     }
 }

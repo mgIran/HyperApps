@@ -176,6 +176,13 @@
         text-align: center;
         font-size: 1.4em;
     }
+    #login-page .logo-box {
+        width: 100%;
+    }
+    #login-page .login-form{
+        width: 100%;
+        min-width:auto;
+    }
 }
 @media all and (max-width: 650px) {
     .nav.nav-tabs{
@@ -204,6 +211,10 @@
 
     .logo-box {
         width: 20%;
+    }
+
+    #login-page .logo-box {
+        width: 100%;
     }
 }
 

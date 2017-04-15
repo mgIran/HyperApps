@@ -132,9 +132,10 @@ class TicketsManageController extends Controller
 		{
 			$model->attributes=$_POST['TicketMessages'];
 			if($model->save()) {
-                if(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'admin')
-                    $model->ticket->updateByPk($model->ticket_id, array('status' => 'answered'));
-                elseif(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'developer')
+                if(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'admin') {
+					$model->ticket->updateByPk($model->ticket_id, array('status' => 'answered'));
+					$this->createLog('پاسخ تیکت شماره #' . $model->ticket->code . ' توسط کارشناسان بخش پشتیبانی برای شما ارسال شد.', $model->ticket->user_id);
+				}elseif(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'developer')
                     $model->ticket->updateByPk($model->ticket_id, array('status'=>'waiting'));
                 $this->redirect(array('/tickets/' . $model->ticket->code));
             }
