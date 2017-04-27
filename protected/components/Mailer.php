@@ -40,7 +40,7 @@ class Mailer
         $mail->CharSet = 'UTF-8';
         $mail->SetFrom($from, Yii::app()->name);
         if ($SMTP && isset($SMTP['Host']) && isset($SMTP['Secure']) && isset($SMTP['Username']) && isset($SMTP['Password']) && isset($SMTP['Port'])) {
-            $mail->SMTPDebug = 3;
+            //$mail->SMTPDebug = 3;
             $mail->IsSMTP();
             $mail->SMTPAuth = true;
             $mail->Host = $SMTP['Host'];

@@ -144,7 +144,7 @@ class CreditController extends Controller
                                 <td>' . $model->token . '</td>
                             </tr>
                         </table>';
-                    Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail']);
+                    Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
                 }
             }else{
                 $error=Yii::app()->mellat->getError($RecourceCode);

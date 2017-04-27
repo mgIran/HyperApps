@@ -32,7 +32,7 @@ class AppsController extends Controller
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('buy', 'bill', 'bookmark', 'rate', 'comments'),
+                'actions' => array('buy', 'bill', 'bookmark', 'rate', 'comments', 'verify'),
                 'users' => array('@'),
             ),
             array('deny',  // deny all users
@@ -145,7 +145,7 @@ class AppsController extends Controller
 
                     if ($transaction->save()) {
                         $CallbackURL = Yii::app()->getBaseUrl(true) . '/apps/verify/' . $id . '/' . urlencode($title);
-                        $result = Yii::app()->mellat->PayRequest($price, $transaction->id, $CallbackURL);
+                        $result = Yii::app()->mellat->PayRequest($price*10, $transaction->id, $CallbackURL);
                         if (!$result['error']) {
                             $ref_id = $result['responseCode'];
                             $this->render('ext.MellatPayment.views._redirect', array('ReferenceId' => $result['responseCode']));
@@ -167,7 +167,7 @@ class AppsController extends Controller
 
     public function actionVerify($id ,$title)
     {
-        Yii::app()->theme = 'frontend';
+        Yii::app()->theme = 'market';
         $this->layout = '//layouts/panel';
         $model = UserTransactions::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => 'unpaid'));
         $app = Apps::model()->findByPk($id);
@@ -276,7 +276,7 @@ class AppsController extends Controller
                     <td style="font-weight: bold;letter-spacing:4px">کسر از اعتبار</td>
                 </tr>';
         $message .= '</table>';
-        var_dump(Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail']));exit;
+        Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
         return $buy;
     }
 
