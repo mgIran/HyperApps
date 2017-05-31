@@ -99,7 +99,7 @@ class AppsController extends Controller
     /**
      * Buy app
      */
-    public function actionBuy($id, $title)
+    public function actionBuy($id)
     {
         Yii::app()->theme = 'market';
         $this->layout = 'panel';
@@ -144,7 +144,7 @@ class AppsController extends Controller
                     $transaction->date = time();
 
                     if ($transaction->save()) {
-                        $CallbackURL = Yii::app()->getBaseUrl(true) . '/apps/verify/' . $id . '/' . urlencode($title);
+                        $CallbackURL = Yii::app()->getBaseUrl(true) . '/apps/verify/' . $id;
                         $result = Yii::app()->mellat->PayRequest($price*10, $transaction->id, $CallbackURL);
                         if (!$result['error']) {
                             $ref_id = $result['responseCode'];
@@ -165,7 +165,7 @@ class AppsController extends Controller
         ));
     }
 
-    public function actionVerify($id ,$title)
+    public function actionVerify($id)
     {
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/panel';
@@ -191,13 +191,13 @@ class AppsController extends Controller
                     $model->token = $_POST['SaleReferenceId'];
                     $model->save();
                     $transactionResult = true;
-                    $buy = $this->saveBuyInfo($app, $model->amount, $user, 'gateway');
+                    $buy = $this->saveBuyInfo($app, $model->amount, $user, 'gateway', $model->id);
                     Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
                     $this->redirect(array('/apps/bill/' . $buy->id));
                 }
             } else {
                 Yii::app()->user->setFlash('failed', Yii::app()->mellat->getError($RecourceCode));
-                $this->redirect(array('/apps/buy/' . $id . '/' . urlencode($title)));
+                $this->redirect(array('/apps/buy/' . $id));
             }
         } else
             Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
@@ -218,10 +218,12 @@ class AppsController extends Controller
      * @param $price string
      * @param $user Users
      * @param $method string
+     * @param $transactionID string
      * @return AppBuys
      */
-    private function saveBuyInfo($app , $price,$user ,$method)
+    private function saveBuyInfo($app, $price, $user, $method, $transactionID = null)
     {
+        $appTitle=$app->title;
         $app->download += 1;
         $app->setScenario('update-download');
         $app->save();
@@ -234,7 +236,12 @@ class AppsController extends Controller
             $app->developer->userDetails->save();
         }
         $buy->save();
-
+        
+        /* @var $transaction UserTransactions */
+        $transaction = null;
+        if (!is_null($transactionID))
+            $transaction = UserTransactions::model()->findByPk($transactionID);
+        
         $message =
             '<p style="text-align: right;">'.(is_null($user->userDetails->fa_name)?'کاربر':$user->userDetails->fa_name).' عزیز، سلام<br>از اینکه از هایپراپس خرید کردید متشکریم. رسید خریدتان در زیر این صفحه آمده است.</p>
             <p style="text-align: right;">برنامه برای دریافت روی دستگاهتان آماده است. چنانچه در دریافت برنامه به مشکلی برخورد کردید، لطفا ابتدا چک کنید که روی دستگاهتان وارد حساب کاربریتان شده باشید.در صورتی که مشکل از این نبود لطفا با ما تماس بگیرید: hyperapps.ir@gmail.com</p>
@@ -251,11 +258,11 @@ class AppsController extends Controller
                 </tr>
                 <tr>
                     <td style="font-weight: bold;width: 120px;">به نام</td>
-                    <td>' . JalaliDate::date('H:i', $user->email) . '</td>
+                    <td>' . $user->email . '</td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold;width: 120px;">نام برنامه</td>
-                    <td>' . CHtml::encode($app->title.' ('.$app->lastPackage->package_name.')') . '</td>
+                    <td>' . CHtml::encode($appTitle.' ('.$app->lastPackage->package_name.')') . '</td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold;width: 120px;">قیمت (با احتساب مالیات و عوارض)</td>
@@ -264,16 +271,16 @@ class AppsController extends Controller
         if ($method == 'gateway')
             $message .= '<tr>
                     <td style="font-weight: bold;width: 120px;">کد رهگیری</td>
-                    <td style="font-weight: bold;letter-spacing:4px">' . CHtml::encode($user->transaction->token) . ' </td>
+                    <td style="font-weight: bold;letter-spacing:4px">' . CHtml::encode($transaction->token) . ' </td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
                     <td style="font-weight: bold;">درگاه بانک ملت </td>
                 </tr>';
-        elseif ($message == 'credit')
+        elseif ($method == 'credit')
             $message .= '<tr>
                     <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
-                    <td style="font-weight: bold;letter-spacing:4px">کسر از اعتبار</td>
+                    <td>کسر از اعتبار</td>
                 </tr>';
         $message .= '</table>';
         Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);

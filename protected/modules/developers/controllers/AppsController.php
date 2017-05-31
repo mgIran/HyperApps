@@ -429,7 +429,7 @@ class AppsController extends Controller
             }
             if ($flag) {
                 Yii::app()->user->setFlash('images-success', 'اطلاعات با موفقیت ثبت شد.');
-//                Apps::model()->updateByPk($id, array('confirm'=>'pending'));
+                Apps::model()->updateByPk($id, array('confirm'=>'pending'));
                 $this->redirect($this->createUrl('/developers/panel'));
             } else
                 Yii::app()->user->setFlash('images-failed', 'در ثبت اطلاعات خطایی رخ داده است! لطفا مجددا تلاش کنید.');

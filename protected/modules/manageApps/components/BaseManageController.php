@@ -467,12 +467,24 @@ class BaseManageController extends Controller
             if ($_POST['value'] == 'refused' or $_POST['value'] == 'change_required')
                 $model->reason = $_POST['reason'];
             if ($model->save()) {
+                $message='';
                 if ($_POST['value'] == 'accepted')
-                    $this->createLog('بسته ' . $model->package_name . ' توسط مدیر سیستم تایید شد.', $model->app->developer_id);
+                    $message='بسته ' . $model->package_name . ' توسط مدیر سیستم تایید شد.';
                 elseif ($_POST['value'] == 'refused')
-                    $this->createLog('بسته ' . $model->package_name . ' توسط مدیر سیستم رد شد.', $model->app->developer_id);
+                    $message='بسته ' . $model->package_name . ' توسط مدیر سیستم رد شد.';
                 elseif ($_POST['value'] == 'change_required')
-                    $this->createLog('بسته ' . $model->package_name . ' نیاز به تغییر دارد.', $model->app->developer_id);
+                    $message='بسته ' . $model->package_name . ' نیاز به تغییر دارد.';
+
+                $this->createLog($message, $model->app->developer_id);
+                $text = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>توسعه دهنده گرامی؛ '.$message.'</div>';
+                if ($_POST['value'] == 'refused' or $_POST['value'] == 'change_required') {
+                    $text .= '<div style="text-align: right;font-size: 9pt;">';
+                    $text .= '<div style="font-weight: bold;">دلیل:</div>';
+                    $text .= '<div>'.$model->reason.'</div>';
+                    $text .= '</div>';
+                }
+                Mailer::mail($model->app->developer->email, 'برنامه '.$model->app->title, $text, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+
                 echo CJSON::encode(array('status' => true));
             } else
                 echo CJSON::encode(array('status' => false));
