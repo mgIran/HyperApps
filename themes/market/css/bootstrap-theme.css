@@ -1892,6 +1892,8 @@ ul.cat-menu li a {
 header.mobile {
     position: fixed;
     top: 0;
+    left: 0;
+    right:0;
     z-index: 99;
 }
 
@@ -2495,8 +2497,11 @@ header.mobile.search-open .mobile-search {
 .rahbod{
     display: inline-block;
     vertical-align: middle;
-    opacity:.2;
+    opacity:1;
 }
 .rahbod img{
-    width: 90px;
+    width: 120px;
+}
+.dz-hidden-input{
+    display: none !important;
 }

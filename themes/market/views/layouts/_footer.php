@@ -37,6 +37,6 @@
         </ul>
     </nav>
     <div class="rahbod pull-left">
-        <a href="https://t.me/rahbod" target="_blank" title="Rahbod"><img src="<?php echo Yii::app()->theme->baseUrl.'/images/rahbod.png';?>"></a>
+        <a href="https://t.me/rahbod" target="_blank" title="Rahbod"><img src="<?php echo Yii::app()->theme->baseUrl.'/images/rahbod.svg';?>"></a>
     </div>
 </footer>

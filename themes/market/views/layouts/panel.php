@@ -147,6 +147,3 @@
 <?= $this->renderPartial('//layouts/_footer'); ?>
 </body>
 </html>
-<?php Yii::app()->clientScript->registerScript("nice-scroll",'
-$(".side-bar .scroll-container").niceScroll({cursorcolor: "#ccc"});
-');?>

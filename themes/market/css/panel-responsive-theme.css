@@ -44,9 +44,12 @@
     }
 }
 @media all and (max-width: 767px) {
+    .scroll-container{
+        overflow-y: auto !important;
+    }
     .side-bar{
         top: 0;
-        width: 40%;
+        width: 250px;
         right: -40%;
         height: 100%;
         z-index:1001;
@@ -198,13 +201,38 @@
         text-align: center;
         font-size: 1.4em;
     }
+    #tickets-form .buttons input{
+        width: 100%;
+        margin-bottom: 15px;
+    }
 }
 @media all and (max-width: 650px) {
     .nav.nav-tabs{
         margin-top: 30px;
     }
+    .container-fluid{
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 }
 @media all and (max-width: 400px) {
+    header .mobile-nav.nav > li{
+        width: 40px;
+    }
+    .content .app-box .app-carousel{
+        text-align: center;
+    }
+    .content .app-box .app-carousel .app-item{
+        float: none;
+    }
+    .hidden-phone{
+        display: none;
+    }
+}
+@media all and (max-width: 330px) {
+    .mobile-navbar.navbar{
+        width: 250px;
+    }
     header .mobile-nav.nav > li{
         width: 40px;
     }
