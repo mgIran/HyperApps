@@ -4,7 +4,7 @@
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>"></a>
         <h1><?= $this->siteName ?></h1>
         <h2><?= $this->pageTitle ?></h2>
-        <img class="logo" src="<?= Yii::app()->createAbsoluteUrl('themes/market/images/logo.png'); ?>" alt="HyperApps" >
+        <img class="logo" src="<?= Yii::app()->createAbsoluteUrl('themes/market/images/logo.png'); ?>" alt="Cafand" >
     </div>
     <ul class="mobile-nav nav">
         <li class="navbar-trigger">

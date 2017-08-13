@@ -5,7 +5,7 @@ return array(
     //'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
     //'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
 	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'هایپر اپس',
+	'name'=>'کافند',
     'timeZone' => 'Asia/Tehran',
     'theme' => 'abound',
     'language' => 'fa_ir',
@@ -176,17 +176,17 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// @todo change webmail of emails
-		'adminEmail'=>'webmaster@hyperapps.ir',
-        'noReplyEmail' => 'no-reply@hyperapps.ir',
+		'adminEmail'=>'webmaster@cafand.ir',
+        'noReplyEmail' => 'no-reply@cafand.ir',
 		'SMTP' => array(
-            'Host' => 'mail.hyperapps.ir',
-            'Secure' => 'ssl',
-            'Port' => 465,
-            'Username' => 'no-reply@hyperapps.ir',
-            'Password' => '7cZKn*CWSrg87cZKn*CWSrg8',
+//            'Host' => 'mail.hyperapps.ir',
+//            'Secure' => 'ssl',
+//            'Port' => 465,
+//            'Username' => 'no-reply@hyperapps.ir',
+//            'Password' => '7cZKn*CWSrg87cZKn*CWSrg8',
         ),
         'mailTheme'=>
-            '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">هایپر اپس<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
+            '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">کافند<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
              <div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">
                 <div style="direction:rtl;display:block;overflow:hidden;border:1px solid #efefef;text-align: center;padding:15px;">{MessageBody}</div>
              </div>
