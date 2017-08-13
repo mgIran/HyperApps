@@ -101,7 +101,7 @@
                 <div class="desc portion hidden" style="margin: 15px 0;">
                     <p class="error"><b>توجه: </b>قیمت به تومان می باشد</p>
                     <p><b>سهم توسعه دهنده:</b><span id="developer-portion">0</span> تومان</p>
-                    <p><b>سهم هایپر اپس:</b><span id="market-portion">0</span> تومان</p>
+                    <p><b>سهم سایت:</b><span id="market-portion">0</span> تومان</p>
                     <p><b>مالیات:</b><span id="tax-tag">0</span> تومان</p>
                 </div>
                 <?php echo $form->error($model,'price'); ?>

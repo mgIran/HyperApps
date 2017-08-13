@@ -62,7 +62,7 @@ class PublicController extends Controller
                 $userDetails->credit=0;
                 $userDetails->save();
 
-                $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در هایپر اپس بر روی لینک زیر کلیک کنید:</div>';
+                $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در '.Yii::app()->name.' بر روی لینک زیر کلیک کنید:</div>';
                 $message .= '<div style="text-align: right;font-size: 9pt;">';
                 $message .= '<a href="'.Yii::app()->getBaseUrl(true).'/users/public/verify/token/'.$token.'">'.Yii::app()->getBaseUrl(true).'/users/public/verify/token/'.$token.'</a>';
                 $message .= '</div>';

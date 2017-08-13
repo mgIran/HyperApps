@@ -296,7 +296,7 @@ class AppsController extends Controller
             $transaction = UserTransactions::model()->findByPk($transactionID);
         
         $message =
-            '<p style="text-align: right;">'.(is_null($user->userDetails->fa_name)?'کاربر':$user->userDetails->fa_name).' عزیز، سلام<br>از اینکه از هایپراپس خرید کردید متشکریم. رسید خریدتان در زیر این صفحه آمده است.</p>
+            '<p style="text-align: right;">'.(is_null($user->userDetails->fa_name)?'کاربر':$user->userDetails->fa_name).' عزیز، سلام<br>از اینکه از '.Yii::app()->name.' خرید کردید متشکریم. رسید خریدتان در زیر این صفحه آمده است.</p>
             <p style="text-align: right;">برنامه برای دریافت روی دستگاهتان آماده است. چنانچه در دریافت برنامه به مشکلی برخورد کردید، لطفا ابتدا چک کنید که روی دستگاهتان وارد حساب کاربریتان شده باشید.در صورتی که مشکل از این نبود لطفا با ما تماس بگیرید: hyperapps.ir@gmail.com</p>
             <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
             <h4 style="text-align: right;">صورت حساب</h4>
