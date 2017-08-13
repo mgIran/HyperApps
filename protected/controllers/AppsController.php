@@ -106,20 +106,20 @@ class AppsController extends Controller
 
         $userID = Yii::app()->user->getId();
         $model = $this->loadModel($id);
-        $price = $model->hasDiscount() ? $model->offPrice : $model->price;
+        $price = $model->hasDiscount()?$model->offPrice:$model->price;
         $buy = AppBuys::model()->findByAttributes(array('user_id' => $userID, 'app_id' => $id));
 
-        if ($buy)
+        if($buy)
             $this->redirect(array('/apps/download/' . CHtml::encode($model->id) . '/' . CHtml::encode($model->title)));
 
         Yii::app()->getModule('users');
         $user = Users::model()->findByPk(Yii::app()->user->getId());
         /* @var $user Users */
 
-        if ($model->developer_id != $userID) {
-            if (isset($_POST['Buy'])) {
-                if (isset($_POST['Buy']['credit'])) {
-                    if ($user->userDetails->credit < $price) {
+        if($model->developer_id != $userID){
+            if(isset($_POST['Buy'])){
+                if(isset($_POST['Buy']['credit'])){
+                    if($user->userDetails->credit < $price){
                         Yii::app()->user->setFlash('credit-failed', 'اعتبار فعلی شما کافی نیست!');
                         Yii::app()->user->setFlash('failReason', 'min_credit');
                         $this->refresh();
@@ -130,38 +130,53 @@ class AppsController extends Controller
                     $userDetails->credit = $userDetails->credit - $price;
                     $userDetails->score = $userDetails->score + 1;
 
-                    if ($userDetails->save()) {
+                    if($userDetails->save()){
                         $buy = $this->saveBuyInfo($model, $price, $user, 'credit');
                         Yii::app()->user->setFlash('success', 'خرید شما با موفقیت انجام شد.');
                         $this->redirect(array('/apps/bill/' . $buy->id));
-                    } else
+                    }else
                         Yii::app()->user->setFlash('failed', 'در انجام عملیات خرید خطایی رخ داده است. لطفا مجددا تلاش کنید.');
-                } elseif (isset($_POST['Buy']['gateway'])) {
+                }elseif(isset($_POST['Buy']['gateway'])){
                     // Save payment
                     $transaction = new UserTransactions();
                     $transaction->user_id = Yii::app()->user->getId();
                     $transaction->amount = $price;
                     $transaction->date = time();
+                    $transaction->gateway_name = $this->active_gateway;
 
-                    if ($transaction->save()) {
+                    if($transaction->save()){
                         $CallbackURL = Yii::app()->getBaseUrl(true) . '/apps/verify/' . $id;
-                        $result = Yii::app()->mellat->PayRequest($price*10, $transaction->id, $CallbackURL);
-                        if (!$result['error']) {
-                            $ref_id = $result['responseCode'];
-                            $this->render('ext.MellatPayment.views._redirect', array('ReferenceId' => $result['responseCode']));
-                        } else
-                            Yii::app()->user->setFlash('failed', Yii::app()->mellat->getResponseText($result['responseCode']));
+                        if($this->active_gateway == 'mellat'){
+                            $result = Yii::app()->mellat->PayRequest($price * 10, $transaction->id, $CallbackURL);
+                            if(!$result['error']){
+                                $ref_id = $result['responseCode'];
+                                $transaction->authority = $ref_id;
+                                $transaction->save(false);
+                                $this->render('ext.MellatPayment.views._redirect', array('ReferenceId' => $result['responseCode']));
+                            }else
+                                Yii::app()->user->setFlash('failed', Yii::app()->mellat->getResponseText($result['responseCode']));
+                        }else if($this->active_gateway == 'zarinpal'){
+                            $siteName = Yii::app()->name;
+                            $description = "پرداخت وجه جهت خرید نرم افزار {$model->title} در وبسایت {$siteName}";
+                            $result = Yii::app()->zarinpal->PayRequest(doubleval($price), $description, $CallbackURL);
+                            $transaction->authority = Yii::app()->zarinpal->getAuthority();
+                            $transaction->save(false);
+                            if($result->getStatus() == 100)
+                                $this->redirect(Yii::app()->zarinpal->getRedirectUrl());
+                            else
+                                Yii::app()->user->setFlash('failed', Yii::app()->zarinpal->getError());
+                        }
                     }
                 }
             }
-        } else
+        }else
             Yii::app()->user->setFlash('failed', 'شما توسعه دهنده این برنامه هستید.');
 
         $this->render('buy', array(
             'model' => $model,
             'price' => $price,
             'user' => $user,
-            'bought' => ($buy) ? true : false,
+            'bought' => ($buy)?true:false,
         ));
     }
 
@@ -169,7 +184,6 @@ class AppsController extends Controller
     {
         Yii::app()->theme = 'market';
         $this->layout = '//layouts/panel';
-        $model = UserTransactions::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => 'unpaid'));
         $app = Apps::model()->findByPk($id);
         $user = Users::model()->findByPk(Yii::app()->user->getId());
         /* @var $model UserTransactions */
@@ -177,30 +191,69 @@ class AppsController extends Controller
         /* @var $user Users */
         $transactionResult = false;
         $result = null;
-        if ($_POST['ResCode'] == 0)
-            $result = Yii::app()->mellat->VerifyRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
 
-        if ($result != null) {
-            $RecourceCode = (!is_array($result) ? $result : $result['responseCode']);
-            if ($RecourceCode == 0) {
-                // Settle Payment
-                $settle = Yii::app()->mellat->SettleRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
-                if ($settle) {
-                    $model->scenario = 'update';
-                    $model->status = 'paid';
-                    $model->token = $_POST['SaleReferenceId'];
-                    $model->save();
-                    $transactionResult = true;
-                    $buy = $this->saveBuyInfo($app, $model->amount, $user, 'gateway', $model->id);
-                    Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
-                    $this->redirect(array('/apps/bill/' . $buy->id));
+        if($this->active_gateway == 'mellat'){
+            $model = UserTransactions::model()->findByAttributes(array(
+                'user_id' => Yii::app()->user->getId(),
+                'status' => 'unpaid'));
+            if($_POST['ResCode'] == 0)
+                $result = Yii::app()->mellat->VerifyRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
+
+            if($result != null){
+                $RecourceCode = (!is_array($result)?$result:$result['responseCode']);
+                if($RecourceCode == 0){
+                    // Settle Payment
+                    $settle = Yii::app()->mellat->SettleRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
+                    if($settle){
+                        $model->scenario = 'update';
+                        $model->status = 'paid';
+                        $model->token = $_POST['SaleReferenceId'];
+                        $model->save();
+                        $transactionResult = true;
+                        $buy = $this->saveBuyInfo($app, $model->amount, $user, 'gateway', $model->id);
+                        Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
+                        $this->redirect(array('/apps/bill/' . $buy->id));
+                    }
+                }else{
+                    Yii::app()->user->setFlash('failed', Yii::app()->mellat->getError($RecourceCode));
+                    $this->redirect(array('/apps/buy/' . $id));
                 }
-            } else {
-                Yii::app()->user->setFlash('failed', Yii::app()->mellat->getError($RecourceCode));
+            }else
+                Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
+        }else if($this->active_gateway == 'zarinpal'){
+            if(!isset($_GET['Authority'])){
+                Yii::app()->user->setFlash('failed', 'Gateway Error: Authority Code not sent.');
                 $this->redirect(array('/apps/buy/' . $id));
+            }else{
+                $Authority = $_GET['Authority'];
+                $model = UserTransactions::model()->findByAttributes(array(
+                    'authority' => $Authority
+                ));
+                if($model->status == 'unpaid'){
+                    $Amount = $model->amount;
+                    if($_GET['Status'] == 'OK'){
+                        Yii::app()->zarinpal->verify($Authority, $Amount);
+                        if(Yii::app()->zarinpal->getStatus() == 100){
+                            $model->scenario = 'update';
+                            $model->status = 'paid';
+                            $model->token = Yii::app()->zarinpal->getRefId();
+                            @$model->save(false);
+                            $transactionResult = true;
+                            $buy = $this->saveBuyInfo($app, $model->amount, $user, 'gateway', $model->id);
+                            Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
+                            $this->redirect(array('/apps/bill/' . $buy->id));
+                        }else{
+                            Yii::app()->user->setFlash('failed', Yii::app()->zarinpal->getError());
+                            $this->redirect(array('/apps/buy/' . $id));
+                        }
+                    }else{
+                        Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
+                        $this->redirect(array('/apps/buy/' . $id));
+                    }
+                }
             }
-        } else
-            Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
+        }
+
 
         $this->render('verify', array(
             'transaction' => $model,

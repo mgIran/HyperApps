@@ -11,6 +11,8 @@
  * @property string $status
  * @property string $token
  * @property string $description
+ * @property string $authority
+ * @property string $gateway_name
  *
  * The followings are the available model relations:
  * @property Users $user
@@ -37,7 +39,7 @@ class UserTransactions extends CActiveRecord
 			array('date', 'length', 'max'=>20),
 			array('status', 'length', 'max'=>6),
 			array('token', 'length', 'max'=>50),
-			array('description', 'length', 'max'=>200),
+			array('authority, description', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, user_id, amount, date, status, token, description', 'safe', 'on'=>'search'),

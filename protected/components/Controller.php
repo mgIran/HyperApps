@@ -33,6 +33,15 @@ class Controller extends CController
     public $userDetails;
     public $userNotifications;
     public $app = NULL;
+    public $active_gateway = NULL;
+
+    public function init()
+    {
+        parent::init();
+        $this->active_gateway = strtolower(Yii::app()->params['gateway']);
+        if($this->active_gateway != 'zarinpal' && $this->active_gateway != 'mellat')
+            die('Gateway invalid!! Valid gateways is "zarinpal" or "mellat". Please change gateway in main.php file.');
+    }
 
     public function beforeAction($action)
     {

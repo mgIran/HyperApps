@@ -90,6 +90,10 @@ return array(
 			'userName' => 'hyperapps',
 			'userPassword' => '61898942',
 		),
+		'zarinpal' => array(
+			'class'=> 'ZarinPal',
+			'merchant_id' => '',
+		),
         'userCounter' => array(
             'class' => 'application.components.UserCounter',
             'tableUsers' => 'ym_counter_users',
@@ -175,6 +179,8 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
+		// @todo change bank gateway
+		'gateway' => 'mellat', // zarinpal or mellat
 		// @todo change webmail of emails
 		'adminEmail'=>'webmaster@cafand.ir',
         'noReplyEmail' => 'no-reply@cafand.ir',
