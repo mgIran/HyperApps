@@ -192,9 +192,8 @@ class TicketsManageController extends Controller
 		$this->layout = '//layouts/column1';
 		$criteria = new CDbCriteria();
 		if(isset($_GET['Tickets']))
-			foreach($_GET['Tickets'] as $key=>$param)
-			{
-				$criteria->compare($key,$param,true);
+			foreach($_GET['Tickets'] as $key => $param){
+				$criteria->compare($key, $param, true);
 			}
 		$criteria->order = 'case when status regexp \'waiting\' then 1
 							when status regexp \'pending\' then 2

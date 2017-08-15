@@ -29,7 +29,7 @@ class UsersManageController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'views' actions
-				'actions'=>array('index','view','create','update','admin','delete','confirmDevID','deleteDevID','confirmDeveloper','refuseDeveloper'),
+				'actions'=>array('index','view','create','update','admin','delete','confirmDevID','deleteDevID','confirmDeveloper','refuseDeveloper','changeStatus'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -232,6 +232,36 @@ class UsersManageController extends Controller
 		else
 			Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
 		$this->redirect(array('/admins'));
+	}
+	
+	public function actionChangeStatus($id)
+	{
+		$model = Users::model()->findByPk($id);
+		if(isset($_GET['status']) && !empty($_GET['status']) && key_exists($_GET['status'], $model->statusLabels)){
+			$model->status = $_GET['status'];
+			if($model->save(false)){
+				$msg = '';
+				switch($model->status){
+					case 'pending':
+						$msg = 'حساب کاربری شما توسط مدیر تعلیق شد.';
+						break;
+					case 'active':
+						$msg = 'حساب کاربری شما توسط مدیر تایید شد.';
+						break;
+					case 'blocked':
+						$msg = 'حساب کاربری شما توسط مدیر مسدود شد.';
+						break;
+					case 'deleted':
+						$msg = 'حساب کاربری شما توسط مدیر حذف شد.';
+						break;
+				}
+				if($msg)
+					$this->createLog($msg, $model->id);
+				Yii::app()->user->setFlash('success', 'تغییرات با موفقیت ثبت شد.');
+			}else
+				Yii::app()->user->setFlash('failed', 'در انجام عملیات خطایی رخ داده است لطفا مجددا تلاش کنید.');
+		}
+		$this->redirect(array('view', 'id' => $id));
 	}
 
 	/**

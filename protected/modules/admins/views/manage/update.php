@@ -15,6 +15,11 @@ $this->menu=array(
 );
 ?>
 
-<h1>ویرایش مدیر  <?php echo $model->username; ?></h1>
-
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">ویرایش مدیر  <?php echo $model->username; ?></h3>
+    </div>
+    <div class="box-body">
+        <?php $this->renderPartial('_form', array('model'=>$model)); ?>
+    </div>
+</div>

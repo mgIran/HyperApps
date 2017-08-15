@@ -18,21 +18,22 @@ if(isset($_GET['step']))
     $step = (int)$_GET['step'];
 ?>
 
-<h1>ویرایش برنامه <?php echo $model->id; ?></h1>
-    <ul class="nav nav-tabs">
+
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs pull-right">
+        <li class="pull-right header">ویرایش برنامه <?php echo $model->id; ?></li>
         <li class="<?= ($step == 1?'active':''); ?>"><a data-toggle="tab" href="#general">عمومی</a></li>
         <li class="<?= $model->getIsNewRecord()?'disabled':''; ?> <?= ($step == 2?'active':''); ?>"><a data-toggle="tab" href="#packages">بسته ها</a></li>
         <li class="<?= $model->getIsNewRecord()?'disabled':''; ?> <?= ($step == 3?'active':''); ?>"><a data-toggle="tab" href="#pics">تصاویر</a></li>
     </ul>
-
     <div class="tab-content">
-    <div id="general" class="tab-pane fade <?= ($step == 1?'in active':''); ?>">
-        <?php $this->renderPartial('manageApps.views.baseManage._form', array(
-            'model'=>$model,'icon'=>$icon,
-            'tax'=>$tax,
-            'commission'=>$commission,
-        )); ?>
-    </div>
+        <div id="general" class="tab-pane fade <?= ($step == 1?'in active':''); ?>">
+            <?php $this->renderPartial('manageApps.views.baseManage._form', array(
+                'model'=>$model,'icon'=>$icon,
+                'tax'=>$tax,
+                'commission'=>$commission,
+            )); ?>
+        </div>
         <? if(!$model->getIsNewRecord()):?>
             <div id="packages" class="tab-pane fade <?= ($step == 2?'in active':''); ?>">
                 <?php $this->renderPartial('manageApps.views.baseManage._package', array('model'=>$model, 'dataProvider'=>$packageDataProvider)); ?>
@@ -44,3 +45,4 @@ if(isset($_GET['step']))
             </div>
         <? endif;?>
     </div>
+</div>

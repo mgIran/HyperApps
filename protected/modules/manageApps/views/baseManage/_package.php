@@ -39,7 +39,7 @@ a[href='#package-modal']{margin-top:20px;}
             <?php echo CHtml::hiddenField('app_id', $model->id);?>
             <?php echo CHtml::hiddenField('filesFolder', $model->platform->name);?>
             <?php echo CHtml::hiddenField('platform', $model->platform->name);?>
-            <?php echo CHtml::button('ثبت', array('class'=>'btn btn-success pull-left', 'id'=>'submit-form'))?>
+            <?php echo CHtml::button('ثبت', array('class'=>'btn btn-success', 'id'=>'submit-form'))?>
             <?php Yii::app()->clientScript->registerScript('ajax-submit',"
                 jQuery('body').on('click','#submit-form',function(){
                     for ( instance in CKEDITOR.instances )
@@ -103,7 +103,7 @@ a[href='#package-modal']{margin-top:20px;}
         'model' => $model,
         'attribute' => 'change_log'
     )); ?>
-    <div class="row">
+    <div class="form-group row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <?php echo CHtml::textField('version', '', array('class'=>'form-control', 'placeholder'=>'ورژن *'));?>
         </div>
@@ -111,12 +111,12 @@ a[href='#package-modal']{margin-top:20px;}
             <?php echo CHtml::textField('package_name', '', array('class'=>'form-control', 'placeholder'=>'نام بسته *'));?>
         </div>
     </div>
-    <div class="row">
+    <div class="form-group row">
         <div class="col-md-12">
             <?php echo CHtml::hiddenField('app_id', $model->id);?>
             <?php echo CHtml::hiddenField('filesFolder', $model->platform->name);?>
             <?php echo CHtml::hiddenField('platform', $model->platform->name);?>
-            <?php echo CHtml::button('ثبت', array('class'=>'btn btn-success pull-left', 'id'=>'submit-form'))?>
+            <?php echo CHtml::button('ثبت', array('class'=>'btn btn-success', 'id'=>'submit-form'))?>
             <?php Yii::app()->clientScript->registerScript('ajax-submit',"
                 jQuery('body').on('click','#submit-form',function(){
                     for ( instance in CKEDITOR.instances )
@@ -187,6 +187,7 @@ a[href='#package-modal']{margin-top:20px;}
     <?php echo CHtml::endForm();?>
 <?php endif;?>
 <h5 class="uploader-message error"></h5>
+<div class="table-responsive">
 <?php $this->widget('zii.widgets.grid.CGridView', array(
     'id'=>'packages-grid',
     'dataProvider'=>$dataProvider,
@@ -204,8 +205,8 @@ a[href='#package-modal']{margin-top:20px;}
         ),
     ),
 ));?>
-
-<?php echo CHtml::button('ثبت و ادامه', array('class'=>'btn btn-success pull-left', 'onclick'=>'$(".nav a[href=\'#pics\']").trigger("click");'));?>
+</div>
+<?php echo CHtml::button('ثبت و ادامه', array('class'=>'btn btn-success', 'onclick'=>'$(".nav a[href=\'#pics\']").trigger("click");'));?>
 
 <?php Yii::app()->clientScript->registerCss('package-form','
 #package-info-form input[type="text"]{margin-top:20px;}

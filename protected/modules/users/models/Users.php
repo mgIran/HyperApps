@@ -161,7 +161,7 @@ class Users extends CActiveRecord
         $criteria->with = array('role', 'userDetails');
         $criteria->order = 'status ,t.id DESC';
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria' => $criteria
         ));
     }
 

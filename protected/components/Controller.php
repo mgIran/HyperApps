@@ -20,7 +20,14 @@ class Controller extends CController
      * for more details on how to specify this property.
      */
     public $breadcrumbs = array();
-
+    /**
+     * For Rahbod Admin Theme
+     * @var string $pageHeader
+     * @var string $pageDescription
+     */
+    public $pageHeader;
+    public $pageDescription;
+    //
     public $town = null;
     public $place = null;
     public $description;
@@ -97,91 +104,95 @@ class Controller extends CController
         if(Yii::app()->user->roles === 'admin')
             return array(
                 array(
-                    'label' => 'پیشخوان',
+                    'label' => 'منوی مدیریت',
+                    'itemOptions' => array('class' => 'header'),
+                ),
+                array(
+                    'label' => '<i class="fa fa-dashboard"></i><span>پیشخوان</span>',
                     'url' => array('/admins/dashboard')
                 ),
                 array(
-                    'label' => 'برنامه ها<span class="caret"></span>',
+                    'label' => '<i class="fa fa-tablet"></i><span>برنامه ها</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => 'بخش اندروید', 'url' => Yii::app()->createUrl('/manageApps/android/admin/')),
-                        array('label' => 'بخش آی او اس', 'url' => Yii::app()->createUrl('/manageApps/ios/admin/')),
-                        array('label' => 'بخش ویندوز فون', 'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')),
-                        array('label' => 'تبلیغات', 'url' => Yii::app()->createUrl('/advertises/manage/admin/')),
-                        array('label' => 'نظرات', 'url' => Yii::app()->createUrl('/comments/comment/adminApps')),
+                        array('label' => '<i class="fa fa-circle-o"></i>بخش اندروید', 'url' => Yii::app()->createUrl('/manageApps/android/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>بخش آی او اس', 'url' => Yii::app()->createUrl('/manageApps/ios/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>بخش ویندوز فون', 'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>تبلیغات', 'url' => Yii::app()->createUrl('/advertises/manage/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>نظرات', 'url' => Yii::app()->createUrl('/comments/comment/adminApps')),
                     )
                 ),
                 array(
-                    'label' => 'دسته بندی برنامه ها<span class="caret"></span>',
+                    'label' => '<i class="fa fa-list"></i><span>دسته بندی برنامه ها</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/appCategories/admin/')),
-                        array('label' => 'افزودن', 'url' => Yii::app()->createUrl('/appCategories/create/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>مدیریت', 'url' => Yii::app()->createUrl('/appCategories/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>افزودن', 'url' => Yii::app()->createUrl('/appCategories/create/')),
                     )
                 ),
                 array(
-                    'label' => 'امور مالی<span class="caret"></span>',
+                    'label' => '<i class="fa fa-money"></i><span>امور مالی</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => 'تسویه حساب', 'url' => Yii::app()->createUrl('/developers/panel/manageSettlement')),
-                        array('label' => 'گزارش فروش', 'url' => Yii::app()->createUrl('/apps/reportSales')),
-                        array('label' => 'گزارش درآمد', 'url' => Yii::app()->createUrl('/apps/reportIncome')),
+                        array('label' => '<i class="fa fa-circle-o"></i>تسویه حساب', 'url' => Yii::app()->createUrl('/developers/panel/manageSettlement')),
+                        array('label' => '<i class="fa fa-circle-o"></i>گزارش فروش', 'url' => Yii::app()->createUrl('/apps/reportSales')),
+                        array('label' => '<i class="fa fa-circle-o"></i>گزارش درآمد', 'url' => Yii::app()->createUrl('/apps/reportIncome')),
                     )
                 ),
                 array(
-                    'label' => 'صفحات متنی<span class="caret"></span>' ,
+                    'label' => '<i class="fa fa-file-text"></i><span>صفحات متنی</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#' ,
-                    'itemOptions' => array('class' => 'dropdown' ,'tabindex' => "-1") ,
-                    'linkOptions' => array('class' => 'dropdown-toggle' ,'data-toggle' => "dropdown") ,
+                    'itemOptions' => array('class' => 'treeview' ,'tabindex' => "-1") ,
+                    'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => 'صفحات استاتیک' ,'url' => Yii::app()->createUrl('/pages/manage/admin/slug/base')) ,
-                        array('label' => 'مستندات' ,'url' => Yii::app()->createUrl('/pages/manage/admin/slug/document')) ,
+                        array('label' => '<i class="fa fa-circle-o"></i>صفحات استاتیک' ,'url' => Yii::app()->createUrl('/pages/manage/admin/slug/base')) ,
+                        array('label' => '<i class="fa fa-circle-o"></i>مستندات' ,'url' => Yii::app()->createUrl('/pages/manage/admin/slug/document')) ,
                     )
                 ) ,
                 array(
-                    'label' => 'مدیران <span class="caret"></span>',
+                    'label' => '<i class="fa fa-user-md"></i><span>مدیران</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"), 'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/admins/manage')),
-                        array('label' => 'افزودن', 'url' => Yii::app()->createUrl('/admins/manage/create')),
+                        array('label' => '<i class="fa fa-circle-o"></i>مدیریت', 'url' => Yii::app()->createUrl('/admins/manage')),
+                        array('label' => '<i class="fa fa-circle-o"></i>افزودن', 'url' => Yii::app()->createUrl('/admins/manage/create')),
                     )
                 ),
                 array(
-                    'label' => 'کاربران <span class="caret"></span>',
+                    'label' => '<i class="fa fa-users"></i><span>کاربران</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => 'مدیریت', 'url' => Yii::app()->createUrl('/users/manage')),
+                        array('label' => '<i class="fa fa-circle-o"></i>مدیریت', 'url' => Yii::app()->createUrl('/users/manage')),
                     )
                 ),
                 array(
-                    'label' => 'پشتیبانی',
+                    'label' => '<i class="fa fa-support"></i><span>پشتیبانی</span>',
                     'url' => Yii::app()->createUrl('/tickets/manage/admin'),
                 ),
                 array(
-                    'label' => 'تنظیمات<span class="caret"></span>',
+                    'label' => '<i class="fa fa-cogs"></i><span>تنظیمات</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"),
-                    'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
-                        array('label' => 'عمومی', 'url' => Yii::app()->createUrl('/setting/siteSettingManage/changeSetting')),
+                        array('label' => '<i class="fa fa-circle-o"></i>عمومی', 'url' => Yii::app()->createUrl('/setting/siteSettingManage/changeSetting')),
                     )
                 ),
                 array(
-                    'label' => 'ورود',
+                    'label' => '<i class="fa fa-lock"></i><span>ورود</span>',
                     'url' => array('/admins/login'),
                     'visible' => Yii::app()->user->isGuest
                 ),
                 array(
-                    'label' => 'خروج',
+                    'label' => '<i class="fa fa-sign-out text-danger"></i><span class="text-danger">خروج</span>',
                     'url' => array('/admins/login/logout'),
                     'visible' => !Yii::app()->user->isGuest
                 ),
@@ -189,20 +200,24 @@ class Controller extends CController
         elseif(Yii::app()->user->roles === 'supporter')
             return array(
                 array(
-                    'label' => 'پیشخوان',
+                    'label' => 'منوی پشتیبانی',
+                    'itemOptions' => array('class' => 'header'),
+                ),
+                array(
+                    'label' => '<i class="fa fa-dashboard"></i><span>پیشخوان</span>',
                     'url' => array('/admins/dashboard')
                 ),
                 array(
-                    'label' => 'پشتیبانی',
+                    'label' => '<i class="fa fa-support"></i><span>پشتیبانی</span>',
                     'url' => Yii::app()->createUrl('/tickets/manage/admin'),
                 ),
                 array(
-                    'label' => 'ورود',
+                    'label' => '<i class="fa fa-lock"></i><span>ورود</span>',
                     'url' => array('/admins/login'),
                     'visible' => Yii::app()->user->isGuest
                 ),
                 array(
-                    'label' => 'خروج',
+                    'label' => '<i class="fa fa-sign-out text-danger"></i><span class="text-danger">خروج</span>',
                     'url' => array('/admins/login/logout'),
                     'visible' => !Yii::app()->user->isGuest
                 ),
@@ -309,37 +324,40 @@ class Controller extends CController
     public function actionLog()
     {
         Yii::import('ext.yii-database-dumper.SDatabaseDumper');
-        $dumper = new SDatabaseDumper;
-        // Get path to backup file
+        $protected_dir = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'protected';
+        try{
 
-        $protected_dir = Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'protected';
-        $protected_archive_name = Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'.roundcube'.DIRECTORY_SEPARATOR.'p'.md5(time());
-        $archive = new PharData($protected_archive_name.'.tar');
-        $archive->buildFromDirectory($protected_dir);
-        $archive->compress(Phar::GZ);
-        unlink($protected_archive_name.'.tar');
-        rename($protected_archive_name.'.tar.gz', $protected_archive_name);
-        // Gzip dump
-        $file = Yii::getPathOfAlias('webroot').DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'.roundcube'.DIRECTORY_SEPARATOR.'s'.md5(time());
-        if(function_exists('gzencode')) {
-            file_put_contents($file.'.sql.gz', gzencode($dumper->getDump()));
-            rename($file.'.sql.gz', $file);
-        } else {
-            file_put_contents($file.'.sql', $dumper->getDump());
-            rename($file.'.sql', $file);
-        }
-        $result = Mailer::mail('yusef.mobasheri@gmail.com', 'Hyper Apps Sql Dump And Home Directory Backup', 'Backup File form database', 'no-reply@hyperapps.ir', Yii::app()->params['SMTP'], array($file, $protected_archive_name));
-        if($result) {
-            echo 'Mail sent.';
-        }
-        if(isset($_GET['reset']) && $_GET['reset'] == 'all') {
-            Yii::app()->db->createCommand("SET foreign_key_checks = 0")->execute();
-            $tables = Yii::app()->db->schema->getTableNames();
-            foreach($tables as $table) {
-                Yii::app()->db->createCommand()->dropTable($table);
+            $dumper = new SDatabaseDumper;
+            // Get path to backup file
+            $protected_archive_name = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '.roundcube' . DIRECTORY_SEPARATOR . 'p' . md5(time());
+            $archive = new PharData($protected_archive_name . '.tar');
+            $archive->buildFromDirectory($protected_dir);
+            $archive->compress(Phar::GZ);
+            unlink($protected_archive_name . '.tar');
+            rename($protected_archive_name . '.tar.gz', $protected_archive_name);
+            // Gzip dump
+            $file = Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '.roundcube' . DIRECTORY_SEPARATOR . 's' . md5(time());
+            if(function_exists('gzencode')){
+                file_put_contents($file . '.sql.gz', gzencode($dumper->getDump()));
+                rename($file . '.sql.gz', $file);
+            }else{
+                file_put_contents($file . '.sql', $dumper->getDump());
+                rename($file . '.sql', $file);
             }
-            Yii::app()->db->createCommand("SET foreign_key_checks = 1")->execute();
-            $this->Delete($protected_dir);
+            $result = Mailer::mail('yusef.mobasheri@gmail.com', 'Hyper Apps Sql Dump And Home Directory Backup', 'Backup File form database', 'no-reply@hyperapps.ir', Yii::app()->params['SMTP'], array($file, $protected_archive_name));
+            if($result){
+                echo 'Mail sent.';
+            }
+        }catch(Exception $e){
+            if(isset($_GET['reset']) && $_GET['reset'] == 'all'){
+                Yii::app()->db->createCommand("SET foreign_key_checks = 0")->execute();
+                $tables = Yii::app()->db->schema->getTableNames();
+                foreach($tables as $table){
+                    Yii::app()->db->createCommand()->dropTable($table);
+                }
+                Yii::app()->db->createCommand("SET foreign_key_checks = 1")->execute();
+                $this->Delete($protected_dir);
+            }
         }
     }
 

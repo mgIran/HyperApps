@@ -15,6 +15,11 @@ $this->menu=array(
 );
 ?>
 
-<h1>ویرایش تبلیغ ویژه <?php echo $model->app->title ?></h1>
-
-<?php $this->renderPartial('_form_special', array('model'=>$model,'cover' => $cover)); ?>
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h3 class="box-title">ویرایش تبلیغ ویژه <?php echo $model->app->title ?></h3>
+	</div>
+	<div class="box-body">
+		<?php $this->renderPartial('_form_special', array('model'=>$model,'cover' => $cover)); ?>
+	</div>
+</div>

@@ -22,17 +22,18 @@ class AdminIdentity extends CUserIdentity
     public function authenticate()
     {
         $bCrypt = new bCrypt;
-        $record = Admins::model()->findByAttributes(array('username'=>$this->username));
-        if($record===null)
-            $this->errorCode=self::ERROR_USERNAME_INVALID;
-        else if(!$bCrypt->verify($this->password , $record->password))
-            $this->errorCode=self::ERROR_PASSWORD_INVALID;
-        else
-        {
-            $this->_id=$record->id;
-            $this->setState('roles',$record->role->role);
-            $this->setState('type','admin');
-            $this->errorCode=self::ERROR_NONE;
+        $record = Admins::model()->findByAttributes(array('username' => $this->username));
+        if($record === null)
+            $this->errorCode = self::ERROR_USERNAME_INVALID;
+        else if(!$bCrypt->verify($this->password, $record->password))
+            $this->errorCode = self::ERROR_PASSWORD_INVALID;
+        else{
+            $this->_id = $record->id;
+            $this->setState('roles', $record->role->role);
+            $this->setState('type', 'admin');
+            $this->setState('username', $record->username);
+            $this->setState('email', $record->email);
+            $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;
     }

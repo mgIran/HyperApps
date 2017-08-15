@@ -75,7 +75,7 @@ $this->breadcrumbs=array(
 					}',
 				),
 			),
-			'template'=>'{approve}{delete}',
+			'template'=>'{approve} {delete}',
 		),
 	),
 )); ?>

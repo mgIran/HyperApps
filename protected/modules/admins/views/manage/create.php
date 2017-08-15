@@ -13,7 +13,11 @@ $this->menu=array(
 	array('label'=>'مدیریت مدیران', 'url'=>array('index')),
 );
 ?>
-
-<h1>افزودن مدیر</h1>
-
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h3 class="box-title">افزودن مدیر</h3>
+	</div>
+	<div class="box-body">
+		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+	</div>
+</div>

@@ -81,7 +81,7 @@ class BaseManageController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Apps;
+        $model = new Apps('admin_insert');
         $tmpDIR = Yii::getPathOfAlias("webroot") . '/uploads/temp/';
         if (!is_dir($tmpDIR))
             mkdir($tmpDIR);

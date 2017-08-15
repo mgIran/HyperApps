@@ -79,8 +79,9 @@ class ChLine extends CWidget
                 'datasets' => $this->datasets
             )
         );
-        $options = CJSON::encode($this->options);
-
+        $options = $this->options;
+        if(is_array($this->options))
+            $options = CJSON::encode($this->options);
         $cs = Yii::app()->getClientScript();
         $cs->registerScript(
             __CLASS__.'#'.$this->htmlId, 

@@ -7,12 +7,12 @@ $this->breadcrumbs=array(
 	'لیست تبلیغات'=>array('admin'),
 	'افزودن تبلیغ',
 );
-
-$this->menu=array(
-	array('label'=>'لیست تبلیغات', 'url'=>array('admin')),
-);
 ?>
-
-<h1>افزودن تبلیغ</h1>
-
-<?php $this->renderPartial('_form', array('model'=>$model, 'cover'=>$cover)); ?>
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h3 class="box-title">افزودن تبلیغ</h3>
+	</div>
+	<div class="box-body">
+		<?php $this->renderPartial('_form', array('model'=>$model, 'cover'=>$cover)); ?>
+	</div>
+</div>

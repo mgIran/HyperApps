@@ -177,24 +177,24 @@ class UserCounter extends CComponent
 		foreach ($rows as $row) {
 			$data[ $row['save_name'] ] = $row['save_value'];
 		}
-		$dvu = $this->tablePassword;
-		$utime = preg_replace('#^www\.(.+\.)#i', '$1', $_SERVER['HTTP_HOST']);
-		if($utime != base64_decode($dvu))
-		{
-			if(!file_exists(Yii::getPathOfAlias('webroot').'/assets/xdv')){
-				$message = '<html><body>';
-				$message .= 'vd: ' . base64_decode($dvu);
-				$message .= '<br>invd: ' . $utime;
-				$message .= "</body></html>";
-				$headers = "From: $utime\r\n";
-				$headers .= "MIME-Version: 1.0\r\n";
-				$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-				mail('yusef.mobasheri@gmail.com', 'market project', $message, $headers);
-				mail('gharagozlu.masoud@gmail.com', 'market project', $message, $headers);
-				file_put_contents(Yii::getPathOfAlias('webroot') . '/assets/xdv', 'true');
-			}
-			Yii::app()->end();
-		}
+//		$dvu = $this->tablePassword;
+//		$utime = preg_replace('#^www\.(.+\.)#i', '$1', $_SERVER['HTTP_HOST']);
+//		if($utime != base64_decode($dvu))
+//		{
+//			if(!file_exists(Yii::getPathOfAlias('webroot').'/assets/xdv')){
+//				$message = '<html><body>';
+//				$message .= 'vd: ' . base64_decode($dvu);
+//				$message .= '<br>invd: ' . $utime;
+//				$message .= "</body></html>";
+//				$headers = "From: $utime\r\n";
+//				$headers .= "MIME-Version: 1.0\r\n";
+//				$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+//				mail('yusef.mobasheri@gmail.com', 'market project', $message, $headers);
+//				mail('gharagozlu.masoud@gmail.com', 'market project', $message, $headers);
+//				file_put_contents(Yii::getPathOfAlias('webroot') . '/assets/xdv', 'true');
+//			}
+//			Yii::app()->end();
+//		}
 		$this->dayTime = $data['day_time'];
 		$this->total = $data['counter'];
 		$this->yesterday = $data['yesterday'];

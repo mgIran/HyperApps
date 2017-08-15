@@ -3,16 +3,15 @@
 /* @var $model Users */
 
 $this->breadcrumbs=array(
-	'Users'=>array('index'),
-	'Create',
-);
-
-$this->menu=array(
-	array('label'=>'List Users', 'url'=>array('index')),
-	array('label'=>'Manage Users', 'url'=>array('admin')),
+	'مدیریت کاربران'=>array('admin'),
+	'افزودن',
 );
 ?>
 
-<h1>Create Users</h1>
-
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<div class="box box-primary">
+	<div class="box-header with-border"><h3 class="box-title">افزودن کاربر</h3></div>
+	<div class="box-body">
+		<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+	</div>
+</div>
+		

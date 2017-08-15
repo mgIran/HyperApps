@@ -4,9 +4,6 @@
 /* @var $form CActiveForm */
 /* @var $cover array */
 ?>
-
-<div class="form">
-
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'advertises-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -28,18 +25,18 @@ if($model->isNewRecord) {
 if(!$model->isNewRecord || $apps) {
 	?>
 
-	<div class="row">
+	<div class="form-group">
 		<?php echo $form->labelEx($model, 'app_id'); ?>
 		<?
 		if(!$model->isNewRecord)
-			echo CHtml::textField('',$model->app->title,array('disabled'=>true));
+			echo CHtml::textField('',$model->app->title,array('disabled'=>true, 'class' => 'form-control'));
 		else
-			echo $form->dropDownList($model, 'app_id', CHtml::listData($apps, 'id', 'title'), array('class'=>'select-picker', 'data-live-search'=>'true'));
+			echo $form->dropDownList($model, 'app_id', CHtml::listData($apps, 'id', 'title'), array('class'=>'select-picker form-control', 'data-live-search'=>'true'));
 		?>
 		<?php echo $form->error($model, 'app_id'); ?>
 	</div>
 
-    <div class="row">
+    <div class="form-group">
         <?php echo $form->labelEx($model, 'cover'); ?>
         <?php $this->widget('ext.dropZoneUploader.dropZoneUploader', array(
             'id' => 'uploaderAd',
@@ -66,13 +63,13 @@ if(!$model->isNewRecord || $apps) {
         <?php echo $form->error($model, 'cover'); ?>
     </div>
 
-	<div class="row">
+	<div class="form-group">
 		<?php echo $form->labelEx($model, 'status'); ?>
-		<?php echo $form->dropDownList($model, 'status', $model->statusLabels); ?>
+		<?php echo $form->dropDownList($model, 'status', $model->statusLabels, array('class' => 'form-control')); ?>
 		<?php echo $form->error($model, 'status'); ?>
 	</div>
 
-	<div class="row buttons">
+	<div class="form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class'=>'btn btn-success')); ?>
 	</div>
 
@@ -81,4 +78,3 @@ if(!$model->isNewRecord || $apps) {
 }else
 	echo '<h4>برنامه ای برای تبلیغ وجود ندارد.</h4>';
 ?>
-</div><!-- form -->

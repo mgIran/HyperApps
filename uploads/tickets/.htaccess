@@ -1,0 +1,8 @@
+allow from all
+Options +FollowSymLinks
+IndexIgnore */*
+Options -Indexes
+
+<FilesMatch .*\.(zip|doc|docx|pdf|rar|apk)>
+    Allow from all
+</FilesMatch>

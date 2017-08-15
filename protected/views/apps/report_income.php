@@ -34,27 +34,25 @@ Yii::app()->clientScript->registerCss('appsStyle','
 }
 ');
 ?>
-
-<h1 style="margin-bottom: 50px;">گزارش درآمد</h1>
-
-<?php $this->renderPartial('_report_monthly', array('labels'=>$labels,'values'=>$values)); ?>
-
-<p style="margin-top: 50px;"><b>مجموع اعتبار کاربران: </b><?php echo number_format($sumCredit);?> تومان</p>
-<small>این مبلغ به صورت موقت در حساب بانکی شما می باشد.</small>
+<div class="box">
+    <div class="box-header with-border"><h3 class="box-title">گزارش درآمد</h3></div>
+    <div class="box-body">
+        <?php $this->renderPartial('_report_monthly', array('labels'=>$labels,'values'=>$values)); ?>
+        <p style="margin-top: 50px;"><b>مجموع اعتبار کاربران: </b><?php echo Controller::parseNumbers(number_format($sumCredit));?> تومان</p>
+        <small>این مبلغ به صورت موقت در حساب بانکی شما می باشد.</small>
+    </div>
+</div>
 
 <?php if($showChart):?>
-    <div class="panel panel-default chart-container">
-        <div class="panel-body">
-            <h4>نمودار گزارش</h4>
-            <p><b>مجموع در آمد این ماه: </b><?php echo number_format($sumIncome);?> تومان</p>
+    <div class="box">
+        <div class="box-header with-border"><h3 class="box-title"></h3></div>
+        <div class="box-body chart">
+            <p><b>مجموع در آمد این ماه: </b><?php echo Controller::parseNumbers(number_format($sumIncome));?> تومان</p>
             <?php $this->widget(
                 'chartjs.widgets.ChBars',
                 array(
-                    'width' => 700,
-                    'height' => 400,
-                    'htmlOptions' => array(
-                        'class'=>'center-block report-canvas'
-                    ),
+                    'width' => 300,
+                    'height' => 250,
                     'labels' => $labels,
                     'datasets' => array(
                         array(
@@ -63,7 +61,32 @@ Yii::app()->clientScript->registerCss('appsStyle','
                             "data" => $values
                         )
                     ),
-                    'options' => array()
+                    'options' => '{
+                            showScale: true,
+                            scaleShowGridLines: false,
+                            scaleGridLineColor: "rgba(0,0,0,.05)",
+                            scaleGridLineWidth: 1,
+                            scaleShowHorizontalLines: true,
+                            scaleShowVerticalLines: true,
+                            bezierCurve: false,
+                            bezierCurveTension: 0.3,
+                            pointDot: false,
+                            pointDotRadius: 4,
+                            pointDotStrokeWidth: 1,
+                            pointHitDetectionRadius: 20,
+                            datasetStroke: true,
+                            datasetStrokeWidth: 2,
+                            datasetFill: true,
+                            legend: {
+                                display: true,
+                                labels: {
+                                    fontColor: \'rgb(255, 99, 132)\'
+                                }
+                            },
+                            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                            maintainAspectRatio: true,
+                            responsive: true
+                        }'
                 )
             );?>
         </div>

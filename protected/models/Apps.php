@@ -90,6 +90,7 @@ class Apps extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('platform_id', 'required', 'on' => 'insert'),
+			array('title, category_id, price ,platform_id ,icon, support_email, platform_id', 'required', 'on' => 'admin_insert'),
 			array('title, category_id, price ,platform_id ,icon, support_email', 'required', 'on' => 'update'),
             array('support_email', 'email'),
 			array('price, size, platform_id', 'numerical'),

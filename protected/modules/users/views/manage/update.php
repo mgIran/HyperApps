@@ -11,31 +11,27 @@ $this->menu=array(
 	array('label'=>'لیست کاربران', 'url'=>array('admin')),
 );
 ?>
-<? $this->renderPartial('//layouts/_flashMessage'); ?>
-<h1>تغییر وضعیت کاربر <?= $model->email ?></h1>
 
-<div class="form">
+<div class="box box-primary">
+	<div class="box-header with-border"><h3 class="box-title">تغییر وضعیت کاربر <?= $model->email ?></h3></div>
+	<div class="box-body">
+		<? $this->renderPartial('//layouts/_flashMessage'); ?>
+		<?php $form=$this->beginWidget('CActiveForm', array(
+			'id'=>'users-form',
+			'enableAjaxValidation'=>false,
+		)); ?>
+		<?php echo $form->errorSummary($model); ?>
 
-	<?php $form=$this->beginWidget('CActiveForm', array(
-		'id'=>'users-form',
-		// Please note: When you enable ajax validation, make sure the corresponding
-		// controller action is handling ajax validation correctly.
-		// There is a call to performAjaxValidation() commented in generated controller code.
-		// See class documentation of CActiveForm for details on this.
-		'enableAjaxValidation'=>false,
-	)); ?>
-	<?php echo $form->errorSummary($model); ?>
+		<div class="form-group">
+			<?php echo $form->labelEx($model,'status'); ?>
+			<?php echo $form->dropDownList($model,'status',$model->statusLabels,array('class' => 'form-control')); ?>
+			<?php echo $form->error($model,'status'); ?>
+		</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'status'); ?>
-		<?php echo $form->dropDownList($model,'status',$model->statusLabels); ?>
-		<?php echo $form->error($model,'status'); ?>
+		<div class="form-group buttons">
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class' => 'btn btn-success')); ?>
+		</div>
+
+		<?php $this->endWidget(); ?>
 	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'ثبت' : 'ذخیره', array('class' => 'btn btn-success')); ?>
-	</div>
-
-	<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+</div>
