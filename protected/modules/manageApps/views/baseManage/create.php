@@ -15,8 +15,8 @@ $this->breadcrumbs=array(
     <ul class="nav nav-tabs pull-right">
         <li class="pull-right header">افزودن برنامه</li>
         <li class="active"><a data-toggle="tab" href="#info">عمومی</a></li>
-        <li class="disabled"><a>بسته</a></li>
-        <li class="disabled"><a >تصاویر</a></li>
+<!--        <li class="disabled"><a>بسته</a></li>-->
+<!--        <li class="disabled"><a >تصاویر</a></li>-->
     </ul>
     <div class="tab-content">
         <div id="info" class="tab-pane fade in active">

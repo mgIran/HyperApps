@@ -4634,3 +4634,9 @@ ul.wysihtml5-toolbar > li {
   display: block;
   text-align: center;
 }
+.ltr{
+  direction: ltr !important;
+}
+.dz-hidden-input{
+  display: none !important;
+}

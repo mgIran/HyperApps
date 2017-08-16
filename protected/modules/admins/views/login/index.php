@@ -18,12 +18,12 @@ $form=$this->beginWidget('CActiveForm', array(
     )
 )); ?>
     <div class="form-group has-feedback">
-        <?php echo $form->textField($model,'username',array('class'=>'form-control','placeholder'=>'نام کاربری')); ?>
+        <?php echo $form->textField($model,'username',array('class'=>'form-control ltr text-right','placeholder'=>'نام کاربری')); ?>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         <?php echo $form->error($model,'username'); ?>
     </div>
     <div class="form-group has-feedback">
-        <?php echo $form->passwordField($model,'password',array('class'=>'form-control','placeholder'=>'کلمه عبور')); ?>
+        <?php echo $form->passwordField($model,'password',array('class'=>'form-control ltr text-right','placeholder'=>'کلمه عبور')); ?>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         <?php echo $form->error($model,'password'); ?>
     </div>
@@ -39,7 +39,7 @@ $form=$this->beginWidget('CActiveForm', array(
 <?php endif; ?>
     <div class="row">
         <div class="col-xs-8">
-            <div class="checkbox icheck">
+            <div class="checkbox">
                 <label>
                     <input type="checkbox" name="<?php echo CHtml::activeName($model, 'rememberMe') ?>" value="1"> مرا بخاطر بسپار
                 </label>

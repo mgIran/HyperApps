@@ -5,9 +5,9 @@
         Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2017 <a href="http://rahbod.com">Rahbod Developing Software Co</a>.</strong> All rights reserved.
-</footer>
-
+    <strong>Copyright &copy; 2017 <a href="http://rahbod.com">Rahbod</a>.</strong> All rights reserved.
+</footer><?php
+/*
 
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
@@ -71,3 +71,4 @@
 <!-- Add the sidebar's background. This div must be placed
      immediately after the control sidebar -->
 <div class="control-sidebar-bg"></div>
+*/?>
