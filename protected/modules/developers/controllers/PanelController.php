@@ -638,46 +638,51 @@ class PanelController extends Controller
         $criteria->addCondition('monthly_settlement=1');
         $criteria->params = array(':earning' => $setting->value);
         $settlementUsers = UserDetails::model()->findAll($criteria);
-
-        $objPHPExcel = Yii::app()->yexcel->createPHPExcel();
-        $objPHPExcel = new PHPExcel();
-        // Set document properties
-        $objPHPExcel->getProperties()->setCreator("Hyperapps Website")
-            ->setLastModifiedBy("")
-            ->setTitle("YiiExcel Test Document")
-            ->setSubject("Settlement Users Detail");
-        $objPHPExcel->setActiveSheetIndex(0);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()
-            ->setCellValue('A1', 'شماره شبا')
-            ->setCellValue('B1', 'مبلغ قابل تسویه (تومان)')
-            ->setCellValue('C1', 'نام صاحب حساب');
-
-        /* @var $settlementUser UserDetails */
-        foreach ($settlementUsers as $key => $settlementUser){
-            $row = $key+2;
+        if($settlementUsers){
+            var_dump($settlementUsers);
+            exit;
+            $objPHPExcel = Yii::app()->yexcel->createPHPExcel();
+            $objPHPExcel = new PHPExcel();
+            // Set document properties
+            $objPHPExcel->getProperties()->setCreator("Hyperapps Website")
+                ->setLastModifiedBy("")
+                ->setTitle("YiiExcel Test Document")
+                ->setSubject("Settlement Users Detail");
+            $objPHPExcel->setActiveSheetIndex(0);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
             $objPHPExcel->getActiveSheet()
-                ->setCellValue('A'.$row, "IR".$settlementUser->iban)
-                ->setCellValue('B'.$row, number_format($settlementUser->getSettlementAmount()))
-                ->setCellValue('C'.$row, $settlementUser->fa_name);
+                ->setCellValue('A1', 'شماره شبا')
+                ->setCellValue('B1', 'مبلغ قابل تسویه (تومان)')
+                ->setCellValue('C1', 'نام صاحب حساب');
+
+            /* @var $settlementUser UserDetails */
+            foreach($settlementUsers as $key => $settlementUser){
+                $row = $key + 2;
+                $objPHPExcel->getActiveSheet()
+                    ->setCellValue('A' . $row, "IR" . $settlementUser->iban)
+                    ->setCellValue('B' . $row, number_format($settlementUser->getSettlementAmount()))
+                    ->setCellValue('C' . $row, $settlementUser->fa_name);
+            }
+            // Save a xls file
+            $filename = 'Settlement Developers';
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="' . $filename . '.xls"');
+            header('Cache-Control: max-age=0');
+            $objWriter = Yii::app()->yexcel->createActiveSheet($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            unset($this->objWriter);
+            unset($this->objWorksheet);
+            unset($this->objReader);
+            unset($this->objPHPExcel);
+            exit();
         }
-        // Save a xls file
-        $filename = 'Settlement Developers';
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="' . $filename . '.xls"');
-        header('Cache-Control: max-age=0');
-        $objWriter = Yii::app()->yexcel->createActiveSheet($objPHPExcel, 'Excel5');
-        $objWriter->save('php://output');
-        unset($this->objWriter);
-        unset($this->objWorksheet);
-        unset($this->objReader);
-        unset($this->objPHPExcel);
-        exit();
+        Yii::app()->user->setFlash('failed','رکوردی جهت دریافت خروجی وجود ندارد.');
+        $this->redirect(array('/developers/panel/manageSettlement'));
     }
 
     /**
