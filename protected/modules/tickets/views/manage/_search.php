@@ -2,7 +2,8 @@
 /* @var $this TicketsManageController */
 /* @var $model Tickets */
 /* @var $form CActiveForm */
-$model->attributes = $_GET['Tickets'];
+if(isset($_GET['Tickets']))
+	$model->attributes = $_GET['Tickets'];
 ?>
 
 <?php $form=$this->beginWidget('CActiveForm', array(

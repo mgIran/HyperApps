@@ -24,8 +24,13 @@ class UserTransactions extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'ym_user_transactions';
+		return '{{user_transactions}}';
 	}
+
+	public $statusLabels = [
+		'unpaid' => 'پرداخت نشده',
+		'paid' => 'پرداخت شده'
+	];
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -39,7 +44,7 @@ class UserTransactions extends CActiveRecord
 			array('date', 'length', 'max'=>20),
 			array('status', 'length', 'max'=>6),
 			array('token', 'length', 'max'=>50),
-			array('authority, description', 'length', 'max'=>200),
+			array('authority, description, gateway_name', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, user_id, amount, date, status, token, description', 'safe', 'on'=>'search'),
@@ -115,4 +120,9 @@ class UserTransactions extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getStatusLabel(){ return $this->statusLabels[$this->status]; }
 }

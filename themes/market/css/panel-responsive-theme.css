@@ -44,13 +44,10 @@
     }
 }
 @media all and (max-width: 767px) {
-    .scroll-container{
-        overflow-y: auto !important;
-    }
     .side-bar{
         top: 0;
         width: 250px;
-        right: -40%;
+        right: -250px;
         height: 100%;
         z-index:1001;
         visibility: hidden;
@@ -68,9 +65,9 @@
     }
     .content .app-box .app-item .pic{
         padding: 3px;
-        min-width:auto;
+        min-width:0;
         max-width:none;
-        min-height:auto;
+        min-height:0;
         max-height:none;
     }
     .content .app-box .app-item .pic > div img{
@@ -254,6 +251,10 @@
 
     .logo-box {
         width: 20%;
+    }
+    .footer{
+        max-height: 80px !important;
+        overflow: hidden !important;
     }
 }
 

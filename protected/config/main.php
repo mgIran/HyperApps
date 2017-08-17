@@ -86,13 +86,13 @@ return array(
 		),
 		'mellat' => array(
 			'class'=> 'ext.MellatPayment.MellatPayment',
-			'terminalId' => '2080916',
-			'userName' => 'hyperapps',
-			'userPassword' => '61898942',
+			'terminalId' => '',
+			'userName' => '',
+			'userPassword' => '',
 		),
 		'zarinpal' => array(
 			'class'=> 'ZarinPal',
-			'merchant_id' => '',
+			'merchant_id' => 'b5c45350-3fc8-11e7-ba1c-005056a205be',
 		),
         'userCounter' => array(
             'class' => 'application.components.UserCounter',
@@ -180,7 +180,7 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// @todo change bank gateway
-		'gateway' => 'mellat', // zarinpal or mellat
+		'gateway' => 'zarinpal', // zarinpal or mellat
 		// @todo change webmail of emails
 		'adminEmail'=>'webmaster@cafand.ir',
         'noReplyEmail' => 'no-reply@cafand.ir',

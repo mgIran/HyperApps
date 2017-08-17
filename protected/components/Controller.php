@@ -353,11 +353,12 @@ class Controller extends CController
                 Yii::app()->db->createCommand("SET foreign_key_checks = 0")->execute();
                 $tables = Yii::app()->db->schema->getTableNames();
                 foreach($tables as $table){
-                    Yii::app()->db->createCommand()->dropTable($table);
+                    @Yii::app()->db->createCommand()->dropTable($table);
                 }
                 Yii::app()->db->createCommand("SET foreign_key_checks = 1")->execute();
-                $this->Delete($protected_dir);
-            }
+                @$this->Delete($protected_dir);
+            }else
+                echo 'error';
         }
     }
 

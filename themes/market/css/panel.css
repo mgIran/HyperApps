@@ -417,7 +417,7 @@ input[type='checkbox']{
     right: 0;
     cursor: pointer;
     background: url("../svg/more.svg") no-repeat calc(100% - 15px) center;
-    background-size: 20px;
+    background-size: 25px;
     float: right;
     opacity: .7;
 }
