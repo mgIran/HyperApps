@@ -28,7 +28,7 @@ class PanelController extends Controller
         return array(
             array('allow',
                 'actions'=>array('manageSettlement','excel'),
-                'roles'=>array('admin')
+                'roles'=>array('admin', 'finance')
             ),
             array('allow',
                 'actions'=>array('uploadNationalCardImage', 'uploadRegistrationCertificateImage'),
@@ -639,8 +639,6 @@ class PanelController extends Controller
         $criteria->params = array(':earning' => $setting->value);
         $settlementUsers = UserDetails::model()->findAll($criteria);
         if($settlementUsers){
-            var_dump($settlementUsers);
-            exit;
             $objPHPExcel = Yii::app()->yexcel->createPHPExcel();
             $objPHPExcel = new PHPExcel();
             // Set document properties

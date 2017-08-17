@@ -46,15 +46,24 @@ if(Yii::app()->user->roles == 'supporter'){
     $permissions['TicketStatistics'] = true;
 }
 
+
+if(Yii::app()->user->roles == 'finance'){
+    $permissions['statistics'] = true;
+    $permissions['TransactionStatistics'] = true;
+}
+
+
 if(Yii::app()->user->roles == 'employee'){
     $permissions['statistics'] = true;
     $permissions['AppStatistics'] = true;
 }
 
-
 ?>
 <div class="row boxed-statistics">
     <!--Apps Statistics-->
+    <?php
+    if($permissions['AppStatistics']):
+    ?>
     <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-green">
@@ -68,7 +77,13 @@ if(Yii::app()->user->roles == 'employee'){
             <a href="<?php echo $this->createUrl('/manageApps/android/admin');?>" class="small-box-footer">مشاهده لیست <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
+    <?php
+    endif;
+    ?>
     <!--Developers Statistics-->
+    <?php
+    if($permissions['DevStatistics']):
+    ?>
     <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-red">
@@ -82,7 +97,13 @@ if(Yii::app()->user->roles == 'employee'){
             <a href="<?php echo $this->createUrl('/users/manage');?>" class="small-box-footer">مشاهده لیست <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
+        <?php
+    endif;
+    ?>
     <!--Transaction Statistics-->
+    <?php
+    if($permissions['TransactionStatistics']):
+    ?>
     <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-blue">
@@ -96,7 +117,13 @@ if(Yii::app()->user->roles == 'employee'){
             <a href="<?php echo $this->createUrl('/apps/reportSales');?>" class="small-box-footer">مشاهده لیست <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
+        <?php
+    endif;
+    ?>
     <!--Ticket Statistics-->
+    <?php
+    if($permissions['TicketStatistics']):
+    ?>
     <div class="col-lg-3 col-xs-6">
         <!-- small box -->
         <div class="small-box bg-yellow">
@@ -110,6 +137,9 @@ if(Yii::app()->user->roles == 'employee'){
             <a href="<?php echo $this->createUrl('/tickets/manage/admin');?>" class="small-box-footer">مشاهده لیست <i class="fa fa-arrow-circle-left"></i></a>
         </div>
     </div>
+        <?php
+    endif;
+    ?>
 </div>
 <div class="row">
     <section class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
