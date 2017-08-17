@@ -223,6 +223,49 @@ class Controller extends CController
                     'visible' => !Yii::app()->user->isGuest
                 ),
             );
+        elseif(Yii::app()->user->roles === 'validator')
+            return array(
+                array(
+                    'label' => 'منوی نظارت',
+                    'itemOptions' => array('class' => 'header'),
+                ),
+                array(
+                    'label' => '<i class="fa fa-dashboard"></i><span>پیشخوان</span>',
+                    'url' => array('/admins/dashboard')
+                ),
+                array(
+                    'label' => '<i class="fa fa-tablet"></i><span>برنامه ها</span> <i class="fa fa-angle-left pull-left"></i>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'items' => array(
+                        array('label' => '<i class="fa fa-circle-o"></i>بخش اندروید', 'url' => Yii::app()->createUrl('/manageApps/android/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>بخش آی او اس', 'url' => Yii::app()->createUrl('/manageApps/ios/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>بخش ویندوز فون', 'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>نظرات', 'url' => Yii::app()->createUrl('/comments/comment/adminApps')),
+                    )
+                ),
+                array(
+                    'label' => '<i class="fa fa-list"></i><span>دسته بندی برنامه ها</span> <i class="fa fa-angle-left pull-left"></i>',
+                    'url' => '#',
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
+                    'items' => array(
+                        array('label' => '<i class="fa fa-circle-o"></i>مدیریت', 'url' => Yii::app()->createUrl('/appCategories/admin/')),
+                        array('label' => '<i class="fa fa-circle-o"></i>افزودن', 'url' => Yii::app()->createUrl('/appCategories/create/')),
+                    )
+                ),
+                array(
+                    'label' => '<i class="fa fa-lock"></i><span>ورود</span>',
+                    'url' => array('/admins/login'),
+                    'visible' => Yii::app()->user->isGuest
+                ),
+                array(
+                    'label' => '<i class="fa fa-sign-out text-danger"></i><span class="text-danger">خروج</span>',
+                    'url' => array('/admins/login/logout'),
+                    'visible' => !Yii::app()->user->isGuest
+                ),
+            );
         else
             return array();
     }

@@ -29,7 +29,7 @@ class AppCategoriesController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','create','update','admin','delete'),
-				'roles'=>array('admin'),
+				'roles'=>array('admin','validator'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),

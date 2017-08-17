@@ -56,7 +56,7 @@ class BaseManageController extends Controller
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
                 'actions' => array('index', 'view', 'create', 'update', 'admin', 'delete', 'upload', 'deleteUpload', 'uploadFile', 'deleteUploadFile', 'changeConfirm', 'changePackageStatus', 'deletePackage', 'savePackage', 'images', 'download', 'downloadPackage'),
-                'roles' => array('admin'),
+                'roles' => array('admin', 'validator'),
             ),
             array('deny',  // deny all users
                 'users' => array('*'),
