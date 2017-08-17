@@ -45,7 +45,7 @@ class Controller extends CController
     public function init()
     {
         parent::init();
-        $this->active_gateway = strtolower(Yii::app()->params['gateway']);
+        $this->active_gateway = strtolower(SiteSetting::getOption('gateway_active'));
         if($this->active_gateway != 'zarinpal' && $this->active_gateway != 'mellat')
             die('Gateway invalid!! Valid gateways is "zarinpal" or "mellat". Please change gateway in main.php file.');
     }
@@ -184,6 +184,7 @@ class Controller extends CController
                     'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
                         array('label' => '<i class="fa fa-circle-o"></i>عمومی', 'url' => Yii::app()->createUrl('/setting/siteSettingManage/changeSetting')),
+                        array('label' => '<i class="fa fa-circle-o"></i>تنظیمات درگاه', 'url' => Yii::app()->createUrl('/setting/siteSettingManage/gatewaySetting')),
                     )
                 ),
                 array(

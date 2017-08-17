@@ -17,6 +17,7 @@ return array(
         'application.vendor.*',
         'application.models.*',
 		'application.components.*',
+		'application.modules.setting.models.*'
 	),
 
 	'modules'=>array(
@@ -85,14 +86,14 @@ return array(
 			'class' => 'ext.yexcel.Yexcel'
 		),
 		'mellat' => array(
-			'class'=> 'ext.MellatPayment.MellatPayment',
+			'class'=> 'ext.mellatPayment.MellatPayment',
 			'terminalId' => '',
 			'userName' => '',
-			'userPassword' => '',
+			'userPassword' => ''
 		),
 		'zarinpal' => array(
 			'class'=> 'ZarinPal',
-			'merchant_id' => 'b5c45350-3fc8-11e7-ba1c-005056a205be',
+			'merchant_id' => ''
 		),
         'userCounter' => array(
             'class' => 'application.components.UserCounter',
@@ -179,8 +180,6 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
-		// @todo change bank gateway
-		'gateway' => 'zarinpal', // zarinpal or mellat
 		// @todo change webmail of emails
 		'adminEmail'=>'webmaster@cafand.ir',
         'noReplyEmail' => 'no-reply@cafand.ir',

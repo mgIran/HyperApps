@@ -15,9 +15,10 @@ class ZarinPal extends CComponent
     private $_ref_id;
 
     public function init(){
-        if(!$this->merchant_id)
-            die('Zarin Pal Merchant Code is not defined in main.php file.');
-        $this->_merchant_id = $this->merchant_id;
+        $option = CJSON::decode(SiteSetting::getOption('gateway_variables'),false);
+        $this->_merchant_id = $option && $option->merchant_id?$option->merchant_id:$this->merchant_id;
+        if(!$this->_merchant_id)
+            die('Zarin Pal Merchant Code is not defined in admin gateway setting or main.php file.');
     }
 
     public function PayRequest($amount, $description, $callback, $email = null, $mobile = '0')

@@ -28,10 +28,10 @@ class SiteSetting extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name, title, value', 'required'),
-			array('name, title', 'length', 'max'=>255),
+			array('name, title', 'length', 'max' => 255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, title, value', 'safe', 'on'=>'search'),
+			array('id, name, title, value', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -42,8 +42,7 @@ class SiteSetting extends CActiveRecord
 	{
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
-		return array(
-		);
+		return array();
 	}
 
 	/**
@@ -75,15 +74,15 @@ class SiteSetting extends CActiveRecord
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('title',$this->title,true);
-		$criteria->compare('value',$this->value,true);
+		$criteria->compare('id', $this->id);
+		$criteria->compare('name', $this->name, true);
+		$criteria->compare('title', $this->title, true);
+		$criteria->compare('value', $this->value, true);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria' => $criteria,
 		));
 	}
 
@@ -93,8 +92,26 @@ class SiteSetting extends CActiveRecord
 	 * @param string $className active record class name.
 	 * @return SiteSetting the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public static function getOption($name, $scalar = true)
+	{
+		return $scalar?self::model()->findByAttributes(array('name' => $name))->value:self::model()->findByAttributes(array('name' => $name));
+	}
+
+	public static function setOption($name, $value, $title = null)
+	{
+		$model = self::getOption($name, false);
+		if($model === null){
+			$model = new SiteSetting();
+			$model->name = $name;
+		}
+		$model->value = $value;
+		if($title)
+			$model->title = $title;
+		return $model->save();
 	}
 }

@@ -196,6 +196,12 @@ class MellatPayment extends CApplicationComponent
 	 */
 	public function init( )
 	{
+		$option = CJSON::decode(SiteSetting::getOption('gateway_variables'),false);
+		$this->terminalId = $option && $option->terminalId?$option->terminalId:$this->terminalId;
+		$this->userName = $option && $option->userName?$option->userName:$this->userName;
+		$this->userPassword = $option && $option->userPassword?$option->userPassword:$this->userPassword;
+		if(!$this->terminalId || !$this->userName || !$this->userPassword)
+			die('Mellat Terminal Id or Username or Password is not defined in admin gateway setting or main.php file.');
 		require(dirname(__FILE__) . "/lib/nusoap.php");
 		$this->client = new nusoap_client($this->url, 'wsdl', '', '', '', '');
 		$this->client->soap_defencoding = 'UTF-8';
