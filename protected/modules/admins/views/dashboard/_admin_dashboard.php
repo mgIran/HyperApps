@@ -49,7 +49,6 @@ if(Yii::app()->user->roles == 'supporter'){
 
 if(Yii::app()->user->roles == 'finance'){
     $permissions['statistics'] = true;
-    $permissions['TransactionStatistics'] = true;
 }
 
 

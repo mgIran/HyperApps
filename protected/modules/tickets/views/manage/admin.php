@@ -8,11 +8,16 @@ $this->breadcrumbs=array(
 
 Yii::app()->clientScript->registerScript('search', "
 $('.search-form form').submit(function(){
-	$('#admins-grid').yiiGridView('update', {
+	$('#tickets-grid').yiiGridView('update', {
 		data: $(this).serialize()
 	});
 	return false;
 });
+
+setInterval(function(){
+	$.fn.yiiGridView.update('tickets-grid');
+}, 15000);
+
 ");
 ?>
 
@@ -26,7 +31,7 @@ $('.search-form form').submit(function(){
 		</div>
 		<div class="table-responsive">
 			<?php $this->widget('zii.widgets.grid.CGridView', array(
-					'id'=>'admins-grid',
+					'id'=>'tickets-grid',
 					'dataProvider'=>$dataProvider,
 					'rowCssClassExpression' => '$data->getCssClass()',
 					'columns'=>array(

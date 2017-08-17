@@ -52,7 +52,7 @@ class TicketsManageController extends Controller
 	 */
 	public function actionView($id)
 	{
-        if(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'admin') {
+        if(!Yii::app()->user->isGuest and Yii::app()->user->type == 'admin') {
             Yii::app()->theme = 'abound';
             $this->layout = '//layouts/column2';
         }
@@ -132,10 +132,10 @@ class TicketsManageController extends Controller
 		{
 			$model->attributes=$_POST['TicketMessages'];
 			if($model->save()) {
-                if(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'admin') {
+                if(!Yii::app()->user->isGuest and Yii::app()->user->type == 'admin') {
 					$model->ticket->updateByPk($model->ticket_id, array('status' => 'answered'));
 					$this->createLog('پاسخ تیکت شماره #' . $model->ticket->code . ' توسط کارشناسان بخش پشتیبانی برای شما ارسال شد.', $model->ticket->user_id);
-				}elseif(!Yii::app()->user->isGuest and Yii::app()->user->roles == 'developer')
+				}elseif(!Yii::app()->user->isGuest and Yii::app()->user->type == 'user')
                     $model->ticket->updateByPk($model->ticket_id, array('status'=>'waiting'));
                 $this->redirect(array('/tickets/' . $model->ticket->code));
             }
