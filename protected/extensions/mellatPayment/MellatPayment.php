@@ -206,7 +206,6 @@ class MellatPayment extends CApplicationComponent
 		$this->client = new nusoap_client($this->url, 'wsdl', '', '', '', '');
 		$this->client->soap_defencoding = 'UTF-8';
 		$this->client->decode_utf8 = false;
-
 		if ($this->client->fault) {
 			trigger_error("SOAP Fault: (faultcode: {$result->faultcode}, faultstring: {$result->faulstring})", E_ERROR);
 		} else {
@@ -334,11 +333,15 @@ class MellatPayment extends CApplicationComponent
 
 		$args = $this->populate( $args, $params['required'], $params['optional'], $params['type'] );
 		$args = array_merge( $args, $params['fixed'] );
-
 		$response = $this->request( $callName, $args );
-
-				try {
-
+		try {
+			if(!isset($response['return'])){
+				return array(
+					'error'=>true,
+					'responseCode'=>99,
+					'responseText'=>Yii::t('MellatPayment.rahbod', 99),
+				);
+			}
 			$result = explode(',', $response['return']);
 			$outPut = NULL;
 
