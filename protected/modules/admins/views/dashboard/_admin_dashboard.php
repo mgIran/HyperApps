@@ -193,6 +193,7 @@ if(Yii::app()->user->roles == 'employee'){
                                         'options'=>array(
                                             'target'=>'_blank'
                                         ),
+                                        'visible' => '$data->lastPackage'
                                     ),
                                     'delete'=>array(
                                         'url'=>'CHtml::normalizeUrl(array(\'/manageApps/\'.$data->platformsID[$data->platform_id].\'/delete/\'.$data->id))'
