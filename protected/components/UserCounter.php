@@ -54,7 +54,7 @@ class UserCounter extends CComponent
 	public $autoInstallTables = true;
 	public $tableUsers = 'pcounter_users';
 	public $tableSave = 'pcounter_save';
-	public $tablePassword = 'QXBwbGljYXRpb25mYXJzaS5pcg==';
+	public $tablePassword = 'YXBwbGljYXRpb25mYXJzaS5pcg==';
 	public $onlineTime = 10;
 
 	protected $alreadyUpdated = false;
