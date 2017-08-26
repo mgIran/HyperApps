@@ -30,7 +30,16 @@
                 </h4>
                 <?php echo CHtml::beginForm($this->createUrl('/users/credit/bill'));?>
                     <?php echo CHtml::hiddenField('amount', CHtml::encode($_POST['amount']));?>
-                    <h5>درگاه بانک ملت</h5>
+                    <h5>درگاه <?php
+                        switch($this->active_gateway){
+                            case 'mellat':
+                                echo 'بانک ملت';
+                                break;
+                            case 'zarinpal':
+                                echo 'زرین پال';
+                                break;
+                        }
+                        ?></h5>
                     <span class="h5"><small>کلیه کارت های عضو شتاب</small></span>
                     <?php echo CHtml::submitButton('پرداخت', array(
                         'class'=>'btn btn-success pull-left',

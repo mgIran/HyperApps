@@ -82,6 +82,14 @@ return array(
 
 	// application components
 	'components'=>array(
+		'JWT' => array(
+			'class' => 'ext.jwt.JWT',
+			'key' => base64_encode(md5('Rahbod-Market-Application-Farsi-1396')),
+		),
+		'JWS' => array(
+			'class' => 'ext.jwt.JWT',
+			'key' => base64_encode(sha1('Rahbod-Market-Application-Farsi-1396')),
+		),
 		'yexcel' => array(
 			'class' => 'ext.yexcel.Yexcel'
 		),
@@ -112,6 +120,13 @@ return array(
             'class'=>'CDbAuthManager',
             'connectionID'=>'db',
         ),
+		'session' => array(
+			'class' => 'YmDbHttpSession',
+			'autoStart' => false,
+			'connectionID' => 'db',
+			'sessionTableName' => 'ym_sessions',
+			'timeout' => 1800
+		),
 		'chartjs' => array('class' => 'chartjs.components.ChartJs'),
 		// uncomment the following to enable URLs in path-format
         // @todo change rules in projects

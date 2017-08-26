@@ -116,6 +116,7 @@ class CreditController extends Controller
         /* @var $userDetails UserDetails */
 
         $result = null;
+        $paid = false;
 
         if($this->active_gateway == 'mellat'){
             $model = UserTransactions::model()->findByAttributes(array(
@@ -139,6 +140,7 @@ class CreditController extends Controller
                         $userDetails->setScenario('update-credit');
                         $userDetails->credit = $userDetails->credit + doubleval($model->amount);
                         $userDetails->save();
+                        $paid = true;
                         Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
                     }
                 }else{
@@ -170,6 +172,7 @@ class CreditController extends Controller
                             $userDetails->setScenario('update-credit');
                             $userDetails->credit = $userDetails->credit + doubleval($model->amount);
                             $userDetails->save();
+                            $paid = true;
                             Yii::app()->user->setFlash('success', 'پرداخت شما با موفقیت انجام شد.');
                         }else{
                             Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بود.');
@@ -181,9 +184,10 @@ class CreditController extends Controller
             }
         }
 
-        // Send email
-        $message =
-            '<p style="text-align: right;">با سلام<br>کاربر گرامی، تراکنش شما با موفقیت انجام شد. جزئیات تراکنش به شرح ذیل می باشد:</p>
+        if($paid){
+            // Send email
+            $message =
+                '<p style="text-align: right;">با سلام<br>کاربر گرامی، تراکنش شما با موفقیت انجام شد. جزئیات تراکنش به شرح ذیل می باشد:</p>
                         <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
                         <table style="font-size: 9pt;text-align: right;">
                             <tr>
@@ -203,8 +207,8 @@ class CreditController extends Controller
                                 <td>' . $model->token . '</td>
                             </tr>
                         </table>';
-        Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
-
+            Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+        }
         $this->render('verify', array(
             'model' => $model,
             'userDetails' => $userDetails,
