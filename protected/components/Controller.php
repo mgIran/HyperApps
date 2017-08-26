@@ -45,6 +45,7 @@ class Controller extends CController
     public function init()
     {
         parent::init();
+        Yii::app()->name = SiteSetting::getOption('site_title');
         $this->active_gateway = strtolower(SiteSetting::getOption('gateway_active'));
         if($this->active_gateway != 'zarinpal' && $this->active_gateway != 'mellat')
             die('Gateway invalid!! Valid gateways is "zarinpal" or "mellat". Please change gateway in main.php file.');
