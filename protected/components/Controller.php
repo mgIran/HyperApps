@@ -159,7 +159,8 @@ class Controller extends CController
                 array(
                     'label' => '<i class="fa fa-user-md"></i><span>مدیران</span> <i class="fa fa-angle-left pull-left"></i>',
                     'url' => '#',
-                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"), 'submenuOptions' => array('class' => 'treeview-menu'),
+                    'itemOptions' => array('class' => 'treeview', 'tabindex' => "-1"),
+                    'submenuOptions' => array('class' => 'treeview-menu'),
                     'items' => array(
                         array('label' => '<i class="fa fa-circle-o"></i>مدیریت', 'url' => Yii::app()->createUrl('/admins/manage')),
                         array('label' => '<i class="fa fa-circle-o"></i>افزودن', 'url' => Yii::app()->createUrl('/admins/manage/create')),

@@ -5,7 +5,7 @@ return array(
     //'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
     //'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
 	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'هایپر اپس',
+	'name'=>'رهبد مارکت',
     'timeZone' => 'Asia/Tehran',
     'theme' => 'abound',
     'language' => 'fa_ir',
@@ -120,13 +120,6 @@ return array(
             'class'=>'CDbAuthManager',
             'connectionID'=>'db',
         ),
-		'session' => array(
-			'class' => 'YmDbHttpSession',
-			'autoStart' => false,
-			'connectionID' => 'db',
-			'sessionTableName' => 'ym_sessions',
-			'timeout' => 1800
-		),
 		'chartjs' => array('class' => 'chartjs.components.ChartJs'),
 		// uncomment the following to enable URLs in path-format
         // @todo change rules in projects
@@ -140,6 +133,7 @@ return array(
                 'ios' => 'site/index/platform/ios',
                 'windowsphone' => 'site/index/platform/windowsphone',
 				'apps/<id:\d+>'=>'apps/view',
+				'api/<action:\w+>'=>'api/<action>',
 				'documents/<id:\d+>/<title>'=>'pages/manage/view',
 				'<module:\w+>/<id:\d+>'=>'<module>/manage/view',
                 '<module:\w+>/<controller:\w+>'=>'<module>/<controller>/index',
@@ -196,8 +190,8 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// @todo change webmail of emails
-		'adminEmail'=>'webmaster@cafand.ir',
-        'noReplyEmail' => 'no-reply@cafand.ir',
+		'adminEmail'=>'webmaster@rahbod.com',
+        'noReplyEmail' => 'no-reply@rahbod.com',
 		'SMTP' => array(
 //            'Host' => 'mail.hyperapps.ir',
 //            'Secure' => 'ssl',
@@ -206,13 +200,13 @@ return array(
 //            'Password' => '7cZKn*CWSrg87cZKn*CWSrg8',
         ),
         'mailTheme'=>
-            '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">کافند<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
+            '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">رهبد مارکت<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
              <div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">
                 <div style="direction:rtl;display:block;overflow:hidden;border:1px solid #efefef;text-align: center;padding:15px;">{MessageBody}</div>
              </div>
              <div style="font-size: 8pt;color: #bbb;text-align: right;font-family: tahoma;padding: 15px;">
                 <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/site/about">درباره</a> | <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/site/help">راهنما</a>
-                <span style="float: left;"> همهٔ حقوق برای هایپر اپس محفوظ است. ©‏ {CurrentYear} </span>
+                <span style="float: left;"> همهٔ حقوق برای رهبد مارکت محفوظ است. ©‏ {CurrentYear} </span>
              </div>',
 	),
 );

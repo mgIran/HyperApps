@@ -269,6 +269,7 @@ class Apps extends CActiveRecord
 
 	public function getDeveloperName()
 	{
+		Yii::import('users.models.*');
 		if($this->developer)
 			return $this->developer->userDetails->nickname;
 		else

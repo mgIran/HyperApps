@@ -30,7 +30,7 @@ $cs->registerScriptFile($baseUrl.'/js/scripts.js');
 <div class="container">
     <div class="logo-box">
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>">
-        <img class="logo" src="<?= Yii::app()->theme->baseUrl; ?>/images/logo.png" alt="Cafand" >
+        <img class="logo" src="<?= Yii::app()->theme->baseUrl; ?>/images/rahbod.svg" alt="Rahbod" >
         </a>
     </div>
     <?= $content; ?>

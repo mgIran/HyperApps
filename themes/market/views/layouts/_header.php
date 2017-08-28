@@ -3,7 +3,7 @@
         <a href="<?= Yii::app()->createAbsoluteUrl('//'); ?>"></a>
         <h1><?= $this->siteName ?></h1>
         <h2><?= $this->pageTitle ?></h2>
-        <img class="logo" src="<?= Yii::app()->createAbsoluteUrl('themes/market/images/logo.png'); ?>" alt="Cafand" >
+        <img class="logo" src="<?= Yii::app()->createAbsoluteUrl('themes/market/images/rahbod.svg'); ?>" alt="Rahbod" >
     </div>
     <div class="right-header col-xs-12">
         <div class="search-box col-xs-12">
