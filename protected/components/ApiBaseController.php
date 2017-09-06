@@ -10,7 +10,7 @@ class ApiBaseController extends CController
     public $user;
 
     private $_client_id = 'AbRgEQt91vLU3S073Byv0-8pixMTkxplOB-jAplL2FwvoGi6eBGuFZ8ckmLXFT0nBRrz_6C5rGbmmY2f';
-    private $_client_secret = 'EMcxZTH6EZ_3Y8b71wcFeB6J7t4aFGhx5He3c2P1x2H_yHVh9xB581mM8SB5IDWGZGpasd211';
+    private $_client_secret = 'EMcxZTH6EZ_3Y8b71wcFet4aFGhx5He3c2P1x2H_yHVh9xB581mM8SB5IDWGZGpasd211';
 
     protected function _sendResponse($status = 200, $body = '', $content_type = 'text/html')
     {
@@ -132,12 +132,12 @@ class ApiBaseController extends CController
      */
     protected function _checkAuth()
     {
-        if(!isset(getallheaders()['Authorization'])){
+        if(function_exists('getallheaders') && !isset(getallheaders()['Authorization'])){
             $this->_sendResponse(401, CJSON::encode(['status' => false,
                 'code' => 101,
                 'message' => 'Access Token not sent.']), 'application/json');
         }
-        $authorization = getallheaders()['Authorization'];
+        $authorization = function_exists('getallheaders') && getallheaders()['Authorization']?getallheaders()['Authorization']:$_SERVER['HTTP_X_AUTHORIZATION'];
         if(strpos($authorization, 'Bearer') === false){
             $this->_sendResponse(401, CJSON::encode(['status' => false,
                 'code' => 102,
