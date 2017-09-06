@@ -215,10 +215,10 @@ class ApiController extends ApiBaseController
                     break;
                 case 'App':
                     $order = 'id DESC';
-                    if($this->request['row'])
+                    if(isset($this->request['row']))
                     {
                         switch($this->request['row']){
-                            case'newest_program':
+                            case'newest_programs':
                                 $this->request['category_id'] = 1;
                                 $order = 'id DESC';
                                 break;
@@ -274,7 +274,7 @@ class ApiController extends ApiBaseController
                                 break;
                         }
                     }
-                    else if($this->request['order'])
+                    else if(isset($this->request['order']))
                         $order = $this->request['order'];
 
                     if (isset($this->request['category_id'])) {
@@ -296,8 +296,6 @@ class ApiController extends ApiBaseController
                     $criteria->params[':status'] = 'enable';
                     $criteria->params[':confirm'] = 'accepted';
                     $criteria->params[':deleted'] = 0;
-                    $criteria->limit = 20;
-
                     $criteria->order = $order;
 
                     /* @var Apps[] $apps */
