@@ -82,9 +82,9 @@ class ApiController extends ApiBaseController
             if ($result)
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => $result]), 'application/json');
             else
-                $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         } else
-            $this->_sendResponse(500, CJSON::encode(['status' => false, 'message' => 'Query variable is required.']), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Query variable is required.']), 'application/json');
     }
     /**
      * Get a specific model
@@ -105,7 +105,8 @@ class ApiController extends ApiBaseController
 
                     if (!$record)
                         $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
-
+                    $record->seen++;
+                    $record->save(false);
                     Yii::import('users.models.*');
                     Yii::import('comments.models.*');
 
@@ -131,7 +132,7 @@ class ApiController extends ApiBaseController
                         ];
 
                     // Get similar books
-                    $criteria = Apps::model()->getValidBooks(array($record->category_id));
+                    $criteria = Apps::model()->getValidApps(array($record->category_id));
                     $criteria->addCondition('id!=:id');
                     $criteria->params[':id'] = $record->id;
                     $criteria->limit = 10;
@@ -156,7 +157,6 @@ class ApiController extends ApiBaseController
                         'title' => $record->title,
                         'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $record->icon,
                         'developer_name' => $record->getDeveloperName(),
-                        'author' => ($person = $record->getPerson('نویسنده')) ? $person[0]->name_family : null,
                         'rate' => floatval($record->rate),
                         'price' => doubleval($record->price),
                         'hasDiscount' => $record->hasDiscount(),
@@ -177,9 +177,9 @@ class ApiController extends ApiBaseController
             if ($app)
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'book' => $app]), 'application/json');
             else
-                $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         } else
-            $this->_sendResponse(500, CJSON::encode(['status' => false, 'message' => 'Entity and ID variables is required.']), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Entity and ID variables is required.']), 'application/json');
     }
     /**
      * Get list of models
@@ -317,9 +317,9 @@ class ApiController extends ApiBaseController
             if ($list)
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'list' => $list]), 'application/json');
             else
-                $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         } else
-            $this->_sendResponse(500, CJSON::encode(['status' => false, 'message' => 'Entity variable is required.']), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Entity variable is required.']), 'application/json');
     }
 
     public function actionPage()
@@ -344,9 +344,9 @@ class ApiController extends ApiBaseController
             if ($text)
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'text' => $text]), 'application/json');
             else
-                $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         } else
-            $this->_sendResponse(500, CJSON::encode(['status' => false, 'message' => 'Name variable is required.']), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Name variable is required.']), 'application/json');
     }
 
     public function actionComment()
@@ -367,7 +367,7 @@ class ApiController extends ApiBaseController
             $criteria->params[':time'] = time() - 30;
             $model = Comment::model()->find($criteria);
             if ($model)
-                $this->_sendResponse(500, CJSON::encode(['status' => false, 'message' => 'تا 30 ثانیه دیگر امکان ثبت نظر وجود ندارد.']), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'تا 30 ثانیه دیگر امکان ثبت نظر وجود ندارد.']), 'application/json');
 
             if ($comment->save()) {
                 if (isset($this->request['comment']['rate'])) {
@@ -383,9 +383,9 @@ class ApiController extends ApiBaseController
 
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'نظر شما با موفقیت ثبت شد.']), 'application/json');
             } else
-                $this->_sendResponse(500, CJSON::encode(['status' => false, 'message' => 'در عملیات ثبت خطایی رخ داده است! لطفا مجددا تلاش کنید.']), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در عملیات ثبت خطایی رخ داده است! لطفا مجددا تلاش کنید.']), 'application/json');
         } else
-            $this->_sendResponse(500, CJSON::encode(['status' => false, 'message' => 'Comment variable is required.']), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Comment variable is required.']), 'application/json');
     }
 
     /** ------------------------------------------------- Authorized Api ------------------------------------------------ **/
