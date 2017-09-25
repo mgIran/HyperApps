@@ -199,12 +199,21 @@ class ApiController extends ApiBaseController
             }
 
             // Execute query on model
+            $listCount = 0;
             $list = [];
             switch (trim(ucfirst($entity))) {
                 case 'Category':
                     /* @var AppCategories[] $categories */
+                    $criteria->limit = 500;
+                    if (isset($this->request['parent_id']))
+                    {
+                        if($this->request['parent_id'] != 0)
+                            $criteria->compare('category_id', $this->request['parent_id']);
+                        else
+                            $criteria->addCondition('parent_id IS NULL');
+                    }
                     $categories = AppCategories::model()->findAll($criteria);
-
+                    $listCount = AppCategories::model()->count($criteria);
                     foreach ($categories as $category)
                         $list[] = [
                             'id' => intval($category->id),
@@ -214,6 +223,7 @@ class ApiController extends ApiBaseController
                         ];
                     break;
                 case 'App':
+                    $criteria->with[] = 'images';
                     $order = 'id DESC';
                     if(isset($this->request['row']))
                     {
@@ -234,6 +244,8 @@ class ApiController extends ApiBaseController
                                 $this->request['category_id'] = 1;
                                 $criteria->select = 't.*, AVG(ratings.rate) as avgRate';
                                 $criteria->with[] = 'ratings';
+                                $criteria->group = 't.id';
+                                $criteria->together = true;
                                 $criteria->addCondition('ratings.rate IS NOT NULL');
                                 $order = 'avgRate DESC, t.id DESC';
                                 break;
@@ -241,6 +253,8 @@ class ApiController extends ApiBaseController
                                 $this->request['category_id'] = 2;
                                 $criteria->select = 't.*, AVG(ratings.rate) as avgRate';
                                 $criteria->with[] = 'ratings';
+                                $criteria->group = 't.id';
+                                $criteria->together = true;
                                 $criteria->addCondition('ratings.rate IS NOT NULL');
                                 $order = 'avgRate DESC, t.id DESC';
                                 break;
@@ -248,29 +262,34 @@ class ApiController extends ApiBaseController
                                 $this->request['category_id'] = 3;
                                 $criteria->select = 't.*, AVG(ratings.rate) as avgRate';
                                 $criteria->with[] = 'ratings';
+                                $criteria->group = 't.id';
+                                $criteria->together = true;
                                 $criteria->addCondition('ratings.rate IS NOT NULL');
                                 $order = 'avgRate DESC, t.id DESC';
                                 break;
                             case'best_sellers_programs':
                                 $this->request['category_id'] = 1;
-                                $criteria->select = 't.*, AVG(ratings.rate) as avgRate';
-                                $criteria->with['appBuys'] = array('joinType' => 'RIGHT OUTER JOIN');
                                 $criteria->group = 'appBuys.app_id';
                                 $order = 'COUNT(appBuys.id) DESC';
+                                $criteria->with['appBuys'] = array('joinType' => 'RIGHT OUTER JOIN');
+                                $criteria->together = true;
                                 break;
                             case'best_sellers_games':
                                 $this->request['category_id'] = 1;
-                                $criteria->select = 't.*, AVG(ratings.rate) as avgRate';
-                                $criteria->with['appBuys'] = array('joinType' => 'RIGHT OUTER JOIN');
                                 $criteria->group = 'appBuys.app_id';
                                 $order = 'COUNT(appBuys.id) DESC';
+                                $criteria->with['appBuys'] = array('joinType' => 'RIGHT OUTER JOIN');
+                                $criteria->together = true;
                                 break;
                             case'best_sellers_edu':
                                 $this->request['category_id'] = 1;
-                                $criteria->select = 't.*, AVG(ratings.rate) as avgRate';
-                                $criteria->with['appBuys'] = array('joinType' => 'RIGHT OUTER JOIN');
                                 $criteria->group = 'appBuys.app_id';
                                 $order = 'COUNT(appBuys.id) DESC';
+                                $criteria->with['appBuys'] = array('joinType' => 'RIGHT OUTER JOIN');
+                                $criteria->together = true;
+                                break;
+                            default:
+                                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => "'{$this->request['row']}' is invalid row."]), 'application/json');
                                 break;
                         }
                     }
@@ -287,7 +306,6 @@ class ApiController extends ApiBaseController
                         $criteria->params[':platform_id'] = $this->request['platform_id'];
                     }
 
-                    $criteria->with = 'images';
                     $criteria->addCondition('status=:status');
                     $criteria->addCondition('confirm=:confirm');
                     $criteria->addCondition('deleted=:deleted');
@@ -297,9 +315,9 @@ class ApiController extends ApiBaseController
                     $criteria->params[':confirm'] = 'accepted';
                     $criteria->params[':deleted'] = 0;
                     $criteria->order = $order;
-
                     /* @var Apps[] $apps */
                     $apps = Apps::model()->findAll($criteria);
+                    $listCount = Apps::model()->count($criteria);
                     foreach ($apps as $app)
                         $list[] = [
                             'id' => intval($app->id),
@@ -307,15 +325,15 @@ class ApiController extends ApiBaseController
                             'icon' => Yii::app()->getBaseUrl(true).'/uploads/apps/icons/' . $app->icon,
                             'developer' => $app->getDeveloperName(),
                             'rate' => $app->getRate(),
-                            'price' => $app->price,
+                            'price' => (double)$app->price,
                             'hasDiscount' => $app->hasDiscount(),
-                            'offPrice' => $app->hasDiscount()?$app->getOffPrice():null,
+                            'offPrice' => $app->hasDiscount()?(double)$app->getOffPrice():null,
                         ];
                     break;
             }
 
             if ($list)
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'list' => $list]), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => $listCount,'list' => $list]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         } else
