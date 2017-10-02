@@ -41,7 +41,10 @@
 <?= $this->renderPartial('//layouts/_mobile_header'); ?>
 <div class="col-xs-12">
     <section class="content row">
-        <?php $this->renderPartial('//layouts/_panel_sidebar'); ?>
+        <?php
+        if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user')
+            $this->renderPartial('//layouts/_panel_sidebar');
+        ?>
         <div class="content-bar">
             <?php echo $content; ?>
         </div>

@@ -23,64 +23,75 @@ class ApiController extends ApiBaseController
     public function actionSearch()
     {
         if (isset($this->request['query']) and !empty($term = trim($this->request['query']))) {
-            $limit = 10;
-            if (isset($this->request['limit']))
-                $limit = $this->request['limit'];
+            $limit = 20;
+            $offset = 0;
+            if (isset($this->request['limit']) && !empty($this->request['limit'])) {
+                $limit = (int)$this->request['limit'];
+                if (isset($this->request['offset']) && !empty($this->request['offset']))
+                    $offset = (int)$this->request['offset'];
+            }
 
             Yii::import('users.models.*');
 
             $criteria = new CDbCriteria();
 
-            $criteria->with = ['publisher', 'publisher.userDetails', 'persons', 'category'];
+            if (isset($this->request['platform_id'])) {
+                $criteria->addCondition('platform_id=:platform_id');
+                $criteria->params[':platform_id'] = $this->request['platform_id'];
+            }
 
-            $criteria->addCondition('t.status=:status AND t.confirm=:confirm AND t.deleted=:deleted AND (SELECT COUNT(book_packages.id) FROM ym_book_packages book_packages WHERE book_packages.book_id=t.id) != 0');
+            $criteria->addCondition('status=:status AND confirm=:confirm AND deleted=:deleted AND (SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=t.id) != 0');
             $criteria->params[':status'] = 'enable';
             $criteria->params[':confirm'] = 'accepted';
             $criteria->params[':deleted'] = 0;
-            $criteria->order = 't.confirm_date DESC';
 
-            $terms = explode(' ', $term);
-            $condition = '
-                ((t.title regexp :term) OR
-                (userDetails.fa_name regexp :term OR userDetails.nickname regexp :term) OR
-                (persons.name_family regexp :term) OR
-                (category.title regexp :term))';
-            $criteria->params[":term"] = $term;
+            $criteria->order = 't.id DESC';
 
+            $terms = explode(' ', urldecode($term));
+            $sql = null;
             foreach ($terms as $key => $term)
                 if ($term) {
-                    if ($condition)
-                        $condition .= " OR (";
-                    $condition .= "
-                        (t.title regexp :term$key) OR
-                        (userDetails.fa_name regexp :term$key OR userDetails.nickname regexp :term$key) OR
-                        (persons.name_family regexp :term$key) OR
-                        (category.title regexp :term$key))";
+                    if (!$sql)
+                        $sql = "(";
+                    else
+                        $sql .= " OR (";
+                    $sql .= "t.title regexp :term$key OR t.description regexp :term$key OR category.title regexp :term$key)";
                     $criteria->params[":term$key"] = $term;
                 }
-            $criteria->together = true;
+            $criteria->with[] = 'category';
+            $criteria->addCondition($sql);
 
-            $criteria->addCondition($condition);
+            $criteria->together = true;
             $criteria->limit = $limit;
+            $criteria->offset = $offset;
 
             /* @var Apps[] $apps */
             $apps = Apps::model()->findAll($criteria);
+            $listCount = Apps::model()->count($criteria);
 
             $result = [];
-            foreach ($apps as $app)
+            foreach ($apps as $app){
+                $images = [];
+                $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
+                $imageUrl = Yii::app()->getBaseUrl(true) . "/uploads/apps/images/";
+                foreach($app->images as $image)
+                    if(file_exists($imagePath . $image->image))
+                        $images[] = $imageUrl . $image->image;
                 $result[] = [
                     'id' => intval($app->id),
                     'title' => $app->title,
-                    'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
-                    'developer_name' => $app->getDeveloperName(),
-                    'rate' => floatval($app->rate),
-                    'price' => doubleval($app->price),
+                    'icon' => Yii::app()->getBaseUrl(true) . '/uploads/apps/icons/' . $app->icon,
+                    'developer' => $app->getDeveloperName(),
+                    'rate' => $app->getRate(),
+                    'price' => (double)$app->price,
                     'hasDiscount' => $app->hasDiscount(),
-                    'offPrice' => $app->hasDiscount() ? doubleval($app->offPrice) : 0,
+                    'offPrice' => $app->hasDiscount()?(double)$app->getOffPrice():null,
+                    'images' => $images
                 ];
+            }
 
             if ($result)
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => $result]), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => $listCount, 'result' => $result]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         } else
@@ -107,6 +118,14 @@ class ApiController extends ApiBaseController
                         $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
                     $record->seen++;
                     $record->save(false);
+
+                    $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
+                    $imageUrl = Yii::app()->getBaseUrl(true) . "/uploads/apps/images/";
+                    $images =[];
+                    foreach($record->images as $image)
+                        if(file_exists($imagePath.$image->image))
+                            $images[] = $imageUrl.$image->image;
+
                     Yii::import('users.models.*');
                     Yii::import('comments.models.*');
 
@@ -131,7 +150,7 @@ class ApiController extends ApiBaseController
                             'createTime' => doubleval($comment->create_time),
                         ];
 
-                    // Get similar books
+                    // Get similar apps
                     $criteria = Apps::model()->getValidApps(array($record->category_id));
                     $criteria->addCondition('id!=:id');
                     $criteria->params[':id'] = $record->id;
@@ -144,19 +163,24 @@ class ApiController extends ApiBaseController
                         $similar[] = [
                             'id' => intval($app->id),
                             'title' => $app->title,
-                            'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
-                            'developer_name' => $app->getDeveloperName(),
-                            'rate' => floatval($app->rate),
-                            'price' => doubleval($app->price),
+                            'icon' => Yii::app()->getBaseUrl(true).'/uploads/apps/icons/' . $app->icon,
+                            'developer' => $app->getDeveloperName(),
+                            'rate' => $app->getRate(),
+                            'price' => (double)$app->price,
                             'hasDiscount' => $app->hasDiscount(),
-                            'offPrice' => $app->hasDiscount() ? doubleval($app->offPrice) : 0,
+                            'offPrice' => $app->hasDiscount()?(double)$app->getOffPrice():null,
                         ];
-
+                    $filePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/";
+                    if($record->platform) {
+                        $platform = $record->platform;
+                        $filesFolder = $platform->name;
+                        $filePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$filesFolder}/";
+                    }
                     $app = [
                         'id' => intval($record->id),
                         'title' => $record->title,
                         'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $record->icon,
-                        'developer_name' => $record->getDeveloperName(),
+                        'developer' => $record->getDeveloperName(),
                         'rate' => floatval($record->rate),
                         'price' => doubleval($record->price),
                         'hasDiscount' => $record->hasDiscount(),
@@ -164,10 +188,14 @@ class ApiController extends ApiBaseController
                         'category_id' => intval($record->category_id),
                         'description' => strip_tags(str_replace('<br/>', '\n', str_replace('<br>', '\n', $record->description))),
                         'seen' => intval($record->seen),
+                        'install' => intval($record->install),
+                        'package_name' => $record->lastPackage->package_name,
+                        'version' => $record->lastPackage->version,
+                        'app_size' => Controller::fileSize($filePath.$record->lastPackage->file_name),
+                        'images' => $images,
                         'comments' => $comments,
                         'similar' => $similar,
                     ];
-
                     break;
                 default:
                     $app = null;
@@ -175,7 +203,7 @@ class ApiController extends ApiBaseController
             }
 
             if ($app)
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'book' => $app]), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'app' => $app]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         } else
@@ -318,17 +346,27 @@ class ApiController extends ApiBaseController
                     /* @var Apps[] $apps */
                     $apps = Apps::model()->findAll($criteria);
                     $listCount = Apps::model()->count($criteria);
-                    foreach ($apps as $app)
+                    foreach ($apps as $app){
+                        $images = [];
+                        if($app->images && isset($this->request['row'])){
+                            $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
+                            $imageUrl = Yii::app()->getBaseUrl(true) . "/uploads/apps/images/";
+                            foreach($app->images as $image)
+                                if(file_exists($imagePath . $image->image))
+                                    $images[] = $imageUrl . $image->image;
+                        }
                         $list[] = [
                             'id' => intval($app->id),
                             'title' => $app->title,
-                            'icon' => Yii::app()->getBaseUrl(true).'/uploads/apps/icons/' . $app->icon,
+                            'icon' => Yii::app()->getBaseUrl(true) . '/uploads/apps/icons/' . $app->icon,
                             'developer' => $app->getDeveloperName(),
                             'rate' => $app->getRate(),
                             'price' => (double)$app->price,
                             'hasDiscount' => $app->hasDiscount(),
                             'offPrice' => $app->hasDiscount()?(double)$app->getOffPrice():null,
+                            'images' => $images,
                         ];
+                    }
                     break;
             }
 
@@ -389,9 +427,9 @@ class ApiController extends ApiBaseController
 
             if ($comment->save()) {
                 if (isset($this->request['comment']['rate'])) {
-                    $rateModel = AppRatings::model()->findAllByAttributes(array('user_id' => $comment->creator_id, 'book_id' => $comment->owner_id));
+                    $rateModel = AppRatings::model()->findAllByAttributes(array('user_id' => $comment->creator_id, 'app_id' => $comment->owner_id));
                     if ($rateModel)
-                        AppRatings::model()->deleteAllByAttributes(array('user_id' => $comment->creator_id, 'book_id' => $comment->owner_id));
+                        AppRatings::model()->deleteAllByAttributes(array('user_id' => $comment->creator_id, 'app_id' => $comment->owner_id));
                     $rateModel = new AppRatings();
                     $rateModel->app_id = $comment->owner_id;
                     $rateModel->user_id = $comment->creator_id;
