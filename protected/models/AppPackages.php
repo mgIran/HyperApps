@@ -7,6 +7,7 @@
  * @property string $id
  * @property string $app_id
  * @property string $version
+ * @property string $version_code
  * @property string $package_name
  * @property string $file_name
  * @property string $create_date
@@ -51,7 +52,7 @@ class AppPackages extends CActiveRecord
             array('package_name', 'checkPackageName', 'on' => 'insert, update'),
             array('package_name', 'uniqueDeveloper', 'on' => 'insert, update'),
             array('app_id', 'length', 'max' => 10),
-            array('version, create_date, publish_date', 'length', 'max' => 20),
+            array('version, version_code, create_date, publish_date', 'length', 'max' => 20),
             array('package_name', 'length', 'max' => 100),
             array('file_name', 'length', 'max' => 255),
             array('status', 'length', 'max' => 15),
@@ -59,7 +60,7 @@ class AppPackages extends CActiveRecord
             array('for', 'length', 'max' => 7),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, app_id, version, package_name, file_name, create_date, publish_date, status, reason, for', 'safe', 'on' => 'search'),
+            array('id, app_id, version, version_code, package_name, file_name, create_date, publish_date, status, reason, for', 'safe', 'on' => 'search'),
         );
     }
 
@@ -84,6 +85,7 @@ class AppPackages extends CActiveRecord
             'id' => 'شناسه',
             'app_id' => 'برنامه',
             'version' => 'نسخه',
+            'version_code' => 'کد نسخه',
             'package_name' => 'نام بسته',
             'file_name' => 'فایل',
             'create_date' => 'تاریخ بارگذاری',
@@ -115,6 +117,7 @@ class AppPackages extends CActiveRecord
         $criteria->compare('id', $this->id, true);
         $criteria->compare('app_id', $this->app_id, true);
         $criteria->compare('version', $this->version, true);
+        $criteria->compare('version_code', $this->version_code, true);
         $criteria->compare('package_name', $this->package_name, true);
         $criteria->compare('file_name', $this->file_name, true);
         $criteria->compare('create_date', $this->create_date, true);

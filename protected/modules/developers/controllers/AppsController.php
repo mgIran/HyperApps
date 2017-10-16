@@ -475,6 +475,7 @@ class AppsController extends Controller
             $apkInfo = null;
             if ($_POST['platform'] == 'android') {
                 $apkInfo = $this->apkParser($tempDir . DIRECTORY_SEPARATOR . $_POST['Apps']['file_name']);
+                $model->version_code = $apkInfo['version_code'];
                 $model->version = $apkInfo['version'];
                 $model->package_name = $apkInfo['package_name'];
                 $model->file_name = $apkInfo['version'] . '-' . $apkInfo['package_name'] . '.' . pathinfo($_POST['Apps']['file_name'], PATHINFO_EXTENSION);
