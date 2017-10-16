@@ -215,6 +215,29 @@
 		</div>
 	<?php endif;?>
 
+	<h5 style="margin-top: 50px;">اطلاعات پشتیبانی کاربر</h5>
+	<hr>
+
+	<div class="form-group">
+		<?php echo $form->textField($model,'support_phone',array('placeholder'=>$model->getAttributeLabel('support_phone'),'maxlength'=>11,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'support_phone'); ?>
+	</div>
+
+	<div class="form-group">
+		<?php echo $form->textField($model,'support_email',array('placeholder'=>$model->getAttributeLabel('support_email').' *','maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'support_email'); ?>
+	</div>
+
+	<div class="form-group">
+		<?php echo $form->textField($model,'support_fa_web',array('placeholder'=>$model->getAttributeLabel('support_fa_web'),'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'support_fa_web'); ?>
+	</div>
+
+	<div class="form-group">
+		<?php echo $form->textField($model,'support_en_web',array('placeholder'=>$model->getAttributeLabel('support_en_web'),'maxlength'=>255,'class'=>'form-control')); ?>
+		<?php echo $form->error($model,'support_en_web'); ?>
+	</div>
+
 	<div class="form-group buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'افزودن' : 'ثبت و ادامه' ,array('class' => 'btn btn-success')); ?>
 	</div>

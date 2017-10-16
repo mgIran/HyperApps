@@ -44,10 +44,10 @@ if(!$model->isNewRecord || $apps) {
 				'model' => $model,
 				'name' => 'cover',
 				'maxFiles' => 1,
-				'maxFileSize' => 0.4, //MB
+				'maxFileSize' => 1, //MB
 				'url' => Yii::app()->createUrl('/advertises/manage/upload'),
 				'deleteUrl' => Yii::app()->createUrl('/advertises/manage/deleteUpload'),
-				'acceptedFiles' => 'image/png',
+				'acceptedFiles' => 'image/*',
 				'serverFiles' => $cover,
 				'onSuccess' => '
                 var responseObj = JSON.parse(res);
