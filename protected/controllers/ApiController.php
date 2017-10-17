@@ -11,7 +11,7 @@ class ApiController extends ApiBaseController
     {
         return array(
             'RestAccessControl + search, find, list, page, comment, creditPrices',
-            'RestAuthControl + profile, editProfile, credit',
+            'RestAuthControl + profile, editProfile, credit, bookmark, bookmarkList',
         );
     }
 
@@ -550,27 +550,31 @@ class ApiController extends ApiBaseController
     public function actionBookmark()
     {
         if (isset($this->request['app_id'])) {
+            $app = Apps::model()->findByPk($this->request['app_id']);
+            if($app === null)
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نرم افزار موردنظر یافت نشد.']), 'application/json');
+
             $model = UserAppBookmark::model()->find('user_id = :user_id AND app_id = :app_id', array(
                 ':user_id' => $this->user->id,
                 ':app_id' => $this->request['app_id']
             ));
 
-            if (!$model) {
+            if (!$model){
                 $model = new UserAppBookmark();
                 $model->app_id = $this->request['app_id'];
                 $model->user_id = $this->user->id;
-                if ($model->save()) 
-                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'نرم افزار "' . $model->app->title . '" با موفقیت نشان شد.']), 'application/json');
+                if($model->save())
+                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => "{$app->title} با موفقیت نشان شد."]), 'application/json');
                 else
                     $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
             } else {
                 if (UserAppBookmark::model()->deleteAllByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id'])))
-                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'عملیات با موفقیت انجام شد.']), 'application/json');
+                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => "{$app->title} با موفقیت از نشان شده ها حذف گردید."]), 'application/json');
                 else
                     $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
             }
         } else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Book ID variable is required.']), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID variable is required.']), 'application/json');
     }
 
     public function actionBookmarkList()
@@ -586,7 +590,7 @@ class ApiController extends ApiBaseController
             ];
 
         if ($list)
-            $this->_sendResponse(200, CJSON::encode(['status' => true, 'list' => $list]), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => count($list),'list' => $list]), 'application/json');
         else
             $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
     }

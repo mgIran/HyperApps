@@ -104,7 +104,7 @@ class Users extends CActiveRecord
             'userDevIdRequests' => array(self::HAS_ONE, 'UserDevIdRequests', 'user_id'),
             'transactions' => array(self::HAS_MANY, 'UserTransactions', 'user_id'),
             'role' => array(self::BELONGS_TO, 'UserRoles', 'role_id'),
-            'bookmarkedApps' => array(self::MANY_MANY, 'Apps', 'ym_user_app_bookmark(user_id,app_id)'),
+            'bookmarkedApps' => array(self::MANY_MANY, 'Apps', '{{user_app_bookmark}}(user_id,app_id)'),
         );
     }
 
