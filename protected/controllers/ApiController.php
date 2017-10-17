@@ -10,7 +10,7 @@ class ApiController extends ApiBaseController
     {
         return array(
             'RestAccessControl + search, find, list, page, comment',
-            'RestAuthControl + testAuth',
+            'RestAuthControl + profile, editProfile',
         );
     }
 
@@ -446,7 +446,48 @@ class ApiController extends ApiBaseController
     }
 
     /** ------------------------------------------------- Authorized Api ------------------------------------------------ **/
-    public function actionTestAuth(){
-        $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'Access Token works properly.']), 'application/json');  
+    public function actionProfile()
+    {
+//        $avatar = ($this->user->userDetails->avatar == '') ? Yii::app()->createAbsoluteUrl('/themes/frontend/images/default-user.png') : Yii::app()->createAbsoluteUrl('/uploads/users/avatar') . '/' . $this->user->userDetails->avatar;
+        $this->_sendResponse(200, CJSON::encode(['status' => true, 'user' => [
+            'email' => $this->user->email,
+            'name' => $this->user->userDetails->fa_name,
+            'role' => $this->user->userDetails->roleLabels[$this->user->role->role],
+//            'avatar' => $avatar,
+            'credit' => doubleval($this->user->userDetails->credit),
+            'nationalCode' => $this->user->userDetails->national_code,
+            'phone' => $this->user->userDetails->phone,
+            'zipCode' => $this->user->userDetails->zip_code,
+            'address' => $this->user->userDetails->address,
+        ]]), 'application/json');
+    }
+
+    public function actionEditProfile()
+    {
+        if (isset($this->request['profile'])) {
+            $profile = $this->request['profile'];
+            $profileFields = [
+                'name',
+                'national_code',
+                'phone',
+                'zip_code',
+                'address',
+            ];
+
+            foreach($profile as $key => $field)
+                if(!in_array($key, $profileFields))
+                    unset($profile[$key]);
+
+            /* @var $detailsModel UserDetails */
+            $detailsModel = UserDetails::model()->findByAttributes(array('user_id' => $this->user->id));
+            $detailsModel->scenario = 'update_profile';
+            $detailsModel->attributes = $profile;
+            $detailsModel->fa_name = isset($profile['name'])?$profile['name']:$detailsModel->fa_name;
+            if ($detailsModel->save())
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'اطلاعات با موفقیت ثبت شد.']), 'application/json');
+            else
+                $this->_sendResponse(400, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
+        } else
+            $this->_sendResponse(400, CJSON::encode(['status' => false, 'message' => 'Profile variable is required.']), 'application/json');
     }
 }
