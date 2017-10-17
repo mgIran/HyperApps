@@ -2,6 +2,7 @@
 class ApiController extends ApiBaseController
 {
     protected $request = null;
+    public $active_gateway;
 
     /**
      * @return array action filters
@@ -9,8 +10,8 @@ class ApiController extends ApiBaseController
     public function filters()
     {
         return array(
-            'RestAccessControl + search, find, list, page, comment',
-            'RestAuthControl + profile, editProfile',
+            'RestAccessControl + search, find, list, page, comment, creditPrices',
+            'RestAuthControl + profile, editProfile, credit',
         );
     }
 
@@ -445,6 +446,19 @@ class ApiController extends ApiBaseController
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Comment variable is required.']), 'application/json');
     }
 
+    public function actionCreditPrices()
+    {
+        Yii::app()->getModule('setting');
+        $prices = SiteSetting::model()->find('name = :name', [':name' => 'buy_credit_options']);
+        $prices = array_map(function ($item) {
+            return doubleval($item);
+        }, json_decode($prices->value));
+        if ($prices)
+            $this->_sendResponse(200, CJSON::encode(['status' => true, 'prices' => $prices]), 'application/json');
+        else
+            $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+    }
+
     /** ------------------------------------------------- Authorized Api ------------------------------------------------ **/
     public function actionProfile()
     {
@@ -486,8 +500,50 @@ class ApiController extends ApiBaseController
             if ($detailsModel->save())
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'اطلاعات با موفقیت ثبت شد.']), 'application/json');
             else
-                $this->_sendResponse(400, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
         } else
-            $this->_sendResponse(400, CJSON::encode(['status' => false, 'message' => 'Profile variable is required.']), 'application/json');
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Profile variable is required.']), 'application/json');
+    }
+
+    public function actionCredit()
+    {
+        if (isset($this->request['amount'])) {
+            $this->active_gateway = strtolower(SiteSetting::getOption('gateway_active'));
+            if($this->active_gateway != 'zarinpal' && $this->active_gateway != 'mellat')
+                die('Gateway invalid!! Valid gateways is "zarinpal" or "mellat". Please change gateway in main.php file.');
+
+            $model = UserTransactions::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => 'unpaid'));
+            if(!$model)
+                $model = new UserTransactions();
+            $model->user_id = Yii::app()->user->getId();
+            $model->amount = $this->request['amount'];
+            $model->date = time();
+            if($model->save()){
+                $Amount = doubleval($model->amount);
+                $CallbackURL = Yii::app()->getBaseUrl(true) . '/users/credit/apiVerify?platform=mobile';
+                if($this->active_gateway == 'mellat'){
+                    $result = Yii::app()->mellat->PayRequest($Amount * 10, $model->id, $CallbackURL);
+                    if(!$result['error']){
+                        $ref_id = $result['responseCode'];
+                        $model->authority = $ref_id;
+                        $model->save(false);
+                        $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => Yii::app()->mellat->getRedirectUrl()]), 'application/json');
+                    }else
+                        $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'خطای بانکی: ' . Yii::app()->mellat->getResponseText($result['responseCode'])]), 'application/json');
+                }else if($this->active_gateway == 'zarinpal'){
+                    $siteName = Yii::app()->name;
+                    $description = "خرید اعتبار در وبسایت {$siteName}";
+                    $result = Yii::app()->zarinpal->PayRequest($Amount, $description, $CallbackURL);
+                    $model->authority = Yii::app()->zarinpal->getAuthority();
+                    $model->save(false);
+                    if($result->getStatus() == 100)
+                        $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => Yii::app()->zarinpal->getRedirectUrl()]), 'application/json');
+                    else
+                        $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'خطای بانکی: ' . Yii::app()->zarinpal->getError()]), 'application/json');
+                }
+            }else
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
+        } else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Amount variable is required.']), 'application/json');
     }
 }

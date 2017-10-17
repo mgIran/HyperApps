@@ -195,32 +195,32 @@ class MellatPayment extends CApplicationComponent
 	 *
 	 */
 	public function init( )
-	{
-		$option = CJSON::decode(SiteSetting::getOption('gateway_variables'),false);
-		$this->terminalId = $option && $option->terminalId?$option->terminalId:$this->terminalId;
-		$this->userName = $option && $option->userName?$option->userName:$this->userName;
-		$this->userPassword = $option && $option->userPassword?$option->userPassword:$this->userPassword;
-		if(!$this->terminalId || !$this->userName || !$this->userPassword)
-			die('Mellat Terminal Id or Username or Password is not defined in admin gateway setting or main.php file.');
-		require(dirname(__FILE__) . "/lib/nusoap.php");
-		$this->client = new nusoap_client($this->url, 'wsdl', '', '', '', '');
-		$this->client->soap_defencoding = 'UTF-8';
-		$this->client->decode_utf8 = false;
-		if ($this->client->fault) {
-			trigger_error("SOAP Fault: (faultcode: {$result->faultcode}, faultstring: {$result->faulstring})", E_ERROR);
-		} else {
-			$error = $this->client->getError();
-			if ($error) {
-				throw new CException($error);
-			}
-		}
 
-		parent::init( );
+    {
+        $option = CJSON::decode(SiteSetting::getOption('gateway_variables'),false);
+        $this->terminalId = $option && $option->terminalId?$option->terminalId:$this->terminalId;
+        $this->userName = $option && $option->userName?$option->userName:$this->userName;
+        $this->userPassword = $option && $option->userPassword?$option->userPassword:$this->userPassword;
+        if(!$this->terminalId || !$this->userName || !$this->userPassword)
+            die('Mellat Terminal Id or Username or Password is not defined in admin gateway setting or main.php file.');
+        require(dirname(__FILE__) . "/lib/nusoap.php");
+        $this->client = new nusoap_client($this->url, 'wsdl', '', '', '', '');
+        $this->client->soap_defencoding = 'UTF-8';
+        $this->client->decode_utf8 = false;
+        if ($this->client->fault) {
+            trigger_error("SOAP Fault: (faultcode: {$result->faultcode}, faultstring: {$result->faulstring})", E_ERROR);
+        } else {
+            $error = $this->client->getError();
+            if ($error) {
+                throw new CException($error);
+            }
+        }
 
-		Yii::trace( 'Extension initializating', 'MellatPayment' );
-	}
+        parent::init( );
 
-	/**
+        Yii::trace( 'Extension initializating', 'MellatPayment' );
+    }
+    /**
 	 * List of API calls
 	 *
 	 * @return array
@@ -481,5 +481,10 @@ class MellatPayment extends CApplicationComponent
 			return $this->errorCodes[$errorCode];
 		else
 			return false;
+	}
+
+	public function getRedirectUrl()
+	{
+        return Yii::app()->createAbsoluteUrl('/site/mellatRedirect');
 	}
 }

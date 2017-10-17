@@ -258,4 +258,13 @@ class SiteController extends Controller
         $this->layout = '//layouts/empty';
         $this->render('//site/pages/under_construction');
     }
+
+    public function actionMellatRedirect(){
+        if(isset($_GET['responseCode']))
+            $this->render('ext.MellatPayment.views._redirect', array(
+                'ReferenceId' => $_GET['responseCode']
+            ));
+        else
+            throw new CHttpException(404, "Response Code not sent.");
+    }
 }

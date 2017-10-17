@@ -150,7 +150,7 @@ class CreditController extends Controller
                 }
             }else
                 Yii::app()->user->setFlash('failed', 'عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.');
-        }else if($this->active_gateway == 'zarinpal'){
+        }elseif($this->active_gateway == 'zarinpal'){
             if(!isset($_GET['Authority'])){
                 Yii::app()->user->setFlash('failed', 'Gateway Error: Authority Code not sent.');
                 $this->redirect(array('/apps/buy'));
@@ -184,10 +184,93 @@ class CreditController extends Controller
             }
         }
 
-        if($paid){
-            // Send email
-            $message =
-                '<p style="text-align: right;">با سلام<br>کاربر گرامی، تراکنش شما با موفقیت انجام شد. جزئیات تراکنش به شرح ذیل می باشد:</p>
+        if($paid)
+            $this->sendEmail($model, $userDetails->user->email);
+
+        $this->render('verify', array(
+            'model' => $model,
+            'userDetails' => $userDetails,
+        ));
+    }
+
+    public function actionApiVerify()
+    {
+        $platform = Yii::app()->request->getQuery('platform');
+
+        if(is_null($platform) or ($platform && $platform != 'mobile'))
+            $this->redirect(array('/site?status=failed&error=' . urlencode("درخواست شما معتبر نیست")));
+
+        $userDetails = UserDetails::model()->findByAttributes(array('user_id' => Yii::app()->user->getId()));
+        /* @var $model UserTransactions */
+        /* @var $userDetails UserDetails */
+        $result = null;
+        if($this->active_gateway == 'mellat'){
+            $model = UserTransactions::model()->findByAttributes(array(
+                'user_id' => Yii::app()->user->getId(),
+                'status' => 'unpaid'));
+            if($_POST['ResCode'] == 0)
+                $result = Yii::app()->mellat->VerifyRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
+
+            if($result != null){
+                $RecourceCode = (!is_array($result)?$result:$result['responseCode']);
+                if($RecourceCode == 0){
+                    // Settle Payment
+                    $settle = Yii::app()->mellat->SettleRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
+                    if($settle){
+                        $model->scenario = 'update';
+                        $model->status = 'paid';
+                        $model->token = $_POST['SaleReferenceId'];
+                        $model->description = 'خرید اعتبار از طریق درگاه بانک ملت';
+                        $model->save();
+                        // Increase credit
+                        $userDetails->setScenario('update-credit');
+                        $userDetails->credit = $userDetails->credit + doubleval($model->amount);
+                        $userDetails->save();
+                    }
+                    $this->sendEmail($model, $userDetails->user->email);
+                    $this->redirect(array('/site?status=paid&amount=' . $model->amount . '&date=' . $model->date));
+                }else
+                    $this->redirect(array('/site?status=failed&error=' . urlencode(Yii::app()->mellat->getError($RecourceCode))));
+            }else
+                $this->redirect(array('/site?status=failed&error=' . urlencode('عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.')));
+        }elseif($this->active_gateway == 'zarinpal'){
+            $Authority = $_GET['Authority'];
+            $model = UserTransactions::model()->findByAttributes(array(
+                'authority' => $Authority
+            ));
+            if($model->status == 'unpaid'){
+                $Amount = $model->amount;
+                if($_GET['Status'] == 'OK'){
+                    Yii::app()->zarinpal->verify($Authority, $Amount);
+                    if(Yii::app()->zarinpal->getStatus() == 100){
+                        $model->scenario = 'update';
+                        $model->status = 'paid';
+                        $model->token = Yii::app()->zarinpal->getRefId();
+                        @$model->save(false);
+                        // Increase credit
+                        $userDetails->setScenario('update-credit');
+                        $userDetails->credit = $userDetails->credit + doubleval($model->amount);
+                        $userDetails->save();
+                        $this->sendEmail($model, $userDetails->user->email);
+                        $this->redirect(array('/site?status=paid&amount=' . $model->amount . '&date=' . $model->date));
+                    }else
+                        $this->redirect(array('/site?status=failed&error=' . urlencode(
+                                Yii::app()->zarinpal->getError()?Yii::app()->zarinpal->getError():'در انجام عملیات پرداخت خطایی رخ داده است.'
+                            )));
+                }else
+                    $this->redirect(array('/site?status=failed&error=' . urlencode('عملیات پرداخت ناموفق بوده یا توسط کاربر لغو شده است.')));
+            }else
+                $this->redirect(array('/site?status=failed&error=' . urlencode('این پرداخت قبلا با موفقیت انجام شده است.')));
+        }
+    }
+
+    /**
+     * @param $model UserTransactions
+     */
+    private function sendEmail($model, $email){
+        // Send email
+        $message =
+            '<p style="text-align: right;">با سلام<br>کاربر گرامی، تراکنش شما با موفقیت انجام شد. جزئیات تراکنش به شرح ذیل می باشد:</p>
                         <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
                         <table style="font-size: 9pt;text-align: right;">
                             <tr>
@@ -207,11 +290,6 @@ class CreditController extends Controller
                                 <td>' . $model->token . '</td>
                             </tr>
                         </table>';
-            Mailer::mail($userDetails->user->email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
-        }
-        $this->render('verify', array(
-            'model' => $model,
-            'userDetails' => $userDetails,
-        ));
+        Mailer::mail($email, 'رسید پرداخت اینترنتی', $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
     }
 }
