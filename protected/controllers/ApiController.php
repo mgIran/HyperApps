@@ -156,11 +156,11 @@ class ApiController extends ApiBaseController
                     $criteria->addCondition('id!=:id');
                     $criteria->params[':id'] = $record->id;
                     $criteria->limit = 10;
-                    /* @var Apps[] $similarBooks */
-                    $similarBooks = Apps::model()->findAll($criteria);
+                    /* @var Apps[] $similarApps */
+                    $similarApps = Apps::model()->findAll($criteria);
 
                     $similar = [];
-                    foreach ($similarBooks as $app)
+                    foreach ($similarApps as $app)
                         $similar[] = [
                             'id' => intval($app->id),
                             'title' => $app->title,
@@ -412,7 +412,7 @@ class ApiController extends ApiBaseController
         if (isset($this->request['comment'])) {
             $comment = new Comment();
             $comment->attributes = $this->request['comment'];
-            $comment->owner_name = "Books";
+            $comment->owner_name = "Apps";
             $criteria = new CDbCriteria;
             $criteria->compare('owner_name', $comment->owner_name, true);
             $criteria->compare('owner_id', $comment->owner_id);
@@ -545,5 +545,49 @@ class ApiController extends ApiBaseController
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
         } else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Amount variable is required.']), 'application/json');
+    }
+    
+    public function actionBookmark()
+    {
+        if (isset($this->request['app_id'])) {
+            $model = UserAppBookmark::model()->find('user_id = :user_id AND app_id = :app_id', array(
+                ':user_id' => $this->user->id,
+                ':app_id' => $this->request['app_id']
+            ));
+
+            if (!$model) {
+                $model = new UserAppBookmark();
+                $model->app_id = $this->request['app_id'];
+                $model->user_id = $this->user->id;
+                if ($model->save()) 
+                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'نرم افزار "' . $model->app->title . '" با موفقیت نشان شد.']), 'application/json');
+                else
+                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
+            } else {
+                if (UserAppBookmark::model()->deleteAllByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id'])))
+                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'عملیات با موفقیت انجام شد.']), 'application/json');
+                else
+                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
+            }
+        } else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Book ID variable is required.']), 'application/json');
+    }
+
+    public function actionBookmarkList()
+    {
+        $list = [];
+        foreach ($this->user->bookmarkedApps as $app)
+            $list[] = [
+                'id' => intval($app->id),
+                'title' => $app->title,
+                'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
+                'developer' => $app->getDeveloperName(),
+                'rate' => floatval($app->rate),
+            ];
+
+        if ($list)
+            $this->_sendResponse(200, CJSON::encode(['status' => true, 'list' => $list]), 'application/json');
+        else
+            $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
     }
 }
