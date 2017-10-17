@@ -5,7 +5,7 @@ return array(
     //'onBeginRequest'=>create_function('$event', 'return ob_start("ob_gzhandler");'),
     //'onEndRequest'=>create_function('$event', 'return ob_end_flush();'),
 	'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'رهبد مارکت',
+	'name'=>'اپلیکیشن فارسی',
     'timeZone' => 'Asia/Tehran',
     'theme' => 'abound',
     'language' => 'fa_ir',
@@ -17,7 +17,9 @@ return array(
         'application.vendor.*',
         'application.models.*',
 		'application.components.*',
-		'application.modules.setting.models.*'
+		'application.modules.setting.models.*',
+		'application.modules.users.models.*',
+		'application.modules.users.components.*'
 	),
 
 	'modules'=>array(
@@ -92,6 +94,13 @@ return array(
 		),
 		'yexcel' => array(
 			'class' => 'ext.yexcel.Yexcel'
+		),
+		'session' => array(
+			'class' => 'YmDbHttpSession',
+			'autoStart' => false,
+			'connectionID' => 'db',
+			'sessionTableName' => 'ym_sessions',
+			'timeout' => 1800
 		),
 		'mellat' => array(
 			'class'=> 'ext.mellatPayment.MellatPayment',
@@ -200,13 +209,13 @@ return array(
 //            'Password' => '7cZKn*CWSrg87cZKn*CWSrg8',
         ),
         'mailTheme'=>
-            '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">رهبد مارکت<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
+            '<h2 style="margin-bottom:0;box-sizing:border-box;display: block;width: 100%;background-color: #77c159;line-height:60px;color:#fff;font-size: 24px;text-align: right;padding-right: 50px">اپلیکیشن فارسی<span style="font-size: 14px;color:#f0f0f0"> - مرجع انواع نرم افزار تلفن های هوشمند</span></h2>
              <div style="display: inline-block;width: 100%;font-family:tahoma;line-height: 28px;">
                 <div style="direction:rtl;display:block;overflow:hidden;border:1px solid #efefef;text-align: center;padding:15px;">{MessageBody}</div>
              </div>
              <div style="font-size: 8pt;color: #bbb;text-align: right;font-family: tahoma;padding: 15px;">
                 <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/site/about">درباره</a> | <a href="'.((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://').$_SERVER['HTTP_HOST'].'/site/help">راهنما</a>
-                <span style="float: left;"> همهٔ حقوق برای رهبد مارکت محفوظ است. ©‏ {CurrentYear} </span>
+                <span style="float: left;"> همهٔ حقوق برای اپلیکیشن فارسی محفوظ است. ©‏ {CurrentYear} </span>
              </div>',
 	),
 );

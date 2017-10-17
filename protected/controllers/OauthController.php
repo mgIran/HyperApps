@@ -41,46 +41,6 @@ class OauthController extends ApiBaseController
             $this->_sendResponse(400, CJSON::encode(['status' => false, 'message' => 'Email and Password is required.']), 'application/json');
     }
 
-    public function actionTokenSignIn()
-    {
-        if(isset($this->request['idToken']) && !empty($this->request['idToken'])){
-            require_once Yii::getPathOfAlias('webroot') . '/protected/vendor/google/autoload.php';
-            $id = $this->request['idToken'];
-            $client_id = Yii::app()->params['googleAppKey']['client_id'];
-            $client = new Google_Client(['client_id' => $client_id]);
-            $payload = $client->verifyIdToken($id);
-            if($payload && isset($payload['aud']) && $payload['aud'] == $client_id && isset($payload['email'])){
-                if(!$payload['email_verified'])
-                    $this->_sendResponse(400, CJSON::encode(['status' => false,
-                        'message' => 'Email Address not verified.']), 'application/json');
-                $email = $payload['email'];
-                $name = isset($payload['name'])?$payload['name']:null;
-                $pic = isset($payload['picture'])?$payload['picture']:null;
-                $model = new UserLoginForm('OAuth');
-                $model->email = $email;
-                $model->name = $name;
-                $model->pic = $pic;
-                $model->OAuth = 'google';
-                if($model->AppGoogleLogin()){
-                    $this->_sendResponse(200, CJSON::encode([
-                        'status' => true,
-                        'authorization_code' => session_id()
-                    ]), 'application/json');
-                }else{
-                    $this->_sendResponse(400, CJSON::encode([
-                        'status' => false,
-                        'message' => $model->getError('authenticate_field')
-                    ]), 'application/json');
-                }
-            }else{
-                $this->_sendResponse(400, CJSON::encode(['status' => false,
-                    'message' => 'ID Token is invalid.']), 'application/json');
-            }
-        }else
-            $this->_sendResponse(400, CJSON::encode(['status' => false,
-                'message' => 'ID Token not sent.']), 'application/json');
-    }
-
     public function actionToken(){
         if(isset($this->request['grant_type'])){
             if($this->request['grant_type']=='refresh_token' && isset($this->request['refresh_token'])){
