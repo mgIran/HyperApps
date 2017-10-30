@@ -152,7 +152,7 @@ class ApiController extends ApiBaseController
                         ];
 
                     // Get similar apps
-                    $criteria = Apps::model()->getValidApps(array($record->category_id));
+                    $criteria = Apps::model()->getValidApps($record->platform_id, array($record->category_id));
                     $criteria->addCondition('id!=:id');
                     $criteria->params[':id'] = $record->id;
                     $criteria->limit = 10;
@@ -580,13 +580,23 @@ class ApiController extends ApiBaseController
     public function actionBookmarkList()
     {
         $list = [];
-        foreach ($this->user->bookmarkedApps as $app)
+        $criteria = new CDbCriteria;
+        $criteria->limit = 20;
+        $criteria->offset = 0;
+        // set LIMIT and OFFSET in Query
+        if (isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']) {
+            $criteria->limit = $limit;
+            if (isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
+                $criteria->offset = $offset;
+        }
+        foreach ($this->user->bookmarkedApps($criteria) as $app)
             $list[] = [
                 'id' => intval($app->id),
                 'title' => $app->title,
                 'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
                 'developer' => $app->getDeveloperName(),
                 'rate' => floatval($app->rate),
+                'price' => (double)$app->price,
             ];
 
         if ($list)
