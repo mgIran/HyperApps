@@ -876,42 +876,6 @@ class ApiController extends ApiBaseController
                 $this->download($fileName, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/'.$ptArray[$ext]);
         }
     }
-
-    protected function download($fileName, $filePath, $fakeFileName = null)
-    {
-        if (!$fakeFileName)
-            $fakeFileName = $fileName;
-        $realFileName = $fileName;
-        $fileName = $filePath . DIRECTORY_SEPARATOR . $realFileName;
-        if(!file_exists($fileName))
-            throw new CHttpException(404, 'فایل موردنظر وجود ندارد.');
-        switch (strtolower(pathinfo($fileName, PATHINFO_EXTENSION))) {
-            case 'apk':
-                $mimeType = 'application/vnd.android.package-archive';
-                break;
-
-            case 'xap':
-                $mimeType = 'application/x-silverlight-app';
-                break;
-
-            case 'ipa':
-                $mimeType = 'application/octet-stream';
-                break;
-        }
-
-        header('Pragma: public');    // required
-        header('Expires: 0');        // no cache
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($fileName)) . ' GMT');
-        header('Cache-Control: private', false);
-        header('Content-Type: ' . $mimeType);
-        header('Content-Disposition: attachment; filename="' . $fakeFileName . '"');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . filesize($fileName));    // provide file size
-        header('Connection: close');
-        echo readfile($fileName);
-        exit();
-    }
     
     /**
      * Save buy information
@@ -996,5 +960,49 @@ class ApiController extends ApiBaseController
         $message .= '</table>';
         Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message);
         return $buy;
+    }
+
+    /**
+     * Download app file
+     *
+     * @param $fileName
+     * @param $filePath
+     * @param null $fakeFileName
+     * @throws CHttpException
+     */
+    protected function download($fileName, $filePath, $fakeFileName = null)
+    {
+        if (!$fakeFileName)
+            $fakeFileName = $fileName;
+        $realFileName = $fileName;
+        $fileName = $filePath . DIRECTORY_SEPARATOR . $realFileName;
+        if(!file_exists($fileName))
+            throw new CHttpException(404, 'فایل موردنظر وجود ندارد.');
+        switch (strtolower(pathinfo($fileName, PATHINFO_EXTENSION))) {
+            case 'apk':
+                $mimeType = 'application/vnd.android.package-archive';
+                break;
+
+            case 'xap':
+                $mimeType = 'application/x-silverlight-app';
+                break;
+
+            case 'ipa':
+                $mimeType = 'application/octet-stream';
+                break;
+        }
+
+        header('Pragma: public');    // required
+        header('Expires: 0');        // no cache
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($fileName)) . ' GMT');
+        header('Cache-Control: private', false);
+        header('Content-Type: ' . $mimeType);
+        header('Content-Disposition: attachment; filename="' . $fakeFileName . '"');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($fileName));    // provide file size
+        header('Connection: close');
+        echo readfile($fileName);
+        exit();
     }
 }
