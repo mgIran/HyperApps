@@ -11,7 +11,7 @@ class ApiController extends ApiBaseController
     {
         return array(
             'RestAccessControl + search, find, list, page, creditPrices',
-            'RestAuthControl + profile, editProfile, saveComment, saveRate, credit, bookmark, bookmarkList, installedApps',
+            'RestAuthControl + profile, editProfile, saveComment, saveRate, credit, bookmark, bookmarkList, installedApps, buy, download',
         );
     }
 
@@ -836,6 +836,83 @@ class ApiController extends ApiBaseController
         else throw new CHttpException(400, 'خطا در عملیات.');
     }
 
+    public function actionDownload()
+    {
+        if (isset($this->request['app_id'])) {
+            /* @var $model Apps */
+            $model = Apps::model()->findByPk($this->request['app_id']);
+            $fileName = null;
+            if ($model->lastPackage->file_name)
+                $fileName = $model->lastPackage->file_name;
+            $token = Yii::app()->JWT->encode($fileName);
+            if ($model->price == 0) {
+                $model->download += 1;
+                $model->setScenario('update-download');
+                $model->save();
+
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => $this->createAbsoluteUrl('/api/downloadFile?token='.$token)]), 'application/json');
+            } else {
+                $buy = AppBuys::model()->findByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id']));
+                if ($buy) {
+                    $model->download += 1;
+                    $model->setScenario('update-download');
+                    $model->save();
+
+                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'url' => $this->createAbsoluteUrl('/api/downloadFile?token='.$token)]), 'application/json');
+                } else
+                    $this->_sendResponse(400, CJSON::encode(['status' => false, 'message' => 'شما اجازه دسترسی به این فایل را ندارید.']), 'application/json');
+            }
+        } else
+            $this->_sendResponse(400, CJSON::encode(['status' => false, 'message' => 'AppID variable is required.']), 'application/json');
+    }
+
+    public function actionDownloadFile()
+    {
+        $ptArray = ['apk' => 'android', 'ipa' => 'ios', 'xap' => 'windowsphone'];
+        if(isset($_GET['token'])){
+            $fileName = Yii::app()->JWT->decode($_GET['token']);
+            $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+            if(key_exists($ext, $ptArray))
+                $this->download($fileName, Yii::getPathOfAlias("webroot") . '/uploads/apps/files/'.$ptArray[$ext]);
+        }
+    }
+
+    protected function download($fileName, $filePath, $fakeFileName = null)
+    {
+        if (!$fakeFileName)
+            $fakeFileName = $fileName;
+        $realFileName = $fileName;
+        $fileName = $filePath . DIRECTORY_SEPARATOR . $realFileName;
+        if(!file_exists($fileName))
+            throw new CHttpException(404, 'فایل موردنظر وجود ندارد.');
+        switch (strtolower(pathinfo($fileName, PATHINFO_EXTENSION))) {
+            case 'apk':
+                $mimeType = 'application/vnd.android.package-archive';
+                break;
+
+            case 'xap':
+                $mimeType = 'application/x-silverlight-app';
+                break;
+
+            case 'ipa':
+                $mimeType = 'application/octet-stream';
+                break;
+        }
+
+        header('Pragma: public');    // required
+        header('Expires: 0');        // no cache
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($fileName)) . ' GMT');
+        header('Cache-Control: private', false);
+        header('Content-Type: ' . $mimeType);
+        header('Content-Disposition: attachment; filename="' . $fakeFileName . '"');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($fileName));    // provide file size
+        header('Connection: close');
+        echo readfile($fileName);
+        exit();
+    }
+    
     /**
      * Save buy information
      *
