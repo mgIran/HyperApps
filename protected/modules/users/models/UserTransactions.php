@@ -13,9 +13,12 @@
  * @property string $description
  * @property string $authority
  * @property string $gateway_name
+ * @property string $model_name
+ * @property string $model_id
  *
  * The followings are the available model relations:
  * @property Users $user
+ * @property Apps $app
  */
 class UserTransactions extends CActiveRecord
 {
@@ -32,6 +35,12 @@ class UserTransactions extends CActiveRecord
 		'paid' => 'پرداخت شده'
 	];
 
+	public $gatewayLabels = [
+		'mellat' => 'بانک ملت',
+		'zarinpal' => 'زرین پال',
+		'credit' => 'اعتبار کاربری'
+	];
+
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -43,7 +52,8 @@ class UserTransactions extends CActiveRecord
 			array('user_id, amount', 'length', 'max'=>10),
 			array('date', 'length', 'max'=>20),
 			array('status', 'length', 'max'=>6),
-			array('token', 'length', 'max'=>50),
+			array('token, model_name', 'length', 'max'=>50),
+			array('model_id', 'length', 'max'=>10),
 			array('authority, description, gateway_name', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -60,6 +70,7 @@ class UserTransactions extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+			'app' => array(self::BELONGS_TO, 'Apps', 'model_id', 'on' => 't.model_name = "Apps"'),
 		);
 	}
 
@@ -104,6 +115,8 @@ class UserTransactions extends CActiveRecord
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('token',$this->token,true);
 		$criteria->compare('description',$this->description,true);
+
+		$criteria->order = 'date DESC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

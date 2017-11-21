@@ -10,8 +10,8 @@ class ApiController extends ApiBaseController
     public function filters()
     {
         return array(
-            'RestAccessControl + search, find, list, page, comment, creditPrices',
-            'RestAuthControl + profile, editProfile, credit, bookmark, bookmarkList',
+            'RestAccessControl + search, find, list, page, creditPrices',
+            'RestAuthControl + profile, editProfile, saveComment, saveRate, credit, bookmark, bookmarkList, installedApps',
         );
     }
 
@@ -23,12 +23,12 @@ class ApiController extends ApiBaseController
 
     public function actionSearch()
     {
-        if (isset($this->request['query']) and !empty($term = trim($this->request['query']))) {
+        if(isset($this->request['query']) and !empty($term = trim($this->request['query']))){
             $limit = 20;
             $offset = 0;
-            if (isset($this->request['limit']) && !empty($this->request['limit'])) {
+            if(isset($this->request['limit']) && !empty($this->request['limit'])){
                 $limit = (int)$this->request['limit'];
-                if (isset($this->request['offset']) && !empty($this->request['offset']))
+                if(isset($this->request['offset']) && !empty($this->request['offset']))
                     $offset = (int)$this->request['offset'];
             }
 
@@ -36,7 +36,7 @@ class ApiController extends ApiBaseController
 
             $criteria = new CDbCriteria();
 
-            if (isset($this->request['platform_id'])) {
+            if(isset($this->request['platform_id'])){
                 $criteria->addCondition('platform_id=:platform_id');
                 $criteria->params[':platform_id'] = $this->request['platform_id'];
             }
@@ -50,9 +50,9 @@ class ApiController extends ApiBaseController
 
             $terms = explode(' ', urldecode($term));
             $sql = null;
-            foreach ($terms as $key => $term)
-                if ($term) {
-                    if (!$sql)
+            foreach($terms as $key => $term)
+                if($term){
+                    if(!$sql)
                         $sql = "(";
                     else
                         $sql .= " OR (";
@@ -71,7 +71,7 @@ class ApiController extends ApiBaseController
             $listCount = Apps::model()->count($criteria);
 
             $result = [];
-            foreach ($apps as $app){
+            foreach($apps as $app){
                 $images = [];
                 $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
                 $imageUrl = Yii::app()->getBaseUrl(true) . "/uploads/apps/images/";
@@ -91,23 +91,24 @@ class ApiController extends ApiBaseController
                 ];
             }
 
-            if ($result)
+            if($result)
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => $listCount, 'result' => $result]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
-        } else
+        }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Query variable is required.']), 'application/json');
     }
+
     /**
      * Get a specific model
      */
     public function actionFind()
     {
-        if (isset($this->request['entity']) and isset($this->request['id'])) {
+        if(isset($this->request['entity']) and isset($this->request['id'])){
             $entity = $this->request['entity'];
             $criteria = new CDbCriteria();
 
-            switch (trim(ucfirst(strtolower($entity)))) {
+            switch(trim(ucfirst(strtolower($entity)))){
                 case 'App':
                     $criteria->addCondition('id = :id');
                     $criteria->params[':id'] = $this->request['id'];
@@ -115,17 +116,17 @@ class ApiController extends ApiBaseController
                     /* @var Apps $record */
                     $record = Apps::model()->find($criteria);
 
-                    if (!$record)
+                    if(!$record)
                         $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
                     $record->seen++;
                     $record->save(false);
 
                     $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
                     $imageUrl = Yii::app()->getBaseUrl(true) . "/uploads/apps/images/";
-                    $images =[];
+                    $images = [];
                     foreach($record->images as $image)
-                        if(file_exists($imagePath.$image->image))
-                            $images[] = $imageUrl.$image->image;
+                        if(file_exists($imagePath . $image->image))
+                            $images[] = $imageUrl . $image->image;
 
                     Yii::import('users.models.*');
                     Yii::import('comments.models.*');
@@ -142,12 +143,11 @@ class ApiController extends ApiBaseController
                     $commentsList = Comment::model()->findAll($criteria);
 
                     $comments = [];
-                    foreach ($commentsList as $comment)
+                    foreach($commentsList as $comment)
                         $comments[] = [
                             'id' => intval($comment->comment_id),
                             'text' => $comment->comment_text,
-                            'username' => $comment->userName,
-                            'rate' => $comment->userRate ? floatval($comment->userRate) : false,
+                            'username' => $comment->getUserName(),
                             'createTime' => doubleval($comment->create_time),
                         ];
 
@@ -160,11 +160,11 @@ class ApiController extends ApiBaseController
                     $similarApps = Apps::model()->findAll($criteria);
 
                     $similar = [];
-                    foreach ($similarApps as $app)
+                    foreach($similarApps as $app)
                         $similar[] = [
                             'id' => intval($app->id),
                             'title' => $app->title,
-                            'icon' => Yii::app()->getBaseUrl(true).'/uploads/apps/icons/' . $app->icon,
+                            'icon' => Yii::app()->getBaseUrl(true) . '/uploads/apps/icons/' . $app->icon,
                             'developer' => $app->getDeveloperName(),
                             'rate' => $app->getRate(),
                             'price' => (double)$app->price,
@@ -172,7 +172,7 @@ class ApiController extends ApiBaseController
                             'offPrice' => $app->hasDiscount()?(double)$app->getOffPrice():null,
                         ];
                     $filePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/";
-                    if($record->platform) {
+                    if($record->platform){
                         $platform = $record->platform;
                         $filesFolder = $platform->name;
                         $filePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/files/{$filesFolder}/";
@@ -185,7 +185,7 @@ class ApiController extends ApiBaseController
                         'rate' => floatval($record->rate),
                         'price' => doubleval($record->price),
                         'hasDiscount' => $record->hasDiscount(),
-                        'offPrice' => $record->hasDiscount() ? doubleval($record->offPrice) : 0,
+                        'offPrice' => $record->hasDiscount()?doubleval($record->offPrice):0,
                         'category_id' => intval($record->category_id),
                         'description' => strip_tags(str_replace('<br/>', '\n', str_replace('<br>', '\n', $record->description))),
                         'seen' => intval($record->seen),
@@ -193,7 +193,7 @@ class ApiController extends ApiBaseController
                         'package_name' => $record->lastPackage->package_name,
                         'version_name' => $record->lastPackage->version,
                         'version_code' => $record->lastPackage->version_code,
-                        'app_size' => Controller::fileSize($filePath.$record->lastPackage->file_name),
+                        'app_size' => Controller::fileSize($filePath . $record->lastPackage->file_name),
                         'images' => $images,
                         'comments' => $comments,
                         'similar' => $similar,
@@ -204,39 +204,39 @@ class ApiController extends ApiBaseController
                     break;
             }
 
-            if ($app)
+            if($app)
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'app' => $app]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
-        } else
+        }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Entity and ID variables is required.']), 'application/json');
     }
+
     /**
      * Get list of models
      */
     public function actionList()
     {
-        if (isset($this->request['entity']) && $entity = $this->request['entity']) {
+        if(isset($this->request['entity']) && $entity = $this->request['entity']){
             $criteria = new CDbCriteria();
             $criteria->limit = 20;
             $criteria->offset = 0;
 
             // set LIMIT and OFFSET in Query
-            if (isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']) {
+            if(isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']){
                 $criteria->limit = $limit;
-                if (isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
+                if(isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
                     $criteria->offset = $offset;
             }
 
             // Execute query on model
             $listCount = 0;
             $list = [];
-            switch (trim(ucfirst($entity))) {
+            switch(trim(ucfirst($entity))){
                 case 'Category':
                     /* @var AppCategories[] $categories */
                     $criteria->limit = 500;
-                    if (isset($this->request['parent_id']))
-                    {
+                    if(isset($this->request['parent_id'])){
                         if($this->request['parent_id'] != 0)
                             $criteria->compare('category_id', $this->request['parent_id']);
                         else
@@ -244,7 +244,7 @@ class ApiController extends ApiBaseController
                     }
                     $categories = AppCategories::model()->findAll($criteria);
                     $listCount = AppCategories::model()->count($criteria);
-                    foreach ($categories as $category)
+                    foreach($categories as $category)
                         $list[] = [
                             'id' => intval($category->id),
                             'title' => $category->title,
@@ -255,8 +255,7 @@ class ApiController extends ApiBaseController
                 case 'App':
                     $criteria->with[] = 'images';
                     $order = 'id DESC';
-                    if(isset($this->request['row']))
-                    {
+                    if(isset($this->request['row'])){
                         switch($this->request['row']){
                             case'newest_programs':
                                 $this->request['category_id'] = 1;
@@ -322,16 +321,15 @@ class ApiController extends ApiBaseController
                                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => "'{$this->request['row']}' is invalid row."]), 'application/json');
                                 break;
                         }
-                    }
-                    else if(isset($this->request['order']))
+                    }else if(isset($this->request['order']))
                         $order = $this->request['order'];
 
-                    if (isset($this->request['category_id'])) {
+                    if(isset($this->request['category_id'])){
                         $catIds = AppCategories::model()->getCategoryChilds($this->request['category_id']);
                         $criteria->addInCondition('category_id', $catIds);
                     }
 
-                    if (isset($this->request['platform_id'])) {
+                    if(isset($this->request['platform_id'])){
                         $criteria->addCondition('platform_id=:platform_id');
                         $criteria->params[':platform_id'] = $this->request['platform_id'];
                     }
@@ -348,7 +346,7 @@ class ApiController extends ApiBaseController
                     /* @var Apps[] $apps */
                     $apps = Apps::model()->findAll($criteria);
                     $listCount = Apps::model()->count($criteria);
-                    foreach ($apps as $app){
+                    foreach($apps as $app){
                         $images = [];
                         if($app->images && isset($this->request['row'])){
                             $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
@@ -370,22 +368,40 @@ class ApiController extends ApiBaseController
                         ];
                     }
                     break;
+                case 'Slider':
+                    Yii::app()->getModule('advertises');
+                    /* @var Advertises[] $slides */
+                    $criteria->addCondition('t.status = 1');
+                    $slides = Advertises::model()->findAll($criteria);
+                    $listCount = Advertises::model()->count($criteria);
+                    foreach($slides as $slide)
+                    {
+                        $coverPath = Yii::getPathOfAlias("webroot") . "/uploads/advertisesCover/";
+                        $coverUrl = Yii::app()->getBaseUrl(true) . "/uploads/advertisesCover/";
+                        if(file_exists($coverPath.$slide->cover))
+                            $list[] = [
+                                'appID' => $slide->app_id,
+                                'title' => $slide->app->title,
+                                'cover' => $coverUrl.$slide->cover
+                            ];
+                    }
+                    break;
             }
 
-            if ($list)
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => $listCount,'list' => $list]), 'application/json');
+            if($list)
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => $listCount, 'list' => $list]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
-        } else
+        }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Entity variable is required.']), 'application/json');
     }
 
     public function actionPage()
     {
-        if (isset($this->request['name'])) {
+        if(isset($this->request['name'])){
             $text = null;
             Yii::import('pages.models.*');
-            switch ($this->request['name']) {
+            switch($this->request['name']){
                 case "about":
                     $text = Pages::model()->findByPk(10)->summary;
                     break;
@@ -399,61 +415,22 @@ class ApiController extends ApiBaseController
                     break;
             }
 
-            if ($text)
+            if($text)
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'text' => $text]), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
-        } else
+        }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Name variable is required.']), 'application/json');
-    }
-
-    public function actionComment()
-    {
-        if (isset($this->request['comment'])) {
-            $comment = new Comment();
-            $comment->attributes = $this->request['comment'];
-            $comment->owner_name = "Apps";
-            $criteria = new CDbCriteria;
-            $criteria->compare('owner_name', $comment->owner_name, true);
-            $criteria->compare('owner_id', $comment->owner_id);
-            $criteria->compare('parent_comment_id', $comment->parent_comment_id);
-            $criteria->compare('creator_id', $comment->creator_id);
-            $criteria->compare('user_name', $comment->user_name, false);
-            $criteria->compare('user_email', $comment->user_email, false);
-            $criteria->compare('comment_text', $comment->comment_text, false);
-            $criteria->addCondition('create_time>:time');
-            $criteria->params[':time'] = time() - 30;
-            $model = Comment::model()->find($criteria);
-            if ($model)
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'تا 30 ثانیه دیگر امکان ثبت نظر وجود ندارد.']), 'application/json');
-
-            if ($comment->save()) {
-                if (isset($this->request['comment']['rate'])) {
-                    $rateModel = AppRatings::model()->findAllByAttributes(array('user_id' => $comment->creator_id, 'app_id' => $comment->owner_id));
-                    if ($rateModel)
-                        AppRatings::model()->deleteAllByAttributes(array('user_id' => $comment->creator_id, 'app_id' => $comment->owner_id));
-                    $rateModel = new AppRatings();
-                    $rateModel->app_id = $comment->owner_id;
-                    $rateModel->user_id = $comment->creator_id;
-                    $rateModel->rate = $this->request['comment']['rate'];
-                    @$rateModel->save();
-                }
-
-                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'نظر شما با موفقیت ثبت شد.']), 'application/json');
-            } else
-                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در عملیات ثبت خطایی رخ داده است! لطفا مجددا تلاش کنید.']), 'application/json');
-        } else
-            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Comment variable is required.']), 'application/json');
     }
 
     public function actionCreditPrices()
     {
         Yii::app()->getModule('setting');
         $prices = SiteSetting::model()->find('name = :name', [':name' => 'buy_credit_options']);
-        $prices = array_map(function ($item) {
+        $prices = array_map(function ($item){
             return doubleval($item);
         }, json_decode($prices->value));
-        if ($prices)
+        if($prices)
             $this->_sendResponse(200, CJSON::encode(['status' => true, 'prices' => $prices]), 'application/json');
         else
             $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
@@ -478,7 +455,7 @@ class ApiController extends ApiBaseController
 
     public function actionEditProfile()
     {
-        if (isset($this->request['profile'])) {
+        if(isset($this->request['profile'])){
             $profile = $this->request['profile'];
             $profileFields = [
                 'name',
@@ -497,17 +474,17 @@ class ApiController extends ApiBaseController
             $detailsModel->scenario = 'update_profile';
             $detailsModel->attributes = $profile;
             $detailsModel->fa_name = isset($profile['name'])?$profile['name']:$detailsModel->fa_name;
-            if ($detailsModel->save())
+            if($detailsModel->save())
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'اطلاعات با موفقیت ثبت شد.']), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
-        } else
+        }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Profile variable is required.']), 'application/json');
     }
 
     public function actionCredit()
     {
-        if (isset($this->request['amount'])) {
+        if(isset($this->request['amount'])){
             $this->active_gateway = strtolower(SiteSetting::getOption('gateway_active'));
             if($this->active_gateway != 'zarinpal' && $this->active_gateway != 'mellat')
                 die('Gateway invalid!! Valid gateways is "zarinpal" or "mellat". Please change gateway in main.php file.');
@@ -543,13 +520,13 @@ class ApiController extends ApiBaseController
                 }
             }else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت اطلاعات خطایی رخ داده است. لطفا مجددا تلاش کنید.']), 'application/json');
-        } else
+        }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Amount variable is required.']), 'application/json');
     }
-    
+
     public function actionBookmark()
     {
-        if (isset($this->request['app_id'])) {
+        if(isset($this->request['app_id'])){
             $app = Apps::model()->findByPk($this->request['app_id']);
             if($app === null)
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نرم افزار موردنظر یافت نشد.']), 'application/json');
@@ -559,7 +536,7 @@ class ApiController extends ApiBaseController
                 ':app_id' => $this->request['app_id']
             ));
 
-            if (!$model){
+            if(!$model){
                 $model = new UserAppBookmark();
                 $model->app_id = $this->request['app_id'];
                 $model->user_id = $this->user->id;
@@ -567,13 +544,13 @@ class ApiController extends ApiBaseController
                     $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => "{$app->title} با موفقیت نشان شد."]), 'application/json');
                 else
                     $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
-            } else {
-                if (UserAppBookmark::model()->deleteAllByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id'])))
+            }else{
+                if(UserAppBookmark::model()->deleteAllByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id'])))
                     $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => "{$app->title} با موفقیت از نشان شده ها حذف گردید."]), 'application/json');
                 else
                     $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در انجام عملیات خطایی رخ داده است!']), 'application/json');
             }
-        } else
+        }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID variable is required.']), 'application/json');
     }
 
@@ -584,12 +561,12 @@ class ApiController extends ApiBaseController
         $criteria->limit = 20;
         $criteria->offset = 0;
         // set LIMIT and OFFSET in Query
-        if (isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']) {
+        if(isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']){
             $criteria->limit = $limit;
-            if (isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
+            if(isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
                 $criteria->offset = $offset;
         }
-        foreach ($this->user->bookmarkedApps($criteria) as $app)
+        foreach($this->user->bookmarkedApps($criteria) as $app)
             $list[] = [
                 'id' => intval($app->id),
                 'title' => $app->title,
@@ -597,11 +574,350 @@ class ApiController extends ApiBaseController
                 'developer' => $app->getDeveloperName(),
                 'rate' => floatval($app->rate),
                 'price' => (double)$app->price,
+                'hasDiscount' => $app->hasDiscount(),
+                'offPrice' => $app->hasDiscount()?doubleval($app->offPrice):0,
             ];
 
-        if ($list)
-            $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => count($list),'list' => $list]), 'application/json');
+        if($list)
+            $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => count($list), 'list' => $list]), 'application/json');
         else
             $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+    }
+
+    public function actionInstalledApps()
+    {
+        $list = [];
+        $criteria = new CDbCriteria;
+        $criteria->limit = 20;
+        $criteria->offset = 0;
+        // set LIMIT and OFFSET in Query
+        if(isset($this->request['limit']) && !empty($this->request['limit']) && $limit = (int)$this->request['limit']){
+            $criteria->limit = $limit;
+            if(isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
+                $criteria->offset = $offset;
+        }
+        foreach($this->user->appBuys($criteria) as $appBuy){
+            $app= $appBuy->app;
+            $list[] = [
+                'id' => intval($app->id),
+                'title' => $app->title,
+                'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
+                'developer' => $app->getDeveloperName(),
+                'rate' => floatval($app->rate),
+                'price' => (double)$app->price,
+                'hasDiscount' => $app->hasDiscount(),
+                'offPrice' => $app->hasDiscount()?doubleval($app->offPrice):0,
+                'package_name' => $app->lastPackage->package_name,
+                'version_name' => $app->lastPackage->version,
+                'version_code' => $app->lastPackage->version_code, 
+            ];
+        }
+
+        if($list)
+            $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => count($list), 'list' => $list]), 'application/json');
+        else
+            $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+    }
+
+    public function actionSaveComment()
+    {
+        if (isset($this->request['app_id']) and isset($this->request['text'])) {
+            Yii::import('comments.models.*');
+            /* @var Comment $comment */
+            $comment = new Comment();
+            $comment->owner_name = "Apps";
+            $comment->owner_id = $this->request['app_id'];
+            $comment->creator_id = $this->user->id;
+            $comment->comment_text = $this->request['text'];
+            $comment->create_time = time();
+            $comment->status = Comment::STATUS_NOT_APPROWED;
+            $criteria = new CDbCriteria;
+            $criteria->compare('owner_name', $comment->owner_name, true);
+            $criteria->compare('owner_id', $comment->owner_id);
+            $criteria->compare('parent_comment_id', $comment->parent_comment_id);
+            $criteria->compare('creator_id', $comment->creator_id);
+            $criteria->compare('user_name', $comment->user_name, false);
+            $criteria->compare('user_email', $comment->user_email, false);
+            $criteria->addCondition('create_time>:time');
+            $criteria->params[':time'] = time() - 30;
+            $model = Comment::model()->find($criteria);
+            if($model)
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'تا 30 ثانیه دیگر امکان ثبت نظر وجود ندارد.']), 'application/json');
+
+            if($comment->save())
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'نظر شما با موفقیت ثبت شد.']), 'application/json');
+            else
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در عملیات ثبت خطایی رخ داده است! لطفا مجددا تلاش کنید.']), 'application/json');
+        }else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Text variable is required.']), 'application/json');
+    }
+
+    public function actionSaveRate()
+    {
+        if (isset($this->request['app_id']) and isset($this->request['rate'])) {
+            $rate = (int)$this->request['rate'];
+            if(empty($rate) || $rate > 5 || $rate < 1)
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'مقدار امتیاز وارد شده نامعتبر است.']), 'application/json');
+            $rateModel = AppRatings::model()->findByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id']));
+            if($rateModel)
+                AppRatings::model()->deleteAllByAttributes(array('user_id' => $this->user->id, 'app_id' => $this->request['app_id']));
+            $rateModel = new AppRatings();
+            $rateModel->app_id = $this->request['app_id'];
+            $rateModel->user_id = $this->user->id;
+            $rateModel->rate = $this->request['rate'];
+            if(@$rateModel->save())
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'امتیاز شما با موفقیت ثبت شد.']), 'application/json');
+            else
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در عملیات ثبت خطایی رخ داده است! لطفا مجددا تلاش کنید.']), 'application/json');
+        }else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Rate variable is required.']), 'application/json');
+    }
+
+    public function actionBuy()
+    {
+        if (isset($this->request['app_id']) and isset($this->request['payment_method'])) {
+            $userID = $this->user->id;
+            $id = $this->request['app_id'];
+            /* @var Apps $model */
+            $model = Apps::model()->findByPk($id);
+
+            $buy = AppBuys::model()->findByAttributes(array('user_id' => $userID, 'app_id' => $id));
+            if($buy)
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
+                    'hasError' => true,
+                    'code' => 600,
+                    'type' => 'both',
+                    'message' => 'این نرم افزار قبلا خریداری شده است.'
+                ]]), 'application/json');
+
+            // price with publisher discount or not
+            $basePrice = $model->hasDiscount() ? $model->offPrice : $model->price;
+
+            Yii::app()->getModule('users');
+            $user = Users::model()->findByPk($userID);
+            /* @var $user Users */
+            $price = $basePrice;
+            if ($model->developer_id != $userID) {
+                $siteName = Yii::app()->name;
+                $transaction = new UserTransactions();
+                $transaction->user_id = Yii::app()->user->getId();
+                $transaction->amount = $price;
+                $transaction->date = time();
+                $transaction->gateway_name = $this->active_gateway;
+                $transaction->model_name = 'Apps';
+                $transaction->model_id = $model->id;
+                $transaction->description = "پرداخت وجه جهت خرید نرم افزار {$model->title} در وبسایت {$siteName}";
+                if ($price !== 0) {
+                    if ($this->request['payment_method'] == 'credit'){
+                        if($user->userDetails->credit < $price)
+                            $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
+                                'hasError' => true,
+                                'code' => 610,
+                                'type' => 'credit',
+                                'message' => 'اعتبار فعلی شما کافی نیست!'
+                            ]]), 'application/json');
+
+                        $userDetails = UserDetails::model()->findByAttributes(array('user_id' => $userID));
+                        $userDetails->setScenario('update-credit');
+                        $userDetails->credit = $userDetails->credit - $price;
+                        $userDetails->score = $userDetails->score + 1;
+
+                        $transaction->gateway_name = 'credit';
+                        $transaction->status = 'unpaid';
+                        @$transaction->save(false);
+                        if($userDetails->save()){
+                            $transaction->token = rand(125463, 984984);
+                            $transaction->status = 'paid';
+                            $transaction->save();
+
+                            $this->saveBuyInfo($model, $model->price, $price, $user, 'credit');
+                            $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
+                                'hasError' => false,
+                                'code' => 611,
+                                'type' => 'credit',
+                                'message' => 'خرید شما با موفقیت انجام شد.'
+                            ]]), 'application/json');
+                        }else
+                            $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
+                                'hasError' => true,
+                                'code' => 612,
+                                'type' => 'credit',
+                                'message' => 'در انجام عملیات خرید خطایی رخ داده است.'
+                            ]]), 'application/json');
+                    } elseif ($this->request['payment_method'] == 'gateway'){
+                        // Save payment
+                        if($transaction->save()){
+                            $CallbackURL = Yii::app()->getBaseUrl(true) . '/apps/apiVerify?platform=mobile&tr='.$transaction->id;
+                            if($this->active_gateway == 'mellat'){
+                                $result = Yii::app()->mellat->PayRequest($price * 10, $transaction->id, $CallbackURL);
+                                if(!$result['error']){
+                                    $ref_id = $result['responseCode'];
+                                    $transaction->authority = $ref_id;
+                                    $transaction->save(false);
+                                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
+                                        'hasError' => false,
+                                        'code' => 620,
+                                        'type' => 'gateway',
+                                        'url' => $this->createAbsoluteUrl('/api/gateway?rc=' . $result['responseCode'])
+                                    ]]), 'application/json');
+                                }else
+                                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
+                                        'hasError' => true,
+                                        'code' => 621,
+                                        'type' => 'gateway',
+                                        'message' => 'خطای بانکی: ' . Yii::app()->mellat->getResponseText($result['responseCode'])
+                                    ]]), 'application/json');
+                            }else if($this->active_gateway == 'zarinpal'){
+                                $result = Yii::app()->zarinpal->PayRequest(doubleval($price), $transaction->description, $CallbackURL);
+                                $transaction->setScenario('set-authority');
+                                $transaction->authority = Yii::app()->zarinpal->getAuthority();
+                                $transaction->save(false);
+                                if($result->getStatus() == 100)
+                                    $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
+                                        'hasError' => false,
+                                        'code' => 620,
+                                        'type' => 'gateway',
+                                        'url' => Yii::app()->zarinpal->getRedirectUrl()
+                                    ]]), 'application/json');
+                                else
+                                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
+                                        'hasError' => true,
+                                        'code' => 621,
+                                        'type' => 'gateway',
+                                        'message' => 'خطای بانکی: ' . $result->getError()
+                                    ]]), 'application/json');
+                            }
+                        }
+                    }
+                } else {
+                    $userDetails = UserDetails::model()->findByAttributes(array('user_id' => $userID));
+                    $userDetails->setScenario('update-credit');
+                    $userDetails->score = $userDetails->score + 1;
+
+                    $transaction->gateway_name = 'credit';
+                    $transaction->status = 'unpaid';
+                    @$transaction->save(false);
+                    if($userDetails->save()){
+                        $transaction->token = rand(125463, 984984);
+                        $transaction->status = 'paid';
+                        $transaction->save();
+
+                        $this->saveBuyInfo($model, $model->price, $price, $user, 'credit');
+                        $this->_sendResponse(200, CJSON::encode(['status' => true, 'result' => [
+                            'hasError' => false,
+                            'code' => 601,
+                            'type' => 'both',
+                            'message' => 'خرید شما با موفقیت انجام شد.'
+                        ]]), 'application/json');
+                    }else
+                        $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
+                            'hasError' => true,
+                            'code' => 612,
+                            'type' => 'both',
+                            'message' => 'در انجام عملیات خرید خطایی رخ داده است.'
+                        ]]), 'application/json');
+                }
+            } else
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'result' => [
+                    'hasError' => true,
+                    'code' => 602,
+                    'type' => 'both',
+                    'message' => 'شما توسعه دهندهاین نرم افزار هستید. امکان خرید وجود ندارد.'
+                ]]), 'application/json');
+        } else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Payment Method variables is required.']), 'application/json');
+    }
+
+    public function actionGateway(){
+        Yii::app()->theme = 'market';
+        $this->layout = 'panel';
+        if(isset($_GET['rc']))
+            $this->render('ext.MellatPayment.views._redirect', array('ReferenceId' => $_GET['rc']));
+        else throw new CHttpException(400, 'خطا در عملیات.');
+    }
+
+    /**
+     * Save buy information
+     *
+     * @param $app Apps
+     * @param $basePrice string
+     * @param $price string
+     * @param $user Users
+     * @param $method string
+     * @param $transactionID string
+     * @return AppBuys
+     */
+    private function saveBuyInfo($app, $basePrice, $price, $user, $method, $transactionID = null)
+    {
+        $appTitle=$app->title;
+        $app->download += 1;
+        $app->setScenario('update-download');
+        $app->save();
+        $buy = new AppBuys();
+        $buy->app_id = $app->id;
+        $buy->user_id = $user->id;
+        $buy->date = time();
+        $buy->package_version = $app->lastPackage->version;
+        $buy->package_version_code = $app->lastPackage->version_code;
+        $buy->app_price = $basePrice;
+        $buy->discount_amount = $basePrice - $price;
+        $buy->pay_amount = $price;
+        $buy->developer_earn = 0;
+        if ($app->developer) {
+            $buy->developer_earn = $app->getDeveloperPortion($price);
+            $app->developer->userDetails->earning = $app->developer->userDetails->earning + $buy->developer_earn;
+            $app->developer->userDetails->dev_score = $app->developer->userDetails->dev_score + 1;
+            $app->developer->userDetails->save();
+        }
+        $buy->site_earn = $price - $buy->developer_earn;
+        $buy->save();
+
+        /* @var $transaction UserTransactions */
+        $transaction = null;
+        if (!is_null($transactionID))
+            $transaction = UserTransactions::model()->findByPk($transactionID);
+        $message =
+            '<p style="text-align: right;">'.(is_null($user->userDetails->fa_name)?'کاربر':$user->userDetails->fa_name).' عزیز، سلام<br>از اینکه از '.Yii::app()->name.' خرید کردید متشکریم. رسید خریدتان در زیر این صفحه آمده است.</p>
+            <p style="text-align: right;">برنامه برای دریافت روی دستگاهتان آماده است. چنانچه در دریافت برنامه به مشکلی برخورد کردید، لطفا ابتدا چک کنید که روی دستگاهتان وارد حساب کاربریتان شده باشید.در صورتی که مشکل از این نبود لطفا با ما تماس بگیرید: hyperapps.ir@gmail.com</p>
+            <div style="width: 100%;height: 1px;background: #ccc;margin-bottom: 15px;"></div>
+            <h4 style="text-align: right;">صورت حساب</h4>
+            <table style="font-size: 9pt;text-align: right;">
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">تاریخ رسید</td>
+                    <td>' . JalaliDate::date('d F Y', $buy->date) . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">زمان</td>
+                    <td>' . JalaliDate::date('H:i', $buy->date) . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">به نام</td>
+                    <td>' . $user->email . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">نام برنامه</td>
+                    <td>' . CHtml::encode($appTitle.' ('.$app->lastPackage->package_name.')') . '</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">قیمت (با احتساب مالیات و عوارض)</td>
+                    <td>' . Controller::parseNumbers(number_format($price, 0)) . ' تومان</td>
+                </tr>';
+        if ($method == 'gateway')
+            $message .= '<tr>
+                    <td style="font-weight: bold;width: 120px;">کد رهگیری</td>
+                    <td style="font-weight: bold;letter-spacing:4px">' . CHtml::encode($transaction->token) . ' </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
+                    <td style="font-weight: bold;">درگاه بانک ملت </td>
+                </tr>';
+        elseif ($method == 'credit')
+            $message .= '<tr>
+                    <td style="font-weight: bold;width: 120px;">روش پرداخت</td>
+                    <td>کسر از اعتبار</td>
+                </tr>';
+        $message .= '</table>';
+        Mailer::mail($user->email, 'اطلاعات خرید برنامه', $message);
+        return $buy;
     }
 }
