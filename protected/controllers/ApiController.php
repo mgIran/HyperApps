@@ -149,6 +149,7 @@ class ApiController extends ApiBaseController
                             'text' => $comment->comment_text,
                             'username' => $comment->getUserName(),
                             'createTime' => doubleval($comment->create_time),
+                            'rate' => intval($comment->getUserRate()),
                         ];
 
                     // Get similar apps

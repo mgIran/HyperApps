@@ -522,4 +522,30 @@ class Comment extends CActiveRecord
             $this->user_name = 'Admin';
         return parent::beforeSave();
     }
+
+    public function getUserRate()
+    {
+        $rate = 0;
+        if(isset($this->user)) {
+            //if User model has been configured and comment posted by registered user
+            $userConfig = Yii::app()->getModule('comments')->userConfig;
+            if(strpos($userConfig['rateProperty'], '.') === false)
+                $rate = $this->user->$userConfig['rateProperty'];
+            else {
+                $relations = explode('.', $userConfig['rateProperty']);
+                $user = $this->user;
+                foreach($relations as $relation)
+                {
+                    if ($user->$relation)
+                        $user = $user->$relation;
+                    else
+                        return false;
+                }
+                $rate = $user;
+            }
+            if(empty($user) && isset($userConfig['rateProperty']))
+                $rate .= $this->user->$userConfig['rateProperty'];
+        }
+        return $rate;
+    }
 }
