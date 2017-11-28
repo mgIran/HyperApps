@@ -10,7 +10,7 @@ class ApiController extends ApiBaseController
     public function filters()
     {
         return array(
-            'RestAccessControl + search, find, list, page, creditPrices',
+            'RestAccessControl + search, find, list, page, creditPrices, register',
             'RestAuthControl + profile, editProfile, saveComment, saveRate, credit, bookmark, bookmarkList, installedApps, buy, download',
         );
     }
@@ -387,6 +387,53 @@ class ApiController extends ApiBaseController
                             ];
                     }
                     break;
+                case 'Discounts':
+                    $criteria = new CDbCriteria();
+                    $criteria->with[] = 'app';
+                    $criteria->addCondition('app.confirm=:confirm');
+                    $criteria->addCondition('app.deleted=:deleted');
+                    $criteria->addCondition('app.status=:status');
+                    $criteria->addCondition('app.platform_id=:platform');
+                    $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=app.id) != 0');
+                    $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=app.id) != 0');
+                    $criteria->addCondition('start_date < :now AND end_date > :now');
+                    $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=app.id) != 0');
+                    $criteria->params = array(
+                        ':confirm' => 'accepted',
+                        ':deleted' => 0,
+                        ':status' => 'enable',
+                        ':platform' => $this->platform,
+                        ':now' => time()
+                    );
+                    $criteria->order = 'app.id DESC';
+                    /* @var AppDiscounts[] $apps */
+                    $apps = AppDiscounts::model()->findAll($criteria);
+                    $listCount = AppDiscounts::model()->count($criteria);
+                    foreach($apps as $app){
+                        $images = [];
+                        if($app->images && isset($this->request['row'])){
+                            $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
+                            $imageUrl = Yii::app()->getBaseUrl(true) . "/uploads/apps/images/";
+                            foreach($app->app->images as $image)
+                                if(file_exists($imagePath . $image->image))
+                                    $images[] = $imageUrl . $image->image;
+                        }
+                        $list[] = [
+                            'id' => intval($app->app->id),
+                            'title' => $app->app->title,
+                            'icon' => Yii::app()->getBaseUrl(true) . '/uploads/apps/icons/' . $app->app->icon,
+                            'developer' => $app->app->getDeveloperName(),
+                            'rate' => $app->app->getRate(),
+                            'price' => (double)$app->app->price,
+                            'hasDiscount' => $app->app->hasDiscount(),
+                            'offPrice' => $app->app->hasDiscount()?(double)$app->app->getOffPrice():null,
+                            'images' => $images,
+                            'startDate' => $app->start_date,
+                            'endDate' => $app->end_date,
+                            'percent' => $app->percent,
+                        ];
+                    }
+                    break;
             }
 
             if($list)
@@ -435,6 +482,41 @@ class ApiController extends ApiBaseController
             $this->_sendResponse(200, CJSON::encode(['status' => true, 'prices' => $prices]), 'application/json');
         else
             $this->_sendResponse(404, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
+    }
+
+    /**
+     * Register user
+     */
+    public function actionRegister()
+    {
+        Yii::import('users.models.*');
+        $model = new Users('create');
+
+        if(isset($this->request['user'])){
+            $model->attributes = $this->request['user'];
+            $model->status = 'pending';
+            $model->create_date = time();
+            Yii::import('users.components.*');
+            if($model->save()){
+                $token = md5($model->id . '#' . $model->password . '#' . $model->email . '#' . $model->create_date);
+                $model->updateByPk($model->id, array('verification_token' => $token));
+                $userDetails = new UserDetails();
+                $userDetails->user_id = $model->id;
+                $userDetails->credit = 0;
+                $userDetails->save();
+
+                $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>برای فعال کردن حساب کاربری خود در ' . Yii::app()->name . ' بر روی لینک زیر کلیک کنید:</div>';
+                $message .= '<div style="text-align: right;font-size: 9pt;">';
+                $message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/verify/token/' . $token . '</a>';
+                $message .= '</div>';
+                $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">این لینک فقط 3 روز اعتبار دارد.</div>';
+                Mailer::mail($model->email, 'ثبت نام در ' . Yii::app()->name, $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'ایمیل فعال سازی به پست الکترونیکی شما ارسال شد. لطفا Inbox و Spam پست الکترونیکی خود را چک کنید.']), 'application/json');
+            }else
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => $model->getErrors()]), 'application/json');
+        }else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'مقادیر الزامی ارسال نشده اند.']), 'application/json');
     }
 
     /** ------------------------------------------------- Authorized Api ------------------------------------------------ **/
