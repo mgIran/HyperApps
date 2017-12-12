@@ -26,6 +26,10 @@ class CreditController extends Controller
                 'actions' => array('buy', 'bill', 'verify'),
                 'users' => array('@'),
             ),
+            array('allow',  // allow all users to perform 'index' and 'views' actions
+                'actions' => array('apiVerify'),
+                'users' => array('*'),
+            ),
             array('deny',  // deny all users
                 'users' => array('*'),
             ),
@@ -200,14 +204,13 @@ class CreditController extends Controller
         if(is_null($platform) or ($platform && $platform != 'mobile'))
             $this->redirect(array('/site?status=failed&error=' . urlencode("درخواست شما معتبر نیست")));
 
-        $userDetails = UserDetails::model()->findByAttributes(array('user_id' => Yii::app()->user->getId()));
         /* @var $model UserTransactions */
         /* @var $userDetails UserDetails */
         $result = null;
         if($this->active_gateway == 'mellat'){
-            $model = UserTransactions::model()->findByAttributes(array(
-                'user_id' => Yii::app()->user->getId(),
-                'status' => 'unpaid'));
+            $orderId = $_POST['RefId'];
+            $model = UserTransactions::model()->findByAttributes(array('ref_id' => $orderId));
+            $userDetails = UserDetails::model()->findByAttributes(array('user_id' => $model->user_id));
             if($_POST['ResCode'] == 0)
                 $result = Yii::app()->mellat->VerifyRequest($model->id, $_POST['SaleOrderId'], $_POST['SaleReferenceId']);
 
@@ -238,6 +241,7 @@ class CreditController extends Controller
             $model = UserTransactions::model()->findByAttributes(array(
                 'authority' => $Authority
             ));
+            $userDetails = UserDetails::model()->findByAttributes(array('user_id' => $model->user_id));
             if($model->status == 'unpaid'){
                 $Amount = $model->amount;
                 if($_GET['Status'] == 'OK'){

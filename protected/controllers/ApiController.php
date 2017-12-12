@@ -10,7 +10,7 @@ class ApiController extends ApiBaseController
     public function filters()
     {
         return array(
-            'RestAccessControl + search, find, list, page, creditPrices, register',
+            'RestAccessControl + search, find, list, page, creditPrices, register, forgetPassword',
             'RestAuthControl + profile, editProfile, saveComment, saveRate, credit, bookmark, bookmarkList, installedApps, buy, download',
         );
     }
@@ -393,7 +393,6 @@ class ApiController extends ApiBaseController
                     $criteria->addCondition('app.confirm=:confirm');
                     $criteria->addCondition('app.deleted=:deleted');
                     $criteria->addCondition('app.status=:status');
-                    $criteria->addCondition('app.platform_id=:platform');
                     $criteria->addCondition('(SELECT COUNT(app_images.id) FROM ym_app_images app_images WHERE app_images.app_id=app.id) != 0');
                     $criteria->addCondition('(SELECT COUNT(app_packages.id) FROM ym_app_packages app_packages WHERE app_packages.app_id=app.id) != 0');
                     $criteria->addCondition('start_date < :now AND end_date > :now');
@@ -402,16 +401,19 @@ class ApiController extends ApiBaseController
                         ':confirm' => 'accepted',
                         ':deleted' => 0,
                         ':status' => 'enable',
-                        ':platform' => $this->platform,
                         ':now' => time()
                     );
+                    if(isset($this->request['platform_id'])){
+                        $criteria->addCondition('app.platform_id=:platform_id');
+                        $criteria->params[':platform_id'] = $this->request['platform_id'];
+                    }
                     $criteria->order = 'app.id DESC';
                     /* @var AppDiscounts[] $apps */
                     $apps = AppDiscounts::model()->findAll($criteria);
                     $listCount = AppDiscounts::model()->count($criteria);
                     foreach($apps as $app){
                         $images = [];
-                        if($app->images && isset($this->request['row'])){
+                        if($app->app->images && isset($this->request['row'])){
                             $imagePath = Yii::getPathOfAlias("webroot") . "/uploads/apps/images/";
                             $imageUrl = Yii::app()->getBaseUrl(true) . "/uploads/apps/images/";
                             foreach($app->app->images as $image)
@@ -519,6 +521,38 @@ class ApiController extends ApiBaseController
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'مقادیر الزامی ارسال نشده اند.']), 'application/json');
     }
 
+    public function actionForgetPassword(){
+        if(isset($this->request['email'])){
+            $model = Users::model()->findByAttributes(array('email' => $this->request['email']));
+            if($model){
+                if($model->status == 'active'){
+                    if($model->change_password_request_count != 3){
+                        $token = md5($model->id . '#' . $model->password . '#' . $model->email . '#' . $model->create_date . '#' . time());
+                        $count = intval($model->change_password_request_count);
+                        $model->updateByPk($model->id, array('verification_token' => $token, 'change_password_request_count' => $count + 1));
+                        $message = '<div style="color: #2d2d2d;font-size: 14px;text-align: right;">با سلام<br>بنا به درخواست شما جهت تغییر کلمه عبور لینک زیر خدمتتان ارسال گردیده است.</div>';
+                        $message .= '<div style="text-align: right;font-size: 9pt;">';
+                        $message .= '<a href="' . Yii::app()->getBaseUrl(true) . '/users/public/changePassword/token/' . $token . '">' . Yii::app()->getBaseUrl(true) . '/users/public/changePassword/token/' . $token . '</a>';
+                        $message .= '</div>';
+                        $message .= '<div style="font-size: 8pt;color: #888;text-align: right;">اگر شخص دیگری غیر از شما این درخواست را صادر نموده است، یا شما کلمه عبور خود را به یاد آورده‌اید و دیگر نیازی به تغییر آن ندارید، کلمه عبور قبلی/موجود شما همچنان فعال می‌باشد و می توانید از طریق <a href="' . ((strpos($_SERVER['SERVER_PROTOCOL'], 'https'))?'https://':'http://') . $_SERVER['HTTP_HOST'] . '/login">این صفحه</a> وارد حساب کاربری خود شوید.</div>';
+                        $result = Mailer::mail($model->email, 'درخواست تغییر کلمه عبور در ' . Yii::app()->name, $message, Yii::app()->params['noReplyEmail'], Yii::app()->params['SMTP']);
+                        if($result)
+                            $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'لینک تغییر کلمه عبور به ' . $model->email . ' ارسال شد.']), 'application/json');
+                        else
+                            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ارسال ایمیل خطایی رخ داده است لطفا مجددا تلاش کنید.']), 'application/json');
+                    }else
+                        $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'بیش از 3 بار نمی توانید درخواست تغییر کلمه عبور بدهید.']), 'application/json');
+                }elseif($model->status == 'pending')
+                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'این حساب کاربری هنوز فعال نشده است.']), 'application/json');
+                elseif($model->status == 'blocked')
+                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'این حساب کاربری مسدود می باشد.']), 'application/json');
+                elseif($model->status == 'deleted')
+                    $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'این حساب کاربری حذف شده است.']), 'application/json');
+            }else
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'پست الکترونیکی وارد شده اشتباه است.']), 'application/json');
+        }
+    }
+    
     /** ------------------------------------------------- Authorized Api ------------------------------------------------ **/
     public function actionProfile()
     {
@@ -582,7 +616,7 @@ class ApiController extends ApiBaseController
                 $Amount = doubleval($model->amount);
                 $CallbackURL = Yii::app()->getBaseUrl(true) . '/users/credit/apiVerify?platform=mobile';
                 if($this->active_gateway == 'mellat'){
-                    $result = Yii::app()->mellat->PayRequest($Amount * 10, $model->id, $CallbackURL);
+                        $result = Yii::app()->mellat->PayRequest($Amount * 10, $model->id, $CallbackURL);
                     if(!$result['error']){
                         $ref_id = $result['responseCode'];
                         $model->authority = $ref_id;
@@ -679,22 +713,23 @@ class ApiController extends ApiBaseController
             if(isset($this->request['offset']) && !empty($this->request['offset']) && $offset = (int)$this->request['offset'])
                 $criteria->offset = $offset;
         }
-        foreach($this->user->appBuys($criteria) as $appBuy){
-            $app= $appBuy->app;
-            $list[] = [
-                'id' => intval($app->id),
-                'title' => $app->title,
-                'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
-                'developer' => $app->getDeveloperName(),
-                'rate' => floatval($app->rate),
-                'price' => (double)$app->price,
-                'hasDiscount' => $app->hasDiscount(),
-                'offPrice' => $app->hasDiscount()?doubleval($app->offPrice):0,
-                'package_name' => $app->lastPackage->package_name,
-                'version_name' => $app->lastPackage->version,
-                'version_code' => $app->lastPackage->version_code, 
-            ];
-        }
+        if($this->user->appBuys($criteria))
+            foreach($this->user->appBuys($criteria) as $appBuy){
+                $app = $appBuy->app;
+                $list[] = [
+                    'id' => intval($app->id),
+                    'title' => $app->title,
+                    'icon' => Yii::app()->createAbsoluteUrl('/uploads/apps/icons') . '/' . $app->icon,
+                    'developer' => $app->getDeveloperName(),
+                    'rate' => floatval($app->rate),
+                    'price' => (double)$app->price,
+                    'hasDiscount' => $app->hasDiscount(),
+                    'offPrice' => $app->hasDiscount()?doubleval($app->offPrice):0,
+                    'package_name' => $app->lastPackage->package_name,
+                    'version_name' => $app->lastPackage->version,
+                    'version_code' => $app->lastPackage->version_code,
+                ];
+            }
 
         if($list)
             $this->_sendResponse(200, CJSON::encode(['status' => true, 'totalRecords' => count($list), 'list' => $list]), 'application/json');

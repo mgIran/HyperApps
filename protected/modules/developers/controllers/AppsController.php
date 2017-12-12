@@ -451,6 +451,7 @@ class AppsController extends Controller
         return array(
             'package_name' => $manifest->getPackageName(),
             'version' => $manifest->getVersionName(),
+            'version_code' => $manifest->getVersionCode(),
             'min_sdk_level' => $manifest->getMinSdkLevel(),
             'min_sdk_platform' => $manifest->getMinSdk()->platform,
             'permissions' => $manifest->getPermissions(),
