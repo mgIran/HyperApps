@@ -206,9 +206,9 @@ class Apps extends CActiveRecord
         $criteria->compare('support_email',$this->support_email,true);
         $criteria->compare('support_fa_web',$this->support_fa_web,true);
         $criteria->compare('support_en_web',$this->support_en_web,true);
-
 		return new CActiveDataProvider($this, array(
-				'criteria' => $criteria,
+			'criteria' => $criteria,
+			'pagination' => array('route'=>Yii::app()->request->getPathInfo())
 		));
 	}
 
