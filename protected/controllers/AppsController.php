@@ -171,7 +171,7 @@ class AppsController extends Controller
                                 }else
                                     Yii::app()->user->setFlash('failed', Yii::app()->mellat->getResponseText($result['responseCode']));
                             }else if($this->active_gateway == 'zarinpal'){
-                                $result = Yii::app()->zarinpal->PayRequest(doubleval($price), $description, $CallbackURL);
+                                $result = Yii::app()->zarinpal->PayRequest(doubleval($price), $transaction->description, $CallbackURL);
                                 $transaction->authority = Yii::app()->zarinpal->getAuthority();
                                 $transaction->save(false);
                                 if($result->getStatus() == 100)
@@ -284,7 +284,7 @@ class AppsController extends Controller
         /* @var $user Users */
 
         $platform = Yii::app()->request->getQuery('platform');
-        $trID = Yii::app()->request->getQuery('platform');
+        $trID = Yii::app()->request->getQuery('tr');
         if(is_null($platform) || is_null($trID) || ($platform && $platform != 'mobile'))
             $this->redirect(array('/site?status=failed&error=' . urlencode("درخواست شما معتبر نیست")));
         $transaction = UserTransactions::model()->findByPk($trID);

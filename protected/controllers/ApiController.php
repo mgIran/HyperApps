@@ -606,10 +606,10 @@ class ApiController extends ApiBaseController
             if($this->active_gateway != 'zarinpal' && $this->active_gateway != 'mellat')
                 die('Gateway invalid!! Valid gateways is "zarinpal" or "mellat". Please change gateway in main.php file.');
 
-            $model = UserTransactions::model()->findByAttributes(array('user_id' => Yii::app()->user->getId(), 'status' => 'unpaid'));
+            $model = UserTransactions::model()->findByAttributes(array('user_id' => $this->user->id, 'status' => 'unpaid'));
             if(!$model)
                 $model = new UserTransactions();
-            $model->user_id = Yii::app()->user->getId();
+            $model->user_id = $this->user->id;
             $model->amount = $this->request['amount'];
             $model->date = time();
             if($model->save()){
@@ -818,7 +818,7 @@ class ApiController extends ApiBaseController
             if ($model->developer_id != $userID) {
                 $siteName = Yii::app()->name;
                 $transaction = new UserTransactions();
-                $transaction->user_id = Yii::app()->user->getId();
+                $transaction->user_id = $userID;
                 $transaction->amount = $price;
                 $transaction->date = time();
                 $transaction->gateway_name = $this->active_gateway;
