@@ -328,18 +328,16 @@ class Comment extends CActiveRecord
     {
         $tree = array();
         foreach($data as $id => $node) {
-            if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user' && Yii::app()->user->roles == "developer"){
-                if($node->status != self::STATUS_APPROWED && $node->creator_id != Yii::app()->user->getId())
-                {
+            if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'user' && Yii::app()->user->roles == "developer" &&
+                $node->status != self::STATUS_APPROWED && $node->creator_id != Yii::app()->user->getId())
                     unset($data[$id]);
-                    continue;
+            else{
+                $node->parent_comment_id = $node->parent_comment_id === null?0:$node->parent_comment_id;
+                if($node->parent_comment_id == $rootID){
+                    unset($data[$id]);
+                    $node->childs = $this->buildTree($data, $node->comment_id);
+                    $tree[] = $node;
                 }
-            }
-            $node->parent_comment_id = $node->parent_comment_id === null ? 0 : $node->parent_comment_id;
-            if($node->parent_comment_id == $rootID){
-                unset($data[$id]);
-                $node->childs = $this->buildTree($data, $node->comment_id);
-                $tree[] = $node;
             }
         }
         return $tree;
@@ -521,31 +519,5 @@ class Comment extends CActiveRecord
         if(!Yii::app()->user->isGuest && Yii::app()->user->type == 'admin')
             $this->user_name = 'Admin';
         return parent::beforeSave();
-    }
-
-    public function getUserRate()
-    {
-        $rate = 0;
-        if(isset($this->user)) {
-            //if User model has been configured and comment posted by registered user
-            $userConfig = Yii::app()->getModule('comments')->userConfig;
-            if(strpos($userConfig['rateProperty'], '.') === false)
-                $rate = $this->user->$userConfig['rateProperty'];
-            else {
-                $relations = explode('.', $userConfig['rateProperty']);
-                $user = $this->user;
-                foreach($relations as $relation)
-                {
-                    if ($user->$relation)
-                        $user = $user->$relation;
-                    else
-                        return false;
-                }
-                $rate = $user;
-            }
-            if(empty($user) && isset($userConfig['rateProperty']))
-                $rate .= $this->user->$userConfig['rateProperty'];
-        }
-        return $rate;
     }
 }
