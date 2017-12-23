@@ -14,7 +14,7 @@ class Mailer
      *
      * @return boolean
      */
-    public static function mail($to, $subject, $message, $from, $SMTP = array(), $attachments = array())
+    public static function mail($to, $subject, $message, $from = null, $SMTP = array(), $attachments = array())
     {
         $mailTheme = Yii::app()->params['mailTheme'];
         $mailTheme = str_replace('{CurrentYear}', JalaliDate::date('Y'), $mailTheme);

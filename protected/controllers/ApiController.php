@@ -10,7 +10,7 @@ class ApiController extends ApiBaseController
     public function filters()
     {
         return array(
-            'RestAccessControl + search, find, list, page, creditPrices, register, forgetPassword',
+            'RestAccessControl + search, find, list, page, creditPrices, register, forgetPassword, sendReport',
             'RestAuthControl + profile, editProfile, saveComment, saveRate, credit, bookmark, bookmarkList, installedApps, buy, download',
         );
     }
@@ -471,6 +471,21 @@ class ApiController extends ApiBaseController
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'نتیجه ای یافت نشد.']), 'application/json');
         }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'Name variable is required.']), 'application/json');
+    }
+    
+    public function actionSendReport()
+    {
+        if(isset($this->request['app_id']) && isset($this->request['reason'])){
+            $model = new Reports();
+            $model->app_id = $this->request['app_id'];
+            $model->reason= $this->request['reason'];
+            $model->description= $this->request['description'];
+            if($model->save())
+                $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'گزارش شما با موفقیت ثبت گردید.']), 'application/json');
+            else
+                $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت گزارش خطایی رخ داده است! لطفا مجددا بررسی فرمایید.']), 'application/json');
+        }else
+            $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Reason is required.']), 'application/json');
     }
 
     public function actionCreditPrices()

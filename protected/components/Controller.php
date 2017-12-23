@@ -123,6 +123,7 @@ class Controller extends CController
                         array('label' => '<i class="fa fa-circle-o"></i>بخش ویندوز فون', 'url' => Yii::app()->createUrl('/manageApps/windowsphone/admin/')),
                         array('label' => '<i class="fa fa-circle-o"></i>تبلیغات', 'url' => Yii::app()->createUrl('/advertises/manage/admin/')),
                         array('label' => '<i class="fa fa-circle-o"></i>نظرات', 'url' => Yii::app()->createUrl('/comments/comment/adminApps')),
+                        array('label' => '<i class="fa fa-circle-o"></i>گزارشات اشکال', 'url' => Yii::app()->createUrl('/apps/problemReports')),
                     )
                 ),
                 array(

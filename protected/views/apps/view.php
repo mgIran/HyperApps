@@ -107,6 +107,9 @@ if($model->platform) {
                     </span>
                 <?php endif;
                 ?>
+                <span class="pull-left">
+                    <a href="#" data-toggle="modal" data-target="#report-modal"><i class="icon icon-flag-alt"></i> گزارش</a>
+                </span>
             </div>
         </div>
         <div class="app-body">
@@ -280,6 +283,26 @@ if($model->platform) {
             <div class="modal-content">
                 <div class="modal-body text-center">
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="report-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>
+                        گزارش اشکال در نرم افزار
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </h3>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    $report = new Reports();
+                    $report->app_id = $model->id;
+                    $this->renderPartial('_report_app',['model' => $report])
+                    ?>
                 </div>
             </div>
         </div>

@@ -2510,3 +2510,10 @@ header.mobile.search-open .mobile-search {
 .scroll-container{
     overflow-y: auto !important;
 }
+label{
+    font-weight: bold !important;
+}
+
+input + label{
+    font-weight: 400 !important;
+}

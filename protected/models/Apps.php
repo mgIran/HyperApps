@@ -39,6 +39,7 @@
  * @property Users[] $bookmarker
  * @property AppPackages[] $packages
  * @property AppDiscounts $discount
+ * @property Reports $reports
  */
 class Apps extends CActiveRecord
 {
@@ -130,6 +131,7 @@ class Apps extends CActiveRecord
 			'ratings' => array(self::HAS_MANY, 'AppRatings', 'app_id'),
 			'specialAdvertise' => array(self::BELONGS_TO, 'SpecialAdvertises', 'id'),
 			'advertise' => array(self::BELONGS_TO, 'Advertises', 'id'),
+			'reports' => array(self::HAS_MANY, 'Reports', 'app_id'),
 		);
 	}
 
