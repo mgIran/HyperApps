@@ -10,7 +10,7 @@ class ApiController extends ApiBaseController
     public function filters()
     {
         return array(
-            'RestAccessControl + search, find, list, page, creditPrices, register, forgetPassword, sendReport',
+            'RestAccessControl + search, find, list, page, creditPrices, register, forgetPassword, sendReport, getReasons',
             'RestAuthControl + profile, editProfile, saveComment, saveRate, credit, bookmark, bookmarkList, installedApps, buy, download',
         );
     }
@@ -479,13 +479,19 @@ class ApiController extends ApiBaseController
             $model = new Reports();
             $model->app_id = $this->request['app_id'];
             $model->reason= $this->request['reason'];
-            $model->description= $this->request['description'];
+            $model->description= isset($this->request['description'])?$this->request['description']:null;
             if($model->save())
                 $this->_sendResponse(200, CJSON::encode(['status' => true, 'message' => 'گزارش شما با موفقیت ثبت گردید.']), 'application/json');
             else
                 $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'در ثبت گزارش خطایی رخ داده است! لطفا مجددا بررسی فرمایید.']), 'application/json');
         }else
             $this->_sendResponse(200, CJSON::encode(['status' => false, 'message' => 'App ID and Reason is required.']), 'application/json');
+    }
+
+    public function actionGetReasons()
+    {
+        $model = new Reports();
+        $this->_sendResponse(200, CJSON::encode(['status' => true, 'reasons' => array_values($model->reasons)]), 'application/json');
     }
 
     public function actionCreditPrices()
